@@ -27,6 +27,11 @@ PLAYER3     = PMBASE_ADDR+$700  ; 128 B
 SPRITE_ROWS = 37
 TOP_MARGIN  = 50            ; start display at scan line ~50
 
+; PMG DMA start offset (blank lines $70×3 = 24 lines counted by PMG counter)
+KOREKTA     = 8            ; dostrojone doświadczalnie
+DL_BLANKS   = 24
+DLI_DELAY   = TOP_MARGIN - DL_BLANKS - KOREKTA ; 26 - KOREKTA
+
 ; PMG positions (color clocks — side by side, x2 = 16px apart)
 HPOS_P0     = $30
 HPOS_P1     = $40
@@ -201,9 +206,80 @@ start
 ;---------------------------------------
         icl "title-0a_colors.asm"
 
+;---------------------------------------
+; DLI — rainbow na sprite'ach
+;---------------------------------------
+
+        ; Ustaw wektor DLI
+        lda #<DLI_Handler
+        sta $0200            ; VDSLST low
+        lda #>DLI_Handler
+        sta $0201            ; VDSLST high
+
+        ; Włącz DLI na OSTATNIEJ linii pustej (DLIST+2),
+        ; nie na pierwszej trybu E. Puste linie nie mają DMA,
+        ; więc CPU dostaje przerwanie natychmiast — WSYNC trafia idealnie.
+        lda DLIST+2
+        ora #$80
+        sta DLIST+2
+
+        ; Włącz DLI + VBI
+        lda #$C0
+        sta $D40E            ; NMIEN
+
 Forever
         jmp Forever
 
+;---------------------------------------
+; DLI Handler — tęcza na sprite'ach
+;---------------------------------------
+DLI_Handler
+        pha
+        txa
+        pha
+
+        ; Czekaj do początku sprite'ów
+        ; PMG counter = TOP_MARGIN → widoczna linia = TOP_MARGIN - DL_BLANKS
+        ldx #DLI_DELAY
+@delay
+        sta $D40A            ; WSYNC
+        dex
+        bne @delay
+
+        ; Pętla tęczy — SPRITE_ROWS linii
+        ldx #0
+        ldy #SPRITE_ROWS-1
+@rainbow
+        sta $D40A            ; WSYNC — czekaj na następną linię
+        lda RainbowColors,x
+        sta $D012            ; PCOLR0
+        sta $D013            ; PCOLR1
+        sta $D014            ; PCOLR2
+        sta $D015            ; PCOLR3
+        sta $D019            ; COLPF3 (5th player)
+        inx
+        dey
+        bpl @rainbow
+
+        pla
+        tax
+        pla
+        rti
+
+;---------------------------------------
+; Tabela kolorów tęczy (40 pozycji)
+;---------------------------------------
+RainbowColors
+        dta $34,$36,$38,$3A,$3C 
+        dta $3E,$3E
+        dta $3F,$3E,$3E
+        dta $3C,$3A,$38,$36,$34
+        dta $00,$00,$00,$00
+        dta $00,$00
+        dta $14,$16,$18,$C8,$CA      
+        dta $CC,$CE,$CE,$CF
+        dta $CF,$CE,$CE,$CC
+        dta $CA,$C8,$18,$16,$14,$00
 ;---------------------------------------
 ; Zmienne page zero
 ;---------------------------------------
