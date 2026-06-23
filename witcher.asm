@@ -29,8 +29,19 @@ TOP_MARGIN  = 50
 
 ; Sprite dimensions — księżyc (4 graczy, 32px)
 MOON_ROWS   = 24
-MOON_TOP    = 110           ; pozycja Y księżyca (linia PMG)
-MOON_X      = 40            ; pozycja X lewego skraju księżyca
+MOON_TOP    = 114           ; pozycja Y księżyca (linia PMG)
+MOON_X      = $28          ; pozycja X lewego skraju księżyca
+
+; Gwiazdy — na missile'ach M0–M3 (niezależne HPOS + kolor)
+STAR0_X     = $50           ; HPOS (było $10 — za bardzo w lewo)
+STAR1_X     = $48
+STAR2_X     = $60
+STAR3_X     = $70
+
+STAR0_Y     = 108           ; linia PMG — tuż nad księżycem
+STAR1_Y     = 116           ; w obszarze księżyca
+STAR2_Y     = 126
+STAR3_Y     = 121
 
 ; PMG DMA start offset (blank lines $70×3 = 24 lines counted by PMG counter)
 KOREKTA     = 8            ; dostrojone doświadczalnie
@@ -131,6 +142,12 @@ start
 ;---------------------------------------
 
         ldx #MOON_ROWS-1
+@mclear  lda #0
+        sta MISSILES+MOON_TOP,x
+        dex
+        bpl @mclear
+
+        ldx #MOON_ROWS-1
 @moon_loop
         txa
         asl @
@@ -149,6 +166,22 @@ start
         sta PLAYER3+MOON_TOP,x
         dex
         bpl @moon_loop
+
+;---------------------------------------
+; Gwiazdy — pojedyncze piksele na missile'ach
+; W pobliżu księżyca (MOON_TOP=114)
+;---------------------------------------
+
+        ; Gwiazdy na missile'ach (M0–M3, pojedynczy piksel)
+        ; Zapis PO moon_loop, żeby nadpisać @mclear
+        lda #$01             ; M0: bit 0
+        sta MISSILES+STAR0_Y
+        lda #$04             ; M1: bit 2
+        sta MISSILES+STAR1_Y
+        lda #$10             ; M2: bit 4
+        sta MISSILES+STAR2_Y
+        lda #$40             ; M3: bit 6
+        sta MISSILES+STAR3_Y
 
 ;---------------------------------------
 ; PMG — rejestry GTIA
@@ -322,36 +355,60 @@ DLI_Handler
         dey
         bpl @rainbow
 
-        ; Przywróć kolor księżyca + 1x + ciasne HPOS
-        sta $D40A            ; WSYNC
-        ; --- Księżyc: kolor $40, 1x, stykające się (8cc odstęp), 5th player ukryty ---
+        ; --- Po tęczy: PRIOR=$01, PCOLR=$40, SIZEP=1x (wspólne dla gwiazd i księżyca) ---
+        sta $D40A            ; WSYNC → pierwsza linia po tęczy
+
+        lda #$01
+        sta $D01B            ; PRIOR — bez 5th player, missile własne HPOS
         lda #$40
-        sta $D012            ; PCOLR0   kolor księżyca
+        sta $D012            ; PCOLR0
         sta $D013            ; PCOLR1
         sta $D014            ; PCOLR2
         sta $D015            ; PCOLR3
-        lda #$0E             ; 5th player biały (niewidoczny — HPOSM=0)
-        sta $D019            ; COLPF3
-
-        lda #$00             ; normalna szerokość (1x = 8cc na gracza)
-        sta $D008            ; SIZEP0
+        lda #$00
+        sta $D008            ; SIZEP0 = 1x
         sta $D009            ; SIZEP1
         sta $D00A            ; SIZEP2
         sta $D00B            ; SIZEP3
+        sta $D00C            ; SIZEM
 
-        lda #MOON_X          ; P0 — lewy skraj księżyca
-        sta $D000            ; HPOSP0
-        lda #MOON_X+8        ; P1 — +8cc
-        sta $D001            ; HPOSP1
-        lda #MOON_X+16       ; P2 — +16cc
-        sta $D002            ; HPOSP2
-        lda #MOON_X+24       ; P3 — +24cc
-        sta $D003            ; HPOSP3
+        ; --- Gwiazdy: HPOSM ---
+        ldx #STAR0_Y - (TOP_MARGIN+SPRITE_ROWS) - 1  ; (108-87)-1 = 20 WSYNC
+@sw     sta $D40A
+        dex
+        bne @sw               ; → HBLANK 107→108
 
-        lda #0               ; ukryj 5. gracza poza ekranem
+        lda #STAR0_X
         sta $D004            ; HPOSM0
+        lda #STAR1_X
         sta $D005            ; HPOSM1
+        lda #STAR2_X
         sta $D006            ; HPOSM2
+        lda #STAR3_X
+        sta $D007            ; HPOSM3
+
+        ; --- Księżyc: HPOSP + HPOSM ---
+        ldx #MOON_TOP-STAR0_Y-2  ; 4 WSYNC → HPOSP na PMG 113, efekt od 114
+@sm     sta $D40A
+        dex
+        bne @sm
+
+        ; PMG 113: HPOSP księżyca + HPOSM gwiazd (PRIOR i PCOLR już ustawione)
+        lda #MOON_X
+        sta $D000            ; HPOSP0
+        lda #MOON_X+8
+        sta $D001            ; HPOSP1
+        lda #MOON_X+16
+        sta $D002            ; HPOSP2
+        lda #MOON_X+24
+        sta $D003            ; HPOSP3
+        lda #STAR0_X
+        sta $D004            ; HPOSM0
+        lda #STAR1_X
+        sta $D005            ; HPOSM1
+        lda #STAR2_X
+        sta $D006            ; HPOSM2
+        lda #STAR3_X
         sta $D007            ; HPOSM3
 
         pla
