@@ -1,4 +1,4 @@
-; ANTIC Display List dla: title-0
+; ANTIC Display List dla: title-0a
 ; Tryb ANTIC:   $0E  (160×192, 4 kolory)
 ; Bajtów/linia: 40
 ; Adres ekranu: $4000
@@ -11,13 +11,13 @@ DLIST
 
 	; --- Segment 1: LMS = $4000
 	;     linie 0..101 (102 linii, offset danych 0) ---
-	dta $4E, a(Title0Data + 0)
+	dta $4E, a(Title0aData + 0)
 	.rept 101
 	dta $0E
 	.endr
 	; --- Segment 2: LMS = $5000
 	;     linie 102..191 (90 linii, offset danych 4096) ---
-	dta $4E, a(Title0Data + 4096)
+	dta $4E, a(Title0aData + 4096)
 	.rept 89
 	dta $0E
 	.endr

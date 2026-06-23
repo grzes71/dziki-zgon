@@ -1,4 +1,4 @@
-; Kolory dla: title-0
+; Kolory dla: title-0a
 ; Automatycznie dopasowane do palety Atari (PAL)
 ;
 ; Zapis do rejestrów CIENIOWYCH OS (shadow registers).
