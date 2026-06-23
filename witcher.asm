@@ -86,11 +86,12 @@ DL_BLANKS   = 24
 DLI_DELAY   = TOP_MARGIN - DL_BLANKS - KOREKTA ; 26 - KOREKTA
 
 ; PMG positions (color clocks — side by side, x2 = 16px apart)
-HPOS_P0     = $30
-HPOS_P1     = $40
-HPOS_P2     = $50
-HPOS_P3     = $60
-HPOS_M      = $70           ; 5th player — M3 (lewy skraj)
+TITLE_X     = $34          ; lewy skraj całego napisu — zmień, żeby przesunąć
+HPOS_P0     = TITLE_X
+HPOS_P1     = TITLE_X+$10
+HPOS_P2     = TITLE_X+$20
+HPOS_P3     = TITLE_X+$30
+HPOS_M      = TITLE_X+$40   ; 5th player — M3 (lewy skraj)
 
         org $2000
 
