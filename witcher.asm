@@ -23,9 +23,14 @@ PLAYER1     = PMBASE_ADDR+$500  ; 128 B
 PLAYER2     = PMBASE_ADDR+$600  ; 128 B
 PLAYER3     = PMBASE_ADDR+$700  ; 128 B
 
-; Sprite dimensions
+; Sprite dimensions — tytuł
 SPRITE_ROWS = 37
-TOP_MARGIN  = 50            ; start display at scan line ~50
+TOP_MARGIN  = 50
+
+; Sprite dimensions — księżyc (4 graczy, 32px)
+MOON_ROWS   = 24
+MOON_TOP    = 110           ; pozycja Y księżyca (linia PMG)
+MOON_X      = 40            ; pozycja X lewego skraju księżyca
 
 ; PMG DMA start offset (blank lines $70×3 = 24 lines counted by PMG counter)
 KOREKTA     = 8            ; dostrojone doświadczalnie
@@ -111,15 +116,39 @@ start
         dex
         bpl @clr_top
 
-        ldx #127-TOP_MARGIN-SPRITE_ROWS
+        ldx #239-MOON_TOP-MOON_ROWS
 @clr_bottom
-        sta PLAYER0+TOP_MARGIN+SPRITE_ROWS,x
-        sta PLAYER1+TOP_MARGIN+SPRITE_ROWS,x
-        sta PLAYER2+TOP_MARGIN+SPRITE_ROWS,x
-        sta PLAYER3+TOP_MARGIN+SPRITE_ROWS,x
-        sta MISSILES+TOP_MARGIN+SPRITE_ROWS,x
+        sta PLAYER0+MOON_TOP+MOON_ROWS,x
+        sta PLAYER1+MOON_TOP+MOON_ROWS,x
+        sta PLAYER2+MOON_TOP+MOON_ROWS,x
+        sta PLAYER3+MOON_TOP+MOON_ROWS,x
+        sta MISSILES+MOON_TOP+MOON_ROWS,x
         dex
         bpl @clr_bottom
+
+;---------------------------------------
+; Transpozycja księżyca → PMG (P0–P3, 24 wiersze)
+;---------------------------------------
+
+        ldx #MOON_ROWS-1
+@moon_loop
+        txa
+        asl @
+        asl @               ; X * 4
+        tay
+        lda MoonData,y
+        sta PLAYER0+MOON_TOP,x
+        iny
+        lda MoonData,y
+        sta PLAYER1+MOON_TOP,x
+        iny
+        lda MoonData,y
+        sta PLAYER2+MOON_TOP,x
+        iny
+        lda MoonData,y
+        sta PLAYER3+MOON_TOP,x
+        dex
+        bpl @moon_loop
 
 ;---------------------------------------
 ; PMG — rejestry GTIA
@@ -147,8 +176,8 @@ start
         lda #HPOS_M          ; M3 = lewy skraj
         sta $D007            ; HPOSM3
 
-        ; Rozmiar graczy — podwójny (x2)
-        lda #$01
+        ; Rozmiar graczy — normalny (x2 tylko w DLI dla tytułu)
+        lda #$00
         sta $D008            ; SIZEP0
         sta $D009            ; SIZEP1
         sta $D00A            ; SIZEP2
@@ -238,17 +267,49 @@ DLI_Handler
         txa
         pha
 
+        ; Setup HPOS + SIZEP dla tytułu (x2, szerokie)
+        ; Robimy to od razu — pusta linia ma pełne CPU
+        lda #$01
+        sta $D008            ; SIZEP0  x2
+        sta $D009            ; SIZEP1  x2
+        sta $D00A            ; SIZEP2  x2
+        sta $D00B            ; SIZEP3  x2
+        lda #HPOS_P0
+        sta $D000            ; HPOSP0
+        lda #HPOS_P1
+        sta $D001            ; HPOSP1
+        lda #HPOS_P2
+        sta $D002            ; HPOSP2
+        lda #HPOS_P3
+        sta $D003            ; HPOSP3
+        lda #HPOS_M+6
+        sta $D004            ; HPOSM0
+        lda #HPOS_M+4
+        sta $D005            ; HPOSM1
+        lda #HPOS_M+2
+        sta $D006            ; HPOSM2
+        lda #HPOS_M
+        sta $D007            ; HPOSM3
+
         ; Czekaj do początku sprite'ów
-        ; PMG counter = TOP_MARGIN → widoczna linia = TOP_MARGIN - DL_BLANKS
         ldx #DLI_DELAY
 @delay
         sta $D40A            ; WSYNC
         dex
         bne @delay
 
-        ; Pętla tęczy — SPRITE_ROWS linii
+        ; Pierwsza linia tytułu — kolor od razu
         ldx #0
-        ldy #SPRITE_ROWS-1
+        lda RainbowColors,x
+        sta $D012            ; PCOLR0
+        sta $D013            ; PCOLR1
+        sta $D014            ; PCOLR2
+        sta $D015            ; PCOLR3
+        sta $D019            ; COLPF3 (5th player)
+        inx
+
+        ; Pozostałe linie
+        ldy #SPRITE_ROWS-2
 @rainbow
         sta $D40A            ; WSYNC — czekaj na następną linię
         lda RainbowColors,x
@@ -261,6 +322,38 @@ DLI_Handler
         dey
         bpl @rainbow
 
+        ; Przywróć kolor księżyca + 1x + ciasne HPOS
+        sta $D40A            ; WSYNC
+        ; --- Księżyc: kolor $40, 1x, stykające się (8cc odstęp), 5th player ukryty ---
+        lda #$40
+        sta $D012            ; PCOLR0   kolor księżyca
+        sta $D013            ; PCOLR1
+        sta $D014            ; PCOLR2
+        sta $D015            ; PCOLR3
+        lda #$0E             ; 5th player biały (niewidoczny — HPOSM=0)
+        sta $D019            ; COLPF3
+
+        lda #$00             ; normalna szerokość (1x = 8cc na gracza)
+        sta $D008            ; SIZEP0
+        sta $D009            ; SIZEP1
+        sta $D00A            ; SIZEP2
+        sta $D00B            ; SIZEP3
+
+        lda #MOON_X          ; P0 — lewy skraj księżyca
+        sta $D000            ; HPOSP0
+        lda #MOON_X+8        ; P1 — +8cc
+        sta $D001            ; HPOSP1
+        lda #MOON_X+16       ; P2 — +16cc
+        sta $D002            ; HPOSP2
+        lda #MOON_X+24       ; P3 — +24cc
+        sta $D003            ; HPOSP3
+
+        lda #0               ; ukryj 5. gracza poza ekranem
+        sta $D004            ; HPOSM0
+        sta $D005            ; HPOSM1
+        sta $D006            ; HPOSM2
+        sta $D007            ; HPOSM3
+
         pla
         tax
         pla
@@ -271,15 +364,13 @@ DLI_Handler
 ;---------------------------------------
 RainbowColors
         dta $34,$36,$38,$3A,$3C 
-        dta $3E,$3E
-        dta $3F,$3E,$3E
+        dta $3E,$3E,$3F,$3E,$3E
         dta $3C,$3A,$38,$36,$34
-        dta $00,$00,$00,$00
-        dta $00,$00
-        dta $14,$16,$18,$C8,$CA      
-        dta $CC,$CE,$CE,$CF
-        dta $CF,$CE,$CE,$CC
-        dta $CA,$C8,$18,$16,$14,$00
+        dta $00,$00,$00,$00,$00
+        dta $00,$14,$16,$18,$C8     
+        dta $CA,$CC,$CE,$CE,$CF
+        dta $CF,$CE,$CE,$CC,$CA
+        dta $C8,$18,$16,$14,$00
 ;---------------------------------------
 ; Zmienne page zero
 ;---------------------------------------
@@ -311,5 +402,11 @@ Title0aData = SCREEN
 SpriteData = DzikizgonData
 
         icl "dziki-zgon.asm"
+
+;---------------------------------------
+; Dane sprite'ów — księżyc
+;---------------------------------------
+
+        icl "moon.asm"
 
         run start
