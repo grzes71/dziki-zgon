@@ -1,0 +1,6 @@
+/docs/
+/out/
+/rgb2a8/
+.venv/
+*.xex
+*.bin
