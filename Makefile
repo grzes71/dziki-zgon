@@ -9,10 +9,8 @@ PYTHON  := python
 ASM_MAIN    := witcher.asm
 XEX_OUT     := dziki_zgon.xex
 
-# Tło — zmień prefix żeby użyć innego obrazu:
-#   1) title-0a → z księżycem (title-0a.png)
-#   2) title-2  → alternatywny
-BG_PREFIX   := title-0a
+
+BG_PREFIX   := title
 BG_IMG      := img/$(BG_PREFIX).png
 
 # Pliki generowane przez img2asm.py
@@ -32,7 +30,7 @@ TITLE_IMG   := img/dziki-zgon.png
 
 all: sprites bg xex
 
-xex: $(BG_BIN) $(MOON_ASM) $(TITLE_ASM) $(ASM_MAIN)
+xex: $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT)
 

@@ -762,7 +762,7 @@ def convert(
     print(f"Dane:   {len(packed)} bajtów (bez paddingu: {expected_size})")
 
     # --- 3. Generuj etykiety -----------------------------------------------
-    safe_label = "".join(c for c in stem if c.isalnum() or c == "_")
+    safe_label = "".join(c for c in output_base if c.isalnum() or c == "_")
     if safe_label and safe_label[0].isdigit():
         safe_label = "_" + safe_label
     if not safe_label:
@@ -787,14 +787,14 @@ def convert(
     # _colors.asm – kolory
     if generate_all or colors_output:
         colors_path = f"{output_base}_colors.asm"
-        generate_asm_colors(palette_rgb, colors_path, stem, bits_per_pixel)
+        generate_asm_colors(palette_rgb, colors_path, output_base, bits_per_pixel)
         generated.append(colors_path)
 
     # _displaylist.asm – Display List
     if generate_all or dl_output:
         dl_path = f"{output_base}_displaylist.asm"
         generate_asm_displaylist(
-            width, height, bits_per_pixel, dl_path, stem, data_label,
+            width, height, bits_per_pixel, dl_path, output_base, data_label,
             screen_base_address=screen_base,
         )
         generated.append(dl_path)

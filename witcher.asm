@@ -296,7 +296,7 @@ start
 ;---------------------------------------
 ; Kolory (SCREEN_PREFIX)
 ;---------------------------------------
-        icl "title-0a_colors.asm"
+        icl "title_colors.asm"
 
 ;---------------------------------------
 ; DLI — rainbow na sprite'ach
@@ -470,9 +470,9 @@ SRC_TMP     equ $80
 
         org $3000
 
-Title0aData = SCREEN
+TitleData = SCREEN
 
-        icl "title-0a_displaylist.asm"
+        icl "title_displaylist.asm"
 
 ;---------------------------------------
 ; Obraz (SCREEN_PREFIX)
@@ -480,7 +480,7 @@ Title0aData = SCREEN
 
         org SCREEN
 
-        ins "title-0a.bin"
+        ins "title.bin"
 
 ;---------------------------------------
 ; Dane sprite'ów
