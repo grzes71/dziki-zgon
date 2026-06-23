@@ -381,40 +381,39 @@ def generate_asm_data(packed_data, output_path, label, bytes_per_line=8):
 def generate_asm_colors(palette_rgb, output_path, label_prefix, bits_per_pixel):
     """Generuje plik .asm z inicjalizacją rejestrów kolorów.
 
-    Zapisuje wartości do rejestrów **cieniowych** OS (shadow registers),
-    dzięki czemu zmiany są trwałe — VBLANK skopiuje je do GTIA.
+    Zapisuje wartości bezpośrednio do rejestrów sprzętowych GTIA,
+    bez pośrednictwa shadow registers (projekt ma wyłączone VBI).
 
     Dla 2 bpp (4 kolory):
-        indeks 0 → COLOR4 ($02C8) = shadow COLBK
-        indeks 1 → COLOR0 ($02C4) = shadow COLPF0
-        indeks 2 → COLOR1 ($02C5) = shadow COLPF1
-        indeks 3 → COLOR2 ($02C6) = shadow COLPF2
+        indeks 0 → COLBK  ($D01A)
+        indeks 1 → COLPF0 ($D016)
+        indeks 2 → COLPF1 ($D017)
+        indeks 3 → COLPF2 ($D018)
 
     Dla 1 bpp (2 kolory):
-        indeks 0 → COLOR4 ($02C8)
-        indeks 1 → COLOR0 ($02C4)
+        indeks 0 → COLBK  ($D01A)
+        indeks 1 → COLPF0 ($D016)
     """
     max_colors = 1 << bits_per_pixel
 
-    # Mapowanie: indeks piksela → (nazwa_shadow, adres_shadow, adres_hw, opis)
+    # Mapowanie: indeks piksela → (nazwa_hw, adres_hw, opis)
     reg_map = {
-        0: ("COLOR4", "$02C8", "$D01A", "tło (COLBK)"),
-        1: ("COLOR0", "$02C4", "$D016", "playfield 0 (COLPF0)"),
-        2: ("COLOR1", "$02C5", "$D017", "playfield 1 (COLPF1)"),
-        3: ("COLOR2", "$02C6", "$D018", "playfield 2 (COLPF2)"),
+        0: ("COLBK",  "$D01A", "tło"),
+        1: ("COLPF0", "$D016", "playfield 0"),
+        2: ("COLPF1", "$D017", "playfield 1"),
+        3: ("COLPF2", "$D018", "playfield 2"),
     }
 
     lines = []
     lines.append(f"; Kolory dla: {label_prefix}")
     lines.append(f"; Automatycznie dopasowane do palety Atari (PAL)")
     lines.append(";")
-    lines.append("; Zapis do rejestrów CIENIOWYCH OS (shadow registers).")
-    lines.append("; VBLANK skopiuje je automatycznie do sprzętowych GTIA.")
+    lines.append("; Zapis BEZPOŚREDNIO do rejestrów GTIA (VBI wyłączony).")
     lines.append(";")
-    lines.append(";   COLOR4 ($02C8) → COLBK  ($D01A)")
-    lines.append(";   COLOR0 ($02C4) → COLPF0 ($D016)")
-    lines.append(";   COLOR1 ($02C5) → COLPF1 ($D017)")
-    lines.append(";   COLOR2 ($02C6) → COLPF2 ($D018)")
+    lines.append(";   COLBK  ($D01A)")
+    lines.append(";   COLPF0 ($D016)")
+    lines.append(";   COLPF1 ($D017)")
+    lines.append(";   COLPF2 ($D018)")
     lines.append(";")
 
     # Wypisz mapowanie jako komentarze
@@ -424,25 +423,25 @@ def generate_asm_colors(palette_rgb, output_path, label_prefix, bits_per_pixel):
         hex_val = atari_to_hex(atari_idx)
         name = atari_color_name(atari_idx)
         if i in reg_map:
-            reg_shadow, reg_shadow_addr, reg_hw, reg_desc = reg_map[i]
-            lines.append(f";   indeks {i} → {reg_shadow:7s} {reg_shadow_addr} = {hex_val}  "
+            reg_hw, reg_hw_addr, reg_desc = reg_map[i]
+            lines.append(f";   indeks {i} → {reg_hw:6s} {reg_hw_addr} = {hex_val}  "
                          f"(RGB #{r:02X}{g:02X}{b:02X} → {name})")
         else:
             lines.append(f";   indeks {i} → ??? = {hex_val}  "
                          f"(RGB #{r:02X}{g:02X}{b:02X} → {name})")
 
     lines.append("")
-    lines.append("; --- Inicjalizacja kolorów (shadow registers) ---")
+    lines.append("; --- Inicjalizacja kolorów (GTIA hardware registers) ---")
 
     for i in range(min(max_colors, len(palette_rgb))):
         if i >= len(reg_map):
             break
-        reg_shadow, reg_shadow_addr, reg_hw, reg_desc = reg_map[i]
+        reg_hw, reg_hw_addr, reg_desc = reg_map[i]
         r, g, b = palette_rgb[i]
         atari_idx = rgb_to_atari(r, g, b)
         hex_val = atari_to_hex(atari_idx)
         lines.append(f"\tlda #{hex_val}")
-        lines.append(f"\tsta {reg_shadow_addr}\t; {reg_shadow} → {reg_hw} ({reg_desc})")
+        lines.append(f"\tsta {reg_hw_addr}\t; {reg_hw} ({reg_desc})")
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")

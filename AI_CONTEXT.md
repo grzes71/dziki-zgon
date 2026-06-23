@@ -11,7 +11,7 @@ Gra przygodowo-zręcznościowa na Atari 800 XL / 65 XE (64 KB RAM), humorystyczn
 | `witcher.asm` | Główny kod asemblera (MADS), kompilowany do `dziki_zgon.xex` |
 | `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm |
 | `title-0a.bin` | Dane ekranu (7696 B z paddingiem 4KB) |
-| `title-0a_colors.asm` | Inicjalizacja kolorów playfieldu (shadow registers $02C4-$02C8) |
+| `title-0a_colors.asm` | Inicjalizacja kolorów playfieldu (bezpośrednio GTIA $D016-$D01A) |
 | `title-0a_displaylist.asm` | ANTIC Display List (2 segmenty, LMS na $x000) |
 | `dziki-zgon.asm` | Dane sprite'ów PMG (37 wierszy × 5 bajtów, 1 bpp) |
 | `docs/KONSPEKT.md` | Dokument projektowy — fabuła, regiony, mechaniki |
@@ -75,7 +75,8 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 
 ## Znane pułapki
 
-1. **Shadow registers**: PCOLR0–3 ($02C0–$02C3), PRIOR ($026F), COLPF3 ($02C7), playfield colors ($02C4–$02C8) — VBI nadpisuje hardware z shadow
+1. **System OFF**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI), DMACTL=$3E, DLISTL/DLISTH hardware ($D402/$D403)
+2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow $02C4-$02C8) — VBI nie kopiuje
 2. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
 3. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA
 4. **MADS string constants**: brak konkatenacji dla `icl`/`ins` — używać komentarzy `SCREEN_PREFIX`
