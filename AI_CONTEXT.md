@@ -19,17 +19,19 @@ Gra przygodowo-zręcznościowa na Atari 800 XL / 65 XE (64 KB RAM), humorystyczn
 ## Build
 
 ```bash
-python scripts/img2asm.py img/title-0a.png 2 --all -o title-0a
-mads witcher.asm -o:dziki_zgon.xex
+make          # wszystko: sprite'y → tło → XEX
+make sprites  # tylko moon + dziki-zgon
+make bg       # tylko tło
+make clean    # usuwa wygenerowane
 ```
 
-Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x.
+Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 
 ## Tryb graficzny
 
 - **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
-- **Uwaga**: generator `_colors.asm` zapisuje do shadow registers ($02C4–$02C8), nie bezpośrednio do GTIA
+- Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) — VBI wyłączony
 
 ## Mapa pamięci
 
@@ -53,21 +55,26 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 ## PMG (Player/Missile Graphics)
 
 - **Single-line resolution** (DMACTL bit 4=$10), PMBASE=$8000
-- 4 graczy (P0–P3) + missiles jako 5. gracz (PRIOR=$11)
-- Gracze x2 (SIZEP0–3=$01), białe (PCOLR0–3=$0E, shadow $02C0–$02C3)
-- 5. gracz: kolor z COLPF3 ($D019, shadow $02C7), missiles w jednym bajcie na linię
+- **System wyłączony**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI, bez VBI OS)
+- Wszystkie rejestry zapisywane bezpośrednio do sprzętu (shadow nieużywane)
+- 4 graczy (P0–P3) + missiles (M0–M3), PRIOR sterowany przez DLI
+- Tytuł: x2 (SIZEP0–3=$01), PRIOR=$11 (5th player), COLPF3 dla missile
+- Księżyc + gwiazdy: x1 (SIZEP=$00), PRIOR=$01 (bez 5th player, niezależne HPOSM)
+- Gwiazdy dzielą kolor księżyca ($40) — PCOLR0-3 wspólne
 - **Missile HPOS w odwrotnej kolejności**: M3(lewy)→M2→M1→M0(prawy), odstęp +2
-- **SIZEM nie wpływa na odstępy** w trybie 5th player
 - Dane sprite'ów transponowane z formatu wierszowego `[P0,P1,P2,P3,M]×37` do per-player
-- Pozycje: $30, $40, $50, $60, $70 (co 16 color clocków przy x2)
+- Pozycje tytułu: $30, $40, $50, $60, $70 (co 16 color clocków przy x2)
 
-## DLI Rainbow
+## DLI — sekcje
 
-- DLI na `DLIST+2` (ostatnia pusta linia $70) — **nie** na pierwszej linii trybu E (DMA opóźnia CPU)
-- Handler czeka `DLI_DELAY = TOP_MARGIN - DL_BLANKS - KOREKTA` linii przez WSYNC
-- Potem 37 linii zmienia PCOLR0–3 + COLPF3 z tabeli `RainbowColors`
-- KOREKTA=8 — dostrojone doświadczalnie
-- Kolory w DLI zapisywane **bezpośrednio do GTIA** (shadow nie są potrzebne — VBI jeszcze nie nadpisało)
+DLI odpala na `DLIST+2` (ostatnia pusta linia $70 przed trybem E) — brak DMA, pełne CPU.
+
+1. **Tytuł**: SIZEP=x2, HPOSP=$30/$40/$50/$60, PRIOR=$11, 37 linii tęczy (RainbowColors → PCOLR0-3 + COLPF3)
+2. **Po tęczy**: PRIOR=$01, PCOLR=$40, SIZEP=1x — wspólne dla gwiazd i księżyca
+3. **Gwiazdy**: HPOSM = STARn_X (niezależne pozycje missile)
+4. **Księżyc**: HPOSP = MOON_X+0/8/16/24, HPOSM = STARn_X (odświeżone)
+
+KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
 
 ## Dopasowanie kolorów (CIELAB/CIE2000)
 
@@ -77,8 +84,7 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 
 1. **System OFF**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI), DMACTL=$3E, DLISTL/DLISTH hardware ($D402/$D403)
 2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow $02C4-$02C8) — VBI nie kopiuje
-2. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
-3. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA
-4. **MADS string constants**: brak konkatenacji dla `icl`/`ins` — używać komentarzy `SCREEN_PREFIX`
-5. **GitHub push email**: używać `users.noreply.github.com`
-6. **`OPT h+`**: MADS 2.1.6 wymaga wielkich liter `OPT`, małe `opt` może powodować "Undeclared macro H"
+3. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
+4. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA
+5. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter
+6. **GitHub push email**: używać `users.noreply.github.com`

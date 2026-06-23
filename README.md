@@ -21,19 +21,22 @@ Po wielodniowej imprezie w karczmie „Pod Trzema Kuflami" wiedźmin **Gerwant**
 ```
 witcher-atari-game/
 ├── witcher.asm              # Główny kod asemblera (MADS)
+├── Makefile                 # Automatyzacja budowania
 ├── dziki_zgon.xex           # Skompilowany plik wykonywalny
 ├── scripts/
 │   └── img2asm.py           # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory
 ├── img/
-│   ├── title.png            # Obraz źródłowy ekranu tytułowego
-│   ├── title-0.png          # Ekran tytułowy — wersja 0
-│   ├── title-0a.png
-│   ├── title-2.png
-│   └── title-3.png
-├── title-0.bin              # Surowe dane binarne ekranu (z paddingiem 4KB)
-├── title-0.asm              # Dane .byte dla MADS
-├── title-0_colors.asm       # Inicjalizacja rejestrów kolorów (COLBK, COLPF0–2)
-└── title-0_displaylist.asm  # ANTIC Display List
+│   ├── title-0a.png         # Ekran tytułowy (160×192, 4 kolory)
+│   ├── moon.png             # Księżyc (32×24, 1 bpp, 4 graczy)
+│   └── dziki-zgon.png       # Napis tytułowy (40×37, 1 bpp, 4 graczy + 5th)
+├── title-0a.bin             # Surowe dane binarne ekranu (z paddingiem 4KB)
+├── title-0a_colors.asm      # Inicjalizacja kolorów (bezpośrednio GTIA $D016-$D01A)
+├── title-0a_displaylist.asm # ANTIC Display List (2 segmenty, LMS na $x000)
+├── moon.asm                 # Dane sprite'ów księżyca (24 wiersze × 4 bajty)
+├── dziki-zgon.asm           # Dane sprite'ów napisu (37 wierszy × 5 bajtów)
+├── docs/
+│   └── KONSPEKT.md          # Dokument projektowy — fabuła, regiony, mechaniki
+└── rgb2a8/                  # Referencyjna paleta Atari PAL (256 wartości RGB)
 ```
 
 ## Wymagania
@@ -48,13 +51,18 @@ witcher-atari-game/
 ## Kompilacja
 
 ```bash
-# 1. Konwersja obrazów (generuje .bin, .asm, _colors.asm, _displaylist.asm)
-python scripts/img2asm.py img/title-0.png 2 --all
+# Wszystko za jednym razem: sprite'y → tło → XEX
+make
 
-# 2. Asemblacja
-mads witcher.asm -o:dziki_zgon.xex
+# Tylko konkretne cele
+make sprites   # moon.asm + dziki-zgon.asm
+make bg        # title-0a.bin + _colors.asm + _displaylist.asm
+make clean     # usuwa pliki wygenerowane
 
-# 3. Uruchomienie w emulatorze
+# Zmiana obrazu tła
+make clean BG_PREFIX=title-2 && make
+
+# Uruchomienie w emulatorze
 altirra dziki_zgon.xex
 ```
 
@@ -84,13 +92,14 @@ Opcje:
 
 ```bash
 # Konwersja ekranu 160×192, 4 kolory — wszystkie pliki
-python scripts/img2asm.py img/title-0.png 2 --all
+python scripts/img2asm.py img/title-0a.png 2 --all -o title-0a
+
+# Sprite'y — same dane .byte
+python scripts/img2asm.py img/moon.png 1 --asm -l 4
+python scripts/img2asm.py img/dziki-zgon.png 1 --asm -l 5
 
 # Tylko surowy .bin z kompresją RLE
 python scripts/img2asm.py img/sprite.bmp 2 --bin -c rle
-
-# Ekran przy adresie $8000
-python scripts/img2asm.py img/title-0.png 2 --all --screen-base 0x8000
 
 # Testy algorytmu Display List
 python scripts/img2asm.py --test
@@ -112,7 +121,8 @@ python scripts/img2asm.py --test
 
 ### Rejestry kolorów
 
-ANTIC E mapuje 2-bitowe indeksy pikseli na rejestry GTIA:
+ANTIC E mapuje 2-bitowe indeksy pikseli na rejestry GTIA.
+Kolory zapisywane **bezpośrednio do sprzętu** (VBI OS wyłączony):
 
 | Piksel | Rejestr | Adres |
 |---|---|---|
@@ -120,6 +130,18 @@ ANTIC E mapuje 2-bitowe indeksy pikseli na rejestry GTIA:
 | `01` | COLPF0 | `$D016` |
 | `10` | COLPF1 | `$D017` |
 | `11` | COLPF2 | `$D018` |
+
+### Rejestry sprzętowe (system wyłączony)
+
+Program działa bez OS — `sei` + NMIEN=$80 (tylko DLI).
+Wszystkie rejestry zapisywane bezpośrednio:
+
+| Rejestr | Adres | Opis |
+|---|---|---|
+| DMACTL | `$D400` | Włączenie DMA ($3E = playfield + PMG single-line) |
+| DLISTL/H | `$D402`/`$D403` | Adres Display List (sprzętowo, nie shadow!) |
+| NMIEN | `$D40E` | $80 = tylko DLI, VBI wyłączony |
+| IRQEN | `$D20E` | 0 = POKEY wyłączony |
 
 ### Obsługa granicy 4KB (ANTIC limitation)
 
