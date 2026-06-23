@@ -5,6 +5,43 @@
 ; ANTIC E (160x192, 4 kolory) + PMG
 ;---------------------------------------
 
+; ---- GTIA ----
+HPOSP0  = $D000
+HPOSP1  = $D001
+HPOSP2  = $D002
+HPOSP3  = $D003
+HPOSM0  = $D004
+HPOSM1  = $D005
+HPOSM2  = $D006
+HPOSM3  = $D007
+SIZEP0  = $D008
+SIZEP1  = $D009
+SIZEP2  = $D00A
+SIZEP3  = $D00B
+SIZEM   = $D00C
+PCOLR0  = $D012
+PCOLR1  = $D013
+PCOLR2  = $D014
+PCOLR3  = $D015
+COLPF3  = $D019
+PRIOR   = $D01B
+GRACTL  = $D01D
+
+; ---- ANTIC ----
+DMACTL  = $D400
+DLISTL  = $D402
+DLISTH  = $D403
+PMBASE  = $D407
+WSYNC   = $D40A
+NMIEN   = $D40E
+
+; ---- POKEY ----
+IRQEN   = $D20E
+
+; ---- OS shadows ----
+SDMCTL  = 559
+VDSLST  = $0200
+
 SCREEN      = $4000
 PMBASE_ADDR = $8000          ; PMG memory (1K-aligned)
 
@@ -59,12 +96,13 @@ HPOS_M      = $70           ; 5th player — M3 (lewy skraj)
 
 start
 ;---------------------------------------
-; Wyłączenie DMA na czas konfiguracji
+; Pełne wyłączenie systemu i DMA na czas konfiguracji
 ;---------------------------------------
-
+        sei                 ; Blokada IRQ
         lda #0
-        sta 559             ; SDMCTL = 0
-        sta $D400           ; DMACTL = 0
+        sta IRQEN            ; Wyłączenie przerwań POKEY
+        sta SDMCTL
+        sta DMACTL
 
 ;---------------------------------------
 ; Transpozycja sprite'ów → PMG
@@ -189,79 +227,70 @@ start
 
         ; Pozycje graczy (side-by-side od lewej)
         lda #HPOS_P0
-        sta $D000            ; HPOSP0
+        sta HPOSP0
         lda #HPOS_P1
-        sta $D001            ; HPOSP1
+        sta HPOSP1
         lda #HPOS_P2
-        sta $D002            ; HPOSP2
+        sta HPOSP2
         lda #HPOS_P3
-        sta $D003            ; HPOSP3
+        sta HPOSP3
 
         ; Pozycje missile'i — ODWROTNA KOLEJNOŚĆ!
         ; M3 (lewy skraj) → M2 → M1 → M0 (prawy skraj)
         ; SIZEM nie wpływa na odstępy — zawsze +2
-        lda #HPOS_M+6        ; M0 = prawy skraj
-        sta $D004            ; HPOSM0
-        lda #HPOS_M+4        ; M1
-        sta $D005            ; HPOSM1
-        lda #HPOS_M+2        ; M2
-        sta $D006            ; HPOSM2
-        lda #HPOS_M          ; M3 = lewy skraj
-        sta $D007            ; HPOSM3
+        lda #HPOS_M+6
+        sta HPOSM0
+        lda #HPOS_M+4
+        sta HPOSM1
+        lda #HPOS_M+2
+        sta HPOSM2
+        lda #HPOS_M
+        sta HPOSM3
 
         ; Rozmiar graczy — normalny (x2 tylko w DLI dla tytułu)
         lda #$00
-        sta $D008            ; SIZEP0
-        sta $D009            ; SIZEP1
-        sta $D00A            ; SIZEP2
-        sta $D00B            ; SIZEP3
-        sta $D00C            ; SIZEM
+        sta SIZEP0
+        sta SIZEP1
+        sta SIZEP2
+        sta SIZEP3
+        sta SIZEM
 
         ; Kolory graczy — wszystkie białe
         lda #$0E
-        sta $D012            ; PCOLR0
-        sta $02C0            ;   shadow
-        sta $D013            ; PCOLR1
-        sta $02C1            ;   shadow
-        sta $D014            ; PCOLR2
-        sta $02C2            ;   shadow
-        sta $D015            ; PCOLR3
-        sta $02C3            ;   shadow
+        sta PCOLR0
+        sta PCOLR1
+        sta PCOLR2
+        sta PCOLR3
 
         ; Kolor 5. gracza (missiles) — COLPF3
         lda #$0E
-        sta $D019            ; COLPF3
-        sta $02C7            ;   shadow (COLOR3)
+        sta COLPF3
 
         ; Adres bazowy PMG
         lda #>PMBASE_ADDR
-        sta $D407            ; PMBASE
+        sta PMBASE
 
         ; Włącz graczy i missile w GTIA
         lda #$03
-        sta $D01D            ; GRACTL
+        sta GRACTL
 
         ; PRIOR — 5th player mode + players over playfield
         lda #$11
-        sta $D01B            ; PRIOR
-        sta $026F            ;   shadow (GPRIOR)
+        sta PRIOR
 
 ;---------------------------------------
-; Display List
+; Display List — bezpośrednio do sprzętu
 ;---------------------------------------
-
         lda #<DLIST
-        sta 560              ; SDLSTL
+        sta DLISTL
         lda #>DLIST
-        sta 561              ; SDLSTH
+        sta DLISTH
 
 ;---------------------------------------
 ; DMA ON (playfield + PMG single-line)
 ;---------------------------------------
-
-        lda #$3E             ; DL + single-line + players + missiles + normal width
-        sta 559              ; SDMCTL
-        sta $D400            ; DMACTL
+        lda #$3E             ; %00111110 = playfield ON (normal) + PMG single-line
+        sta DMACTL
 
 ;---------------------------------------
 ; Kolory (SCREEN_PREFIX)
@@ -274,9 +303,9 @@ start
 
         ; Ustaw wektor DLI
         lda #<DLI_Handler
-        sta $0200            ; VDSLST low
+        sta VDSLST
         lda #>DLI_Handler
-        sta $0201            ; VDSLST high
+        sta VDSLST+1
 
         ; Włącz DLI na OSTATNIEJ linii pustej (DLIST+2),
         ; nie na pierwszej trybu E. Puste linie nie mają DMA,
@@ -285,9 +314,9 @@ start
         ora #$80
         sta DLIST+2
 
-        ; Włącz DLI + VBI
-        lda #$C0
-        sta $D40E            ; NMIEN
+        ; Włącz DLI (bez VBI — nie chcemy ingerencji OS)
+        lda #$80
+        sta NMIEN
 
 Forever
         jmp Forever
@@ -303,113 +332,113 @@ DLI_Handler
         ; Setup HPOS + SIZEP dla tytułu (x2, szerokie)
         ; Robimy to od razu — pusta linia ma pełne CPU
         lda #$01
-        sta $D008            ; SIZEP0  x2
-        sta $D009            ; SIZEP1  x2
-        sta $D00A            ; SIZEP2  x2
-        sta $D00B            ; SIZEP3  x2
+        sta SIZEP0
+        sta SIZEP1
+        sta SIZEP2
+        sta SIZEP3
         lda #HPOS_P0
-        sta $D000            ; HPOSP0
+        sta HPOSP0
         lda #HPOS_P1
-        sta $D001            ; HPOSP1
+        sta HPOSP1
         lda #HPOS_P2
-        sta $D002            ; HPOSP2
+        sta HPOSP2
         lda #HPOS_P3
-        sta $D003            ; HPOSP3
+        sta HPOSP3
         lda #HPOS_M+6
-        sta $D004            ; HPOSM0
+        sta HPOSM0
         lda #HPOS_M+4
-        sta $D005            ; HPOSM1
+        sta HPOSM1
         lda #HPOS_M+2
-        sta $D006            ; HPOSM2
+        sta HPOSM2
         lda #HPOS_M
-        sta $D007            ; HPOSM3
+        sta HPOSM3
 
         ; Czekaj do początku sprite'ów
         ldx #DLI_DELAY
 @delay
-        sta $D40A            ; WSYNC
+        sta WSYNC
         dex
         bne @delay
 
         ; Pierwsza linia tytułu — kolor od razu
         ldx #0
         lda RainbowColors,x
-        sta $D012            ; PCOLR0
-        sta $D013            ; PCOLR1
-        sta $D014            ; PCOLR2
-        sta $D015            ; PCOLR3
-        sta $D019            ; COLPF3 (5th player)
+        sta PCOLR0
+        sta PCOLR1
+        sta PCOLR2
+        sta PCOLR3
+        sta COLPF3
         inx
 
         ; Pozostałe linie
         ldy #SPRITE_ROWS-2
 @rainbow
-        sta $D40A            ; WSYNC — czekaj na następną linię
+        sta WSYNC
         lda RainbowColors,x
-        sta $D012            ; PCOLR0
-        sta $D013            ; PCOLR1
-        sta $D014            ; PCOLR2
-        sta $D015            ; PCOLR3
-        sta $D019            ; COLPF3 (5th player)
+        sta PCOLR0
+        sta PCOLR1
+        sta PCOLR2
+        sta PCOLR3
+        sta COLPF3
         inx
         dey
         bpl @rainbow
 
         ; --- Po tęczy: PRIOR=$01, PCOLR=$40, SIZEP=1x (wspólne dla gwiazd i księżyca) ---
-        sta $D40A            ; WSYNC → pierwsza linia po tęczy
+        sta WSYNC
 
         lda #$01
-        sta $D01B            ; PRIOR — bez 5th player, missile własne HPOS
+        sta PRIOR
         lda #$40
-        sta $D012            ; PCOLR0
-        sta $D013            ; PCOLR1
-        sta $D014            ; PCOLR2
-        sta $D015            ; PCOLR3
+        sta PCOLR0
+        sta PCOLR1
+        sta PCOLR2
+        sta PCOLR3
         lda #$00
-        sta $D008            ; SIZEP0 = 1x
-        sta $D009            ; SIZEP1
-        sta $D00A            ; SIZEP2
-        sta $D00B            ; SIZEP3
-        sta $D00C            ; SIZEM
+        sta SIZEP0
+        sta SIZEP1
+        sta SIZEP2
+        sta SIZEP3
+        sta SIZEM
 
         ; --- Gwiazdy: HPOSM ---
         ldx #STAR0_Y - (TOP_MARGIN+SPRITE_ROWS) - 1  ; (108-87)-1 = 20 WSYNC
-@sw     sta $D40A
+@sw     sta WSYNC
         dex
         bne @sw               ; → HBLANK 107→108
 
         lda #STAR0_X
-        sta $D004            ; HPOSM0
+        sta HPOSM0
         lda #STAR1_X
-        sta $D005            ; HPOSM1
+        sta HPOSM1
         lda #STAR2_X
-        sta $D006            ; HPOSM2
+        sta HPOSM2
         lda #STAR3_X
-        sta $D007            ; HPOSM3
+        sta HPOSM3
 
         ; --- Księżyc: HPOSP + HPOSM ---
         ldx #MOON_TOP-STAR0_Y-2  ; 4 WSYNC → HPOSP na PMG 113, efekt od 114
-@sm     sta $D40A
+@sm     sta WSYNC
         dex
         bne @sm
 
         ; PMG 113: HPOSP księżyca + HPOSM gwiazd (PRIOR i PCOLR już ustawione)
         lda #MOON_X
-        sta $D000            ; HPOSP0
+        sta HPOSP0
         lda #MOON_X+8
-        sta $D001            ; HPOSP1
+        sta HPOSP1
         lda #MOON_X+16
-        sta $D002            ; HPOSP2
+        sta HPOSP2
         lda #MOON_X+24
-        sta $D003            ; HPOSP3
+        sta HPOSP3
         lda #STAR0_X
-        sta $D004            ; HPOSM0
+        sta HPOSM0
         lda #STAR1_X
-        sta $D005            ; HPOSM1
+        sta HPOSM1
         lda #STAR2_X
-        sta $D006            ; HPOSM2
+        sta HPOSM2
         lda #STAR3_X
-        sta $D007            ; HPOSM3
+        sta HPOSM3
 
         pla
         tax
