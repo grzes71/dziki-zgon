@@ -4,16 +4,41 @@
 
 Gra przygodowo-zręcznościowa na Atari 800 XL / 65 XE (64 KB RAM), humorystyczna parodia Wiedźmina. Widok z góry, ekrany przełączane krawędziowo, sterowanie joystick + FIRE.
 
+## Architektura kodu
+
+Projekt używa modułowej architektury z `icl` (MADS include library). Jeden plik `main.asm` jest punktem startowym — zawiera maszynę stanów przełączającą ekrany.
+
+```
+main.asm                     # Punkt startowy, maszyna stanów (title→story→game→gameover→title)
+├── hardware.asm             # Wszystkie equ dla GTIA/ANTIC/POKEY/OS + stałe projektu
+├── zeropage.asm             # Zmienne page zero ($80 GAME_STATE, $81 SRC_TMP)
+├── lib/
+│   └── pmg.asm              # Procedury PMG: pmg_clear_all, pmg_clear_range
+└── scenes/
+    ├── title/
+    │   └── title.asm        # Ekran tytułowy: title_init + title_run + DLI + tęcza
+    ├── story/
+    │   └── story.asm        # Ekran opisu (placeholder)
+    ├── game/
+    │   └── game.asm         # Gra właściwa (placeholder)
+    └── gameover/
+        └── gameover.asm     # Ekran końca gry (placeholder)
+```
+
+**Konwencja**: każda scena eksportuje `_init` (konfiguracja jednorazowa) i `_run` (obsługa klatki). `_run` ustawia `GAME_STATE` by przejść do następnego stanu.
+
+**Maszyna stanów**: `GAME_STATE` ($81) — 0=title, 1=story, 2=game, 3=gameover. Gameover wraca do title.
+
 ## Pliki kluczowe
 
 | Plik | Rola |
 |---|---|
-| `witcher.asm` | Główny kod asemblera (MADS), kompilowany do `dziki_zgon.xex` |
+| `main.asm` | Punkt startowy + maszyna stanów, kompilowany do `dziki_zgon.xex` |
+| `hardware.asm` | Wspólne definicje rejestrów GTIA/ANTIC/POKEY i stałe |
+| `scenes/title/title.asm` | Logika ekranu tytułowego (init, run, DLI, tabele kolorów) |
+| `scenes/*/` | Kolejne sceny — każda z własnym `_init` i `_run` |
+| `lib/pmg.asm` | Współdzielone procedury PMG |
 | `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm |
-| `title-0a.bin` | Dane ekranu (7696 B z paddingiem 4KB) |
-| `title-0a_colors.asm` | Inicjalizacja kolorów playfieldu (bezpośrednio GTIA $D016-$D01A) |
-| `title-0a_displaylist.asm` | ANTIC Display List (2 segmenty, LMS na $x000) |
-| `dziki-zgon.asm` | Dane sprite'ów PMG (37 wierszy × 5 bajtów, 1 bpp) |
 | `docs/KONSPEKT.md` | Dokument projektowy — fabuła, regiony, mechaniki |
 
 ## Build
@@ -37,10 +62,14 @@ Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 
 | Adres | Zawartość |
 |---|---|
-| $2000–$2FFF | Kod programu, DLI handler, tabele |
-| $3000–$30FF | Display List |
-| $4000–$5E0F | Dane ekranu (z paddingiem 16 B przy $4FF0) |
+| $0080–$0081 | Page zero: SRC_TMP ($80), GAME_STATE ($81) |
+| $2000–$2FFF | Kod: main + lib/pmg + scenes/* + dane sprite'ów (~1.2 KB) |
+| $3000–$30FF | Display List (title, story, game, gameover — każda oddzielna etykieta) |
+| $4000–$5E0F | Dane ekranu (tytuł), współdzielone przez sceny (nadpisywane przy przejściu) |
+| $5E10–$5FFF | Stopka tekstowa (ANTIC mode 2, 8 linii × 40 znaków) |
 | $8000–$87FF | PMG (1K-aligned): $8300=missiles, $8400=P0, $8500=P1, $8600=P2, $8700=P3 |
+
+> **Uwaga:** `$6000–$7FFF` (8 KB) wolne — można tam trzymać dodatkowe dane (np. mapy, binarki innych scen).
 
 ## Display List — generator i ograniczenia ANTIC
 

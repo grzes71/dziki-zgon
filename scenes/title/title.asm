@@ -1,0 +1,400 @@
+;----------------------------------------
+; scenes/title/title.asm — Ekran tytułowy
+; Tęcza na sprite'ach + księżyc + gwiazdy + stopka
+;----------------------------------------
+
+;==============================================================
+; title_init — Konfiguracja ekranu tytułowego
+; Wywoływane RAZ przy wejściu w ten stan
+;==============================================================
+.proc title_init
+    ; --- Wyłącz DMA na czas konfiguracji ---
+    lda #0
+    sta DMACTL
+    sta SDMCTL
+
+    ; --- Wyczyść całą pamięć PMG ---
+    jsr pmg_clear_all
+
+    ; --- Transpozycja sprite'ów tytułu → PMG ---
+    ; Format źródłowy: [P0,P1,P2,P3,M5th] × 37 wierszy
+    ; Format PMG:       per-player, ciągiem 128 B, offset TOP_MARGIN
+    ldx #SPRITE_ROWS-1
+
+@row_loop
+    ; Oblicz offset źródłowy: X * 5
+    txa
+    sta SRC_TMP
+    asl @               ; *2
+    asl @               ; *4
+    clc
+    adc SRC_TMP          ; +1 → *5
+    tay                  ; Y = offset w źródle
+
+    lda SpriteData,y
+    sta PLAYER0+TOP_MARGIN,x
+    iny
+    lda SpriteData,y
+    sta PLAYER1+TOP_MARGIN,x
+    iny
+    lda SpriteData,y
+    sta PLAYER2+TOP_MARGIN,x
+    iny
+    lda SpriteData,y
+    sta PLAYER3+TOP_MARGIN,x
+    iny
+    lda SpriteData,y
+    sta MISSILES+TOP_MARGIN,x
+
+    dex
+    bpl @row_loop
+
+    ; --- Transpozycja księżyca → PMG (P0–P3, 24 wiersze) ---
+    ldx #MOON_ROWS-1
+@mclear
+    lda #0
+    sta MISSILES+MOON_TOP,x
+    dex
+    bpl @mclear
+
+    ldx #MOON_ROWS-1
+@moon_loop
+    txa
+    asl @
+    asl @               ; X * 4
+    tay
+    lda MoonData,y
+    sta PLAYER0+MOON_TOP,x
+    iny
+    lda MoonData,y
+    sta PLAYER1+MOON_TOP,x
+    iny
+    lda MoonData,y
+    sta PLAYER2+MOON_TOP,x
+    iny
+    lda MoonData,y
+    sta PLAYER3+MOON_TOP,x
+    dex
+    bpl @moon_loop
+
+    ; --- Gwiazdy — pojedyncze piksele na missile'ach ---
+    lda #$01             ; M0: bit 0 (prawy skraj)
+    sta MISSILES+STAR0_Y
+    lda #$04             ; M1: bit 2
+    sta MISSILES+STAR1_Y
+    lda #$10             ; M2: bit 4
+    sta MISSILES+STAR2_Y
+    lda #$40             ; M3: bit 6 (lewy skraj)
+    sta MISSILES+STAR3_Y
+
+    ; --- GTIA: pozycje graczy (side-by-side od lewej) ---
+    lda #HPOS_P0
+    sta HPOSP0
+    lda #HPOS_P1
+    sta HPOSP1
+    lda #HPOS_P2
+    sta HPOSP2
+    lda #HPOS_P3
+    sta HPOSP3
+
+    ; Pozycje missile'i — ODWROTNA KOLEJNOŚĆ
+    lda #HPOS_M+6
+    sta HPOSM0
+    lda #HPOS_M+4
+    sta HPOSM1
+    lda #HPOS_M+2
+    sta HPOSM2
+    lda #HPOS_M
+    sta HPOSM3
+
+    ; Rozmiar graczy — normalny
+    lda #$00
+    sta SIZEP0
+    sta SIZEP1
+    sta SIZEP2
+    sta SIZEP3
+    sta SIZEM
+
+    ; Kolory graczy — białe
+    lda #$0E
+    sta PCOLR0
+    sta PCOLR1
+    sta PCOLR2
+    sta PCOLR3
+
+    ; Kolor 5. gracza (missiles) — COLPF3
+    lda #$0E
+    sta COLPF3
+
+    ; Adres bazowy PMG
+    lda #>PMBASE_ADDR
+    sta PMBASE
+
+    ; Włącz graczy i missile
+    lda #GRACTL_PM
+    sta GRACTL
+
+    ; PRIOR — 5th player + players over playfield
+    lda #PRIOR_5TH
+    sta PRIOR
+
+    ; --- Display List ---
+    lda #<DLIST_TITLE
+    sta DLISTL
+    lda #>DLIST_TITLE
+    sta DLISTH
+
+    ; --- Kolory tła (generowane; plik w katalogu gen/) ---
+    icl "../../gen/title_colors.asm"
+
+    ; --- DMA ON ---
+    lda #DMA_PMG_ON
+    sta DMACTL
+
+    ; Charset na OS ROM ($E000)
+    lda #$E0
+    sta CHBASE
+
+    ; --- DLI: wektor + włączenie na ostatniej pustej linii ---
+    lda #<DLI_Handler
+    sta VDSLST
+    lda #>DLI_Handler
+    sta VDSLST+1
+
+    lda DLIST_TITLE+2
+    ora #$80
+    sta DLIST_TITLE+2
+
+    lda #$80             ; DLI on, VBI off
+    sta NMIEN
+
+    rts
+.endp
+
+;==============================================================
+; title_run — Obsługa klatki (czeka na FIRE)
+; Zwraca: GAME_STATE = STATE_STORY gdy FIRE wciśnięty
+;==============================================================
+.proc title_run
+    lda STRIG0
+    bne @exit            ; FIRE nie wciśnięty — zostań w title
+    lda #STATE_STORY
+    sta GAME_STATE
+@exit
+    rts
+.endp
+
+;==============================================================
+; DLI_Handler — Tęcza na sprite'ach tytułu
+;==============================================================
+DLI_Handler
+    pha
+    txa
+    pha
+
+    ; --- Ustaw kolory obrazka tytułowego (COLPF0–COLPF3, COLBK) ---
+    lda #$00
+    sta COLBK            ; tło — czarne
+    lda #$13
+    sta COLPF0           ; playfield 0 — złoty
+    lda #$03
+    sta COLPF1           ; playfield 1 — szary
+    lda #$16
+    sta COLPF2           ; playfield 2 — złoty jasny
+    lda #$00
+    sta COLPF3           ; playfield 3 — czarny
+
+    ; Setup HPOS + SIZEP dla tytułu (x2, szerokie)
+    lda #$01
+    sta SIZEP0
+    sta SIZEP1
+    sta SIZEP2
+    sta SIZEP3
+    lda #HPOS_P0
+    sta HPOSP0
+    lda #HPOS_P1
+    sta HPOSP1
+    lda #HPOS_P2
+    sta HPOSP2
+    lda #HPOS_P3
+    sta HPOSP3
+    lda #HPOS_M+6
+    sta HPOSM0
+    lda #HPOS_M+4
+    sta HPOSM1
+    lda #HPOS_M+2
+    sta HPOSM2
+    lda #HPOS_M
+    sta HPOSM3
+
+    ; Czekaj do początku sprite'ów
+    ldx #DLI_DELAY
+@delay
+    sta WSYNC
+    dex
+    bne @delay
+
+    ; Pierwsza linia tytułu — kolor od razu
+    ldx #0
+    lda RainbowColors,x
+    sta PCOLR0
+    sta PCOLR1
+    sta PCOLR2
+    sta PCOLR3
+    sta COLPF3
+    inx
+
+    ; Pozostałe linie
+    ldy #SPRITE_ROWS-2
+@rainbow
+    sta WSYNC
+    lda RainbowColors,x
+    sta PCOLR0
+    sta PCOLR1
+    sta PCOLR2
+    sta PCOLR3
+    sta COLPF3
+    inx
+    dey
+    bpl @rainbow
+
+    ; --- Po tęczy: PRIOR=$01, PCOLR=$40, SIZEP=1x ---
+    sta WSYNC
+    lda #$01
+    sta PRIOR             ; wyłącz 5th-player
+    lda #$40
+    sta PCOLR0
+    sta PCOLR1
+    sta PCOLR2
+    sta PCOLR3
+    lda #$00
+    sta COLPF3            ; przywróć playfield 3 (czarny)
+    sta SIZEP0
+    sta SIZEP1
+    sta SIZEP2
+    sta SIZEP3
+    sta SIZEM
+
+    ; --- Gwiazdy: HPOSM ---
+    ldx #STAR0_Y - (TOP_MARGIN+SPRITE_ROWS) - 1
+@sw
+    sta WSYNC
+    dex
+    bne @sw
+
+    lda #STAR0_X
+    sta HPOSM0
+    lda #STAR1_X
+    sta HPOSM1
+    lda #STAR2_X
+    sta HPOSM2
+    lda #STAR3_X
+    sta HPOSM3
+
+    ; --- Księżyc: HPOSP + HPOSM ---
+    ldx #MOON_TOP-STAR0_Y-2
+@sm
+    sta WSYNC
+    dex
+    bne @sm
+
+    lda #MOON_X
+    sta HPOSP0
+    lda #MOON_X+8
+    sta HPOSP1
+    lda #MOON_X+16
+    sta HPOSP2
+    lda #MOON_X+24
+    sta HPOSP3
+    lda #STAR0_X
+    sta HPOSM0
+    lda #STAR1_X
+    sta HPOSM1
+    lda #STAR2_X
+    sta HPOSM2
+    lda #STAR3_X
+    sta HPOSM3
+
+    ; Swap na text-DLI
+    lda #<TEXT_DLI
+    sta VDSLST
+    lda #>TEXT_DLI
+    sta VDSLST+1
+
+    pla
+    tax
+    pla
+    rti
+
+;==============================================================
+; Tabela kolorów tęczy (40 pozycji)
+;==============================================================
+RainbowColors
+    dta $34,$36,$38,$3A,$3C
+    dta $3E,$3E,$3F,$3E,$3E
+    dta $3C,$3A,$38,$36,$34
+    dta $00,$00,$00,$00,$00
+    dta $00,$14,$16,$18,$C8
+    dta $CA,$CC,$CE,$CE,$CF
+    dta $CF,$CE,$CE,$CC,$CA
+    dta $C8,$18,$16,$14,$00
+
+;==============================================================
+; TEXT_DLI — Tęcza na stopce (ANTIC mode 2)
+;==============================================================
+TEXT_DLI
+    pha
+    txa
+    pha
+
+    lda #$00
+    sta GRACTL
+
+    ldx #$9E
+    sta WSYNC
+    stx COLPF2
+    sta COLPF0
+    sta COLPF1
+    sta COLBK
+
+    ; Efekt tęczy (8 linii skanowania znaku)
+    ldy #7
+@tloop
+    lda TextColors,y
+    sta WSYNC
+    sta COLPF2
+    dey
+    bpl @tloop
+    lda TextColors,y
+    sta COLPF2
+
+    ; Przywrócenie stanu
+    lda #GRACTL_PM
+    sta GRACTL
+    lda #$00
+    sta COLBK
+    lda #$13
+    sta COLPF0
+    lda #$03
+    sta COLPF1
+    lda #$16
+    sta COLPF2
+    lda #$00
+    sta COLPF3
+
+    ; Przywróć wektor DLI
+    lda #<DLI_Handler
+    sta VDSLST
+    lda #>DLI_Handler
+    sta VDSLST+1
+
+    pla
+    tax
+    pla
+    rti
+
+;==============================================================
+; Tabela kolorów tęczy — stopka tekstowa (8 pozycji)
+;==============================================================
+TextColors
+    dta $90,$92,$94,$96,$98,$9A,$9C,$9E

@@ -6,23 +6,23 @@ MADS    := c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
 PYTHON  := python
 
 # ---- Pliki ----
-ASM_MAIN    := witcher.asm
+ASM_MAIN    := main.asm
 XEX_OUT     := dziki_zgon.xex
-
+GEN_DIR     := gen
 
 BG_PREFIX   := title
 BG_IMG      := img/$(BG_PREFIX).png
 
-# Pliki generowane przez img2asm.py
-BG_BIN      := $(BG_PREFIX).bin
-BG_ASM      := $(BG_PREFIX).asm
-BG_COLORS   := $(BG_PREFIX)_colors.asm
-BG_DL       := $(BG_PREFIX)_displaylist.asm
+# Pliki generowane przez img2asm.py (w katalogu gen/)
+BG_BIN      := $(GEN_DIR)/$(BG_PREFIX).bin
+BG_ASM      := $(GEN_DIR)/$(BG_PREFIX).asm
+BG_COLORS   := $(GEN_DIR)/$(BG_PREFIX)_colors.asm
+BG_DL       := $(GEN_DIR)/$(BG_PREFIX)_displaylist.asm
 
 # Sprite'y
-MOON_ASM    := moon.asm
+MOON_ASM    := $(GEN_DIR)/moon.asm
 MOON_IMG    := img/moon.png
-TITLE_ASM   := dziki-zgon.asm
+TITLE_ASM   := $(GEN_DIR)/dziki-zgon.asm
 TITLE_IMG   := img/dziki-zgon.png
 
 # ---- Cele ----
@@ -38,26 +38,28 @@ xex: $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(ASM_MAIN)
 bg: $(BG_BIN)
 
 $(BG_BIN): $(BG_IMG) scripts/img2asm.py
+	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(BG_IMG) → $(BG_PREFIX).* ==="
-	$(PYTHON) scripts/img2asm.py $(BG_IMG) 2 --all -o $(BG_PREFIX) --footer 0x5E10
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(BG_IMG) 2 --all -o $(BG_PREFIX) --footer 0x5E10
 
 # Generowanie sprite'ów
 sprites: $(MOON_ASM) $(TITLE_ASM)
 
 $(MOON_ASM): $(MOON_IMG) scripts/img2asm.py
+	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(MOON_IMG) → $(MOON_ASM) ==="
-	$(PYTHON) scripts/img2asm.py $(MOON_IMG) 1 --asm -l 4
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(MOON_IMG) 1 --asm -o moon.asm -l 4
 
 $(TITLE_ASM): $(TITLE_IMG) scripts/img2asm.py
+	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(TITLE_IMG) → $(TITLE_ASM) ==="
-	$(PYTHON) scripts/img2asm.py $(TITLE_IMG) 1 --asm -l 5
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(TITLE_IMG) 1 --asm -o dziki-zgon.asm -l 5
 
 # Sprzątanie
 clean:
 	@echo "=== Usuwanie plików wygenerowanych ==="
 	rm -f $(XEX_OUT)
-	rm -f $(BG_BIN) $(BG_ASM) $(BG_COLORS) $(BG_DL)
-	rm -f $(MOON_ASM) $(TITLE_ASM)
+	rm -rf $(GEN_DIR)
 
 # Pomoc
 help:
