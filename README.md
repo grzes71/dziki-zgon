@@ -20,23 +20,34 @@ Po wielodniowej imprezie w karczmie „Pod Trzema Kuflami" wiedźmin **Gerwant**
 
 ```
 witcher-atari-game/
-├── witcher.asm              # Główny kod asemblera (MADS)
-├── Makefile                 # Automatyzacja budowania
-├── dziki_zgon.xex           # Skompilowany plik wykonywalny
+├── main.asm                     # Punkt startowy + maszyna stanów (title→story→game→gameover)
+├── hardware.asm                 # Definicje rejestrów GTIA/ANTIC/POKEY i stałe
+├── zeropage.asm                 # Zmienne page zero ($80–$81)
+├── Makefile                     # Automatyzacja budowania
+├── dziki_zgon.xex               # Skompilowany plik wykonywalny
+├── lib/
+│   └── pmg.asm                  # Procedury pomocnicze PMG
+├── scenes/
+│   ├── title/title.asm          # Ekran tytułowy (init + run + DLI + tęcza)
+│   ├── story/story.asm          # Ekran opisu
+│   ├── game/game.asm            # Gra właściwa
+│   └── gameover/gameover.asm    # Ekran końca gry
+├── gen/                         # Pliki generowane (nie commitować)
+│   ├── title.bin                # Surowe dane binarne ekranu (z paddingiem 4KB)
+│   ├── title.asm                # Dane .byte ekranu (MADS)
+│   ├── title_colors.asm         # Inicjalizacja kolorów (bezpośrednio GTIA $D016-$D01A)
+│   ├── title_displaylist.asm    # ANTIC Display List (2 segmenty, LMS na $x000)
+│   ├── moon.asm                 # Dane sprite'ów księżyca (24 wiersze × 4 bajty)
+│   └── dziki-zgon.asm           # Dane sprite'ów napisu (37 wierszy × 5 bajtów)
 ├── scripts/
-│   └── img2asm.py           # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory
+│   └── img2asm.py               # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory
 ├── img/
-│   ├── title-0a.png         # Ekran tytułowy (160×192, 4 kolory)
-│   ├── moon.png             # Księżyc (32×24, 1 bpp, 4 graczy)
-│   └── dziki-zgon.png       # Napis tytułowy (40×37, 1 bpp, 4 graczy + 5th)
-├── title-0a.bin             # Surowe dane binarne ekranu (z paddingiem 4KB)
-├── title-0a_colors.asm      # Inicjalizacja kolorów (bezpośrednio GTIA $D016-$D01A)
-├── title-0a_displaylist.asm # ANTIC Display List (2 segmenty, LMS na $x000)
-├── moon.asm                 # Dane sprite'ów księżyca (24 wiersze × 4 bajty)
-├── dziki-zgon.asm           # Dane sprite'ów napisu (37 wierszy × 5 bajtów)
+│   ├── title.png                # Ekran tytułowy (160×192, 4 kolory)
+│   ├── moon.png                 # Księżyc (32×24, 1 bpp, 4 graczy)
+│   └── dziki-zgon.png           # Napis tytułowy (40×37, 1 bpp, 4 graczy + 5th)
 ├── docs/
-│   └── KONSPEKT.md          # Dokument projektowy — fabuła, regiony, mechaniki
-└── rgb2a8/                  # Referencyjna paleta Atari PAL (256 wartości RGB)
+│   └── KONSPEKT.md              # Dokument projektowy — fabuła, regiony, mechaniki
+└── rgb2a8/                      # Referencyjna paleta Atari PAL (256 wartości RGB)
 ```
 
 ## Wymagania
@@ -55,12 +66,12 @@ witcher-atari-game/
 make
 
 # Tylko konkretne cele
-make sprites   # moon.asm + dziki-zgon.asm
-make bg        # title-0a.bin + _colors.asm + _displaylist.asm
-make clean     # usuwa pliki wygenerowane
+make sprites   # generuje gen/moon.asm + gen/dziki-zgon.asm
+make bg        # generuje gen/title.bin + gen/title_colors.asm + gen/title_displaylist.asm
+make clean     # usuwa katalog gen/ oraz plik XEX
 
 # Zmiana obrazu tła
-make clean BG_PREFIX=title-2 && make
+make clean BG_PREFIX=title-0a && make
 
 # Uruchomienie w emulatorze
 altirra dziki_zgon.xex
@@ -91,12 +102,13 @@ Opcje:
 ### Przykłady
 
 ```bash
-# Konwersja ekranu 160×192, 4 kolory — wszystkie pliki
-python scripts/img2asm.py img/title-0a.png 2 --all -o title-0a
+# Konwersja ekranu 160×192, 4 kolory — wszystkie pliki do katalogu gen/
+mkdir -p gen
+cd gen && python ../scripts/img2asm.py ../img/title.png 2 --all -o title --footer 0x5E10
 
-# Sprite'y — same dane .byte
-python scripts/img2asm.py img/moon.png 1 --asm -l 4
-python scripts/img2asm.py img/dziki-zgon.png 1 --asm -l 5
+# Sprite'y — same dane .byte (do katalogu gen/)
+cd gen && python ../scripts/img2asm.py ../img/moon.png 1 --asm -o moon.asm -l 4
+cd gen && python ../scripts/img2asm.py ../img/dziki-zgon.png 1 --asm -o dziki-zgon.asm -l 5
 
 # Tylko surowy .bin z kompresją RLE
 python scripts/img2asm.py img/sprite.bmp 2 --bin -c rle
