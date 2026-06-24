@@ -5,42 +5,47 @@
 ; ANTIC E (160x192, 4 kolory) + PMG
 ;---------------------------------------
 
-; ---- GTIA ----
-HPOSP0  = $D000
-HPOSP1  = $D001
-HPOSP2  = $D002
-HPOSP3  = $D003
-HPOSM0  = $D004
-HPOSM1  = $D005
-HPOSM2  = $D006
-HPOSM3  = $D007
-SIZEP0  = $D008
-SIZEP1  = $D009
-SIZEP2  = $D00A
-SIZEP3  = $D00B
-SIZEM   = $D00C
-PCOLR0  = $D012
-PCOLR1  = $D013
-PCOLR2  = $D014
-PCOLR3  = $D015
-COLPF3  = $D019
-PRIOR   = $D01B
-GRACTL  = $D01D
+; ---- GTIA (CTIA/GTIA — generowanie obrazu, kolory, PMG) ----
+HPOSP0  = $D000     ; pozycja X gracza P0 (0..255 color clocks)
+HPOSP1  = $D001     ; pozycja X gracza P1
+HPOSP2  = $D002     ; pozycja X gracza P2
+HPOSP3  = $D003     ; pozycja X gracza P3
+HPOSM0  = $D004     ; pozycja X pocisku M0
+HPOSM1  = $D005     ; pozycja X pocisku M1
+HPOSM2  = $D006     ; pozycja X pocisku M2
+HPOSM3  = $D007     ; pozycja X pocisku M3
+SIZEP0  = $D008     ; szerokość gracza P0 (00=normal, 01=x2, 11=x4)
+SIZEP1  = $D009     ; szerokość gracza P1
+SIZEP2  = $D00A     ; szerokość gracza P2
+SIZEP3  = $D00B     ; szerokość gracza P3
+SIZEM   = $D00C     ; szerokość wszystkich pocisków (te same bity co SIZEP)
+PCOLR0  = $D012     ; kolor gracza P0 + pocisku M0 (gdy PRIOR nie w trybie 5. gracza)
+PCOLR1  = $D013     ; kolor gracza P1 + pocisku M1
+PCOLR2  = $D014     ; kolor gracza P2 + pocisku M2
+PCOLR3  = $D015     ; kolor gracza P3 + pocisku M3
+COLPF0  = $D016     ; kolor playfield 0 (tło obrazka — indeks 1 w palecie ANTIC E)
+COLPF1  = $D017     ; kolor playfield 1 (indeks 2)
+COLPF2  = $D018     ; kolor playfield 2 (indeks 3) — też jako kolor tekstu w mode 2
+COLPF3  = $D019     ; kolor playfield 3 — LUB kolor 5. gracza (missiles) gdy PRIOR bit 4=1
+COLBK   = $D01A     ; kolor tła (COLBAK) — wspólny dla playfield i PMG
+PRIOR   = $D01B     ; priorytety: bit 4=5th player, bity 1-0=tryb priorytetu PMG vs playfield
+GRACTL  = $D01D     ; włączenie DMA PMG: bit 0=P/M, bit 1=missiles
 
-; ---- ANTIC ----
-DMACTL  = $D400
-DLISTL  = $D402
-DLISTH  = $D403
-PMBASE  = $D407
-WSYNC   = $D40A
-NMIEN   = $D40E
+; ---- ANTIC (kontroler DMA, Display List) ----
+DMACTL  = $D400     ; włączenie DMA: bit 5=playfield, bity 1-0=rozdzielczość PMG
+CHBASE  = $D409     ; adres bazowy fontu (znaków) — górny bajt, dolny zawsze $00
+DLISTL  = $D402     ; młodszy bajt adresu Display List
+DLISTH  = $D403     ; starszy bajt adresu Display List
+PMBASE  = $D407     ; adres bazowy pamięci PMG (musi być wyrównany do 1K)
+WSYNC   = $D40A     ; Wait for Sync — zapis zatrzymuje CPU do początku następnej linii
+NMIEN   = $D40E     ; włączenie NMI: bit 7=DLI, bit 6=VBI
 
-; ---- POKEY ----
-IRQEN   = $D20E
+; ---- POKEY (dźwięk, klawiatura, timery) ----
+IRQEN   = $D20E     ; włączenie przerwań IRQ z POKEY
 
-; ---- OS shadows ----
-SDMCTL  = 559
-VDSLST  = $0200
+; ---- OS shadows (cienie rejestrów w RAM) ----
+SDMCTL  = 559       ; cień DMACTL ($22F) — bezpieczny zapis przez OS
+VDSLST  = $0200     ; wektor DLI (2 bajty: lo, hi) — ustawiany przez użytkownika
 
 SCREEN      = $4000
 PMBASE_ADDR = $8000          ; PMG memory (1K-aligned)
@@ -293,6 +298,10 @@ start
         lda #$3E             ; %00111110 = playfield ON (normal) + PMG single-line
         sta DMACTL
 
+        ; Jawnie ustaw charset na OS ROM ($E000)
+        lda #$E0
+        sta CHBASE
+
 ;---------------------------------------
 ; Kolory (SCREEN_PREFIX)
 ;---------------------------------------
@@ -329,6 +338,20 @@ DLI_Handler
         pha
         txa
         pha
+
+        ; --- Ustaw kolory obrazka tytułowego (COLPF0–COLPF3, COLBK) ---
+        ; DLI przejmuje pełną kontrolę nad paletą tła — dzięki temu
+        ; kolory są odświeżane w każdej klatce i nie wyciekają z tęczy.
+        lda #$00
+        sta COLBK            ; tło — czarne
+        lda #$13
+        sta COLPF0           ; playfield 0 — złoty
+        lda #$03
+        sta COLPF1           ; playfield 1 — szary
+        lda #$16
+        sta COLPF2           ; playfield 2 — złoty jasny
+        lda #$00
+        sta COLPF3           ; playfield 3 — czarny (nadpisze 5th-player z tęczy)
 
         ; Setup HPOS + SIZEP dla tytułu (x2, szerokie)
         ; Robimy to od razu — pusta linia ma pełne CPU
@@ -389,13 +412,14 @@ DLI_Handler
         sta WSYNC
 
         lda #$01
-        sta PRIOR
+        sta PRIOR             ; wyłącz 5th-player → COLPF3 wraca do roli playfield
         lda #$40
         sta PCOLR0
         sta PCOLR1
         sta PCOLR2
         sta PCOLR3
         lda #$00
+        sta COLPF3            ; przywróć playfield 3 (czarny) — inaczej wycieka tęcza!
         sta SIZEP0
         sta SIZEP1
         sta SIZEP2
@@ -441,6 +465,12 @@ DLI_Handler
         lda #STAR3_X
         sta HPOSM3
 
+        ; Swap na text-DLI (tęcza stopki)
+        lda #<TEXT_DLI
+        sta VDSLST
+        lda #>TEXT_DLI
+        sta VDSLST+1
+
         pla
         tax
         pla
@@ -458,6 +488,67 @@ RainbowColors
         dta $CA,$CC,$CE,$CE,$CF
         dta $CF,$CE,$CE,$CC,$CA
         dta $C8,$18,$16,$14,$00
+
+;---------------------------------------
+; TEXT DLI — tęcza na stopce (ANTIC mode 2)
+;---------------------------------------
+TEXT_DLI
+        pha
+        txa
+        pha
+
+        lda #$00
+        sta GRACTL     
+
+        ldx #$9E
+        sta WSYNC
+        stx COLPF2
+        sta COLPF0
+        sta COLPF1
+        sta COLBK
+
+        ; Efekt tęczy (8 linii skanowania znaku)
+        ldy #7
+@tloop
+        lda TextColors,y
+        sta WSYNC
+        sta COLPF2            ; Modulacja koloru liter
+        dey
+        bpl @tloop
+        lda TextColors,y
+        sta COLPF2
+
+        ; 4. Przywrócenie stanu pierwotnego — wszystkie rejestry kolorów tła
+        lda #$03
+        sta GRACTL            ; Włączamy PMG z powrotem
+        lda #$00
+        sta COLBK             ; czarne tło
+        lda #$13
+        sta COLPF0            ; złoty
+        lda #$03
+        sta COLPF1            ; szary
+        lda #$16
+        sta COLPF2            ; złoty jasny (nadpisuje tęczę tekstu!)
+        lda #$00
+        sta COLPF3            ; czarny (nadpisuje wyciek z głównej tęczy)
+
+        ; 2. Przygotowanie wektora z powrotem dla góry ekranu
+        lda #<DLI_Handler
+        sta VDSLST
+        lda #>DLI_Handler
+        sta VDSLST+1
+
+        pla
+        tax
+        pla
+        rti
+
+;---------------------------------------
+; Tabela kolorów tęczy — stopka tekstowa (8 pozycji)
+;---------------------------------------
+TextColors
+        dta $90,$92,$94,$96,$98,$9A,$9C,$9E
+
 ;---------------------------------------
 ; Zmienne page zero
 ;---------------------------------------
@@ -481,6 +572,16 @@ TitleData = SCREEN
         org SCREEN
 
         ins "title.bin"
+
+;---------------------------------------
+; Stopka — ANTIC mode 2 (tekst, 40 znaków)
+;---------------------------------------
+TextLine = $5E10
+
+        org TextLine
+        .rept 8
+        dta d"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+        .endr
 
 ;---------------------------------------
 ; Dane sprite'ów

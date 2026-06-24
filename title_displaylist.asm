@@ -22,5 +22,9 @@ DLIST
 	dta $0E
 	.endr
 
+	; --- Stopka: 1 pusta linia + DLI → ANTIC mode 2 ---
+	dta $80	; 1 pusta linia + DLI
+	dta $42, a($5E10)
+
 	; Koniec Display List
 	dta $41, a(DLIST)	; JVB – skok z oczekiwaniem na VBLANK

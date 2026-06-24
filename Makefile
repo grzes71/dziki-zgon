@@ -39,7 +39,7 @@ bg: $(BG_BIN)
 
 $(BG_BIN): $(BG_IMG) scripts/img2asm.py
 	@echo "=== Konwersja $(BG_IMG) → $(BG_PREFIX).* ==="
-	$(PYTHON) scripts/img2asm.py $(BG_IMG) 2 --all -o $(BG_PREFIX)
+	$(PYTHON) scripts/img2asm.py $(BG_IMG) 2 --all -o $(BG_PREFIX) --footer 0x5E10
 
 # Generowanie sprite'ów
 sprites: $(MOON_ASM) $(TITLE_ASM)

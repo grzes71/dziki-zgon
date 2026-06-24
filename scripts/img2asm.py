@@ -512,6 +512,7 @@ def generate_asm_displaylist(
     label_prefix,
     data_label,
     screen_base_address=0x4000,
+    footer_addr=None,
 ):
     """Generuje ANTIC Display List dla danego trybu graficznego.
 
@@ -589,6 +590,14 @@ def generate_asm_displaylist(
             lines.append("\t.endr")
 
     lines.append("")
+
+    # Stopka — ANTIC mode 2 (tekst 40 znaków) z DLI na poprzedzającej pustej linii
+    if footer_addr is not None:
+        lines.append("\t; --- Stopka: 1 pusta linia + DLI → ANTIC mode 2 ---")
+        lines.append("\tdta $80\t; 1 pusta linia + DLI")
+        lines.append(f"\tdta $42, a(${footer_addr:04X})")
+        lines.append("")
+
     lines.append("\t; Koniec Display List")
     lines.append("\tdta $41, a(DLIST)\t; JVB – skok z oczekiwaniem na VBLANK")
 
@@ -725,6 +734,7 @@ def convert(
     compression=None,
     bytes_per_line=8,
     screen_base=0x4000,
+    footer_addr=None,
 ):
     """Główna funkcja konwertująca obraz na formaty Atari.
 
@@ -740,6 +750,7 @@ def convert(
         compression:     'rle', 'zx5' lub None.
         bytes_per_line:  Bajtów na linię w .asm (domyślnie 8).
         screen_base:     Adres bazowy ekranu (np. 0x4000).
+        footer_addr:     Adres dla stopki ANTIC mode 2 (np. 0x5E10).
     """
     if not os.path.exists(image_path):
         print(f"Błąd: plik '{image_path}' nie istnieje.", file=sys.stderr)
@@ -796,6 +807,7 @@ def convert(
         generate_asm_displaylist(
             width, height, bits_per_pixel, dl_path, output_base, data_label,
             screen_base_address=screen_base,
+            footer_addr=footer_addr,
         )
         generated.append(dl_path)
 
@@ -920,6 +932,12 @@ Przykłady:
         help="Adres bazowy ekranu w pamięci Atari (domyślnie: 0x4000). "
              "Akceptuje zapis hex: 0x4000, $4000 lub dziesiętny.",
     )
+    fmt_grp.add_argument(
+        "--footer",
+        type=lambda x: int(x, 0),
+        default=None,
+        help="Dodaje linię ANTIC mode 2 (tekst) na dole DL. Adres pamięci tekstu (np. 0x5E10).",
+    )
 
     # Testy
     parser.add_argument(
@@ -973,6 +991,7 @@ Przykłady:
         compression=args.compress,
         bytes_per_line=args.bytes_per_line,
         screen_base=args.screen_base,
+        footer_addr=args.footer,
     )
 
 
