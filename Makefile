@@ -5,6 +5,17 @@
 MADS    := c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
 PYTHON  := python
 
+# ---- Cross-platform: wykrywanie OS (Windows vs Linux/macOS) ----
+ifeq ($(OS),Windows_NT)
+    RM    := cmd /c del /q
+    RMDIR := cmd /c rmdir /s /q
+    MKDIR := mkdir
+else
+    RM    := rm -f
+    RMDIR := rm -rf
+    MKDIR := mkdir -p
+endif
+
 # ---- Pliki ----
 ASM_MAIN    := main.asm
 XEX_OUT     := dziki_zgon.xex
@@ -58,8 +69,8 @@ $(TITLE_ASM): $(TITLE_IMG) scripts/img2asm.py
 # Sprzątanie
 clean:
 	@echo "=== Usuwanie plików wygenerowanych ==="
-	rm -f $(XEX_OUT)
-	rm -rf $(GEN_DIR)
+	-$(RM) $(XEX_OUT)
+	-$(RMDIR) $(GEN_DIR)
 
 # Pomoc
 help:
