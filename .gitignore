@@ -4,3 +4,4 @@
 .venv/
 *.xex
 *.bin
+/gen/
