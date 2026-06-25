@@ -14,7 +14,6 @@
     ; --- Wyłącz DMA na czas konfiguracji ---
     lda #0
     sta DMACTL
-    sta SDMCTL
 
     ; --- Wyczyść całą pamięć PMG ---
     jsr pmg_clear_all
@@ -179,8 +178,16 @@
 ; Zwraca: GAME_STATE = STATE_STORY gdy FIRE wciśnięty
 ;==============================================================
 .proc title_run
-    lda STRIG0
+    lda TRIG0
     bne @exit            ; FIRE nie wciśnięty — zostań w title
+    ; Wyłącz DLI przed zmianą stanu — przekieruj na pusty RTI
+    ; (zapobiega nadpisaniu kolorów/PRIOR przez pending DLI)
+    lda #<DLI_Nop
+    sta VDSLST
+    lda #>DLI_Nop
+    sta VDSLST+1
+    lda #0
+    sta NMIEN
     lda #STATE_STORY
     sta GAME_STATE
 @exit
@@ -401,3 +408,9 @@ TEXT_DLI
 ;==============================================================
 TextColors
     dta $90,$92,$94,$96,$98,$9A,$9C,$9E
+
+;==============================================================
+; DLI_Nop — Pusty handler DLI (używany przy przejściach między stanami)
+;==============================================================
+DLI_Nop
+    rti

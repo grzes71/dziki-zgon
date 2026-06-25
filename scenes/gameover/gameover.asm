@@ -6,6 +6,9 @@
 .proc gameover_init
     lda #0
     sta DMACTL
+    sta NMIEN
+    sta GRACTL              ; wyłącz PMG DMA (GTIA)
+    sta PRIOR               ; reset priorytetów
 
     jsr pmg_clear_all
 
@@ -29,14 +32,12 @@
 
     lda #$22
     sta DMACTL
-    lda #$00
-    sta NMIEN
 
     rts
 .endp
 
 .proc gameover_run
-    lda STRIG0
+    lda TRIG0
     bne @exit
     lda #STATE_TITLE     ; powrót do ekranu tytułowego
     sta GAME_STATE

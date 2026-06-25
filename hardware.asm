@@ -47,11 +47,14 @@ NMIEN   = $D40E     ; włączenie NMI: bit 7=DLI, bit 6=VBI
 IRQEN   = $D20E     ; włączenie przerwań IRQ z POKEY
 
 ; ---- OS shadows (cienie rejestrów w RAM) ----
-SDMCTL  = 559       ; cień DMACTL ($22F) — bezpieczny zapis przez OS
-VDSLST  = $0200     ; wektor DLI (2 bajty: lo, hi)
+; UWAGA: shadow registers wymagają VBI — projekt ma VBI wyłączone!
+; Wszystkie zapisy idą bezpośrednio do hardware (GTIA/ANTIC $D0xx-$D4xx)
+VDSLST  = $0200     ; wektor DLI (2 bajty: lo, hi) — używany przez OS NMI handler
 
 ; ---- Joystick ----
-STRIG0  = $0284     ; przycisk FIRE joysticka 0 (0=wciśnięty)
+STRIG0  = $0284     ; cień przycisku FIRE (NIEAKTUALNY bez VBI — użyj TRIG0!)
+TRIG0   = $D010     ; GTIA — przycisk FIRE joysticka 0 (bit 0=0 gdy wciśnięty)
+PORTA   = $D300     ; PORT A PIA — joystick 0 (bity 0–3: góra/dół/lewo/prawo, 0=aktywny)
 
 ; ---- Mapa pamięci projektu ----
 SCREEN      = $4000         ; bufor ekranu (ANTIC E, 160x192)

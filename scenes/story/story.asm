@@ -1,48 +1,67 @@
 ;----------------------------------------
-; scenes/story/story.asm — Ekran opisu / wprowadzenia
-; (TODO: zastąp placeholder prawdziwym ekranem)
+; scenes/story/story.asm — Ekran opisu (ANTIC mode 2, 40 znaków/linia)
 ;----------------------------------------
 
+;---- Zmienne lokalne sceny ----
+fire_released_flag
+    dta $00
+
+;---- story_init — Konfiguracja ANTIC mode 2 ----
 .proc story_init
-    ; Wyłącz DMA
     lda #0
     sta DMACTL
+    sta NMIEN
+    sta GRACTL              ; wyłącz PMG DMA (GTIA)
+    sta PRIOR               ; reset priorytetów
+    sta fire_released_flag  ; zresetuj stan joysticka
 
-    ; Wyczyść PMG (brak sprite'ów na ekranie story)
     jsr pmg_clear_all
 
-    ; --- Tymczasowo: prosta DL z jedną pustą linią i pętlą ---
+    ; --- Display List ---
     lda #<DLIST_STORY
     sta DLISTL
     lda #>DLIST_STORY
     sta DLISTH
 
-    ; Kolory placeholder
+    ; --- Charset (własny font $6000 — ten sam co w tytule) ---
+    lda #$60
+    sta CHBASE
+
+    ; --- Kolory: biały tekst na czarnym tle ---
     lda #$00
-    sta COLBK
+    sta COLBK            ; czarna ramka
+    sta COLPF2           ; czarne tło znaków
+    sta COLPF3           ; nieużywane
     lda #$0E
-    sta COLPF0
+    sta COLPF1           ; biały tekst (COLPF1 w ANTIC mode 2)
     lda #$00
-    sta COLPF1
-    lda #$00
-    sta COLPF2
-    lda #$00
-    sta COLPF3
+    sta COLPF0           ; nieużywane
 
-    ; Wyłącz PMG DMA (na razie nie używamy)
-    lda #$22             ; playfield ON, PMG OFF
+    ; --- DMA ON (playfield, bez PMG) ---
+    lda #$22
     sta DMACTL
-
-    ; Wyłącz DLI
-    lda #$00
-    sta NMIEN
 
     rts
 .endp
 
+;==============================================================
+; story_run — Czeka na puszczenie FIRE, potem na FIRE → GAME
+;==============================================================
 .proc story_run
-    lda STRIG0
-    bne @exit
+    lda fire_released_flag
+    bne @wait_press
+
+    ; 1. Czekaj na puszczenie przycisku FIRE (trzymany z ekranu tytułowego)
+    lda TRIG0
+    beq @exit            ; wciąż trzyma — zostań w story
+    lda #1
+    sta fire_released_flag
+    bne @exit            ; wyjdź w tej klatce
+
+@wait_press
+    ; 2. Czekaj na ponowne naciśnięcie przycisku FIRE
+    lda TRIG0
+    bne @exit            ; jeszcze nie nacisnął ponownie
     lda #STATE_GAME
     sta GAME_STATE
 @exit

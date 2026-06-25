@@ -34,7 +34,6 @@ start
     sei                     ; blokada IRQ
     lda #0
     sta IRQEN               ; wyłącz przerwania POKEY
-    sta SDMCTL
     sta DMACTL              ; wyłącz DMA na czas konfiguracji
 
     ; Odsłoń RAM spod BASIC ROM ($A000–$BFFF, 8 KB)
@@ -106,23 +105,38 @@ TitleData = SCREEN
     icl "gen/title_displaylist.asm"
 DLIST_TITLE = DLIST        ; alias dla czytelności
 
-; --- DL placeholder — story / opis ---
+; --- DL story — ANTIC mode 2, tekst 8 linii wyśrodkowany ---
 DLIST_STORY
-    dta $70,$70,$70        ; 3 puste linie
-    dta $4E,a(SCREEN)      ; LMS na SCREEN (pusta pamięć)
-    .rept 191
-    dta $0E                ; ANTIC E
-    .endr
+    dta $70,$70,$70        ; 3 blank
+    dta $70,$70            ; 2 blank (razem 5 blank na gorze)
+    dta $42,$00,$64        ; LMS + ANTIC mode 2 -> adres $6400 (Line 1 - Text)
+    dta $70                ; Blank line 1
+    dta $02                ; ANTIC mode 2 (Line 2 - Text)
+    dta $70                ; Blank line 2
+    dta $02                ; ANTIC mode 2 (Line 3 - Text)
+    dta $70                ; Blank line 3
+    dta $02                ; ANTIC mode 2 (Line 4 - Text)
+    dta $70                ; Blank line 4
+    dta $02                ; ANTIC mode 2 (Line 5 - Text)
+    dta $70                ; Blank line 5
+    dta $02                ; ANTIC mode 2 (Line 6 - Text)
+    dta $70                ; Blank line 6
+    dta $02                ; ANTIC mode 2 (Line 7 - Text)
+    dta $70                ; Blank line 7
+    dta $02                ; ANTIC mode 2 (Line 8 - Text)
+    dta $70,$70,$70        ; 3 blank
+    dta $70                ; 1 blank (razem 4 blank na dole)
     dta $41,a(DLIST_STORY) ; JVB
 
-; --- DL placeholder — gra ---
+; --- DL gra — ANTIC 4, 40×24 znaków ---
 DLIST_GAME
-    dta $70,$70,$70
-    dta $4E,a(SCREEN)
-    .rept 191
-    dta $0E
+    dta $70,$70,$70        ; 3 puste linie
+    dta $44,a(GAME_SCREEN) ; LMS + ANTIC 4
+    .rept 22
+    dta $04                ; ANTIC 4 (kolejne linie)
     .endr
-    dta $41,a(DLIST_GAME)
+    dta $04                ; ostatnia linia (razem 24)
+    dta $41,a(DLIST_GAME)  ; JVB
 
 ; --- DL placeholder — koniec gry ---
 DLIST_GAMEOVER
@@ -150,7 +164,21 @@ DLIST_GAMEOVER
     .endr
 
 ; ===================================================================
-; 9. Czcionka ($6000, 1 KB aligned → CHBASE=$60)
+; 9. Tekst story ($6400, 8×40 = 320 B)
+; ===================================================================
+    org $6400
+StoryText
+    dta d"  Po wielodniowej imprezie w karczmie   "
+    dta d" 'Pod Trzema Kuflami' Wiedzmin Gerwant  "
+    dta d" budzi sie z poteznym kacem. Nie pamieta"
+    dta d"gdzie jest Plotka, gdzie sa miecze, ani "
+    dta d"skad wzial sie rachunek na 18000 orenow."
+    dta d"   Wyrusza w podroz przez 5 regionow,   "
+    dta d" by odzyskac swoj dobytek, wspomnienia i"
+    dta d"           resztki godnosci.            "
+
+; ===================================================================
+; 10. Czcionka ($6000, 1 KB aligned → CHBASE=$60)
 ; ===================================================================
     org $6000
     icl "fonts/font.asm"

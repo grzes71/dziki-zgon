@@ -20,7 +20,7 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
     ├── title/
     │   └── title.asm        # Ekran tytułowy: title_init + title_run + DLI + tęcza
     ├── story/
-    │   └── story.asm        # Ekran opisu (placeholder)
+    │   └── story.asm        # Ekran opisu (wyświetlanie i obsługa opisu)
     ├── game/
     │   └── game.asm         # Gra właściwa (placeholder)
     └── gameover/
@@ -54,10 +54,13 @@ make clean    # usuwa wygenerowane
 ```
 
 Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
+Instalacja zależności: `pip install -r requirements.txt`
 
 ## Tryb graficzny
 
-- **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia
+- **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia — ekran tytułowy, gameover
+- **ANTIC 2** (Graphics 0), 40×24 znaków (rozszerzony liniami pustymi $70 w display liście), 1 kolor (biały na czarnym, COLPF1=$0E), 320 B ekranu na $6400 — ekran opisu (story)
+- **ANTIC 4** (Graphics 12), 40×24 znaków (4×8 px), 4 kolory — gra właściwa
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
 - Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) — VBI wyłączony. Zawiera też stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`–2) do użycia w DLI — plik includowany globalnie (dla stałych) i lokalnie w `_init` (dla `lda`/`sta`)
 
@@ -71,9 +74,11 @@ Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 | $4000–$5E0F | Dane ekranu (tytuł), współdzielone przez sceny (nadpisywane przy przejściu) |
 | $5E10–$5FFF | Stopka tekstowa (ANTIC mode 2, 8 linii × 40 znaków) |
 | $6000–$63FF | **Czcionka własna** — `fonts/font.asm`, 128 znaków × 8 B (1 KB) — CHBASE=$60 |
-| $6400–$7FFF | Wolne (7 KB) — dane pomocnicze, mapy |
+| $6400–$653F | Tekst / ekran story (8 linii × 40 B = 320 B) |
+| $6540–$7FFF | Wolne (6.7 KB) — dane pomocnicze, mapy |
 | $8000–$87FF | PMG (1K-aligned): $8300=missiles, $8400=P0, $8500=P1, $8600=P2, $8700=P3 |
-| $A000–$BFFF | **RAM pod BASIC ROM** (8 KB) — PORTB bit 1=0 ($FD) |
+| $A000–$A3FF | **Charset gry** — kafelki terenu (1 KB, ANTIC 4, CHBASE=$A0) |
+| $A400–$BFFF | Wolne (7 KB) — mapy regionów, dane gry |
 
 > PORTB=$FD — tylko BASIC wyłączony (8 KB zysk). OS ROM włączony → NMI działa normalnie przez OS. `jmp start` na $2000 zamiast `run start` (MADS domyślnie startuje od pierwszego `org`).
 
@@ -100,9 +105,9 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 - Dane sprite'ów transponowane z formatu wierszowego `[P0,P1,P2,P3,M]×37` do per-player
 - Pozycje tytułu: $30, $40, $50, $60, $70 (co 16 color clocków przy x2)
 
-## DLI — sekcje
+## DLI — sekcje (tylko tytuł)
 
-DLI odpala na `DLIST+2` (ostatnia pusta linia $70 przed trybem E) — brak DMA, pełne CPU.
+DLI odpala na `DLIST+2` (ostatnia pusta linia $70 przed trybem E) — brak DMA, pełne CPU. Gra nie używa DLI.
 
 1. **Kolory tła**: COLPF0–2 + COLBK ustawiane ze stałych `TITLE_*` z `title_colors.asm` (generowane z obrazka)
 2. **Tytuł**: SIZEP=x2, HPOSP=$30/$40/$50/$60, PRIOR=$11, 37 linii tęczy (RainbowColors → PCOLR0-3 + COLPF3)
@@ -123,4 +128,4 @@ KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
 3. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
 4. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA
 5. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter
-6. **GitHub push email**: używać `users.noreply.github.com`
+6. **ANTIC 4 vs E vs 2**: Gra używa ANTIC 4 (znakowy, 960 B ekranu, 1 KB charset), tytuł/gameover używają ANTIC E (bitmapa, 7.7 KB, adres $4000), a story używa ANTIC 2 (tekstowy, 320 B ekranu na $6400). $4000 jest współdzielone przez tytuł i grę (każda scena nadpisuje), natomiast story ma wydzieloną pamięć na $6400, by nie kolidować z tłem.
