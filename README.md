@@ -35,7 +35,7 @@ witcher-atari-game/
 ├── gen/                         # Pliki generowane (nie commitować)
 │   ├── title.bin                # Surowe dane binarne ekranu (z paddingiem 4KB)
 │   ├── title.asm                # Dane .byte ekranu (MADS)
-│   ├── title_colors.asm         # Inicjalizacja kolorów (bezpośrednio GTIA $D016-$D01A)
+│   ├── title_colors.asm         # Kolory: stałe .equ (dla DLI) + kod init (lda/sta → GTIA)
 │   ├── title_displaylist.asm    # ANTIC Display List (2 segmenty, LMS na $x000)
 │   ├── moon.asm                 # Dane sprite'ów księżyca (24 wiersze × 4 bajty)
 │   └── dziki-zgon.asm           # Dane sprite'ów napisu (37 wierszy × 5 bajtów)
@@ -134,14 +134,16 @@ python scripts/img2asm.py --test
 ### Rejestry kolorów
 
 ANTIC E mapuje 2-bitowe indeksy pikseli na rejestry GTIA.
-Kolory zapisywane **bezpośrednio do sprzętu** (VBI OS wyłączony):
+Kolory zapisywane **bezpośrednio do sprzętu** (VBI OS wyłączony).
+Plik `title_colors.asm` zawiera zarówno kod inicjalizacji, jak i stałe `.equ`
+(`TITLE_COLBK`, `TITLE_COLPF0`–`TITLE_COLPF2`) do użycia w DLI.
 
-| Piksel | Rejestr | Adres |
-|---|---|---|
-| `00` | COLBK | `$D01A` |
-| `01` | COLPF0 | `$D016` |
-| `10` | COLPF1 | `$D017` |
-| `11` | COLPF2 | `$D018` |
+| Piksel | Rejestr | Stała .equ | Adres |
+|---|---|---|---|
+| `00` | COLBK | `TITLE_COLBK` | `$D01A` |
+| `01` | COLPF0 | `TITLE_COLPF0` | `$D016` |
+| `10` | COLPF1 | `TITLE_COLPF1` | `$D017` |
+| `11` | COLPF2 | `TITLE_COLPF2` | `$D018` |
 
 ### Rejestry sprzętowe (system wyłączony)
 

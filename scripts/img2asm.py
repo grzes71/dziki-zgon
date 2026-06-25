@@ -431,6 +431,18 @@ def generate_asm_colors(palette_rgb, output_path, label_prefix, bits_per_pixel):
                          f"(RGB #{r:02X}{g:02X}{b:02X} → {name})")
 
     lines.append("")
+    lines.append("; --- Stałe kolorów (MADS .equ) — do użycia w DLI ---")
+    prefix_upper = label_prefix.upper()
+    for i in range(min(max_colors, len(palette_rgb))):
+        if i >= len(reg_map):
+            break
+        reg_hw, reg_hw_addr, reg_desc = reg_map[i]
+        r, g, b = palette_rgb[i]
+        atari_idx = rgb_to_atari(r, g, b)
+        hex_val = atari_to_hex(atari_idx)
+        lines.append(f"{prefix_upper}_{reg_hw}\t= {hex_val}")
+
+    lines.append("")
     lines.append("; --- Inicjalizacja kolorów (GTIA hardware registers) ---")
 
     for i in range(min(max_colors, len(palette_rgb))):

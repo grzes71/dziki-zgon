@@ -3,6 +3,9 @@
 ; Tęcza na sprite'ach + księżyc + gwiazdy + stopka
 ;----------------------------------------
 
+; --- Stałe kolorów tła (generowane z obrazka) ---
+    icl "../../gen/title_colors.asm"
+
 ;==============================================================
 ; title_init — Konfiguracja ekranu tytułowego
 ; Wywoływane RAZ przy wejściu w ten stan
@@ -192,15 +195,15 @@ DLI_Handler
     txa
     pha
 
-    ; --- Ustaw kolory obrazka tytułowego (COLPF0–COLPF3, COLBK) ---
-    lda #$00
-    sta COLBK            ; tło — czarne
-    lda #$13
-    sta COLPF0           ; playfield 0 — złoty
-    lda #$03
-    sta COLPF1           ; playfield 1 — szary
-    lda #$16
-    sta COLPF2           ; playfield 2 — złoty jasny
+    ; --- Ustaw kolory obrazka tytułowego (z title_colors.asm) ---
+    lda #TITLE_COLBK
+    sta COLBK            ; tło
+    lda #TITLE_COLPF0
+    sta COLPF0           ; playfield 0
+    lda #TITLE_COLPF1
+    sta COLPF1           ; playfield 1
+    lda #TITLE_COLPF2
+    sta COLPF2           ; playfield 2
     lda #$00
     sta COLPF3           ; playfield 3 — czarny
 
@@ -368,16 +371,16 @@ TEXT_DLI
     lda TextColors,y
     sta COLPF2
 
-    ; Przywrócenie stanu
+    ; Przywrócenie stanu (kolory z title_colors.asm)
     lda #GRACTL_PM
     sta GRACTL
-    lda #$00
+    lda #TITLE_COLBK
     sta COLBK
-    lda #$13
+    lda #TITLE_COLPF0
     sta COLPF0
-    lda #$03
+    lda #TITLE_COLPF1
     sta COLPF1
-    lda #$16
+    lda #TITLE_COLPF2
     sta COLPF2
     lda #$00
     sta COLPF3

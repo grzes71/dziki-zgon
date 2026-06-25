@@ -56,7 +56,7 @@ Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 
 - **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
-- Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) — VBI wyłączony
+- Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) — VBI wyłączony. Zawiera też stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`–2) do użycia w DLI — plik includowany globalnie (dla stałych) i lokalnie w `_init` (dla `lda`/`sta`)
 
 ## Mapa pamięci
 
@@ -98,10 +98,11 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 
 DLI odpala na `DLIST+2` (ostatnia pusta linia $70 przed trybem E) — brak DMA, pełne CPU.
 
-1. **Tytuł**: SIZEP=x2, HPOSP=$30/$40/$50/$60, PRIOR=$11, 37 linii tęczy (RainbowColors → PCOLR0-3 + COLPF3)
-2. **Po tęczy**: PRIOR=$01, PCOLR=$40, SIZEP=1x — wspólne dla gwiazd i księżyca
-3. **Gwiazdy**: HPOSM = STARn_X (niezależne pozycje missile)
-4. **Księżyc**: HPOSP = MOON_X+0/8/16/24, HPOSM = STARn_X (odświeżone)
+1. **Kolory tła**: COLPF0–2 + COLBK ustawiane ze stałych `TITLE_*` z `title_colors.asm` (generowane z obrazka)
+2. **Tytuł**: SIZEP=x2, HPOSP=$30/$40/$50/$60, PRIOR=$11, 37 linii tęczy (RainbowColors → PCOLR0-3 + COLPF3)
+3. **Po tęczy**: PRIOR=$01, PCOLR=$40, SIZEP=1x — wspólne dla gwiazd i księżyca
+4. **Gwiazdy**: HPOSM = STARn_X (niezależne pozycje missile)
+5. **Księżyc**: HPOSP = MOON_X+0/8/16/24, HPOSM = STARn_X (odświeżone)
 
 KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
 
@@ -112,7 +113,7 @@ KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
 ## Znane pułapki
 
 1. **System OFF**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI), DMACTL=$3E, DLISTL/DLISTH hardware ($D402/$D403)
-2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow $02C4-$02C8) — VBI nie kopiuje
+2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow $02C4-$02C8) — VBI nie kopiuje. Plik `_colors.asm` includowany **dwukrotnie**: globalnie (dla stałych `.equ` widocznych w DLI) i wewnątrz `_init` (dla kodu `lda`/`sta`)
 3. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
 4. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA
 5. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter
