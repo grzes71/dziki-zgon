@@ -39,6 +39,8 @@ witcher-atari-game/
 │   ├── title_displaylist.asm    # ANTIC Display List (2 segmenty, LMS na $x000)
 │   ├── moon.asm                 # Dane sprite'ów księżyca (24 wiersze × 4 bajty)
 │   └── dziki-zgon.asm           # Dane sprite'ów napisu (37 wierszy × 5 bajtów)
+├── fonts/
+│   └── font.asm                 # Własna czcionka 128 znaków (1 KB, $6000)
 ├── scripts/
 │   └── img2asm.py               # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory
 ├── img/
@@ -130,6 +132,8 @@ python scripts/img2asm.py --test
 | Pamięć ekranu | $4000–$5E0F (7696 B z paddingiem) |
 | Display List | $3000 |
 | Kod programu | $2000 |
+| PORTB | $FD — BASIC ROM wyłączony, OS ROM włączony (NMI przez OS) |
+| Czcionka | $6000–$63FF — własna, 128 znaków (CHBASE=$60) |
 
 ### Rejestry kolorów
 

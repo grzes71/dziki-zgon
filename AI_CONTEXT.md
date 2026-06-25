@@ -14,6 +14,8 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 ├── zeropage.asm             # Zmienne page zero ($80 GAME_STATE, $81 SRC_TMP)
 ├── lib/
 │   └── pmg.asm              # Procedury PMG: pmg_clear_all, pmg_clear_range
+├── fonts/
+│   └── font.asm             # Własna czcionka 128 znaków (1 KB)
 └── scenes/
     ├── title/
     │   └── title.asm        # Ekran tytułowy: title_init + title_run + DLI + tęcza
@@ -39,6 +41,7 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 | `scenes/*/` | Kolejne sceny — każda z własnym `_init` i `_run` |
 | `lib/pmg.asm` | Współdzielone procedury PMG |
 | `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm |
+| `fonts/font.asm` | Własna czcionka 128 znaków (1 KB, $6000, CHBASE=$60) |
 | `docs/KONSPEKT.md` | Dokument projektowy — fabuła, regiony, mechaniki |
 
 ## Build
@@ -67,9 +70,12 @@ Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 | $3000–$30FF | Display List (title, story, game, gameover — każda oddzielna etykieta) |
 | $4000–$5E0F | Dane ekranu (tytuł), współdzielone przez sceny (nadpisywane przy przejściu) |
 | $5E10–$5FFF | Stopka tekstowa (ANTIC mode 2, 8 linii × 40 znaków) |
+| $6000–$63FF | **Czcionka własna** — `fonts/font.asm`, 128 znaków × 8 B (1 KB) — CHBASE=$60 |
+| $6400–$7FFF | Wolne (7 KB) — dane pomocnicze, mapy |
 | $8000–$87FF | PMG (1K-aligned): $8300=missiles, $8400=P0, $8500=P1, $8600=P2, $8700=P3 |
+| $A000–$BFFF | **RAM pod BASIC ROM** (8 KB) — PORTB bit 1=0 ($FD) |
 
-> **Uwaga:** `$6000–$7FFF` (8 KB) wolne — można tam trzymać dodatkowe dane (np. mapy, binarki innych scen).
+> PORTB=$FD — tylko BASIC wyłączony (8 KB zysk). OS ROM włączony → NMI działa normalnie przez OS. `jmp start` na $2000 zamiast `run start` (MADS domyślnie startuje od pierwszego `org`).
 
 ## Display List — generator i ograniczenia ANTIC
 
@@ -84,7 +90,7 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 ## PMG (Player/Missile Graphics)
 
 - **Single-line resolution** (DMACTL bit 4=$10), PMBASE=$8000
-- **System wyłączony**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI, bez VBI OS)
+- **System wyłączony**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI, bez VBI OS). PORTB=$FD (BASIC off, OS ROM on — NMI przez OS)
 - Wszystkie rejestry zapisywane bezpośrednio do sprzętu (shadow nieużywane)
 - 4 graczy (P0–P3) + missiles (M0–M3), PRIOR sterowany przez DLI
 - Tytuł: x2 (SIZEP0–3=$01), PRIOR=$11 (5th player), COLPF3 dla missile
@@ -112,7 +118,7 @@ KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
 
 ## Znane pułapki
 
-1. **System OFF**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI), DMACTL=$3E, DLISTL/DLISTH hardware ($D402/$D403)
+1. **System OFF**: `sei` + `IRQEN=0`, `PORTB=$FD` (tylko BASIC off, OS ROM on), NMIEN=$80 (tylko DLI), DMACTL=$3E, DLISTL/DLISTH hardware ($D402/$D403). Entry point: `jmp start` na $2000 — nie używaj `run start` przy wielu `org` (MADS generuje błędne adresy INIT/RUN)
 2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow $02C4-$02C8) — VBI nie kopiuje. Plik `_colors.asm` includowany **dwukrotnie**: globalnie (dla stałych `.equ` widocznych w DLI) i wewnątrz `_init` (dla kodu `lda`/`sta`)
 3. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
 4. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA

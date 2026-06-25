@@ -16,6 +16,8 @@
 ; ===================================================================
     org $2000
 
+    jmp start              ; jawny skok do inicjalizacji
+
     ; --- Biblioteki (procedury wielokrotnego użytku) ---
     icl "lib/pmg.asm"
 
@@ -34,6 +36,10 @@ start
     sta IRQEN               ; wyłącz przerwania POKEY
     sta SDMCTL
     sta DMACTL              ; wyłącz DMA na czas konfiguracji
+
+    ; Odsłoń RAM spod BASIC ROM ($A000–$BFFF, 8 KB)
+    lda #$FD                ; %11111101: bit 0=1 (OS ROM ON), bit 1=0 (BASIC OFF)
+    sta PORTB
 
     ; Ustaw stan początkowy
     lda #STATE_TITLE
@@ -144,6 +150,7 @@ DLIST_GAMEOVER
     .endr
 
 ; ===================================================================
-; 9. Uruchomienie
+; 9. Czcionka ($6000, 1 KB aligned → CHBASE=$60)
 ; ===================================================================
-    run start
+    org $6000
+    icl "fonts/font.asm"

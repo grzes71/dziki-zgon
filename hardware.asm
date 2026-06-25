@@ -30,6 +30,9 @@ COLBK   = $D01A     ; kolor tła (COLBAK) — wspólny dla playfield i PMG
 PRIOR   = $D01B     ; priorytety: bit 4=5th player, bity 1-0=tryb priorytetu
 GRACTL  = $D01D     ; włączenie DMA PMG: bit 0=P/M, bit 1=missiles
 
+; ---- PIA (Port Interface Adapter — PORTB, banki pamięci) ----
+PORTB   = $D301     ; bit 0=OS ROM, bit 1=BASIC, bity 7-2=banki rozszerzonej pamięci
+
 ; ---- ANTIC (kontroler DMA, Display List) ----
 DMACTL  = $D400     ; włączenie DMA: bit 5=playfield, bity 1-0=rozdzielczość PMG
 DLISTL  = $D402     ; młodszy bajt adresu Display List
@@ -37,6 +40,7 @@ DLISTH  = $D403     ; starszy bajt adresu Display List
 PMBASE  = $D407     ; adres bazowy pamięci PMG (musi być wyrównany do 1K)
 CHBASE  = $D409     ; adres bazowy fontu (znaków) — górny bajt, dolny zawsze $00
 WSYNC   = $D40A     ; Wait for Sync — zapis zatrzymuje CPU do początku następnej linii
+NMIST   = $D40F     ; rejestr statusu NMI: bit 7=DLI, bit 6=VBI (odczyt kasuje)
 NMIEN   = $D40E     ; włączenie NMI: bit 7=DLI, bit 6=VBI
 
 ; ---- POKEY (dźwięk, klawiatura, timery) ----

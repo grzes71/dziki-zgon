@@ -154,8 +154,8 @@
     lda #DMA_PMG_ON
     sta DMACTL
 
-    ; Charset na OS ROM ($E000)
-    lda #$E0
+    ; Charset — własna czcionka ($6000)
+    lda #$60
     sta CHBASE
 
     ; --- DLI: wektor + włączenie na ostatniej pustej linii ---
