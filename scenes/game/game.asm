@@ -6,6 +6,10 @@
 GAME_SCREEN   = $4000       ; mapa 40×24 = 960 bajtów
 GAME_CHARSET  = $A000       ; charset gry — kafelki terenu (1 KB, CHBASE=$A0)
 
+;---- Zmienne lokalne sceny ----
+game_fire_released
+    dta $00
+
 ;==============================================================
 ; game_init — Konfiguracja ANTIC 4 + PMG
 ;==============================================================
@@ -13,6 +17,7 @@ GAME_CHARSET  = $A000       ; charset gry — kafelki terenu (1 KB, CHBASE=$A0)
     lda #0
     sta DMACTL
     sta NMIEN
+    sta game_fire_released  ; zresetuj stan przycisku FIRE
 
     jsr pmg_clear_all
 
@@ -102,6 +107,17 @@ TestTiles
 ; game_run — Obsługa klatki (joystick + FIRE)
 ;==============================================================
 .proc game_run
+    lda game_fire_released
+    bne @check_press
+
+    ; Czekaj na puszczenie przycisku FIRE z poprzedniego ekranu
+    lda TRIG0
+    beq @move            ; wciąż trzyma — nie reaguj i idź do ruchu
+    lda #1
+    sta game_fire_released
+    jmp @move
+
+@check_press
     ; --- TEST: FIRE → gameover ---
     lda TRIG0
     bne @move
