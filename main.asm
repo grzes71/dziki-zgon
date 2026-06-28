@@ -81,6 +81,14 @@ STAGE_COUNT = * - stage_order
     sta DMACTL              ; wyłącz DMA na czas konfiguracji
     sta NMIEN               ; wyłącz NMI (DLI + VBI) — kluczowe przy DEV_START_STAGE>0
     sta GRACTL              ; wyłącz PMG DMA
+
+    ; --- Wyczyszczenie rejestrów GTIA (pozycje, rozmiary i grafika PMG) ---
+    ldx #$11
+@clr_gtia
+    sta $D000,x
+    dex
+    bpl @clr_gtia
+
     lda #$FF                ; %11111111: bit 0=1 (OS ROM ON), bit 1=1 (BASIC OFF)
     sta PORTB               ; odsłoń RAM spod BASIC ROM ($A000–$BFFF)
     rts
@@ -157,6 +165,13 @@ StoryText_Data
 GO_TEXT_Data
     icl "gen/gameover_text.asm"
 
+; Tekst stopki tytułu (ROM — kopiowany do $5E10 w title_init)
+TitleFooterROM
+    .rept 8
+    dta d"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+    .endr
+TitleFooterROM_End
+
 SpriteData = DzikizgonData
 
     icl "gen/dziki-zgon.asm"
@@ -228,13 +243,10 @@ JVB_OFFSET = * - DLIST_GAMEOVER - 3
     ins "gen/title.bin"
 
 ; ===================================================================
-; 8. Stopka tekstowa ($5E10) — tylko tytuł
+; 8. Stopka tekstowa ($5E10) — współdzielona (tytuł/story/gameover)
 ; ===================================================================
     org FOOTER_ADDR
-
-    .rept 8
-    dta d"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
-    .endr
+    .ds 320                 ; 8 linii × 40 znaków — zerowane na starcie
 
 ; ===================================================================
 ; 10. Czcionka ($6000, 1 KB aligned → CHBASE=$60)

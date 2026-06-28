@@ -6,6 +6,10 @@
 ; --- Stałe kolorów tła (generowane z obrazka) ---
     icl "../../gen/title_colors.asm"
 
+;---- Zmienne lokalne sceny ----
+title_fire_released
+    dta $00
+
 ;==============================================================
 ; title_init — Konfiguracja ekranu tytułowego
 ; Wywoływane RAZ przy wejściu w ten stan
@@ -14,6 +18,7 @@
     ; --- Wyłącz DMA na czas konfiguracji ---
     lda #0
     sta DMACTL
+    sta title_fire_released
 
     ; --- Wyczyść całą pamięć PMG ---
     jsr pmg_clear_all
@@ -173,6 +178,9 @@
     ; --- Kolory tła (generowane; plik w katalogu gen/) ---
     icl "../../gen/title_colors.asm"
 
+    ; --- Przywróć tekst stopki (nadpisywany przez story/gameover) ---
+    jsr copy_title_footer
+
     ; --- DMA ON ---
     lda #DMA_PMG_ON
     sta DMACTL
@@ -202,6 +210,17 @@
 ; Zwraca: GAME_STATE = STATE_STORY gdy FIRE wciśnięty
 ;==============================================================
 .proc title_run
+    lda title_fire_released
+    bne @check_press
+
+    ; Czekaj na puszczenie przycisku FIRE z poprzedniego ekranu
+    lda TRIG0
+    beq @exit            ; wciąż trzyma — nie reaguj
+    lda #1
+    sta title_fire_released
+    jmp @exit
+
+@check_press
     lda TRIG0
     bne @exit            ; FIRE nie wciśnięty — zostań w title
     ; Wyłącz DLI przed zmianą stanu — przekieruj na pusty RTI
@@ -424,3 +443,24 @@ TextColors
 ;==============================================================
 DLI_Nop
     rti
+
+;==============================================================
+; copy_title_footer — Przywraca tekst stopki tytułu ($5E10)
+; Kopiuje 320 bajtów z TitleFooterROM → FOOTER_ADDR
+; Niszczy: A, X, Y
+;==============================================================
+.proc copy_title_footer
+    ldx #0
+@lp
+    lda TitleFooterROM,x
+    sta FOOTER_ADDR,x
+    inx
+    bne @lp                ; 256 bajtów (0..255)
+@rest
+    lda TitleFooterROM+256,x
+    sta FOOTER_ADDR+256,x
+    inx
+    cpx #64                ; pozostałe 64 bajty (320-256)
+    bne @rest
+    rts
+.endp

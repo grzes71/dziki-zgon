@@ -3,7 +3,7 @@
 ;----------------------------------------
 
 ;---- Adresy pamięci dla gry (współdzielone z main.asm przez .global) ----
-GAME_SCREEN   = $4000       ; mapa 40×24 = 960 bajtów
+GAME_SCREEN   = $6400       ; mapa 40×24 = 960 bajtów (poza bitmapą tytułu)
 GAME_CHARSET  = $A800       ; charset gry — kafelki terenu (1 KB, CHBASE=$A8)
 
 ;---- Zmienne lokalne sceny ----
