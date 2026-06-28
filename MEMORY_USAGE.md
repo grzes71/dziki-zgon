@@ -56,7 +56,7 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 
 ## Analiza Wolnej Pamięci RAM
 
-Gra posiada obecnie **`26 503 bajtów`** (~25.9 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące bloki:
+Gra posiada obecnie **`26 523 bajtów`** (~25.9 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące bloki:
 
 1.  **`$2602` – `$2FFF` (2 558 B)**: Idealne miejsce na dopisanie dodatkowych bibliotek lub procedur logicznych silnika gry.
 2.  **`$31D3` – `$3FFF` (3 629 B)**: Przestrzeń przed buforem wideo. Można tu umieścić dodatkowe Display Listy lub dynamiczne struktury.

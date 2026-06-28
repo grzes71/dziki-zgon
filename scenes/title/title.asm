@@ -214,8 +214,8 @@ DLI_Handler
     lda #$00
     sta COLPF3           ; playfield 3 — czarny
 
-    ; Setup HPOS + SIZEP dla tytułu (x2, szerokie)
-    lda #$01
+    ; Setup HPOS + SIZEP dla tytułu (x1, normalny)
+    lda #$00
     sta SIZEP0
     sta SIZEP1
     sta SIZEP2
@@ -285,13 +285,7 @@ DLI_Handler
     sta SIZEP3
     sta SIZEM
 
-    ; --- Gwiazdy: HPOSM ---
-    ldx #STAR0_Y - (TOP_MARGIN+SPRITE_ROWS) - 1
-@sw
-    sta WSYNC
-    dex
-    bne @sw
-
+    ; --- Gwiazdy: HPOSM poniżej tęczy (stałe do końca klatki) ---
     lda #STAR0_X
     sta HPOSM0
     lda #STAR1_X
@@ -301,13 +295,14 @@ DLI_Handler
     lda #STAR3_X
     sta HPOSM3
 
-    ; --- Księżyc: HPOSP + HPOSM ---
-    ldx #MOON_TOP-STAR0_Y-2
+    ; --- Czekaj do księżyca ---
+    ldx #MOON_TOP - TOP_MARGIN - SPRITE_ROWS - 2
 @sm
     sta WSYNC
     dex
     bne @sm
 
+    ; --- Księżyc: HPOSP ---
     lda #MOON_X
     sta HPOSP0
     lda #MOON_X+8
@@ -316,14 +311,6 @@ DLI_Handler
     sta HPOSP2
     lda #MOON_X+24
     sta HPOSP3
-    lda #STAR0_X
-    sta HPOSM0
-    lda #STAR1_X
-    sta HPOSM1
-    lda #STAR2_X
-    sta HPOSM2
-    lda #STAR3_X
-    sta HPOSM3
 
     ; Swap na text-DLI
     lda #<TEXT_DLI

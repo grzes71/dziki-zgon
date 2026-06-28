@@ -63,44 +63,44 @@ PMBASE_ADDR = $8000         ; pamięć PMG (1K-aligned)
 FOOTER_ADDR = $5E10         ; stopka tekstowa (ANTIC mode 2, 40 znaków)
 
 ; ---- Offsety PMG (single-line resolution) ----
-MISSILES    = PMBASE_ADDR+$300   ; 128 B — wszystkie 4 missile w 1 bajcie/linia
-PLAYER0     = PMBASE_ADDR+$400   ; 128 B
-PLAYER1     = PMBASE_ADDR+$500   ; 128 B
-PLAYER2     = PMBASE_ADDR+$600   ; 128 B
-PLAYER3     = PMBASE_ADDR+$700   ; 128 B
+MISSILES    = PMBASE_ADDR+$300   ; 256 B — wszystkie 4 missile w 1 bajcie/linia
+PLAYER0     = PMBASE_ADDR+$400   ; 256 B
+PLAYER1     = PMBASE_ADDR+$500   ; 256 B
+PLAYER2     = PMBASE_ADDR+$600   ; 256 B
+PLAYER3     = PMBASE_ADDR+$700   ; 256 B
 
 ; ---- Wymiary sprite'ów — tytuł ----
 SPRITE_ROWS = 37
-TOP_MARGIN  = 50
+TOP_MARGIN  = 38
 
 ; ---- Wymiary sprite'ów — księżyc (4 graczy, 32px) ----
 MOON_ROWS   = 24
-MOON_TOP    = 114            ; pozycja Y księżyca (linia PMG)
-MOON_X      = $28            ; pozycja X lewego skraju księżyca
+MOON_TOP    = 100            ; pozycja Y księżyca (linia PMG) — musi być > TOP_MARGIN+SPRITE_ROWS
+MOON_X      = $30            ; pozycja X lewego skraju księżyca
 
-; ---- Gwiazdy — na missile'ach M0–M3 ----
+; ---- Gwiazdy — na missile'ach M0–M3 (tylko PMG data placement, NIE DLI timing) ----
 STAR0_X     = $50
 STAR1_X     = $48
 STAR2_X     = $60
-STAR3_X     = $70
+STAR3_X     = $74
 
-STAR0_Y     = 108            ; linia PMG — tuż nad księżycem
-STAR1_Y     = 116            ; w obszarze księżyca
-STAR2_Y     = 126
-STAR3_Y     = 121
+STAR0_Y     = 90            ; linia PMG — tuż nad księżycem
+STAR1_Y     = 110            ; w obszarze księżyca
+STAR2_Y     = 95
+STAR3_Y     = 100
 
 ; ---- Timing DLI ----
 KOREKTA     = 8              ; dostrojone doświadczalnie
 DL_BLANKS   = 24
 DLI_DELAY   = TOP_MARGIN - DL_BLANKS - KOREKTA
 
-; ---- Pozycje PMG tytułu (color clocks, side by side, x2 = 16px apart) ----
-TITLE_X     = $34            ; lewy skraj całego napisu
+; ---- Pozycje PMG tytułu (color clocks, side by side, x1 = 8px apart) ----
+TITLE_X     = $30            ; lewy skraj całego napisu
 HPOS_P0     = TITLE_X
-HPOS_P1     = TITLE_X+$10
-HPOS_P2     = TITLE_X+$20
-HPOS_P3     = TITLE_X+$30
-HPOS_M      = TITLE_X+$40    ; 5th player — M3 (lewy skraj)
+HPOS_P1     = TITLE_X+$08
+HPOS_P2     = TITLE_X+$10
+HPOS_P3     = TITLE_X+$18
+HPOS_M      = TITLE_X+$20    ; 5th player — M3 (lewy skraj)
 
 ; ---- PMG DMA ----
 DMA_PMG_ON  = $3E            ; %00111110 = playfield ON + PMG single-line

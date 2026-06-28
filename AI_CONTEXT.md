@@ -11,7 +11,7 @@ Projekt używa modułowej architektury z `icl` (MADS include library). Jeden pli
 ```
 main.asm                     # Punkt startowy, maszyna stanów (title→story→game→gameover→title)
 ├── hardware.asm             # Wszystkie equ dla GTIA/ANTIC/POKEY/OS + stałe projektu
-├── zeropage.asm             # Zmienne page zero ($80 GAME_STATE, $81 SRC_TMP)
+├── zeropage.asm             # Zmienne page zero ($80 SRC_TMP, $81 GAME_STATE)
 ├── lib/
 │   └── pmg.asm              # Procedury PMG: pmg_clear_all, pmg_clear_range
 ├── fonts/
@@ -42,6 +42,7 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 | `lib/pmg.asm` | Współdzielone procedury PMG |
 | `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm |
 | `fonts/font.asm` | Własna czcionka 128 znaków (1 KB, $6000, CHBASE=$60) |
+| `MEMORY_USAGE.md` | Szczegółowa mapa pamięci i alokacji wolnego RAM-u |
 | `docs/KONSPEKT.md` | Dokument projektowy — fabuła, regiony, mechaniki |
 
 ## Build
@@ -65,6 +66,8 @@ Instalacja zależności: `pip install -r requirements.txt`
 - Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) — VBI wyłączony. Zawiera też stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`–2) do użycia w DLI — plik includowany globalnie (dla stałych) i lokalnie w `_init` (dla `lda`/`sta`)
 
 ## Mapa pamięci
+
+Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w dedykowanym dokumencie [MEMORY_USAGE.md](file:///c:/Users/grzes/Documents/Projects/witcher-atari-game/MEMORY_USAGE.md). Skrócony podział pamięci:
 
 | Adres | Zawartość |
 |---|---|
@@ -98,19 +101,19 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 - **System wyłączony**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI, bez VBI OS). PORTB=$FD (BASIC off, OS ROM on — NMI przez OS)
 - Wszystkie rejestry zapisywane bezpośrednio do sprzętu (shadow nieużywane)
 - 4 graczy (P0–P3) + missiles (M0–M3), PRIOR sterowany przez DLI
-- Tytuł: x2 (SIZEP0–3=$01), PRIOR=$11 (5th player), COLPF3 dla missile
+- Tytuł: x1 (SIZEP0–3=$00), PRIOR=$11 (5th player), COLPF3 dla missile
 - Księżyc + gwiazdy: x1 (SIZEP=$00), PRIOR=$01 (bez 5th player, niezależne HPOSM)
 - Gwiazdy dzielą kolor księżyca ($40) — PCOLR0-3 wspólne
 - **Missile HPOS w odwrotnej kolejności**: M3(lewy)→M2→M1→M0(prawy), odstęp +2
 - Dane sprite'ów transponowane z formatu wierszowego `[P0,P1,P2,P3,M]×37` do per-player
-- Pozycje tytułu: $30, $40, $50, $60, $70 (co 16 color clocków przy x2)
+- Pozycje tytułu: $30, $38, $40, $48, $50 (co 8 color clocków przy x1)
 
 ## DLI — sekcje (tylko tytuł)
 
 DLI odpala na `DLIST+2` (ostatnia pusta linia $70 przed trybem E) — brak DMA, pełne CPU. Gra nie używa DLI.
 
 1. **Kolory tła**: COLPF0–2 + COLBK ustawiane ze stałych `TITLE_*` z `title_colors.asm` (generowane z obrazka)
-2. **Tytuł**: SIZEP=x2, HPOSP=$30/$40/$50/$60, PRIOR=$11, 37 linii tęczy (RainbowColors → PCOLR0-3 + COLPF3)
+2. **Tytuł**: SIZEP=x1, HPOSP=$30/$38/$40/$48, PRIOR=$11, 37 linii tęczy (RainbowColors → PCOLR0-3 + COLPF3)
 3. **Po tęczy**: PRIOR=$01, PCOLR=$40, SIZEP=1x — wspólne dla gwiazd i księżyca
 4. **Gwiazdy**: HPOSM = STARn_X (niezależne pozycje missile)
 5. **Księżyc**: HPOSP = MOON_X+0/8/16/24, HPOSM = STARn_X (odświeżone)
