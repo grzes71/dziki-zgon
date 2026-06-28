@@ -61,6 +61,8 @@ witcher-atari-game/
 | [Python](https://www.python.org/) | 3.10+ | Do uruchamiania konwertera `img2asm.py` |
 | [Pillow](https://python-pillow.org/) | 12.x | Biblioteka do przetwarzania obrazów (`pip install -r requirements.txt`) |
 | Emulator Atari | — | Np. [Altirra](https://www.virtualdub.org/altirra.html), Atari800 |
+| [Atari Image Converter](https://github.com/grzes71/py-image-converter/#atari-image-converter) | — | Konwersja obrazów na formaty Atari (PNG → GR7, GR8, MIC, i inne) |
+| [html-to-markdown](https://github.com/grzes71/html-to-markdown#html-to-markdown) | — | Konwersja dokumentacji HTML do Markdown
 
 ## Kompilacja
 
