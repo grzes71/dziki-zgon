@@ -11,7 +11,7 @@ Po wielodniowej imprezie w karczmie "Pod Trzema Kuflami" wiedźmin **Gerwant** b
 - Gra działa na **gołym** Atari 800 XL / 65 XE z **64 KB RAM** — bez rozszerzeń pamięci, bez cartridge'ów.
 - Obsługa wyłącznie **joysticka** i przycisku **FIRE** — bez klawiatury.
 - Jeden plik wykonywalny `.XEX` ładowany z dowolnego DOS-a (lub bootowalny z dyskietki).
-- Grafika w trybach **ANTIC E** (tytuł/gameover), **ANTIC 2** (ekran opisu) oraz **ANTIC 4** (rozgrywka).
+- Grafika w trybach **ANTIC E** (tytuł), **ANTIC D** (game over, narrow playfield 128 px), **ANTIC 2** / **ANTIC 3** (ekran opisu / tekst game over) oraz **ANTIC 4** (rozgrywka).
 - Rozgrywka i sterowanie płynne w **50 FPS** (PAL).
 - Kod pisany w asemblerze **MADS**, bez zależności od BASIC-a ani cartridge'ów.
 - Szacowany rozmiar kodu + danych: do ~32 KB, reszta RAM na bufory, mapy i dźwięk.
@@ -33,26 +33,29 @@ witcher-atari-game/
 │   ├── title/title.asm          # Ekran tytułowy (init + run + DLI + tęcza)
 │   ├── story/story.asm          # Ekran opisu (dekompresja story do stopki)
 │   ├── game/game.asm            # Gra właściwa
-│   └── gameover/gameover.asm    # Ekran końca gry (dekompresja GO do stopki)
+│   └── gameover/gameover.asm    # Ekran końca gry (ANTIC D narrow + ANTIC 3 tęcza)
 ├── gen/                         # Pliki generowane (nie commitować)
-│   ├── title.bin                # Surowe dane binarne ekranu (z paddingiem 4KB)
-│   ├── title.asm                # Dane .byte ekranu (MADS)
-│   ├── title_colors.asm         # Kolory: stałe .equ (dla DLI) + kod init (lda/sta → GTIA)
-│   ├── title_displaylist.asm    # ANTIC Display List (2 segmenty, LMS na $x000)
-│   ├── moon.asm                 # Skompresowany RLE sprite księżyca
-│   ├── dziki-zgon.asm           # Skompresowany RLE sprite logo
-│   ├── story_text.asm           # Skompresowany RLE tekst fabuły
-│   └── gameover_text.asm        # Skompresowany RLE tekst końca gry
+│   ├── title.bin                # Surowe dane binarne ekranu tytułu
+│   ├── title.asm                # Dane .byte ekranu tytułu (MADS)
+│   ├── title_colors.asm         # Kolory tytułu: stałe .equ + kod init
+│   ├── title_displaylist.asm    # ANTIC Display List tytułu (2 segmenty)
+│   ├── gameover.bin             # Surowe dane binarne ekranu game over
+│   ├── gameover.asm             # Dane .byte ekranu game over (MADS)
+│   ├── gameover_colors.asm      # Kolory game over: stałe .equ + kod init
+│   ├── gameover_displaylist.asm # ANTIC Display List game over (ANTIC D)
+│   ├── moon.asm                 # Sprite księżyca (MADS)
+│   └── dziki-zgon.asm           # Sprite logo (MADS)
 ├── texts/
 │   ├── story.txt                # Źródłowy tekst fabuły (ASCII)
 │   └── gameover.txt             # Źródłowy tekst końca gry (ASCII)
 ├── fonts/
 │   └── font.asm                 # Własna czcionka 128 znaków (1 KB, $6000)
 ├── scripts/
-│   ├── img2asm.py               # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory (opcja RLE)
+│   ├── img2asm.py               # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory
 │   └── rle_compress_text.py     # Skrypt do kodowania i kompresji tekstów RLE
 ├── img/
 │   ├── title.png                # Ekran tytułowy (160×192, 4 kolory)
+│   ├── game-over.png            # Ekran game over (128×96, 4 kolory)
 │   ├── moon.png                 # Księżyc (32×24, 1 bpp, 4 graczy)
 │   └── dziki-zgon.png           # Napis tytułowy (40×37, 1 bpp, 4 graczy + 5th)
 ├── docs/
@@ -133,17 +136,17 @@ python scripts/img2asm.py --test
 
 ### Tryb graficzny
 
-| Parametr | Tytuł/Gameover | Story | Gra właściwa |
-|---|---|---|---|
-| Tryb ANTIC | **E** (Graphics 7) | **2** (Graphics 0) | **4** (Graphics 12) |
-| Rozdzielczość | 160 × 192 px | 40 × 24 znaków (8×8 px, spaced) | 40 × 24 znaków (4×8 px) |
-| Kolory | 4 (2 bpp) | 1 + COLBK (biały na czarnym) | 4 + COLBK |
-| Pamięć ekranu | $4000–$5E0F (7696 B) | $6400–$653F (320 B) | $4000–$43BF (960 B) |
-| Charset | $6000–$63FF (font.asm) | $6000–$63FF (font.asm) | $A000–$A3FF (kafelki terenu) |
-| Display List | $3000 | $3000 | $3000 |
-| Kod programu | $2000 | $2000 | $2000 |
-| PORTB | $FF — BASIC off, OS on | ← | ← |
-| Czcionka | CHBASE=$60 | CHBASE=$60 | CHBASE=$A0 (gra) |
+| Parametr | Tytuł | Story | Gra właściwa | Game Over |
+|---|---|---|---|---|
+| Tryb ANTIC | **E** (Graphics 7) | **2** (Graphics 0) | **4** (Graphics 12) | **D** (Graphics 7 narrow) + **3** (tekst) |
+| Rozdzielczość | 160 × 192 px | 40 × 24 znaków (8×8 px) | 40 × 24 znaków (4×8 px) | 128 × 96 px + 32 znaki tekstu |
+| Kolory | 4 (2 bpp) | 1 + COLBK (biały na czarnym) | 4 + COLBK | 4 (2 bpp) + DLI tęcza |
+| Pamięć ekranu | $4000–$5E0F (7696 B) | $5E10–$5F4F (320 B, RLE) | $4000–$43BF (960 B) | $7000–$7ADF (2784 B) + $7C00 tekst |
+| Charset | $6000–$63FF (font.asm) | $6000–$63FF (font.asm) | $A800–$ABFF (kafelki terenu) | $6000–$63FF (font.asm) |
+| Display List | $3E80 | $3E80 | $3E80 | $3E80 |
+| Kod programu | $2000 | $2000 | $2000 | $2000 |
+| PORTB | $FF — BASIC off, OS on | ← | ← | ← |
+| Czcionka | CHBASE=$60 | CHBASE=$60 | CHBASE=$A8 | CHBASE=$60 |
 
 ### Rejestry kolorów
 
