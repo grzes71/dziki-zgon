@@ -22,28 +22,35 @@ Po wielodniowej imprezie w karczmie "Pod Trzema Kuflami" wiedźmin **Gerwant** b
 witcher-atari-game/
 ├── main.asm                     # Punkt startowy + maszyna stanów (title→story→game→gameover)
 ├── hardware.asm                 # Definicje rejestrów GTIA/ANTIC/POKEY i stałe
-├── zeropage.asm                 # Zmienne page zero ($80–$81)
+├── zeropage.asm                 # Zmienne page zero ($80–$85)
 ├── Makefile                     # Automatyzacja budowania
 ├── dziki_zgon.xex               # Skompilowany plik wykonywalny
 ├── requirements.txt              # Zależności Pythona (Pillow)
 ├── lib/
-│   └── pmg.asm                  # Procedury pomocnicze PMG
+│   ├── pmg.asm                  # Procedury pomocnicze PMG
+│   └── rle.asm                  # Wspólny dekompresor RLE (6502)
 ├── scenes/
 │   ├── title/title.asm          # Ekran tytułowy (init + run + DLI + tęcza)
-│   ├── story/story.asm          # Ekran opisu
+│   ├── story/story.asm          # Ekran opisu (dekompresja story do stopki)
 │   ├── game/game.asm            # Gra właściwa
-│   └── gameover/gameover.asm    # Ekran końca gry
+│   └── gameover/gameover.asm    # Ekran końca gry (dekompresja GO do stopki)
 ├── gen/                         # Pliki generowane (nie commitować)
 │   ├── title.bin                # Surowe dane binarne ekranu (z paddingiem 4KB)
 │   ├── title.asm                # Dane .byte ekranu (MADS)
 │   ├── title_colors.asm         # Kolory: stałe .equ (dla DLI) + kod init (lda/sta → GTIA)
 │   ├── title_displaylist.asm    # ANTIC Display List (2 segmenty, LMS na $x000)
-│   ├── moon.asm                 # Dane sprite'ów księżyca (24 wiersze × 4 bajty)
-│   └── dziki-zgon.asm           # Dane sprite'ów napisu (37 wierszy × 5 bajtów)
+│   ├── moon.asm                 # Skompresowany RLE sprite księżyca
+│   ├── dziki-zgon.asm           # Skompresowany RLE sprite logo
+│   ├── story_text.asm           # Skompresowany RLE tekst fabuły
+│   └── gameover_text.asm        # Skompresowany RLE tekst końca gry
+├── texts/
+│   ├── story.txt                # Źródłowy tekst fabuły (ASCII)
+│   └── gameover.txt             # Źródłowy tekst końca gry (ASCII)
 ├── fonts/
 │   └── font.asm                 # Własna czcionka 128 znaków (1 KB, $6000)
 ├── scripts/
-│   └── img2asm.py               # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory
+│   ├── img2asm.py               # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory (opcja RLE)
+│   └── rle_compress_text.py     # Skrypt do kodowania i kompresji tekstów RLE
 ├── img/
 │   ├── title.png                # Ekran tytułowy (160×192, 4 kolory)
 │   ├── moon.png                 # Księżyc (32×24, 1 bpp, 4 graczy)
@@ -98,7 +105,7 @@ Opcje:
   --colors           Tylko plik z kolorami (_colors.asm)
   --dl               Tylko Display List (_displaylist.asm)
   --screen-base ADR  Adres bazowy ekranu (domyślnie: 0x4000)
-  -c {rle,zx5}       Kompresja RLE lub ZX5
+  -c {rle}           Wybór kompresji (RLE)
   -l N               Bajtów na linię w .byte (domyślnie: 8)
   --test             Uruchom testy jednostkowe DL
   -o NAZWA           Bazowa nazwa plików wyjściowych
@@ -115,8 +122,8 @@ cd gen && python ../scripts/img2asm.py ../img/title.png 2 --all -o title --foote
 cd gen && python ../scripts/img2asm.py ../img/moon.png 1 --asm -o moon.asm -l 4
 cd gen && python ../scripts/img2asm.py ../img/dziki-zgon.png 1 --asm -o dziki-zgon.asm -l 5
 
-# Tylko surowy .bin z kompresją RLE
-python scripts/img2asm.py img/sprite.bmp 2 --bin -c rle
+# Tylko dane .byte z kompresją RLE
+python scripts/img2asm.py img/sprite.bmp 2 --asm -c rle
 
 # Testy algorytmu Display List
 python scripts/img2asm.py --test
@@ -135,7 +142,7 @@ python scripts/img2asm.py --test
 | Charset | $6000–$63FF (font.asm) | $6000–$63FF (font.asm) | $A000–$A3FF (kafelki terenu) |
 | Display List | $3000 | $3000 | $3000 |
 | Kod programu | $2000 | $2000 | $2000 |
-| PORTB | $FD — BASIC off, OS on | ← | ← |
+| PORTB | $FF — BASIC off, OS on | ← | ← |
 | Czcionka | CHBASE=$60 | CHBASE=$60 | CHBASE=$A0 (gra) |
 
 ### Rejestry kolorów
@@ -190,17 +197,22 @@ Segment 2: LMS=$5000  →   90 linii (102–191) →  $5000–$5E0F
 
 ### Kompresja RLE
 
-Dostępna opcjonalna kompresja danych ekranu:
+Dostępna opcjonalna kompresja danych ekranu (obrazów) oraz tekstów (przez dedykowane skrypty w `scripts/`):
 
+```bash
+# Kompresja tła/sprite'ów z opcją RLE:
+python scripts/img2asm.py img/title.png 2 --asm -c rle
+
+# Kompresja tekstów:
+python scripts/rle_compress_text.py -i story -o gen/story_text.asm
 ```
-python scripts/img2asm.py img/title-0.png 2 --bin -c rle
-```
 
-Generuje plik `.rle` oraz depacker 6502 (`_rle_depack.asm`).
+Gra wykorzystuje wspólny depacker 6502 zdefiniowany w [lib/rle.asm](file:///c:/Users/grzes/Documents/Projects/witcher-atari-game/lib/rle.asm).
 
-Format RLE:
-- `$00–$7F` → ciąg N+1 literałów
-- `$80–$FF` → powtórzenie bajta N−127 razy
+Format RLE (PackBits + marker EOF):
+- `$00–$7F` → ciąg `cmd + 1` literałów (1..128)
+- `$80`     → znacznik końca danych (EOF)
+- `$81–$FF` → powtórzenie kolejnego bajtu `(cmd & $7F) + 1` razy (2..128)
 
 ## Licencja
 
