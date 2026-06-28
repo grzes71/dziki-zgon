@@ -62,8 +62,7 @@ fire_released_flag
     ; 2. Czekaj na ponowne naciśnięcie przycisku FIRE
     lda TRIG0
     bne @exit            ; jeszcze nie nacisnął ponownie
-    lda #STATE_GAME
-    sta GAME_STATE
+    jsr advance_stage
 @exit
     rts
 .endp

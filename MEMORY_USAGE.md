@@ -25,23 +25,27 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$2363` – `$2363`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
 | **`$2364` – `$2432`** | 207 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
 | **`$2433` – `$2433`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$2434` – `$248C`** | 89 B | `gameover.asm` | Kod programu | Logika i inicjalizacja ekranu końca gry (*GameOver*). |
-| **`$248D` – `$24E8`** | 92 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna i początkowa konfiguracja systemu. |
+| **`$2434` – `$24C4`** | ~145 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler + tabela tęczy `GoRainbow` dla ekranu GameOver. |
+| **`$24C5` – `$24E8`** | 36 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
 | **`$24E9` – `$25A1`** | 185 B | `DzikizgonData` | Dane (Sprites) | Surowe dane graficzne logo "Dziki Zgon" (wczytywane do PMG). |
 | **`$25A2` – `$2601`** | 96 B | `MoonData` | Dane (Sprites) | Surowe dane graficzne księżyca (wczytywane do PMG). |
 | **`$2602` – `$2FFF`** | **2558 B** | — | **WOLNY RAM** | Obszar wolny po kodzie programu, dostępny na dalszy rozwój kodu/danych. |
 | **`$3000` – `$30CD`** | 206 B | `DLIST_TITLE` | Display List | Lista instrukcji ANTIC dla ekranu tytułowego (tryb E + tryb 2). |
 | **`$30CE` – `$30EA`** | 29 B | `DLIST_STORY` | Display List | Lista instrukcji ANTIC dla ekranu opisu fabularnego (tryb 2). |
 | **`$30EB` – `$310A`** | 32 B | `DLIST_GAME` | Display List | Lista instrukcji ANTIC dla ekranu gry właściwej (tryb 4). |
-| **`$310B` – `$31D2`** | 200 B | `DLIST_GAMEOVER` | Display List | Lista instrukcji ANTIC dla ekranu końca gry (tryb E). |
-| **`$31D3` – `$3FFF`** | **3629 B** | — | **WOLNY RAM** | Obszar wolny za Display Listami, przed pamięcią ekranu. |
+| **`$310B` – `$3171`** | ~103 B | `DLIST_GAMEOVER` | Display List | Lista instrukcji ANTIC dla ekranu GameOver (ANTIC D 128×96 + ANTIC 3 text footer z tęczowym DLI). |
+| **`$3172` – `$3FFF`** | **~3726 B** | — | **WOLNY RAM** | Obszar wolny za Display Listami, przed pamięcią ekranu. |
 | **`$4000` – `$43BF`** | 960 B | `GAME_SCREEN` | VRAM / Bufor | Ekran gry właściwej (40x24 kafelków znakowych w trybie ANTIC 4). *Współdzielony z TitleData.* |
 | **`$4000` – `$5E0F`** | 7696 B | `TitleData` | VRAM / Bufor | Pamięć bitmapy ekranu tytułowego (tryb ANTIC E, 160x192 px, 4 kolory). |
 | **`$5E10` – `$5F4F`** | 320 B | `FOOTER_ADDR` | VRAM / Bufor | Tekst stopki ekranu tytułowego (8 linii × 40 znaków w trybie ANTIC 2). |
 | **`$5F50` – `$5FFF`** | **176 B** | — | **WOLNY RAM** | Niewielki bufor wolnego RAM-u przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Czcionka własna gry (128 znaków × 8 B). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$653F`** | 320 B | `StoryText` | Dane (Tekst) | Bufor tekstu fabularnego dla ekranu *Story* (8 linii × 40 znaków). |
-| **`$6540` – `$7FFF`** | **6848 B** | — | **WOLNY RAM** | Duży ciągły obszar wolnej pamięci na dane pomocnicze, mapy itp. |
+| **`$6540` – `$6FFF`** | **2752 B** | — | **WOLNY RAM** | Wolna pamięć przed danymi ekranu GameOver. |
+| **`$7000` – `$7ADF`** | 2784 B | `GO_SCREEN` | Dane (Bitmapa) | Bitmapa ekranu GameOver (ANTIC D, narrow, 128×87 px, 4 kolory). Generowana z `img/game-over.png`. |
+| **`$7AE0` – `$7BFF`** | **288 B** | — | **WOLNY RAM** | Mały bufor między bitmapą a tekstem GameOver. |
+| **`$7C00` – `$7C1F`** | 32 B | `GO_TEXT` | Dane (Tekst) | Tekst "GAME OVER" pod ekranem (ANTIC mode 3, narrow, 32 znaki). |
+| **`$7C20` – `$7FFF`** | **992 B** | — | **WOLNY RAM** | Wolna pamięć za danymi GameOver. |
 | **`$8000` – `$82FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 1 KB. Nieużywane bezpośrednio. |
 | **`$8300` – `$83FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$8400` – `$84FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0 (Geralt/Gerwant we właściwej grze). |
@@ -56,14 +60,16 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 
 ## Analiza Wolnej Pamięci RAM
 
-Gra posiada obecnie **`26 523 bajtów`** (~25.9 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące bloki:
+Gra posiada obecnie **`~25 926 bajtów`** (~25.3 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące bloki:
 
 1.  **`$2602` – `$2FFF` (2 558 B)**: Idealne miejsce na dopisanie dodatkowych bibliotek lub procedur logicznych silnika gry.
-2.  **`$31D3` – `$3FFF` (3 629 B)**: Przestrzeń przed buforem wideo. Można tu umieścić dodatkowe Display Listy lub dynamiczne struktury.
+2.  **`$3172` – `$3FFF` (~3 726 B)**: Przestrzeń przed buforem wideo. Można tu umieścić dodatkowe Display Listy lub dynamiczne struktury.
 3.  **`$5F50` – `$5FFF` (176 B)**: Mały bufor (np. na zmienne globalne lub bufory wejściowe).
-4.  **`$6540` – `$7FFF` (6 848 B)**: Duży, bardzo cenny obszar pamięci RAM. Doskonały na mapy aktualnego poziomu/regionu lub skomplikowaną logikę przeciwników.
-5.  **`$8800` – `$9FFF` (6 144 B)**: Kolejny spory obszar, który można wykorzystać na logikę gry lub dodatkowe zestawy grafik PMG.
-6.  **`$A400` – `$BFFF` (7 168 B)**: Wolna przestrzeń pod ROM-em BASIC-a. Idealna na przechowywanie statycznych baz danych gry, takich jak opisy przedmiotów, dialogi, czy definie stanu regionów.
+4.  **`$6540` – `$6FFF` (2 752 B)**: Wolna pamięć przed bitmapą GameOver. Dobra na struktury pomocnicze.
+5.  **`$7AE0` – `$7BFF` (288 B)**: Mały bufor między bitmapą a tekstem GameOver.
+6.  **`$7C20` – `$7FFF` (992 B)**: Wolna pamięć za danymi GameOver.
+7.  **`$8800` – `$9FFF` (6 144 B)**: Kolejny spory obszar, który można wykorzystać na logikę gry lub dodatkowe zestawy grafik PMG.
+8.  **`$A400` – `$BFFF` (7 168 B)**: Wolna przestrzeń pod ROM-em BASIC-a. Idealna na przechowywanie statycznych baz danych gry, takich jak opisy przedmiotów, dialogi, czy definicje stanu regionów.
 
 ---
 
@@ -74,8 +80,9 @@ Projekt optymalizuje zużycie pamięci poprzez nakładanie na siebie buforów ek
 *   **Bufor Wideo `$4000–$5FFF`**:
     *   W stanie **Title** obszar ten zajmuje pełna bitmapa ekranu tytułowego `$4000–$5E0F` (7696 B) oraz stopka `$5E10–$5F4F` (320 B).
     *   W stanie **Game** w tym samym miejscu pod adresem `$4000–$43BF` znajduje się pamięć ekranu znakowego `GAME_SCREEN` (960 B). Nadpisuje ona początek bitmapy tytułowej.
-    *   W stanie **GameOver** na tym samym obszarze wideo (`$4000` i kolejne) renderowany jest ekran końca gry.
     *   Dzięki temu zabiegowi zaoszczędzono ponad **7 KB RAM**, które w przeciwnym razie musiałyby zostać wydzielone osobno dla każdego z tych ekranów.
+
+*   **Ekran GameOver** używa własnego obszaru pamięci **`$7000–$7C1F`** (2816 B łącznie), niezależnego od bufora $4000. Zawiera bitmapę ANTIC D 128×87 (2784 B) oraz tekst "GAME OVER" w ANTIC mode 3 (32 B). GameOver nie współdzieli pamięci z Title ani Game — jego dane są ładowane w dedykowanym obszarze, a przejście między stanami czyści i rekonfiguruje sprzęt przez `system_init`.
 
 ## Player/Missile Graphics (PMG) Alignment
 

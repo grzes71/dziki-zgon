@@ -30,6 +30,14 @@ BG_ASM      := $(GEN_DIR)/$(BG_PREFIX).asm
 BG_COLORS   := $(GEN_DIR)/$(BG_PREFIX)_colors.asm
 BG_DL       := $(GEN_DIR)/$(BG_PREFIX)_displaylist.asm
 
+# Game Over screen
+GO_PREFIX   := gameover
+GO_IMG      := img/game-over.png
+GO_BIN      := $(GEN_DIR)/$(GO_PREFIX).bin
+GO_ASM      := $(GEN_DIR)/$(GO_PREFIX).asm
+GO_COLORS   := $(GEN_DIR)/$(GO_PREFIX)_colors.asm
+GO_DL       := $(GEN_DIR)/$(GO_PREFIX)_displaylist.asm
+
 # Sprite'y
 MOON_ASM    := $(GEN_DIR)/moon.asm
 MOON_IMG    := img/moon.png
@@ -37,11 +45,11 @@ TITLE_ASM   := $(GEN_DIR)/dziki-zgon.asm
 TITLE_IMG   := img/dziki-zgon.png
 
 # ---- Cele ----
-.PHONY: all xex bg sprites clean run
+.PHONY: all xex bg go sprites clean run
 
-all: sprites bg xex
+all: sprites bg go xex
 
-xex: $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(ASM_MAIN)
+xex: $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT)
 
@@ -65,6 +73,14 @@ $(TITLE_ASM): $(TITLE_IMG) scripts/img2asm.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(TITLE_IMG) → $(TITLE_ASM) ==="
 	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(TITLE_IMG) 1 --asm -o dziki-zgon.asm -l 5
+
+# Game Over screen (ANTIC D, 160×96, 4 kolory)
+go: $(GO_BIN)
+
+$(GO_BIN): $(GO_IMG) scripts/img2asm.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Konwersja $(GO_IMG) → $(GO_PREFIX).* ==="
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(GO_IMG) 2 --all -o $(GO_PREFIX) --screen-base 0x7000
 
 # Sprzątanie
 clean:

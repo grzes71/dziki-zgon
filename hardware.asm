@@ -112,3 +112,6 @@ STATE_TITLE = 0
 STATE_STORY = 1
 STATE_GAME  = 2
 STATE_OVER  = 3
+
+; ---- Development — indeks etapu startowego (0=title, 1=story, 2=game, 3=gameover) ----
+DEV_START_STAGE = 0         ; zmień, by wystartować od innego etapu podczas developmentu

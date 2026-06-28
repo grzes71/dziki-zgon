@@ -188,8 +188,7 @@
     sta VDSLST+1
     lda #0
     sta NMIEN
-    lda #STATE_STORY
-    sta GAME_STATE
+    jsr advance_stage
 @exit
     rts
 .endp

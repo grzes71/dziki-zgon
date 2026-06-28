@@ -118,11 +118,10 @@ TestTiles
     jmp @move
 
 @check_press
-    ; --- TEST: FIRE → gameover ---
+    ; --- TEST: FIRE → następny etap ---
     lda TRIG0
     bne @move
-    lda #STATE_OVER
-    sta GAME_STATE
+    jsr advance_stage
     rts
 
 @move

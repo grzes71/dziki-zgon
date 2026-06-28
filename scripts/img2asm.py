@@ -540,11 +540,13 @@ def generate_asm_displaylist(
     """
     # --- Wybór trybu ANTIC (wartość w Display List) -------------------------
     antic_map = {
-        1: 0x0F,   # ANTIC F – Graphics 8
-        2: 0x0E,   # ANTIC E – Graphics 7
-        4: 0x0F,   # ANTIC F + GTIA – Graphics 9/10/11
+        1: 0x0F,   # ANTIC F – Graphics 8 (320×192)
+        4: 0x0F,   # ANTIC F + GTIA – Graphics 9/10/11 (80×192)
     }
     antic_mode = antic_map.get(bits_per_pixel)
+    if antic_mode is None and bits_per_pixel == 2:
+        # 2 bpp → Graphics 7: ANTIC D (160×96) lub ANTIC E (160×192)
+        antic_mode = 0x0D if height <= 96 else 0x0E
     if antic_mode is None:
         print(
             f"⚠ Display List: brak obsługi dla {bits_per_pixel} bpp "
@@ -574,7 +576,8 @@ def generate_asm_displaylist(
     lines.append(f"; Danych (z paddingiem): {total_bytes} bajtów")
     lines.append("")
 
-    lines.append("DLIST")
+    dl_label = f"DLIST_{label_prefix.upper()}"
+    lines.append(dl_label)
 
     # Górny margines: 24 puste linie (3 × $70)
     lines.append("\t; 24 puste linie (górna ramka)")
@@ -611,7 +614,7 @@ def generate_asm_displaylist(
         lines.append("")
 
     lines.append("\t; Koniec Display List")
-    lines.append("\tdta $41, a(DLIST)\t; JVB – skok z oczekiwaniem na VBLANK")
+    lines.append(f"\tdta $41, a({dl_label})\t; JVB – skok z oczekiwaniem na VBLANK")
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
