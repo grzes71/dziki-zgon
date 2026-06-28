@@ -11,10 +11,10 @@ gameover_fire_released
     dta $00
 
 ;==============================================================
-; DLI_Gameover — Obrazek + tęcza na tekście (ANTIC mode 3, 10 scanlines)
-; Wzorowane na TEXT_DLI z title.asm — per-scanline WSYNC + COLPF1
+; DLI_Gameover — Obrazek + płynne migotanie tekstu (ANTIC mode 3)
 ; (1) pierwsza linia DL ($F0) — przywraca kolory obrazka
-; (2) blank przed tekstem ($F0) — tęcza na każdej linii znaku
+; (2) blank przed tekstem ($F0) — ustawia COLPF2 na kolor z tabeli
+; Kolor zmienia się co klatkę (10 klatek = pełny cykl)
 ;==============================================================
 RAINBOW_LEN = 10
 
@@ -23,26 +23,46 @@ RAINBOW_LEN = 10
     txa
     pha
 
-@rainbow
-    ; --- Tęcza per-scanline (ANTIC mode 3 = 10 linii znaku) ---
-    ldy #0
-    sty COLPF0            ; nieużywane (standardowe znaki, bit 7=0)
-    sty COLPF1            ; nieużywane
+    lda go_dli_toggle
+    bne @blink
 
-@rloop
-    lda GoRainbow,y       ; pobierz kolor dla tej linii
-    sta WSYNC             ; czekaj na początek następnej linii skanowania
-    sta COLPF2            ; ustaw kolor tekstu
-    iny
-    cpy #RAINBOW_LEN
-    bne @rloop
-
+@restore
+    ; --- Obrazek: przywróć COLPF0–2 z palety ---
     lda #GAMEOVER_COLPF0
     sta COLPF0
     lda #GAMEOVER_COLPF1
     sta COLPF1
     lda #GAMEOVER_COLPF2
     sta COLPF2
+    lda #1
+    sta go_dli_toggle
+    jmp @done
+
+@blink
+    ; --- Migotanie: ustaw COLPF2 na bieżący kolor z tabeli ---
+    lda #0
+    sta COLPF0            ; nieużywane (standardowe znaki)
+    sta COLPF2
+    ldx go_pulse_idx
+    lda GoRainbow,x
+    sta COLPF1            ; kolor tekstu dla tej klatki
+
+    ; Spowolnienie ×2: inkrementuj go_pulse_idx co 2 klatki
+    inc go_subframe
+    lda go_subframe
+    cmp #2
+    bne @reset_done
+    lda #0
+    sta go_subframe
+    inc go_pulse_idx
+    lda go_pulse_idx
+    cmp #RAINBOW_LEN
+    bne @reset_done
+    lda #0
+    sta go_pulse_idx      ; wrap do 0 po pełnym cyklu
+@reset_done
+    lda #0
+    sta go_dli_toggle
 
 @done
     pla
@@ -53,19 +73,23 @@ RAINBOW_LEN = 10
 
 go_dli_toggle
     dta $00
+go_pulse_idx
+    dta $00
+go_subframe
+    dta $00
 
-; Kolory tęczy dla COLPF1 — 10 kolorów (ANTIC mode 3 = 10 scanlines)
+; Kolory migotania dla COLPF2 — 10 kolorów, zmiana co klatkę
 GoRainbow
-    dta $30  
-    dta $32    
-    dta $34   
-    dta $36  
-    dta $38    
-    dta $3A   
-    dta $3C    
-    dta $3C   
-    dta $3E    
-    dta $3E 
+    dta $30     ; 0: ciemny pomarańcz
+    dta $32     ; 1
+    dta $34     ; 2
+    dta $36     ; 3: czerwony
+    dta $38     ; 4
+    dta $3A     ; 5
+    dta $3C     ; 6
+    dta $3C     ; 7
+    dta $3E     ; 8
+    dta $3E     ; 9: jasny pomarańcz
 
 .proc gameover_init
     lda #0
@@ -75,6 +99,8 @@ GoRainbow
     sta PRIOR               ; reset priorytetów
     sta gameover_fire_released ; zresetuj stan przycisku FIRE
     sta go_dli_toggle       ; DLI toggle: 0 = obrazek
+    sta go_pulse_idx        ; indeks migotania: 0
+    sta go_subframe         ; spowolnienie ×2: 0
 
     jsr pmg_clear_all
     jsr copy_gameover_text
