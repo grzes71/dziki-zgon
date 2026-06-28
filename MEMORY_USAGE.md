@@ -22,19 +22,19 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$2043` – `$2308`** | 710 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego oraz procedury DLI tęczy. |
 | **`$2309` – `$2309`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
 | **`$230A` – `$2362`** | 89 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$2363` – `$2363`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
-| **`$2364` – `$2432`** | 207 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
-| **`$2433` – `$2433`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$2434` – `$24C4`** | ~145 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler + tabela tęczy `GoRainbow` dla ekranu GameOver. |
-| **`$24C5` – `$24E8`** | 36 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
-| **`$24E9` – `$25A1`** | 185 B | `DzikizgonData` | Dane (Sprites) | Surowe dane graficzne logo "Dziki Zgon" (wczytywane do PMG). |
-| **`$25A2` – `$2601`** | 96 B | `MoonData` | Dane (Sprites) | Surowe dane graficzne księżyca (wczytywane do PMG). |
-| **`$2602` – `$2FFF`** | **2558 B** | — | **WOLNY RAM** | Obszar wolny po kodzie programu, dostępny na dalszy rozwój kodu/danych. |
+| **`$2345` – `$2345`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
+| **`$2346` – `$2427`** | 226 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
+| **`$2428` – `$2428`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
+| **`$2429` – `$24D3`** | 171 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler + tabela tęczy `GoRainbow` dla ekranu GameOver. |
+| **`$24D4` – `$2570`** | 157 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$2571` – `$2629`** | 185 B | `DzikizgonData` | Dane (Sprites) | Surowe dane graficzne logo "Dziki Zgon" (wczytywane do PMG). |
+| **`$262A` – `$2689`** | 96 B | `MoonData` | Dane (Sprites) | Surowe dane graficzne księżyca (wczytywane do PMG). |
+| **`$268A` – `$2FFF`** | **2422 B** | — | **WOLNY RAM** | Obszar wolny po kodzie programu, dostępny na dalszy rozwój kodu/danych. |
 | **`$3000` – `$30CD`** | 206 B | `DLIST_TITLE` | Display List | Lista instrukcji ANTIC dla ekranu tytułowego (tryb E + tryb 2). |
 | **`$30CE` – `$30EA`** | 29 B | `DLIST_STORY` | Display List | Lista instrukcji ANTIC dla ekranu opisu fabularnego (tryb 2). |
 | **`$30EB` – `$310A`** | 32 B | `DLIST_GAME` | Display List | Lista instrukcji ANTIC dla ekranu gry właściwej (tryb 4). |
-| **`$310B` – `$3171`** | ~103 B | `DLIST_GAMEOVER` | Display List | Lista instrukcji ANTIC dla ekranu GameOver (ANTIC D 128×96 + ANTIC 3 text footer z tęczowym DLI). |
-| **`$3172` – `$3FFF`** | **~3726 B** | — | **WOLNY RAM** | Obszar wolny za Display Listami, przed pamięcią ekranu. |
+| **`$310B` – `$316E`** | 99 B | `DLIST_GAMEOVER` | Display List | Lista instrukcji ANTIC dla ekranu GameOver (ANTIC D 128×96 + ANTIC 3 text footer z tęczowym DLI). |
+| **`$316F` – `$3FFF`** | **3729 B** | — | **WOLNY RAM** | Obszar wolny za Display Listami, przed pamięcią ekranu. |
 | **`$4000` – `$43BF`** | 960 B | `GAME_SCREEN` | VRAM / Bufor | Ekran gry właściwej (40x24 kafelków znakowych w trybie ANTIC 4). *Współdzielony z TitleData.* |
 | **`$4000` – `$5E0F`** | 7696 B | `TitleData` | VRAM / Bufor | Pamięć bitmapy ekranu tytułowego (tryb ANTIC E, 160x192 px, 4 kolory). |
 | **`$5E10` – `$5F4F`** | 320 B | `FOOTER_ADDR` | VRAM / Bufor | Tekst stopki ekranu tytułowego (8 linii × 40 znaków w trybie ANTIC 2). |
@@ -60,10 +60,10 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 
 ## Analiza Wolnej Pamięci RAM
 
-Gra posiada obecnie **`~25 926 bajtów`** (~25.3 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące bloki:
+Gra posiada obecnie **`23 671 bajtów`** (~23.1 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące bloki:
 
-1.  **`$2602` – `$2FFF` (2 558 B)**: Idealne miejsce na dopisanie dodatkowych bibliotek lub procedur logicznych silnika gry.
-2.  **`$3172` – `$3FFF` (~3 726 B)**: Przestrzeń przed buforem wideo. Można tu umieścić dodatkowe Display Listy lub dynamiczne struktury.
+1.  **`$268A` – `$2FFF` (2 422 B)**: Idealne miejsce na dopisanie dodatkowych bibliotek lub procedur logicznych silnika gry.
+2.  **`$316F` – `$3FFF` (3 729 B)**: Przestrzeń przed buforem wideo. Można tu umieścić dodatkowe Display Listy lub dynamiczne struktury.
 3.  **`$5F50` – `$5FFF` (176 B)**: Mały bufor (np. na zmienne globalne lub bufory wejściowe).
 4.  **`$6540` – `$6FFF` (2 752 B)**: Wolna pamięć przed bitmapą GameOver. Dobra na struktury pomocnicze.
 5.  **`$7AE0` – `$7BFF` (288 B)**: Mały bufor między bitmapą a tekstem GameOver.
