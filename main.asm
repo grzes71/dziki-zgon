@@ -20,6 +20,7 @@
 
     ; --- Biblioteki (procedury wielokrotnego użytku) ---
     icl "lib/pmg.asm"
+    icl "lib/rle.asm"
 
     ; --- Sceny (każda eksportuje _init i _run) ---
     icl "scenes/title/title.asm"
@@ -80,7 +81,7 @@ STAGE_COUNT = * - stage_order
     sta DMACTL              ; wyłącz DMA na czas konfiguracji
     sta NMIEN               ; wyłącz NMI (DLI + VBI) — kluczowe przy DEV_START_STAGE>0
     sta GRACTL              ; wyłącz PMG DMA
-    lda #$FD                ; %11111101: bit 0=1 (OS ROM ON), bit 1=0 (BASIC OFF)
+    lda #$FF                ; %11111111: bit 0=1 (OS ROM ON), bit 1=1 (BASIC OFF)
     sta PORTB               ; odsłoń RAM spod BASIC ROM ($A000–$BFFF)
     rts
 .endp
@@ -147,9 +148,15 @@ main_loop
     beq @go
     jmp main_loop
 
-; ===================================================================
-; 5. Dane sprite'ów (przed $3000, w luce po kodzie)
-; ===================================================================
+; --- Dane tekstów (kopiowane do RAM w czasie wykonania) ---
+StoryText_RAM = FOOTER_ADDR
+
+StoryText_Data
+    icl "gen/story_text.asm"
+
+GO_TEXT_Data
+    icl "gen/gameover_text.asm"
+
 SpriteData = DzikizgonData
 
     icl "gen/dziki-zgon.asm"
@@ -168,7 +175,7 @@ TitleData = SCREEN
 DLIST_STORY
     dta $70,$70,$70        ; 3 blank
     dta $70,$70            ; 2 blank (razem 5 blank na gorze)
-    dta $42,$00,$64        ; LMS + ANTIC mode 2 -> adres $6400 (Line 1 - Text)
+    dta $42,a(StoryText_RAM) ; LMS + ANTIC mode 2 -> adres StoryText_RAM ($5E10)
     dta $70                ; Blank line 1
     dta $02                ; ANTIC mode 2 (Line 2 - Text)
     dta $70                ; Blank line 2
@@ -230,20 +237,6 @@ JVB_OFFSET = * - DLIST_GAMEOVER - 3
     .endr
 
 ; ===================================================================
-; 9. Tekst story ($6400, 8×40 = 320 B)
-; ===================================================================
-    org $6400
-StoryText
-    dta d"  Po wielodniowej imprezie w karczmie   "
-    dta d" 'Pod Trzema Kuflami' Wiedzmin Gerwant  "
-    dta d" budzi sie z poteznym kacem. Nie pamieta"
-    dta d"gdzie jest Plotka, gdzie sa miecze, ani "
-    dta d"skad wzial sie rachunek na 18000 orenow."
-    dta d"   Wyrusza w podroz przez 5 regionow,   "
-    dta d" by odzyskac swoj dobytek, wspomnienia i"
-    dta d"           resztki godnosci.            "
-
-; ===================================================================
 ; 10. Czcionka ($6000, 1 KB aligned → CHBASE=$60)
 ; ===================================================================
     org $6000
@@ -256,7 +249,5 @@ GO_SCREEN = $7000
     org GO_SCREEN
     ins "gen/gameover.bin"
 
-; Tekst "GAME OVER" pod ekranem (ANTIC mode 2, narrow = 32 znaki)
-GO_TEXT = $7C00
-    org GO_TEXT
-    dta d"          GAME OVER           "
+; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
+GO_TEXT = FOOTER_ADDR

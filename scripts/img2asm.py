@@ -346,6 +346,7 @@ def rle_compress(data):
             result.append(lit_len - 1)          # bit 7 = 0
             result.extend(data[lit_start:i])
 
+    result.append(0x80)  # EOF marker
     return result
 
 
@@ -357,7 +358,7 @@ def generate_bin(packed_data, output_path):
     """Zapisuje surowe dane binarne."""
     with open(output_path, "wb") as f:
         f.write(packed_data)
-    print(f"  ✔ {output_path}  ({len(packed_data)} bajtów)")
+    print(f"  [OK] {output_path}  ({len(packed_data)} bajtów)")
 
 
 def generate_asm_data(packed_data, output_path, label, bytes_per_line=8):
@@ -375,7 +376,7 @@ def generate_asm_data(packed_data, output_path, label, bytes_per_line=8):
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
-    print(f"  ✔ {output_path}")
+    print(f"  [OK] {output_path}")
 
 
 def generate_asm_colors(palette_rgb, output_path, label_prefix, bits_per_pixel):
@@ -457,7 +458,7 @@ def generate_asm_colors(palette_rgb, output_path, label_prefix, bits_per_pixel):
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
-    print(f"  ✔ {output_path}")
+    print(f"  [OK] {output_path}")
 
 
 def _compute_dl_segments(width, height, bits_per_pixel, screen_base_address):
@@ -618,7 +619,7 @@ def generate_asm_displaylist(
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
-    print(f"  ✔ {output_path}")
+    print(f"  [OK] {output_path}")
 
 
 def generate_rle_asm_depacker(output_path):
@@ -698,7 +699,7 @@ do_repeat
 """
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(code)
-    print(f"  ✔ {output_path}")
+    print(f"  [OK] {output_path}")
 
 
 def compress_zx5(data, output_path):
@@ -718,7 +719,7 @@ def compress_zx5(data, output_path):
         if result.returncode != 0:
             print(f"  ✗ zx5: {result.stderr.strip()}", file=sys.stderr)
             return None
-        print(f"  ✔ {output_path}  (ZX5, {os.path.getsize(output_path)} bajtów)")
+        print(f"  [OK] {output_path}  (ZX5, {os.path.getsize(output_path)} bajtów)")
         return output_path
     except FileNotFoundError:
         print(
@@ -798,16 +799,24 @@ def convert(
     # --- 4. Generuj pliki wyjściowe ----------------------------------------
     generated = []
 
+    # Jeśli kompresja RLE jest włączona, używamy skompresowanych danych do .bin i .asm
+    rle_data = None
+    if compression == "rle":
+        rle_data = rle_compress(packed)
+        packed_to_write = rle_data
+    else:
+        packed_to_write = packed
+
     # .bin – surowe dane binarne
     if generate_all or bin_output:
         bin_path = f"{output_base}.bin"
-        generate_bin(packed, bin_path)
+        generate_bin(packed_to_write, bin_path)
         generated.append(bin_path)
 
     # .asm – dane .byte
     if generate_all or asm_output:
         asm_path = f"{output_base}.asm"
-        generate_asm_data(packed, asm_path, data_label, bytes_per_line)
+        generate_asm_data(packed_to_write, asm_path, data_label, bytes_per_line)
         generated.append(asm_path)
 
     # _colors.asm – kolory
@@ -829,12 +838,12 @@ def convert(
     # --- 5. Kompresja ------------------------------------------------------
     if compression:
         if compression == "rle":
-            rle_data = rle_compress(packed)
+            # rle_data jest już wygenerowane
             rle_path = f"{output_base}.rle"
             with open(rle_path, "wb") as f:
                 f.write(rle_data)
             ratio = len(packed) / max(len(rle_data), 1)
-            print(f"  ✔ {rle_path}  ({len(rle_data)} bajtów, "
+            print(f"  [OK] {rle_path}  ({len(rle_data)} bajtów, "
                   f"{ratio:.1f}× mniej niż oryginał)")
             generated.append(rle_path)
 

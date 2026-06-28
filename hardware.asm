@@ -58,8 +58,8 @@ PORTA   = $D300     ; PORT A PIA — joystick 0 (bity 0–3: góra/dół/lewo/pr
 
 ; ---- Mapa pamięci projektu ----
 SCREEN      = $4000         ; bufor ekranu (ANTIC E, 160x192)
-DLIST_ADDR  = $3000         ; adres bazowy Display List
-PMBASE_ADDR = $8000         ; pamięć PMG (1K-aligned)
+DLIST_ADDR  = $3E80         ; adres bazowy Display List
+PMBASE_ADDR = $A000         ; pamięć PMG (1K-aligned, pod ROM BASIC)
 FOOTER_ADDR = $5E10         ; stopka tekstowa (ANTIC mode 2, 40 znaków)
 
 ; ---- Offsety PMG (single-line resolution) ----

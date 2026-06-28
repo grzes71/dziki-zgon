@@ -16,6 +16,7 @@ fire_released_flag
     sta fire_released_flag  ; zresetuj stan joysticka
 
     jsr pmg_clear_all
+    jsr copy_story_text
 
     ; --- Display List ---
     lda #<DLIST_STORY
@@ -64,5 +65,21 @@ fire_released_flag
     bne @exit            ; jeszcze nie nacisnął ponownie
     jsr advance_stage
 @exit
+    rts
+.endp
+
+;==============================================================
+; copy_story_text — Kopiuje tekst story (320 B) z ROM do RAM ($5E10)
+;==============================================================
+.proc copy_story_text
+    lda #<StoryText_Data
+    sta SRC_PTR
+    lda #>StoryText_Data
+    sta SRC_PTR+1
+    lda #<StoryText_RAM
+    sta DST_PTR
+    lda #>StoryText_RAM
+    sta DST_PTR+1
+    jsr RLE_Depack
     rts
 .endp

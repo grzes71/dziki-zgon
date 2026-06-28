@@ -4,7 +4,7 @@
 
 ;---- Adresy pamięci dla gry (współdzielone z main.asm przez .global) ----
 GAME_SCREEN   = $4000       ; mapa 40×24 = 960 bajtów
-GAME_CHARSET  = $A000       ; charset gry — kafelki terenu (1 KB, CHBASE=$A0)
+GAME_CHARSET  = $A800       ; charset gry — kafelki terenu (1 KB, CHBASE=$A8)
 
 ;---- Zmienne lokalne sceny ----
 game_fire_released
@@ -27,8 +27,8 @@ game_fire_released
     lda #>DLIST_GAME
     sta DLISTH
 
-    ; --- Charset gry ($A000, używamy font.asm jako placeholder) ---
-    lda #$A0
+    ; --- Charset gry ($A800, używamy font.asm jako placeholder) ---
+    lda #$A8
     sta CHBASE
 
     ; --- Kolory gry (4 kolory: trawa, woda, góry, chaty) ---

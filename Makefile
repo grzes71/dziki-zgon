@@ -44,14 +44,28 @@ MOON_IMG    := img/moon.png
 TITLE_ASM   := $(GEN_DIR)/dziki-zgon.asm
 TITLE_IMG   := img/dziki-zgon.png
 
+# Teksty skompresowane RLE
+TEXTS_ASM   := $(GEN_DIR)/story_text.asm $(GEN_DIR)/gameover_text.asm
+
 # ---- Cele ----
-.PHONY: all xex bg go sprites clean run
+.PHONY: all xex bg go sprites texts clean run
 
-all: sprites bg go xex
+all: texts sprites bg go xex
 
-xex: $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(ASM_MAIN)
+xex: $(TEXTS_ASM) $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT)
+
+# Generowanie tekstów
+texts: $(TEXTS_ASM)
+
+$(GEN_DIR)/story_text.asm: scripts/rle_compress_text.py texts/story.txt
+	-@mkdir $(GEN_DIR)
+	$(PYTHON) scripts/rle_compress_text.py -i story -o $@
+
+$(GEN_DIR)/gameover_text.asm: scripts/rle_compress_text.py texts/gameover.txt
+	-@mkdir $(GEN_DIR)
+	$(PYTHON) scripts/rle_compress_text.py -i gameover -o $@
 
 # Generowanie tła (bin + colors + display list)
 bg: $(BG_BIN)
@@ -67,12 +81,12 @@ sprites: $(MOON_ASM) $(TITLE_ASM)
 $(MOON_ASM): $(MOON_IMG) scripts/img2asm.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(MOON_IMG) → $(MOON_ASM) ==="
-	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(MOON_IMG) 1 --asm -o moon.asm -l 4
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(MOON_IMG) 1 --asm -o moon.asm -l 4 -c rle
 
 $(TITLE_ASM): $(TITLE_IMG) scripts/img2asm.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(TITLE_IMG) → $(TITLE_ASM) ==="
-	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(TITLE_IMG) 1 --asm -o dziki-zgon.asm -l 5
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(TITLE_IMG) 1 --asm -o dziki-zgon.asm -l 5 -c rle
 
 # Game Over screen (ANTIC D, 160×96, 4 kolory)
 go: $(GO_BIN)

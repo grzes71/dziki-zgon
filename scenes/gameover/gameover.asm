@@ -77,6 +77,7 @@ GoRainbow
     sta go_dli_toggle       ; DLI toggle: 0 = obrazek
 
     jsr pmg_clear_all
+    jsr copy_gameover_text
 
     ; --- Display List (ANTIC D + tekst) ---
     lda #<DLIST_GAMEOVER
@@ -133,5 +134,21 @@ GoRainbow
     sta NMIEN              ; wyłącz DLI przed zmianą stanu
     jsr advance_stage      ; powrót do pierwszego etapu z tablicy
 @exit
+    rts
+.endp
+
+;==============================================================
+; copy_gameover_text — Kopiuje tekst GAME OVER (32 B) z ROM do RAM ($5E10)
+;==============================================================
+.proc copy_gameover_text
+    lda #<GO_TEXT_Data
+    sta SRC_PTR
+    lda #>GO_TEXT_Data
+    sta SRC_PTR+1
+    lda #<FOOTER_ADDR
+    sta DST_PTR
+    lda #>FOOTER_ADDR
+    sta DST_PTR+1
+    jsr RLE_Depack
     rts
 .endp

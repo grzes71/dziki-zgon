@@ -21,6 +21,18 @@
     ; --- Transpozycja sprite'ów tytułu → PMG ---
     ; Format źródłowy: [P0,P1,P2,P3,M5th] × 37 wierszy
     ; Format PMG:       per-player, ciągiem 128 B, offset TOP_MARGIN
+    
+    ; Rozpakuj SpriteData (logo) do bufora tymczasowego $3000
+    lda #<SpriteData
+    sta SRC_PTR
+    lda #>SpriteData
+    sta SRC_PTR+1
+    lda #$00
+    sta DST_PTR
+    lda #$30
+    sta DST_PTR+1
+    jsr RLE_Depack
+
     ldx #SPRITE_ROWS-1
 
 @row_loop
@@ -33,19 +45,19 @@
     adc SRC_TMP          ; +1 → *5
     tay                  ; Y = offset w źródle
 
-    lda SpriteData,y
+    lda $3000,y
     sta PLAYER0+TOP_MARGIN,x
     iny
-    lda SpriteData,y
+    lda $3000,y
     sta PLAYER1+TOP_MARGIN,x
     iny
-    lda SpriteData,y
+    lda $3000,y
     sta PLAYER2+TOP_MARGIN,x
     iny
-    lda SpriteData,y
+    lda $3000,y
     sta PLAYER3+TOP_MARGIN,x
     iny
-    lda SpriteData,y
+    lda $3000,y
     sta MISSILES+TOP_MARGIN,x
 
     dex
@@ -59,23 +71,35 @@
     dex
     bpl @mclear
 
+    ; Rozpakuj MoonData (księżyc) do bufora tymczasowego $3000
+    lda #<MoonData
+    sta SRC_PTR
+    lda #>MoonData
+    sta SRC_PTR+1
+    lda #$00
+    sta DST_PTR
+    lda #$30
+    sta DST_PTR+1
+    jsr RLE_Depack
+
     ldx #MOON_ROWS-1
 @moon_loop
     txa
     asl @
     asl @               ; X * 4
     tay
-    lda MoonData,y
+    lda $3000,y
     sta PLAYER0+MOON_TOP,x
     iny
-    lda MoonData,y
+    lda $3000,y
     sta PLAYER1+MOON_TOP,x
     iny
-    lda MoonData,y
+    lda $3000,y
     sta PLAYER2+MOON_TOP,x
     iny
-    lda MoonData,y
+    lda $3000,y
     sta PLAYER3+MOON_TOP,x
+    pointer_dummy = *
     dex
     bpl @moon_loop
 
