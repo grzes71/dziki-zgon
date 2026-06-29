@@ -1,4 +1,4 @@
-# Cursor Rules — "Dziki Zgon" Atari Game (MADS / Python / 6502)
+# "Dziki Zgon" Atari Game (MADS / Python / 6502)
 
 ## 1. CORE DIRECTIVES & PERSONA
 - You are an expert Senior DevOps and Embedded Systems/Software Architect specializing in 8-bit Atari hardware, 6502 assembly, MADS (Mad Assembler), and low-level resource optimization.

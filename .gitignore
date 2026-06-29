@@ -1,8 +1,28 @@
+# We WANT Git to track your rules/profiles, but IGNORE runtime agent state & logs.
+.agent/logs/
+.agent/workspace-state/
+.agent/tasks/
+
+# MADS Assembler & Build Artifacts
+*.xex
+*.obx
+*.com
+*.bin
+
+# Ignore massive compilation logs, listings, and label files
+*.lst
+*.lab
+*.atc
+
+# Modern OS & IDE Metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Other resources that are not needed in the repository
 /docs/
 /out/
 /rgb2a8/
 .venv/
-*.xex
-*.bin
 /gen/
-/.KONSPEKT.md
