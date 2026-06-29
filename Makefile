@@ -44,15 +44,19 @@ MOON_IMG    := img/moon.png
 TITLE_ASM   := $(GEN_DIR)/dziki-zgon.asm
 TITLE_IMG   := img/dziki-zgon.png
 
+# Czcionki
+FONT_FNT    := fonts/font.fnt
+FONT_ASM    := $(GEN_DIR)/font.asm
+
 # Teksty skompresowane RLE
 TEXTS_ASM   := $(GEN_DIR)/story_text.asm $(GEN_DIR)/gameover_text.asm
 
 # ---- Cele ----
-.PHONY: all xex bg go sprites texts clean run
+.PHONY: all xex bg go sprites texts fonts clean run
 
-all: texts sprites bg go xex
+all: texts sprites bg go fonts xex
 
-xex: $(TEXTS_ASM) $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(ASM_MAIN)
+xex: $(TEXTS_ASM) $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT)
 
@@ -96,6 +100,14 @@ $(GO_BIN): $(GO_IMG) scripts/img2asm.py
 	@echo "=== Konwersja $(GO_IMG) → $(GO_PREFIX).* ==="
 	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(GO_IMG) 2 --all -o $(GO_PREFIX) --screen-base 0x7000
 
+# Generowanie czcionek
+fonts: $(FONT_ASM)
+
+$(FONT_ASM): $(FONT_FNT) scripts/fnt2asm.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Konwersja $(FONT_FNT) → $(FONT_ASM) ==="
+	$(PYTHON) scripts/fnt2asm.py -i $(FONT_FNT) -o $@ -l FontData
+
 # Sprzątanie
 clean:
 	@echo "=== Usuwanie plików wygenerowanych ==="
@@ -108,6 +120,7 @@ help:
 	@echo "  make          — buduje wszystko + $(XEX_OUT)"
 	@echo "  make bg       — konwertuje obraz tła ($(BG_IMG))"
 	@echo "  make sprites  — konwertuje sprite'y (moon + dziki-zgon)"
+	@echo "  make fonts    — konwertuje czcionki (.fnt → .asm)"
 	@echo "  make clean    — usuwa pliki wygenerowane"
 	@echo "  make help     — ta pomoc"
 	@echo ""

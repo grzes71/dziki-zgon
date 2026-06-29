@@ -252,7 +252,7 @@ JVB_OFFSET = * - DLIST_GAMEOVER - 3
 ; 10. Czcionka ($6000, 1 KB aligned → CHBASE=$60)
 ; ===================================================================
     org $6000
-    icl "fonts/font.asm"
+    icl "gen/font.asm"
 
 ; ===================================================================
 ; 11. Dane ekranu Game Over ($7000, ANTIC D, 160×96)
