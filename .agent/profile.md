@@ -14,7 +14,7 @@
 
 ## 3. MEMORY & RESOURCE MANAGEMENT
 - **Critical Budgeting**: The Atari 8-bit RAM budget is critical. All buffers, graphics memory (VRAM), Display Lists, page zero offsets, and code segments must respect strict boundaries defined in the memory map.
-- **Memory Map Updates**: After any change that alters the size of code segments, variables, textures, or screen buffers, you MUST analyze the memory layout. Calculate the new ranges from `main.lab` and update the detailed table in [MEMORY_USAGE.md](file:///c:/Users/grzes/Documents/Projects/witcher-atari-game/MEMORY_USAGE.md).
+- **Memory Map Updates**: After any change that alters the size of code segments, variables, textures, or screen buffers, you MUST analyze the memory layout. Calculate the new ranges from `main.lab` and update the detailed table in [MEMORY_USAGE.md](../MEMORY_USAGE.md).
 - **Collision & Overlap Prevention**: Ensure that:
   - Temporary decompression buffers (e.g., at `$3000`) never overlap with compiled code, fonts, VRAM buffers, or Display Lists.
   - Page zero variables (range `$80`–`$FF` safely) do not conflict with the Atari OS or other components.
