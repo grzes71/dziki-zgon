@@ -1,0 +1,40 @@
+# =============================================================================
+# .cursorignore — Wiedźmin: Dziki Zgon
+# Enforces token economy by ignoring large compilation and asset files.
+# =============================================================================
+
+# 1. Compiled Atari Executables and Binary Outputs
+*.xex
+*.obx
+*.com
+*.bin
+*.rom
+
+# 2. Large MADS Compilation Artifacts, Listings, and Label Dumps
+*.lst
+*.lab
+*.atc
+
+# 3. Raw Graphic, Sound, and Asset Binary Files
+*.mic
+*.chr
+*.scr
+*.fnt
+*.fon
+*.pcm
+*.wav
+
+# 4. Raw Source Image Formats
+*.png
+*.bmp
+*.aseprite
+*.gif
+*.jpg
+*.jpeg
+
+# 5. Standard Modern IDE/OS Metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.git/
