@@ -8,7 +8,7 @@
 ## 2. DEVELOPMENT WORKFLOW (CRITICAL)
 - **Automated Verification**: After modifying any code file (assembly, Python scripts, configs), you MUST run the build command via the terminal to verify the changes:
   ```bash
-  c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe main.asm -o:dziki_zgon.xex -t:main.lab
+  make all
   ```
 - **Error/Warning Resolution**: If the assembler returns errors or warnings, you must immediately resolve them before proposing further edits or asking for user feedback.
 
