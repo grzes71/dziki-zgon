@@ -10,7 +10,7 @@
   ```bash
   make all
   ```
-- **Error/Warning Resolution**: If the assembler returns errors or warnings, you must immediately resolve them before proposing further edits or asking for user feedback.
+- **Error/Warning Resolution**: If the build process returns errors or warnings, you must immediately resolve them before proposing further edits or asking for user feedback.
 
 ## 3. MEMORY & RESOURCE MANAGEMENT
 - **Critical Budgeting**: The Atari 8-bit RAM budget is critical. All buffers, graphics memory (VRAM), Display Lists, page zero offsets, and code segments must respect strict boundaries defined in the memory map.
