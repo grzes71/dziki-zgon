@@ -65,7 +65,9 @@ witcher-atari-game/
 │   ├── moon.png                 # Księżyc (32×24, 1 bpp, 4 graczy)
 │   └── dziki-zgon.png           # Napis tytułowy (40×37, 1 bpp, 4 graczy + 5th)
 ├── docs/
-│   └── KONSPEKT.md              # Dokument projektowy — fabuła, regiony, mechaniki
+│   ├── KONSPEKT.md              # Dokument projektowy — fabuła, regiony, mechaniki
+│   └── py65.md                  # Dokumentacja emulatora Py65 (6502 w Pythonie)
+├── tests/                       # Testy jednostkowe i integracyjne (Py65)
 └── rgb2a8/                      # Referencyjna paleta Atari PAL (256 wartości RGB)
 ```
 
@@ -79,6 +81,7 @@ witcher-atari-game/
 | Emulator Atari | — | Np. [Altirra](https://www.virtualdub.org/altirra.html), Atari800 |
 | [Atari Image Converter](https://github.com/grzes71/py-image-converter/#atari-image-converter) | — | Konwersja obrazów na formaty Atari (PNG → GR7, GR8, MIC, i inne) |
 | [html-to-markdown](https://github.com/grzes71/html-to-markdown#html-to-markdown) | — | Konwersja dokumentacji HTML do Markdown
+| [py65](https://github.com/mnaberez/py65) | — | Emulator 6502 w Pythonie do testów (`pip install -r requirements.txt`) |
 
 ## Kompilacja
 
@@ -216,12 +219,57 @@ python scripts/img2asm.py img/title.png 2 --asm -c rle
 python scripts/rle_compress_text.py -i story -o gen/story_text.asm
 ```
 
-Gra wykorzystuje wspólny depacker 6502 zdefiniowany w [lib/rle.asm](file:///c:/Users/grzes/Documents/Projects/witcher-atari-game/lib/rle.asm).
+Gra wykorzystuje wspólny depacker 6502 zdefiniowany w [lib/rle.asm](lib/rle.asm).
 
 Format RLE (PackBits + marker EOF):
 - `$00–$7F` → ciąg `cmd + 1` literałów (1..128)
 - `$80`     → znacznik końca danych (EOF)
 - `$81–$FF` → powtórzenie kolejnego bajtu `(cmd & $7F) + 1` razy (2..128)
+
+## Testowanie z Py65
+
+Projekt używa [py65](https://github.com/mnaberez/py65) — emulatora 6502 w Pythonie — do testowania kodu asemblerowego bez uruchamiania pełnego emulatora Atari.
+
+### Instalacja
+
+```bash
+pip install -r requirements.txt
+```
+
+### Uruchomienie monitora
+
+```bash
+py65mon
+```
+
+### Podstawowe komendy
+
+| Komenda | Opis |
+|---|---|
+| `load "dziki_zgon.xex" 0` | Ładuje plik `.xex` pod adres `$0000` |
+| `registers` | Wyświetla stan rejestrów (PC, A, X, Y, SP, flags) |
+| `disassemble $2000:$2100` | Deasembluje kod w podanym zakresie |
+| `mem $4000:$4040` | Wyświetla zawartość pamięci |
+| `add_breakpoint $2060` | Ustawia pułapkę (breakpoint) na adresie |
+| `goto $2000` | Uruchamia wykonanie od adresu |
+| `step` | Wykonuje jedną instrukcję (krok) |
+| `fill $4000:$5FFF 0` | Wypełnia zakres zerami |
+| `help` | Lista wszystkich komend |
+
+### Przykład sesji testowej
+
+```bash
+py65mon
+.load "dziki_zgon.xex" 0        # ładuje plik XEX
+.add_breakpoint $2060            # pułapka w title_init
+.goto $2000                      # start od jmp start
+registers                        # sprawdź stan po pułapce
+disassemble $2000:$2100          # podejrzyj kod
+mem $4000:$4040                  # pierwsze linie ekranu
+step                             # wykonaj krok
+```
+
+Pełna dokumentacja: [`docs/py65.md`](docs/py65.md)
 
 ## Licencja
 
