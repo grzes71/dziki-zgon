@@ -1,5 +1,5 @@
 # =============================================================================
-# .cursorignore — Wiedźmin: Dziki Zgon
+# .antigravityignore — Wiedźmin: Dziki Zgon
 # Enforces token economy by ignoring large compilation and asset files.
 # =============================================================================
 
@@ -38,3 +38,6 @@ Thumbs.db
 .vscode/
 .idea/
 .git/
+
+# 6. Other
+.tmp/

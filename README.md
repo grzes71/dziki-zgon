@@ -10,7 +10,7 @@ Po wielodniowej imprezie w karczmie "Pod Trzema Kuflami" wiedźmin **Gerwant** b
 
 Agent AI powinien przeczytać oraz postępować wg zasad umieszczonych w pliku [profile.md](.agent/profile.md).
 
-Wiele detali technicznych jest także opisanych w pliku [AI_CONTEXT.md](AI_CONTEXT.md).
+Kontekst techniczny jest także zawarty w pliku [AI_CONTEXT.md](AI_CONTEXT.md).
 
 ## Założenia
 

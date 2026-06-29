@@ -26,3 +26,9 @@ Thumbs.db
 /rgb2a8/
 .venv/
 /gen/
+/.tmp/
+
+# Python cache
+__pycache__/
+.pytest_cache/
+.ruff_cache/
