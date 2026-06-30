@@ -132,13 +132,14 @@ GoRainbow
     sta VDSLST
     lda #>DLI_Gameover
     sta VDSLST+1
-    lda #$80              ; DLI on, VBI off
+    lda #$C0              ; DLI on, VBI on (music required)
     sta NMIEN
 
     ; --- DMA ON (narrow playfield — 128 pikseli, bez PMG) ---
     lda #$21
     sta DMACTL
 
+    jsr title_audio_init
     rts
 .endp
 

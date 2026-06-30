@@ -134,6 +134,7 @@ main_loop
     lda GAME_STATE
     cmp #STATE_STORY
     beq @st
+    jsr title_audio_stop          ; Stop the music on state exit
     jmp main_loop
 
 @chk_game
@@ -155,6 +156,7 @@ main_loop
     lda GAME_STATE
     cmp #STATE_OVER
     beq @go
+    jsr title_audio_stop          ; Stop the music on state exit
     jmp main_loop
 
 ; --- Dane tekstów (kopiowane do RAM w czasie wykonania) ---

@@ -42,6 +42,7 @@ fire_released_flag
     lda #$22
     sta DMACTL
 
+    jsr title_audio_init
     rts
 .endp
 

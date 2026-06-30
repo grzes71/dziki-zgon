@@ -1,5 +1,5 @@
 ; ===================================================================
-; music/audio.asm — MADS configuration and integration of RMT player
+; music/title_audio.asm — MADS configuration and integration of RMT player
 ; Configured to load at free RAM sector $8800
 ; ===================================================================
 
@@ -9,7 +9,7 @@ SYSVBV = $E45F
 
     org $8800
 
-; --- Initialize RMT and set up Immediate VBLANK ---
+; --- Initialize RMT and set up Immediate VBLANK for Title Screen ---
 title_audio_init
     ldx #<MODUL
     ldy #>MODUL
@@ -79,7 +79,7 @@ PLAYER = $8C00
 ; Include the converted player code
     icl "gen/rmtplayr.asm"
 
-; Song data module
+; Song data module for title screen
     .align 256
 MODUL
     icl "gen/title_music.asm"
