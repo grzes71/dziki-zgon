@@ -4,6 +4,8 @@
 # ---- Narzędzia ----
 MADS    := c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
 PYTHON  := python
+ASAPCONV  := C:/Apps/ASAP/asapconv.exe
+RMT2ATASM := C:/Apps/rmt2atasm.exe
 
 # ---- Cross-platform: wykrywanie OS (Windows vs Linux/macOS) ----
 ifeq ($(OS),Windows_NT)
@@ -48,15 +50,22 @@ TITLE_IMG   := img/dziki-zgon.png
 FONT_FNT    := fonts/font.fnt
 FONT_ASM    := $(GEN_DIR)/font.asm
 
+# Muzyka
+MUSIC_SAP       := music/title.sap
+MUSIC_RMT       := $(GEN_DIR)/title.rmt
+MUSIC_ASM_ATASM := $(GEN_DIR)/title_atasm.asm
+MUSIC_ASM       := $(GEN_DIR)/title_music.asm
+PLAYR_ASM       := $(GEN_DIR)/rmtplayr.asm
+
 # Teksty skompresowane RLE
 TEXTS_ASM   := $(GEN_DIR)/story_text.asm $(GEN_DIR)/gameover_text.asm
 
 # ---- Cele ----
-.PHONY: all xex bg go sprites texts fonts clean run
+.PHONY: all xex bg go sprites texts fonts music clean run
 
-all: texts sprites bg go fonts xex
+all: texts sprites bg go fonts music xex
 
-xex: $(TEXTS_ASM) $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(ASM_MAIN)
+xex: $(TEXTS_ASM) $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT)
 
@@ -108,6 +117,27 @@ $(FONT_ASM): $(FONT_FNT) scripts/fnt2asm.py
 	@echo "=== Konwersja $(FONT_FNT) → $(FONT_ASM) ==="
 	$(PYTHON) scripts/fnt2asm.py -i $(FONT_FNT) -o $@ -l FontData
 
+# Generowanie muzyki
+music: $(MUSIC_ASM) $(PLAYR_ASM)
+
+$(MUSIC_RMT): $(MUSIC_SAP)
+	-@mkdir $(GEN_DIR)
+	@echo "=== Konwersja SAP → RMT ==="
+	-$(ASAPCONV) -o $@ $<
+
+$(MUSIC_ASM_ATASM): $(MUSIC_RMT)
+	@echo "=== Konwersja RMT → ATasm ==="
+	$(RMT2ATASM) $< > $@
+
+$(MUSIC_ASM): $(MUSIC_ASM_ATASM) scripts/atasm2mads.py
+	@echo "=== Konwersja ATasm → MADS ==="
+	$(PYTHON) scripts/atasm2mads.py -i $< -o $@
+
+$(PLAYR_ASM): music/rmtplayr.asm scripts/atasm2mads.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Konwersja Player ATasm → MADS ==="
+	$(PYTHON) scripts/atasm2mads.py -i $< -o $@
+
 # Sprzątanie
 clean:
 	@echo "=== Usuwanie plików wygenerowanych ==="
@@ -121,6 +151,7 @@ help:
 	@echo "  make bg       — konwertuje obraz tła ($(BG_IMG))"
 	@echo "  make sprites  — konwertuje sprite'y (moon + dziki-zgon)"
 	@echo "  make fonts    — konwertuje czcionki (.fnt → .asm)"
+	@echo "  make music    — konwertuje muzykę (.sap → .rmt → .asm → MADS)"
 	@echo "  make clean    — usuwa pliki wygenerowane"
 	@echo "  make help     — ta pomoc"
 	@echo ""

@@ -199,9 +199,10 @@ title_fire_released
     ora #$80
     sta DLIST_TITLE+2
 
-    lda #$80             ; DLI on, VBI off
+    lda #$C0             ; DLI on, VBI on (required for music)
     sta NMIEN
 
+    jsr audio_init
     rts
 .endp
 

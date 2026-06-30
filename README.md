@@ -35,6 +35,11 @@ witcher-atari-game/
 ├── lib/
 │   ├── pmg.asm                  # Procedury pomocnicze PMG
 │   └── rle.asm                  # Wspólny dekompresor RLE (6502)
+├── music/                       # Silnik audio i utwory muzyczne
+│   ├── title.sap                # Oryginalny plik muzyki w formacie ASAP (.sap)
+│   ├── audio.asm                # Integracja odtwarzacza w VBI, start/stop, wyciszanie POKEY
+│   ├── rmt_feat.asm             # Konfiguracja funkcji (features) odtwarzacza RMT
+│   └── rmtplayr.asm             # Kod asemblera odtwarzacza RMT (mono, relocatable)
 ├── scenes/
 │   ├── title/title.asm          # Ekran tytułowy (init + run + DLI + tęcza)
 │   ├── story/story.asm          # Ekran opisu (dekompresja story do stopki)
@@ -45,6 +50,8 @@ witcher-atari-game/
 │   ├── title.asm                # Dane .byte ekranu tytułu (MADS)
 │   ├── title_colors.asm         # Kolory tytułu: stałe .equ + kod init
 │   ├── title_displaylist.asm    # ANTIC Display List tytułu (2 segmenty)
+│   ├── title_music.asm          # Skonwertowany moduł muzyczny MADS (title.sap -> title_music.asm)
+│   ├── rmtplayr.asm             # Skonwertowany kod playera RMT (MADS)
 │   ├── gameover.bin             # Surowe dane binarne ekranu game over
 │   ├── gameover.asm             # Dane .byte ekranu game over (MADS)
 │   ├── gameover_colors.asm      # Kolory game over: stałe .equ + kod init
@@ -92,6 +99,7 @@ make
 # Tylko konkretne cele
 make sprites   # generuje gen/moon.asm + gen/dziki-zgon.asm
 make bg        # generuje gen/title.bin + gen/title_colors.asm + gen/title_displaylist.asm
+make music     # konwertuje muzykę: music/title.sap -> gen/title_music.asm + music/rmtplayr.asm -> gen/rmtplayr.asm
 make clean     # usuwa katalog gen/ oraz plik XEX
 
 # Zmiana obrazu tła
@@ -175,17 +183,18 @@ COLPF3 dostępny jako 5. kolor (bit 7 kodu znaku) lub dla PMG.
 | `10` | COLPF1 | `TITLE_COLPF1` | `$D017` |
 | `11` | COLPF2 | `TITLE_COLPF2` | `$D018` |
 
-### Rejestry sprzętowe (system wyłączony)
+### Rejestry sprzętowe (przerwania systemowe)
 
-Program działa bez OS — `sei` + NMIEN=$80 (tylko DLI).
-Wszystkie rejestry zapisywane bezpośrednio:
+Program działa przy włączonym OS ROM, obsługując przerwania NMI (DLI + VBI) w celu koordynacji odtwarzacza muzycznego. Odtwarzacz jest podpięty pod Immediate VBLANK (`$0222`), co gwarantuje stabilne odtwarzanie muzyki w tle i zapobiega blokadzie za pośrednictwem systemowej flagi `CRITIC`.
+
+Wszystkie rejestry sprzętowe są modyfikowane bezpośrednio:
 
 | Rejestr | Adres | Opis |
 |---|---|---|
 | DMACTL | `$D400` | Włączenie DMA ($3E = playfield + PMG single-line) |
 | DLISTL/H | `$D402`/`$D403` | Adres Display List (sprzętowo, nie shadow!) |
-| NMIEN | `$D40E` | $80 = tylko DLI, VBI wyłączony |
-| IRQEN | `$D20E` | 0 = POKEY wyłączony |
+| NMIEN | `$D40E` | $C0 = włączony DLI oraz VBI (niezbędny do muzyki) |
+| IRQEN | `$D20E` | 0 = IRQ wyłączone (blokada za pomocą `sei` + rejestr IRQEN) |
 
 ### Obsługa granicy 4KB (ANTIC limitation)
 

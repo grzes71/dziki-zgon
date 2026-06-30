@@ -122,6 +122,7 @@ main_loop
     lda GAME_STATE
     cmp #STATE_TITLE
     beq @tl
+    jsr audio_stop          ; Stop the music on state exit
     jmp main_loop
 
 @chk_story
@@ -263,3 +264,6 @@ GO_SCREEN = $7000
 
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR
+
+; --- Muzyka i odtwarzacz ($8800) ---
+    icl "music/audio.asm"

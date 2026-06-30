@@ -18,6 +18,7 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$0081` – `$0081`** | 1 B | `GAME_STATE` | Zero Page | Bieżący stan maszyny stanów gry (0=Title, 1=Story, 2=Game, 3=GameOver). |
 | **`$0082` – `$0083`** | 2 B | `SRC_PTR` | Zero Page | Wskaźnik źródłowy dla depackera RLE (2 bajty). |
 | **`$0084` – `$0085`** | 2 B | `DST_PTR` | Zero Page | Wskaźnik docelowy dla depackera RLE (2 bajty). |
+| **`$00CB` – `$00DD`** | 21 B | `p_tis` .. `tmp` | Zero Page | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera). |
 | **`$0200` – `$0201`** | 2 B | `VDSLST` | OS RAM | Wektor przerwania DLI (Display List Interrupt) w pamięci cieni OS. |
 | **`$2000` – `$2002`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2003` – `$202E`** | 44 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
@@ -43,7 +44,13 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Czcionka własna gry (128 znaków × 8 B). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67BF`** | 960 B | `GAME_SCREEN` | VRAM / Bufor | Ekran gry właściwej (tryb ANTIC 4, 40×24 znaków). Przeniesiony z $4000 by uniknąć nadpisywania bitmapy tytułu. |
 | **`$67C0` – `$7FFF`** | **6208 B** | — | **WOLNY RAM** | Wolny ciągły blok RAM w środkowym obszarze. |
-| **`$8000` – `$9FFF`** | **8192 B** | — | **WOLNY RAM** | Duży ciągły blok wolnej pamięci (PMG przeniesiony do $A000, BASIC wyłączony). |
+| **`$8000` – `$87FF`** | **2048 B** | — | **WOLNY RAM** | Wolna pamięć w górnym RAM. |
+| **`$8800` – `$8874`** | 117 B | `audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY. |
+| **`$8875` – `$8981`** | **269 B** | — | **WOLNY RAM** | Wolna przestrzeń przed odtwarzaczem (w tym zmienne RMT $88E0-$8981). |
+| **`$8982` – `$9140`** | 1983 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). |
+| **`$9141` – `$91FF`** | **191 B** | — | **WOLNY RAM** | Padding wyrównania do następnej strony pamięci. |
+| **`$9200` – `$9510`** | 785 B | `title_music.asm`| Dane (Muzyka) | Skompilowany i dostrojony moduł muzyczny RMT ekranu tytułowego. |
+| **`$9511` – `$9FFF`** | **2799 B** | — | **WOLNY RAM** | Wolna pamięć za modułem muzycznym. |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |
@@ -57,12 +64,16 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 
 ## Analiza Wolnej Pamięci RAM
 
-Dzięki wdrożonym optymalizacjom gra posiada obecnie **`25 328 bajtów`** (~24.7 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące duże bloki:
+Dzięki wdrożonym optymalizacjom gra posiada obecnie **`22 426 bajtów`** (~21.9 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące duże bloki:
 
-1.  **`$2891` – `$3E7F` (5 615 B)**: Idealne miejsce na główny silnik gry, logikę ruchu przeciwników, mechanikę walki.
-2.  **`$67C0` – `$7FFF` (6 208 B)**: Duży blok pamięci RAM za ekranem gry. Doskonały na mapy regionów, tabele położeń obiektów.
-3.  **`$8000` – `$9FFF` (8 192 B)**: Kolejny wielki obszar, który został scalony dzięki przeniesieniu PMG do $A000 i BASIC off.
-4.  **`$AC00` – `$BFFF` (5 120 B)**: Wolna przestrzeń pod ROM-em BASIC-a. Idealna na statyczne bazy danych (teksty zadań, dialogi).
+1.  **`$2891` – `$3E7F` (5 615 B)**: Główny silnik gry, logika ruchu przeciwników, mechanika walki.
+2.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionką.
+3.  **`$67C0` – `$7FFF` (6 208 B)**: Dane map, tabele położeń obiektów.
+4.  **`$8000` – `$87FF` (2 048 B)**: Wolna pamięć w górnym RAM.
+5.  **`$8875` – `$8981` (269 B)**: Wolny obszar (część zajęta przez dynamiczne zmienne RMT).
+6.  **`$9141` – `$91FF` (191 B)**: Wyrównanie pamięci.
+7.  **`$9511` – `$9FFF` (2 799 B)**: Wolny RAM nad modułem muzycznym.
+8.  **`$AC00` – `$BFFF` (5 120 B)**: Wolna przestrzeń pod ROM-em BASIC-a (statyczne teksty, dialogi).
 
 Zredukowano fragmentację pamięci z 8 małych dziur do zaledwie kilku dużych, jednolitych bloków, co ułatwi projektowanie bardziej złożonej logiki gry.
 

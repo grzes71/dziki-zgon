@@ -1,204 +1,3703 @@
 mads 2.1.7 build 21 (20 May 24)
-Label table:
-00	D000	HPOSP0
-00	D001	HPOSP1
-00	D002	HPOSP2
-00	D003	HPOSP3
-00	D004	HPOSM0
-00	D005	HPOSM1
-00	D006	HPOSM2
-00	D007	HPOSM3
-00	D008	SIZEP0
-00	D009	SIZEP1
-00	D00A	SIZEP2
-00	D00B	SIZEP3
-00	D00C	SIZEM
-00	D012	PCOLR0
-00	D013	PCOLR1
-00	D014	PCOLR2
-00	D015	PCOLR3
-00	D016	COLPF0
-00	D017	COLPF1
-00	D018	COLPF2
-00	D019	COLPF3
-00	D01A	COLBK
-00	D01B	PRIOR
-00	D01D	GRACTL
-00	D301	PORTB
-00	D400	DMACTL
-00	D402	DLISTL
-00	D403	DLISTH
-00	D407	PMBASE
-00	D409	CHBASE
-00	D40A	WSYNC
-00	D40F	NMIST
-00	D40E	NMIEN
-00	D20E	IRQEN
-00	0200	VDSLST
-00	0284	STRIG0
-00	D010	TRIG0
-00	D300	PORTA
-00	4000	SCREEN
-00	3E80	DLIST_ADDR
-00	A000	PMBASE_ADDR
-00	5E10	FOOTER_ADDR
-00	A300	MISSILES
-00	A400	PLAYER0
-00	A500	PLAYER1
-00	A600	PLAYER2
-00	A700	PLAYER3
-00	0025	SPRITE_ROWS
-00	0026	TOP_MARGIN
-00	0018	MOON_ROWS
-00	0064	MOON_TOP
-00	0030	MOON_X
-00	0050	STAR0_X
-00	0048	STAR1_X
-00	0060	STAR2_X
-00	0074	STAR3_X
-00	005A	STAR0_Y
-00	006E	STAR1_Y
-00	005F	STAR2_Y
-00	0064	STAR3_Y
-00	0008	KOREKTA
-00	0018	DL_BLANKS
-00	0006	DLI_DELAY
-00	0030	TITLE_X
-00	0030	HPOS_P0
-00	0038	HPOS_P1
-00	0040	HPOS_P2
-00	0048	HPOS_P3
-00	0050	HPOS_M
-00	003E	DMA_PMG_ON
-00	0003	GRACTL_PM
-00	0011	PRIOR_5TH
-00	0000	STATE_TITLE
-00	0001	STATE_STORY
-00	0002	STATE_GAME
-00	0003	STATE_OVER
-00	0000	DEV_START_STAGE
-00	0080	SRC_TMP
-00	0081	GAME_STATE
-00	0082	SRC_PTR
-00	0084	DST_PTR
-00	2003	PMG_CLEAR_ALL
-00	2007	PMG_CLEAR_ALL.@LP
-00	201A	PMG_CLEAR_RANGE
-00	201C	PMG_CLEAR_RANGE.@LP
-00	202F	RLE_DEPACK
-00	2031	RLE_DEPACK.LOOP
-00	203A	RLE_DEPACK.SKIP_INC_SRC
-00	2041	RLE_DEPACK.@LIT_COPY
-00	204B	RLE_DEPACK.@LIT_SKIP_SRC
-00	2051	RLE_DEPACK.@LIT_SKIP_DST
-00	2056	RLE_DEPACK.DO_REPEAT
-00	2066	RLE_DEPACK.@REP_SKIP_SRC
-00	2068	RLE_DEPACK.@REP_STORE
-00	2070	RLE_DEPACK.@REP_SKIP_DST
-00	2075	RLE_DEPACK.EXIT_RLE
-00	0000	TITLE_COLBK
-00	0002	TITLE_COLPF0
-00	0024	TITLE_COLPF1
-00	0028	TITLE_COLPF2
-00	208A	TITLE_FIRE_RELEASED
-00	208B	TITLE_INIT
-00	20AB	TITLE_INIT.@ROW_LOOP
-00	20DB	TITLE_INIT.@MCLEAR
-00	20F8	TITLE_INIT.@MOON_LOOP
-00	2117	TITLE_INIT.POINTER_DUMMY
-00	0000	TITLE_INIT.TITLE_COLBK
-00	0002	TITLE_INIT.TITLE_COLPF0
-00	0024	TITLE_INIT.TITLE_COLPF1
-00	0028	TITLE_INIT.TITLE_COLPF2
-00	21CC	TITLE_RUN
-00	21DE	TITLE_RUN.@CHECK_PRESS
-00	21F5	TITLE_RUN.@EXIT
-00	21F6	DLI_HANDLER
-00	224A	@DELAY
-00	2267	@RAINBOW
-00	22C0	@SM
-00	22E8	RAINBOWCOLORS
-00	2310	TEXT_DLI
-00	232B	@TLOOP
-00	2369	TEXTCOLORS
-00	2371	DLI_NOP
-00	2372	COPY_TITLE_FOOTER
-00	2374	COPY_TITLE_FOOTER.@LP
-00	237D	COPY_TITLE_FOOTER.@REST
-00	2389	FIRE_RELEASED_FLAG
-00	238A	STORY_INIT
-00	23CB	STORY_RUN
-00	23DC	STORY_RUN.@WAIT_PRESS
-00	23E4	STORY_RUN.@EXIT
-00	23E5	COPY_STORY_TEXT
-00	6400	GAME_SCREEN
-00	A800	GAME_CHARSET
-00	23F9	GAME_FIRE_RELEASED
-00	23FA	GAME_INIT
-00	245F	FILL_TEST_MAP
-00	2461	FILL_TEST_MAP.@ROW
-00	246C	FILL_TEST_MAP.@COL
-00	2478	FILL_TEST_MAP.TESTTILES
-00	247C	GAME_RUN
-00	248E	GAME_RUN.@CHECK_PRESS
-00	2497	GAME_RUN.@MOVE
-00	24A3	GAME_RUN.@CHK_DOWN
-00	24AF	GAME_RUN.@CHK_LEFT
-00	24BB	GAME_RUN.@CHK_RIGHT
-00	24C7	GAME_RUN.@EXIT
-00	0000	GAMEOVER_COLBK
-00	000A	GAMEOVER_COLPF0
-00	0002	GAMEOVER_COLPF1
-00	0005	GAMEOVER_COLPF2
-00	24DC	GAMEOVER_FIRE_RELEASED
-00	000A	RAINBOW_LEN
-00	24DD	DLI_GAMEOVER
-00	24E5	DLI_GAMEOVER.@RESTORE
-00	24FC	DLI_GAMEOVER.@BLINK
-00	252B	DLI_GAMEOVER.@RESET_DONE
-00	2530	DLI_GAMEOVER.@DONE
-00	2534	GO_DLI_TOGGLE
-00	2535	GO_PULSE_IDX
-00	2536	GO_SUBFRAME
-00	2537	GORAINBOW
-00	2541	GAMEOVER_INIT
-00	259E	GAMEOVER_RUN
-00	25B0	GAMEOVER_RUN.@CHECK_PRESS
-00	25BD	GAMEOVER_RUN.@EXIT
-00	25BE	COPY_GAMEOVER_TEXT
-00	25D2	STAGE_ORDER
-00	0004	STAGE_COUNT
-00	25D6	ADVANCE_STAGE
-00	25D8	ADVANCE_STAGE.@FIND
-00	25E6	ADVANCE_STAGE.@FOUND
-00	25ED	ADVANCE_STAGE.@STORE
-00	25F3	SYSTEM_INIT
-00	2605	SYSTEM_INIT.@CLR_GTIA
-00	2611	START
-00	261C	@OK
-00	2621	MAIN_LOOP
-00	262D	@TL
-00	2639	@CHK_STORY
-00	2643	@ST
-00	264F	@CHK_GAME
-00	2659	@GM
-00	2665	@CHK_OVER
-00	266B	@GO
-00	5E10	STORYTEXT_RAM
-00	2677	STORYTEXT_DATA
-00	27A5	GO_TEXT_DATA
-00	27B4	TITLEFOOTERROM
-00	28F4	TITLEFOOTERROM_END
-00	28F4	SPRITEDATA
-00	28F4	DZIKIZGONDATA
-00	2989	MOONDATA
-00	4000	TITLEDATA
-00	3E80	DLIST_TITLE
-00	3F4E	DLIST_STORY
-00	3F6B	DLIST_GAME
-00	7000	GAMEOVERDATA
-00	3F8B	DLIST_GAMEOVER
-00	005C	JVB_OFFSET
-00	6000	FONTDATA
-00	7000	GO_SCREEN
-00	5E10	GO_TEXT
+Source: main.asm
+     1 				;----------------------------------------
+     2 				; main.asm — DZIKI ZGON
+     3 				; Punkt startowy + maszyna stanów gry
+     4 				; Atari XL/XE, ANTIC E (160x192, 4 kolory) + PMG
+     5 				;----------------------------------------
+     6 				    OPT h+
+     7
+     8 				; ===================================================================
+     9 				; 1. Definicje sprzętu i zmiennych (wspólne dla wszystkich modułów)
+    10 				; ===================================================================
+    11 				    icl "hardware.asm"
+Source: hardware.asm
+     1 				;----------------------------------------
+     2 				; hardware.asm — Rejestry sprzętowe i stałe projektowe
+     3 				; Współdzielone przez wszystkie moduły gry
+     4 				; Atari XL/XE, ANTIC E (160x192, 4 kolory) + PMG
+     5 				;----------------------------------------
+     6
+     7 				; ---- GTIA (CTIA/GTIA — generowanie obrazu, kolory, PMG) ----
+     8 = D000			HPOSP0  = $D000     ; pozycja X gracza P0 (0..255 color clocks)
+     9 = D001			HPOSP1  = $D001     ; pozycja X gracza P1
+    10 = D002			HPOSP2  = $D002     ; pozycja X gracza P2
+    11 = D003			HPOSP3  = $D003     ; pozycja X gracza P3
+    12 = D004			HPOSM0  = $D004     ; pozycja X pocisku M0
+    13 = D005			HPOSM1  = $D005     ; pozycja X pocisku M1
+    14 = D006			HPOSM2  = $D006     ; pozycja X pocisku M2
+    15 = D007			HPOSM3  = $D007     ; pozycja X pocisku M3
+    16 = D008			SIZEP0  = $D008     ; szerokość gracza P0 (00=normal, 01=x2, 11=x4)
+    17 = D009			SIZEP1  = $D009     ; szerokość gracza P1
+    18 = D00A			SIZEP2  = $D00A     ; szerokość gracza P2
+    19 = D00B			SIZEP3  = $D00B     ; szerokość gracza P3
+    20 = D00C			SIZEM   = $D00C     ; szerokość wszystkich pocisków (te same bity co SIZEP)
+    21 = D012			PCOLR0  = $D012     ; kolor gracza P0 + pocisku M0
+    22 = D013			PCOLR1  = $D013     ; kolor gracza P1 + pocisku M1
+    23 = D014			PCOLR2  = $D014     ; kolor gracza P2 + pocisku M2
+    24 = D015			PCOLR3  = $D015     ; kolor gracza P3 + pocisku M3
+    25 = D016			COLPF0  = $D016     ; kolor playfield 0 (indeks 1 w palecie ANTIC E)
+    26 = D017			COLPF1  = $D017     ; kolor playfield 1 (indeks 2)
+    27 = D018			COLPF2  = $D018     ; kolor playfield 2 (indeks 3)
+    28 = D019			COLPF3  = $D019     ; kolor playfield 3 / 5. gracza (missiles) gdy PRIOR bit 4=1
+    29 = D01A			COLBK   = $D01A     ; kolor tła (COLBAK) — wspólny dla playfield i PMG
+    30 = D01B			PRIOR   = $D01B     ; priorytety: bit 4=5th player, bity 1-0=tryb priorytetu
+    31 = D01D			GRACTL  = $D01D     ; włączenie DMA PMG: bit 0=P/M, bit 1=missiles
+    32
+    33 				; ---- PIA (Port Interface Adapter — PORTB, banki pamięci) ----
+    34 = D301			PORTB   = $D301     ; bit 0=OS ROM, bit 1=BASIC, bity 7-2=banki rozszerzonej pamięci
+    35
+    36 				; ---- ANTIC (kontroler DMA, Display List) ----
+    37 = D400			DMACTL  = $D400     ; włączenie DMA: bit 5=playfield, bity 1-0=rozdzielczość PMG
+    38 = D402			DLISTL  = $D402     ; młodszy bajt adresu Display List
+    39 = D403			DLISTH  = $D403     ; starszy bajt adresu Display List
+    40 = D407			PMBASE  = $D407     ; adres bazowy pamięci PMG (musi być wyrównany do 1K)
+    41 = D409			CHBASE  = $D409     ; adres bazowy fontu (znaków) — górny bajt, dolny zawsze $00
+    42 = D40A			WSYNC   = $D40A     ; Wait for Sync — zapis zatrzymuje CPU do początku następnej linii
+    43 = D40F			NMIST   = $D40F     ; rejestr statusu NMI: bit 7=DLI, bit 6=VBI (odczyt kasuje)
+    44 = D40E			NMIEN   = $D40E     ; włączenie NMI: bit 7=DLI, bit 6=VBI
+    45
+    46 				; ---- POKEY (dźwięk, klawiatura, timery) ----
+    47 = D20E			IRQEN   = $D20E     ; włączenie przerwań IRQ z POKEY
+    48
+    49 				; ---- OS shadows (cienie rejestrów w RAM) ----
+    50 				; UWAGA: shadow registers wymagają VBI — projekt ma VBI wyłączone!
+    51 				; Wszystkie zapisy idą bezpośrednio do hardware (GTIA/ANTIC $D0xx-$D4xx)
+    52 = 0200			VDSLST  = $0200     ; wektor DLI (2 bajty: lo, hi) — używany przez OS NMI handler
+    53
+    54 				; ---- Joystick ----
+    55 = 0284			STRIG0  = $0284     ; cień przycisku FIRE (NIEAKTUALNY bez VBI — użyj TRIG0!)
+    56 = D010			TRIG0   = $D010     ; GTIA — przycisk FIRE joysticka 0 (bit 0=0 gdy wciśnięty)
+    57 = D300			PORTA   = $D300     ; PORT A PIA — joystick 0 (bity 0–3: góra/dół/lewo/prawo, 0=aktywny)
+    58
+    59 				; ---- Mapa pamięci projektu ----
+    60 = 4000			SCREEN      = $4000         ; bufor ekranu (ANTIC E, 160x192)
+    61 = 3E80			DLIST_ADDR  = $3E80         ; adres bazowy Display List
+    62 = A000			PMBASE_ADDR = $A000         ; pamięć PMG (1K-aligned, pod ROM BASIC)
+    63 = 5E10			FOOTER_ADDR = $5E10         ; stopka tekstowa (ANTIC mode 2, 40 znaków)
+    64
+    65 				; ---- Offsety PMG (single-line resolution) ----
+    66 = A300			MISSILES    = PMBASE_ADDR+$300   ; 256 B — wszystkie 4 missile w 1 bajcie/linia
+    67 = A400			PLAYER0     = PMBASE_ADDR+$400   ; 256 B
+    68 = A500			PLAYER1     = PMBASE_ADDR+$500   ; 256 B
+    69 = A600			PLAYER2     = PMBASE_ADDR+$600   ; 256 B
+    70 = A700			PLAYER3     = PMBASE_ADDR+$700   ; 256 B
+    71
+    72 				; ---- Wymiary sprite'ów — tytuł ----
+    73 = 0025			SPRITE_ROWS = 37
+    74 = 0026			TOP_MARGIN  = 38
+    75
+    76 				; ---- Wymiary sprite'ów — księżyc (4 graczy, 32px) ----
+    77 = 0018			MOON_ROWS   = 24
+    78 = 0064			MOON_TOP    = 100            ; pozycja Y księżyca (linia PMG) — musi być > TOP_MARGIN+SPRITE_ROWS
+    79 = 0030			MOON_X      = $30            ; pozycja X lewego skraju księżyca
+    80
+    81 				; ---- Gwiazdy — na missile'ach M0–M3 (tylko PMG data placement, NIE DLI timing) ----
+    82 = 0050			STAR0_X     = $50
+    83 = 0048			STAR1_X     = $48
+    84 = 0060			STAR2_X     = $60
+    85 = 0074			STAR3_X     = $74
+    86
+    87 = 005A			STAR0_Y     = 90            ; linia PMG — tuż nad księżycem
+    88 = 006E			STAR1_Y     = 110            ; w obszarze księżyca
+    89 = 005F			STAR2_Y     = 95
+    90 = 0064			STAR3_Y     = 100
+    91
+    92 				; ---- Timing DLI ----
+    93 = 0008			KOREKTA     = 8              ; dostrojone doświadczalnie
+    94 = 0018			DL_BLANKS   = 24
+    95 = 0006			DLI_DELAY   = TOP_MARGIN - DL_BLANKS - KOREKTA
+    96
+    97 				; ---- Pozycje PMG tytułu (color clocks, side by side, x1 = 8px apart) ----
+    98 = 0030			TITLE_X     = $30            ; lewy skraj całego napisu
+    99 = 0030			HPOS_P0     = TITLE_X
+   100 = 0038			HPOS_P1     = TITLE_X+$08
+   101 = 0040			HPOS_P2     = TITLE_X+$10
+   102 = 0048			HPOS_P3     = TITLE_X+$18
+   103 = 0050			HPOS_M      = TITLE_X+$20    ; 5th player — M3 (lewy skraj)
+   104
+   105 				; ---- PMG DMA ----
+   106 = 003E			DMA_PMG_ON  = $3E            ; %00111110 = playfield ON + PMG single-line
+   107 = 0003			GRACTL_PM   = $03            ; włącz P/M + missiles
+   108 = 0011			PRIOR_5TH   = $11            ; 5th player mode + players over playfield
+   109
+   110 				; ---- Stany gry ----
+   111 = 0000			STATE_TITLE = 0
+   112 = 0001			STATE_STORY = 1
+   113 = 0002			STATE_GAME  = 2
+   114 = 0003			STATE_OVER  = 3
+   115
+   116 				; ---- Development — indeks etapu startowego (0=title, 1=story, 2=game, 3=gameover) ----
+   117 = 0000			DEV_START_STAGE = 0         ; zmień, by wystartować od innego etapu podczas developmentu
+    12 				    icl "zeropage.asm"
+Source: zeropage.asm
+     1 				;----------------------------------------
+     2 				; zeropage.asm — Zmienne page zero
+     3 				;----------------------------------------
+     4
+     5 = 0080			SRC_TMP     equ $80         ; tymczasowa do obliczeń (transpozycja sprite'ów)
+     6 = 0081			GAME_STATE  equ $81         ; bieżący stan gry: 0=title, 1=story, 2=game, 3=gameover
+     7 = 0082			SRC_PTR     equ $82         ; wskaźnik źródłowy dla depackera RLE (2 bajty)
+     8 = 0084			DST_PTR     equ $84         ; wskaźnik docelowy dla depackera RLE (2 bajty)
+    13
+    14 				; ===================================================================
+    15 				; 2. Kod programu ($2000)
+    16 				; ===================================================================
+    17 				    org $2000
+    18
+    19 FFFF> 2000-29F0> 4C 14 +     jmp start              ; jawny skok do inicjalizacji
+    20
+    21 				    ; --- Biblioteki (procedury wielokrotnego użytku) ---
+    22 2003			    icl "lib/pmg.asm"
+Source: pmg.asm
+     1 				;----------------------------------------
+     2 				; lib/pmg.asm — Procedury pomocnicze PMG
+     3 				;----------------------------------------
+     4
+     5 				;--------------------------------------------------------------
+     6 				; pmg_clear_all — Zeruje całą pamięć PMG (wszystkie 5 buforów)
+     7 				; Zakres: 0..239 (120 linii × 2 dla double-line, ale
+     8 				;          single-line w tym projekcie używa pełnych 128 B)
+     9 				; Niszczy: A, X
+    10 				;--------------------------------------------------------------
+    11 2003			.proc pmg_clear_all
+    12 2003 A9 00		    lda #0
+    13 2005 A2 EF		    ldx #239
+    14 2007			@lp
+    15 2007 9D 00 A4		    sta PLAYER0,x
+    16 200A 9D 00 A5		    sta PLAYER1,x
+    17 200D 9D 00 A6		    sta PLAYER2,x
+    18 2010 9D 00 A7		    sta PLAYER3,x
+    19 2013 9D 00 A3		    sta MISSILES,x
+    20 2016 CA			    dex
+    21 2017 10 EE		    bpl @lp
+    22 2019 60			    rts
+    23 				.endp
+    24
+    25 				;--------------------------------------------------------------
+    26 				; pmg_clear_range — Zeruje zakres linii PMG
+    27 				; Wejście:  X = indeks ostatniej linii do wyzerowania (odliczanie do 0)
+    28 				; Niszczy:  A, X
+    29 				;--------------------------------------------------------------
+    30 201A			.proc pmg_clear_range
+    31 201A A9 00		    lda #0
+    32 201C			@lp
+    33 201C 9D 00 A4		    sta PLAYER0,x
+    34 201F 9D 00 A5		    sta PLAYER1,x
+    35 2022 9D 00 A6		    sta PLAYER2,x
+    36 2025 9D 00 A7		    sta PLAYER3,x
+    37 2028 9D 00 A3		    sta MISSILES,x
+    38 202B CA			    dex
+    39 202C 10 EE		    bpl @lp
+    40 202E 60			    rts
+    41 				.endp
+    23 202F			    icl "lib/rle.asm"
+Source: rle.asm
+     1 				; =============================================================================
+     2 				; Depacker RLE (run-length encoding) dla 6502
+     3 				;
+     4 				; Format RLE:
+     5 				;   Bajt flagi (cmd):
+     6 				;     bit 7 = 1 -> powtórzenie: bity 6..0 = liczba powtórzeń - 1 (1..128)
+     7 				;                  Wyjątek: cmd = $80 -> EOF (koniec danych)
+     8 				;     bit 7 = 0 -> literały:    bity 6..0 = długość - 1 (1..128)
+     9 				;
+    10 				; Wejście:
+    11 				;   SRC_PTR (word) – adres skompresowanych danych (Strona Zerowa)
+    12 				;   DST_PTR (word) – adres bufora docelowego (Strona Zerowa)
+    13 				;
+    14 				; Niszczy: A, X, Y
+    15 				; =============================================================================
+    16
+    17 202F			.proc RLE_Depack
+    18 202F A0 00		        ldy #0
+    19
+    20 2031			loop
+    21 				        ; --- Odczytaj bajt flagi ---
+    22 2031 B1 82		        lda (SRC_PTR),Y
+    23 2033 AA			        tax                 ; zachowaj bajt flagi w X
+    24 2034 E6 82		        inc SRC_PTR
+    25 2036 D0 02		        bne skip_inc_src
+    26 2038 E6 83		        inc SRC_PTR+1
+    27 203A			skip_inc_src
+    28 203A 8A			        txa                 ; przywróć bajt flagi do A (odnawia flagi N i Z!)
+    29 203B 30 19		        bmi do_repeat       ; bit 7 = 1 -> powtórzenie lub EOF
+    30
+    31 				        ; --- Literały (bit 7 = 0) ---
+    32 203D AA			        tax                 ; X = liczba literałów - 1
+    33 203E E8			        inx                 ; X = liczba literałów (1..128)
+    34 203F A0 00		        ldy #0
+    35 2041			@lit_copy
+    36 2041 B1 82		        lda (SRC_PTR),Y
+    37 2043 91 84		        sta (DST_PTR),Y
+    38 2045 E6 82		        inc SRC_PTR
+    39 2047 D0 02		        bne @lit_skip_src
+    40 2049 E6 83		        inc SRC_PTR+1
+    41 204B			@lit_skip_src
+    42 204B E6 84		        inc DST_PTR
+    43 204D D0 02		        bne @lit_skip_dst
+    44 204F E6 85		        inc DST_PTR+1
+    45 2051			@lit_skip_dst
+    46 2051 CA			        dex
+    47 2052 D0 ED		        bne @lit_copy
+    48 2054 F0 DB		        beq loop            ; zawsze powrót do głównej pętli
+    49
+    50 				        ; --- Powtórzenie (bit 7 = 1) ---
+    51 2056			do_repeat
+    52 2056 29 7F		        and #$7F            ; bity 6..0 = liczba powtórzeń - 1
+    53 2058 F0 1B		        beq exit_rle        ; jeśli bity 6..0 == 0 (czyli pierwotnie cmd = $80), to EOF!
+    54 205A AA			        tax
+    55 205B E8			        inx                 ; X = liczba powtórzeń (1..128)
+    56 205C A0 00		        ldy #0
+    57 205E B1 82		        lda (SRC_PTR),Y      ; wczytaj bajt do powtórzenia
+    58 2060 E6 82		        inc SRC_PTR
+    59 2062 D0 02		        bne @rep_skip_src
+    60 2064 E6 83		        inc SRC_PTR+1
+    61 2066			@rep_skip_src
+    62 2066 A0 00		        ldy #0
+    63 2068			@rep_store
+    64 2068 91 84		        sta (DST_PTR),Y
+    65 206A E6 84		        inc DST_PTR
+    66 206C D0 02		        bne @rep_skip_dst
+    67 206E E6 85		        inc DST_PTR+1
+    68 2070			@rep_skip_dst
+    69 2070 CA			        dex
+    70 2071 D0 F5		        bne @rep_store
+    71 2073 F0 BC		        beq loop            ; powrót do głównej pętli
+    72
+    73 2075			exit_rle
+    74 2075 60			        rts
+    75 				.endp
+    24
+    25 				    ; --- Sceny (każda eksportuje _init i _run) ---
+    26 2076			    icl "scenes/title/title.asm"
+Source: title.asm
+     1 				;----------------------------------------
+     2 				; scenes/title/title.asm — Ekran tytułowy
+     3 				; Tęcza na sprite'ach + księżyc + gwiazdy + stopka
+     4 				;----------------------------------------
+     5
+     6 				; --- Stałe kolorów tła (generowane z obrazka) ---
+     7 2076			    icl "../../gen/title_colors.asm"
+Source: title_colors.asm
+     1 				; Kolory dla: title
+     2 				; Automatycznie dopasowane do palety Atari (PAL)
+     3 				;
+     4 				; Zapis BEZPOŚREDNIO do rejestrów GTIA (VBI wyłączony).
+     5 				;
+     6 				;   COLBK  ($D01A)
+     7 				;   COLPF0 ($D016)
+     8 				;   COLPF1 ($D017)
+     9 				;   COLPF2 ($D018)
+    10 				;
+    11 				;   indeks 0 → COLBK  $D01A = $00  (RGB #000000 → hue=0 (szary), lum=0)
+    12 				;   indeks 1 → COLPF0 $D016 = $02  (RGB #4A4A4A → hue=0 (szary), lum=2)
+    13 				;   indeks 2 → COLPF1 $D017 = $24  (RGB #AD5A08 → hue=2 (pomarańczowy), lum=4)
+    14 				;   indeks 3 → COLPF2 $D018 = $28  (RGB #CD9367 → hue=2 (pomarańczowy), lum=8)
+    15
+    16 				; --- Stałe kolorów (MADS .equ) — do użycia w DLI ---
+    17 = 0000			TITLE_COLBK	= $00
+    18 = 0002			TITLE_COLPF0	= $02
+    19 = 0024			TITLE_COLPF1	= $24
+    20 = 0028			TITLE_COLPF2	= $28
+    21
+    22 				; --- Inicjalizacja kolorów (GTIA hardware registers) ---
+    23 2076 A9 00			lda #$00
+    24 2078 8D 1A D0			sta $D01A	; COLBK (tło)
+    25 207B A9 02			lda #$02
+    26 207D 8D 16 D0			sta $D016	; COLPF0 (playfield 0)
+    27 2080 A9 24			lda #$24
+    28 2082 8D 17 D0			sta $D017	; COLPF1 (playfield 1)
+    29 2085 A9 28			lda #$28
+    30 2087 8D 18 D0			sta $D018	; COLPF2 (playfield 2)
+     8
+     9 				;---- Zmienne lokalne sceny ----
+    10 208A			title_fire_released
+    11 208A 00			    dta $00
+    12
+    13 				;==============================================================
+    14 				; title_init — Konfiguracja ekranu tytułowego
+    15 				; Wywoływane RAZ przy wejściu w ten stan
+    16 				;==============================================================
+    17 208B			.proc title_init
+    18 				    ; --- Wyłącz DMA na czas konfiguracji ---
+    19 208B A9 00		    lda #0
+    20 208D 8D 00 D4		    sta DMACTL
+    21 2090 8D 8A 20		    sta title_fire_released
+    22
+    23 				    ; --- Wyczyść całą pamięć PMG ---
+    24 2093 20 03 20		    jsr pmg_clear_all
+    25
+    26 				    ; --- Transpozycja sprite'ów tytułu → PMG ---
+    27 				    ; Format źródłowy: [P0,P1,P2,P3,M5th] × 37 wierszy
+    28 				    ; Format PMG:       per-player, ciągiem 128 B, offset TOP_MARGIN
+    29 				    
+    30 				    ; Rozpakuj SpriteData (logo) do bufora tymczasowego $3000
+    31 2096 A9 FA		    lda #<SpriteData
+    32 2098 85 82		    sta SRC_PTR
+    33 209A A9 28		    lda #>SpriteData
+    34 209C 85 83		    sta SRC_PTR+1
+    35 209E A9 00		    lda #$00
+    36 20A0 85 84		    sta DST_PTR
+    37 20A2 A9 30		    lda #$30
+    38 20A4 85 85		    sta DST_PTR+1
+    39 20A6 20 2F 20		    jsr RLE_Depack
+    40
+    41 20A9 A2 24		    ldx #SPRITE_ROWS-1
+    42
+    43 20AB			@row_loop
+    44 				    ; Oblicz offset źródłowy: X * 5
+    45 20AB 8A			    txa
+    46 20AC 85 80		    sta SRC_TMP
+    47 20AE 0A			    asl @               ; *2
+    48 20AF 0A			    asl @               ; *4
+    49 20B0 18			    clc
+    50 20B1 65 80		    adc SRC_TMP          ; +1 → *5
+    51 20B3 A8			    tay                  ; Y = offset w źródle
+    52
+    53 20B4 B9 00 30		    lda $3000,y
+    54 20B7 9D 26 A4		    sta PLAYER0+TOP_MARGIN,x
+    55 20BA C8			    iny
+    56 20BB B9 00 30		    lda $3000,y
+    57 20BE 9D 26 A5		    sta PLAYER1+TOP_MARGIN,x
+    58 20C1 C8			    iny
+    59 20C2 B9 00 30		    lda $3000,y
+    60 20C5 9D 26 A6		    sta PLAYER2+TOP_MARGIN,x
+    61 20C8 C8			    iny
+    62 20C9 B9 00 30		    lda $3000,y
+    63 20CC 9D 26 A7		    sta PLAYER3+TOP_MARGIN,x
+    64 20CF C8			    iny
+    65 20D0 B9 00 30		    lda $3000,y
+    66 20D3 9D 26 A3		    sta MISSILES+TOP_MARGIN,x
+    67
+    68 20D6 CA			    dex
+    69 20D7 10 D2		    bpl @row_loop
+    70
+    71 				    ; --- Transpozycja księżyca → PMG (P0–P3, 24 wiersze) ---
+    72 20D9 A2 17		    ldx #MOON_ROWS-1
+    73 20DB			@mclear
+    74 20DB A9 00		    lda #0
+    75 20DD 9D 64 A3		    sta MISSILES+MOON_TOP,x
+    76 20E0 CA			    dex
+    77 20E1 10 F8		    bpl @mclear
+    78
+    79 				    ; Rozpakuj MoonData (księżyc) do bufora tymczasowego $3000
+    80 20E3 A9 8F		    lda #<MoonData
+    81 20E5 85 82		    sta SRC_PTR
+    82 20E7 A9 29		    lda #>MoonData
+    83 20E9 85 83		    sta SRC_PTR+1
+    84 20EB A9 00		    lda #$00
+    85 20ED 85 84		    sta DST_PTR
+    86 20EF A9 30		    lda #$30
+    87 20F1 85 85		    sta DST_PTR+1
+    88 20F3 20 2F 20		    jsr RLE_Depack
+    89
+    90 20F6 A2 17		    ldx #MOON_ROWS-1
+    91 20F8			@moon_loop
+    92 20F8 8A			    txa
+    93 20F9 0A			    asl @
+    94 20FA 0A			    asl @               ; X * 4
+    95 20FB A8			    tay
+    96 20FC B9 00 30		    lda $3000,y
+    97 20FF 9D 64 A4		    sta PLAYER0+MOON_TOP,x
+    98 2102 C8			    iny
+    99 2103 B9 00 30		    lda $3000,y
+   100 2106 9D 64 A5		    sta PLAYER1+MOON_TOP,x
+   101 2109 C8			    iny
+   102 210A B9 00 30		    lda $3000,y
+   103 210D 9D 64 A6		    sta PLAYER2+MOON_TOP,x
+   104 2110 C8			    iny
+   105 2111 B9 00 30		    lda $3000,y
+   106 2114 9D 64 A7		    sta PLAYER3+MOON_TOP,x
+   107 = 2117			    pointer_dummy = *
+   108 2117 CA			    dex
+   109 2118 10 DE		    bpl @moon_loop
+   110
+   111 				    ; --- Gwiazdy — pojedyncze piksele na missile'ach ---
+   112 211A A9 01		    lda #$01             ; M0: bit 0 (prawy skraj)
+   113 211C 8D 5A A3		    sta MISSILES+STAR0_Y
+   114 211F A9 04		    lda #$04             ; M1: bit 2
+   115 2121 8D 6E A3		    sta MISSILES+STAR1_Y
+   116 2124 A9 10		    lda #$10             ; M2: bit 4
+   117 2126 8D 5F A3		    sta MISSILES+STAR2_Y
+   118 2129 A9 40		    lda #$40             ; M3: bit 6 (lewy skraj)
+   119 212B 8D 64 A3		    sta MISSILES+STAR3_Y
+   120
+   121 				    ; --- GTIA: pozycje graczy (side-by-side od lewej) ---
+   122 212E A9 30		    lda #HPOS_P0
+   123 2130 8D 00 D0		    sta HPOSP0
+   124 2133 A9 38		    lda #HPOS_P1
+   125 2135 8D 01 D0		    sta HPOSP1
+   126 2138 A9 40		    lda #HPOS_P2
+   127 213A 8D 02 D0		    sta HPOSP2
+   128 213D A9 48		    lda #HPOS_P3
+   129 213F 8D 03 D0		    sta HPOSP3
+   130
+   131 				    ; Pozycje missile'i — ODWROTNA KOLEJNOŚĆ
+   132 2142 A9 56		    lda #HPOS_M+6
+   133 2144 8D 04 D0		    sta HPOSM0
+   134 2147 A9 54		    lda #HPOS_M+4
+   135 2149 8D 05 D0		    sta HPOSM1
+   136 214C A9 52		    lda #HPOS_M+2
+   137 214E 8D 06 D0		    sta HPOSM2
+   138 2151 A9 50		    lda #HPOS_M
+   139 2153 8D 07 D0		    sta HPOSM3
+   140
+   141 				    ; Rozmiar graczy — normalny
+   142 2156 A9 00		    lda #$00
+   143 2158 8D 08 D0		    sta SIZEP0
+   144 215B 8D 09 D0		    sta SIZEP1
+   145 215E 8D 0A D0		    sta SIZEP2
+   146 2161 8D 0B D0		    sta SIZEP3
+   147 2164 8D 0C D0		    sta SIZEM
+   148
+   149 				    ; Kolory graczy — białe
+   150 2167 A9 0E		    lda #$0E
+   151 2169 8D 12 D0		    sta PCOLR0
+   152 216C 8D 13 D0		    sta PCOLR1
+   153 216F 8D 14 D0		    sta PCOLR2
+   154 2172 8D 15 D0		    sta PCOLR3
+   155
+   156 				    ; Kolor 5. gracza (missiles) — COLPF3
+   157 2175 A9 0E		    lda #$0E
+   158 2177 8D 19 D0		    sta COLPF3
+   159
+   160 				    ; Adres bazowy PMG
+   161 217A A9 A0		    lda #>PMBASE_ADDR
+   162 217C 8D 07 D4		    sta PMBASE
+   163
+   164 				    ; Włącz graczy i missile
+   165 217F A9 03		    lda #GRACTL_PM
+   166 2181 8D 1D D0		    sta GRACTL
+   167
+   168 				    ; PRIOR — 5th player + players over playfield
+   169 2184 A9 11		    lda #PRIOR_5TH
+   170 2186 8D 1B D0		    sta PRIOR
+   171
+   172 				    ; --- Display List ---
+   173 2189 A9 80		    lda #<DLIST_TITLE
+   174 218B 8D 02 D4		    sta DLISTL
+   175 218E A9 3E		    lda #>DLIST_TITLE
+   176 2190 8D 03 D4		    sta DLISTH
+   177
+   178 				    ; --- Kolory tła (generowane; plik w katalogu gen/) ---
+   179 2193			    icl "../../gen/title_colors.asm"
+Source: title_colors.asm
+     1 				; Kolory dla: title
+     2 				; Automatycznie dopasowane do palety Atari (PAL)
+     3 				;
+     4 				; Zapis BEZPOŚREDNIO do rejestrów GTIA (VBI wyłączony).
+     5 				;
+     6 				;   COLBK  ($D01A)
+     7 				;   COLPF0 ($D016)
+     8 				;   COLPF1 ($D017)
+     9 				;   COLPF2 ($D018)
+    10 				;
+    11 				;   indeks 0 → COLBK  $D01A = $00  (RGB #000000 → hue=0 (szary), lum=0)
+    12 				;   indeks 1 → COLPF0 $D016 = $02  (RGB #4A4A4A → hue=0 (szary), lum=2)
+    13 				;   indeks 2 → COLPF1 $D017 = $24  (RGB #AD5A08 → hue=2 (pomarańczowy), lum=4)
+    14 				;   indeks 3 → COLPF2 $D018 = $28  (RGB #CD9367 → hue=2 (pomarańczowy), lum=8)
+    15
+    16 				; --- Stałe kolorów (MADS .equ) — do użycia w DLI ---
+    17 = 0000			TITLE_COLBK	= $00
+    18 = 0002			TITLE_COLPF0	= $02
+    19 = 0024			TITLE_COLPF1	= $24
+    20 = 0028			TITLE_COLPF2	= $28
+    21
+    22 				; --- Inicjalizacja kolorów (GTIA hardware registers) ---
+    23 2193 A9 00			lda #$00
+    24 2195 8D 1A D0			sta $D01A	; COLBK (tło)
+    25 2198 A9 02			lda #$02
+    26 219A 8D 16 D0			sta $D016	; COLPF0 (playfield 0)
+    27 219D A9 24			lda #$24
+    28 219F 8D 17 D0			sta $D017	; COLPF1 (playfield 1)
+    29 21A2 A9 28			lda #$28
+    30 21A4 8D 18 D0			sta $D018	; COLPF2 (playfield 2)
+   180
+   181 				    ; --- Przywróć tekst stopki (nadpisywany przez story/gameover) ---
+   182 21A7 20 75 23		    jsr copy_title_footer
+   183
+   184 				    ; --- DMA ON ---
+   185 21AA A9 3E		    lda #DMA_PMG_ON
+   186 21AC 8D 00 D4		    sta DMACTL
+   187
+   188 				    ; Charset — własna czcionka ($6000)
+   189 21AF A9 60		    lda #$60
+   190 21B1 8D 09 D4		    sta CHBASE
+   191
+   192 				    ; --- DLI: wektor + włączenie na ostatniej pustej linii ---
+   193 21B4 A9 F9		    lda #<DLI_Handler
+   194 21B6 8D 00 02		    sta VDSLST
+   195 21B9 A9 21		    lda #>DLI_Handler
+   196 21BB 8D 01 02		    sta VDSLST+1
+   197
+   198 21BE AD 82 3E		    lda DLIST_TITLE+2
+   199 21C1 09 80		    ora #$80
+   200 21C3 8D 82 3E		    sta DLIST_TITLE+2
+   201
+   202 21C6 A9 C0		    lda #$C0             ; DLI on, VBI on (required for music)
+   203 21C8 8D 0E D4		    sta NMIEN
+   204
+   205 21CB 20 00 88		    jsr audio_init
+   206 21CE 60			    rts
+   207 				.endp
+   208
+   209 				;==============================================================
+   210 				; title_run — Obsługa klatki (czeka na FIRE)
+   211 				; Zwraca: GAME_STATE = STATE_STORY gdy FIRE wciśnięty
+   212 				;==============================================================
+   213 21CF			.proc title_run
+   214 21CF AD 8A 20		    lda title_fire_released
+   215 21D2 D0 0D		    bne @check_press
+   216
+   217 				    ; Czekaj na puszczenie przycisku FIRE z poprzedniego ekranu
+   218 21D4 AD 10 D0		    lda TRIG0
+   219 21D7 F0 1F		    beq @exit            ; wciąż trzyma — nie reaguj
+   220 21D9 A9 01		    lda #1
+   221 21DB 8D 8A 20		    sta title_fire_released
+   222 21DE 4C F8 21		    jmp @exit
+   223
+   224 21E1			@check_press
+   225 21E1 AD 10 D0		    lda TRIG0
+   226 21E4 D0 12		    bne @exit            ; FIRE nie wciśnięty — zostań w title
+   227 				    ; Wyłącz DLI przed zmianą stanu — przekieruj na pusty RTI
+   228 				    ; (zapobiega nadpisaniu kolorów/PRIOR przez pending DLI)
+   229 21E6 A9 74		    lda #<DLI_Nop
+   230 21E8 8D 00 02		    sta VDSLST
+   231 21EB A9 23		    lda #>DLI_Nop
+   232 21ED 8D 01 02		    sta VDSLST+1
+   233 21F0 A9 00		    lda #0
+   234 21F2 8D 0E D4		    sta NMIEN
+   235 21F5 20 D9 25		    jsr advance_stage
+   236 21F8			@exit
+   237 21F8 60			    rts
+   238 				.endp
+   239
+   240 				;==============================================================
+   241 				; DLI_Handler — Tęcza na sprite'ach tytułu
+   242 				;==============================================================
+   243 21F9			DLI_Handler
+   244 21F9 48			    pha
+   245 21FA 8A			    txa
+   246 21FB 48			    pha
+   247
+   248 				    ; --- Ustaw kolory obrazka tytułowego (z title_colors.asm) ---
+   249 21FC A9 00		    lda #TITLE_COLBK
+   250 21FE 8D 1A D0		    sta COLBK            ; tło
+   251 2201 A9 02		    lda #TITLE_COLPF0
+   252 2203 8D 16 D0		    sta COLPF0           ; playfield 0
+   253 2206 A9 24		    lda #TITLE_COLPF1
+   254 2208 8D 17 D0		    sta COLPF1           ; playfield 1
+   255 220B A9 28		    lda #TITLE_COLPF2
+   256 220D 8D 18 D0		    sta COLPF2           ; playfield 2
+   257 2210 A9 00		    lda #$00
+   258 2212 8D 19 D0		    sta COLPF3           ; playfield 3 — czarny
+   259
+   260 				    ; Setup HPOS + SIZEP dla tytułu (x1, normalny)
+   261 2215 A9 00		    lda #$00
+   262 2217 8D 08 D0		    sta SIZEP0
+   263 221A 8D 09 D0		    sta SIZEP1
+   264 221D 8D 0A D0		    sta SIZEP2
+   265 2220 8D 0B D0		    sta SIZEP3
+   266 2223 A9 30		    lda #HPOS_P0
+   267 2225 8D 00 D0		    sta HPOSP0
+   268 2228 A9 38		    lda #HPOS_P1
+   269 222A 8D 01 D0		    sta HPOSP1
+   270 222D A9 40		    lda #HPOS_P2
+   271 222F 8D 02 D0		    sta HPOSP2
+   272 2232 A9 48		    lda #HPOS_P3
+   273 2234 8D 03 D0		    sta HPOSP3
+   274 2237 A9 56		    lda #HPOS_M+6
+   275 2239 8D 04 D0		    sta HPOSM0
+   276 223C A9 54		    lda #HPOS_M+4
+   277 223E 8D 05 D0		    sta HPOSM1
+   278 2241 A9 52		    lda #HPOS_M+2
+   279 2243 8D 06 D0		    sta HPOSM2
+   280 2246 A9 50		    lda #HPOS_M
+   281 2248 8D 07 D0		    sta HPOSM3
+   282
+   283 				    ; Czekaj do początku sprite'ów
+   284 224B A2 06		    ldx #DLI_DELAY
+   285 224D			@delay
+   286 224D 8D 0A D4		    sta WSYNC
+   287 2250 CA			    dex
+   288 2251 D0 FA		    bne @delay
+   289
+   290 				    ; Pierwsza linia tytułu — kolor od razu
+   291 2253 A2 00		    ldx #0
+   292 2255 BD EB 22		    lda RainbowColors,x
+   293 2258 8D 12 D0		    sta PCOLR0
+   294 225B 8D 13 D0		    sta PCOLR1
+   295 225E 8D 14 D0		    sta PCOLR2
+   296 2261 8D 15 D0		    sta PCOLR3
+   297 2264 8D 19 D0		    sta COLPF3
+   298 2267 E8			    inx
+   299
+   300 				    ; Pozostałe linie
+   301 2268 A0 23		    ldy #SPRITE_ROWS-2
+   302 226A			@rainbow
+   303 226A 8D 0A D4		    sta WSYNC
+   304 226D BD EB 22		    lda RainbowColors,x
+   305 2270 8D 12 D0		    sta PCOLR0
+   306 2273 8D 13 D0		    sta PCOLR1
+   307 2276 8D 14 D0		    sta PCOLR2
+   308 2279 8D 15 D0		    sta PCOLR3
+   309 227C 8D 19 D0		    sta COLPF3
+   310 227F E8			    inx
+   311 2280 88			    dey
+   312 2281 10 E7		    bpl @rainbow
+   313
+   314 				    ; --- Po tęczy: PRIOR=$01, PCOLR=$40, SIZEP=1x ---
+   315 2283 8D 0A D4		    sta WSYNC
+   316 2286 A9 01		    lda #$01
+   317 2288 8D 1B D0		    sta PRIOR             ; wyłącz 5th-player
+   318 228B A9 40		    lda #$40
+   319 228D 8D 12 D0		    sta PCOLR0
+   320 2290 8D 13 D0		    sta PCOLR1
+   321 2293 8D 14 D0		    sta PCOLR2
+   322 2296 8D 15 D0		    sta PCOLR3
+   323 2299 A9 00		    lda #$00
+   324 229B 8D 19 D0		    sta COLPF3            ; przywróć playfield 3 (czarny)
+   325 229E 8D 08 D0		    sta SIZEP0
+   326 22A1 8D 09 D0		    sta SIZEP1
+   327 22A4 8D 0A D0		    sta SIZEP2
+   328 22A7 8D 0B D0		    sta SIZEP3
+   329 22AA 8D 0C D0		    sta SIZEM
+   330
+   331 				    ; --- Gwiazdy: HPOSM poniżej tęczy (stałe do końca klatki) ---
+   332 22AD A9 50		    lda #STAR0_X
+   333 22AF 8D 04 D0		    sta HPOSM0
+   334 22B2 A9 48		    lda #STAR1_X
+   335 22B4 8D 05 D0		    sta HPOSM1
+   336 22B7 A9 60		    lda #STAR2_X
+   337 22B9 8D 06 D0		    sta HPOSM2
+   338 22BC A9 74		    lda #STAR3_X
+   339 22BE 8D 07 D0		    sta HPOSM3
+   340
+   341 				    ; --- Czekaj do księżyca ---
+   342 22C1 A2 17		    ldx #MOON_TOP - TOP_MARGIN - SPRITE_ROWS - 2
+   343 22C3			@sm
+   344 22C3 8D 0A D4		    sta WSYNC
+   345 22C6 CA			    dex
+   346 22C7 D0 FA		    bne @sm
+   347
+   348 				    ; --- Księżyc: HPOSP ---
+   349 22C9 A9 30		    lda #MOON_X
+   350 22CB 8D 00 D0		    sta HPOSP0
+   351 22CE A9 38		    lda #MOON_X+8
+   352 22D0 8D 01 D0		    sta HPOSP1
+   353 22D3 A9 40		    lda #MOON_X+16
+   354 22D5 8D 02 D0		    sta HPOSP2
+   355 22D8 A9 48		    lda #MOON_X+24
+   356 22DA 8D 03 D0		    sta HPOSP3
+   357
+   358 				    ; Swap na text-DLI
+   359 22DD A9 13		    lda #<TEXT_DLI
+   360 22DF 8D 00 02		    sta VDSLST
+   361 22E2 A9 23		    lda #>TEXT_DLI
+   362 22E4 8D 01 02		    sta VDSLST+1
+   363
+   364 22E7 68			    pla
+   365 22E8 AA			    tax
+   366 22E9 68			    pla
+   367 22EA 40			    rti
+   368
+   369 				;==============================================================
+   370 				; Tabela kolorów tęczy (40 pozycji)
+   371 				;==============================================================
+   372 22EB			RainbowColors
+   373 22EB 34 36 38 3A 3C	    dta $34,$36,$38,$3A,$3C
+   374 22F0 3E 3E 3F 3E 3E	    dta $3E,$3E,$3F,$3E,$3E
+   375 22F5 3C 3A 38 36 34	    dta $3C,$3A,$38,$36,$34
+   376 22FA 00 00 00 00 00	    dta $00,$00,$00,$00,$00
+   377 22FF 00 14 16 18 C8	    dta $00,$14,$16,$18,$C8
+   378 2304 CA CC CE CE CF	    dta $CA,$CC,$CE,$CE,$CF
+   379 2309 CF CE CE CC CA	    dta $CF,$CE,$CE,$CC,$CA
+   380 230E C8 18 16 14 00	    dta $C8,$18,$16,$14,$00
+   381
+   382 				;==============================================================
+   383 				; TEXT_DLI — Tęcza na stopce (ANTIC mode 2)
+   384 				;==============================================================
+   385 2313			TEXT_DLI
+   386 2313 48			    pha
+   387 2314 8A			    txa
+   388 2315 48			    pha
+   389
+   390 2316 A9 00		    lda #$00
+   391 2318 8D 1D D0		    sta GRACTL
+   392
+   393 231B A2 9E		    ldx #$9E
+   394 231D 8D 0A D4		    sta WSYNC
+   395 2320 8E 18 D0		    stx COLPF2
+   396 2323 8D 16 D0		    sta COLPF0
+   397 2326 8D 17 D0		    sta COLPF1
+   398 2329 8D 1A D0		    sta COLBK
+   399
+   400 				    ; Efekt tęczy (8 linii skanowania znaku)
+   401 232C A0 07		    ldy #7
+   402 232E			@tloop
+   403 232E B9 6C 23		    lda TextColors,y
+   404 2331 8D 0A D4		    sta WSYNC
+   405 2334 8D 18 D0		    sta COLPF2
+   406 2337 88			    dey
+   407 2338 10 F4		    bpl @tloop
+   408 233A B9 6C 23		    lda TextColors,y
+   409 233D 8D 18 D0		    sta COLPF2
+   410
+   411 				    ; Przywrócenie stanu (kolory z title_colors.asm)
+   412 2340 A9 03		    lda #GRACTL_PM
+   413 2342 8D 1D D0		    sta GRACTL
+   414 2345 A9 00		    lda #TITLE_COLBK
+   415 2347 8D 1A D0		    sta COLBK
+   416 234A A9 02		    lda #TITLE_COLPF0
+   417 234C 8D 16 D0		    sta COLPF0
+   418 234F A9 24		    lda #TITLE_COLPF1
+   419 2351 8D 17 D0		    sta COLPF1
+   420 2354 A9 28		    lda #TITLE_COLPF2
+   421 2356 8D 18 D0		    sta COLPF2
+   422 2359 A9 00		    lda #$00
+   423 235B 8D 19 D0		    sta COLPF3
+   424
+   425 				    ; Przywróć wektor DLI
+   426 235E A9 F9		    lda #<DLI_Handler
+   427 2360 8D 00 02		    sta VDSLST
+   428 2363 A9 21		    lda #>DLI_Handler
+   429 2365 8D 01 02		    sta VDSLST+1
+   430
+   431 2368 68			    pla
+   432 2369 AA			    tax
+   433 236A 68			    pla
+   434 236B 40			    rti
+   435
+   436 				;==============================================================
+   437 				; Tabela kolorów tęczy — stopka tekstowa (8 pozycji)
+   438 				;==============================================================
+   439 236C			TextColors
+   440 236C 90 92 94 96 98 9A +     dta $90,$92,$94,$96,$98,$9A,$9C,$9E
+   441
+   442 				;==============================================================
+   443 				; DLI_Nop — Pusty handler DLI (używany przy przejściach między stanami)
+   444 				;==============================================================
+   445 2374			DLI_Nop
+   446 2374 40			    rti
+   447
+   448 				;==============================================================
+   449 				; copy_title_footer — Przywraca tekst stopki tytułu ($5E10)
+   450 				; Kopiuje 320 bajtów z TitleFooterROM → FOOTER_ADDR
+   451 				; Niszczy: A, X, Y
+   452 				;==============================================================
+   453 2375			.proc copy_title_footer
+   454 2375 A2 00		    ldx #0
+   455 2377			@lp
+   456 2377 BD BA 27		    lda TitleFooterROM,x
+   457 237A 9D 10 5E		    sta FOOTER_ADDR,x
+   458 237D E8			    inx
+   459 237E D0 F7		    bne @lp                ; 256 bajtów (0..255)
+   460 2380			@rest
+   461 2380 BD BA 28		    lda TitleFooterROM+256,x
+   462 2383 9D 10 5F		    sta FOOTER_ADDR+256,x
+   463 2386 E8			    inx
+   464 2387 E0 40		    cpx #64                ; pozostałe 64 bajty (320-256)
+   465 2389 D0 F5		    bne @rest
+   466 238B 60			    rts
+   467 				.endp
+    27 238C			    icl "scenes/story/story.asm"
+Source: story.asm
+     1 				;----------------------------------------
+     2 				; scenes/story/story.asm — Ekran opisu (ANTIC mode 2, 40 znaków/linia)
+     3 				;----------------------------------------
+     4
+     5 				;---- Zmienne lokalne sceny ----
+     6 238C			fire_released_flag
+     7 238C 00			    dta $00
+     8
+     9 				;---- story_init — Konfiguracja ANTIC mode 2 ----
+    10 238D			.proc story_init
+    11 238D A9 00		    lda #0
+    12 238F 8D 00 D4		    sta DMACTL
+    13 2392 8D 0E D4		    sta NMIEN
+    14 2395 8D 1D D0		    sta GRACTL              ; wyłącz PMG DMA (GTIA)
+    15 2398 8D 1B D0		    sta PRIOR               ; reset priorytetów
+    16 239B 8D 8C 23		    sta fire_released_flag  ; zresetuj stan joysticka
+    17
+    18 239E 20 03 20		    jsr pmg_clear_all
+    19 23A1 20 E8 23		    jsr copy_story_text
+    20
+    21 				    ; --- Display List ---
+    22 23A4 A9 4E		    lda #<DLIST_STORY
+    23 23A6 8D 02 D4		    sta DLISTL
+    24 23A9 A9 3F		    lda #>DLIST_STORY
+    25 23AB 8D 03 D4		    sta DLISTH
+    26
+    27 				    ; --- Charset (własny font $6000 — ten sam co w tytule) ---
+    28 23AE A9 60		    lda #$60
+    29 23B0 8D 09 D4		    sta CHBASE
+    30
+    31 				    ; --- Kolory: biały tekst na czarnym tle ---
+    32 23B3 A9 00		    lda #$00
+    33 23B5 8D 1A D0		    sta COLBK            ; czarna ramka
+    34 23B8 8D 18 D0		    sta COLPF2           ; czarne tło znaków
+    35 23BB 8D 19 D0		    sta COLPF3           ; nieużywane
+    36 23BE A9 0E		    lda #$0E
+    37 23C0 8D 17 D0		    sta COLPF1           ; biały tekst (COLPF1 w ANTIC mode 2)
+    38 23C3 A9 00		    lda #$00
+    39 23C5 8D 16 D0		    sta COLPF0           ; nieużywane
+    40
+    41 				    ; --- DMA ON (playfield, bez PMG) ---
+    42 23C8 A9 22		    lda #$22
+    43 23CA 8D 00 D4		    sta DMACTL
+    44
+    45 23CD 60			    rts
+    46 				.endp
+    47
+    48 				;==============================================================
+    49 				; story_run — Czeka na puszczenie FIRE, potem na FIRE → GAME
+    50 				;==============================================================
+    51 23CE			.proc story_run
+    52 23CE AD 8C 23		    lda fire_released_flag
+    53 23D1 D0 0C		    bne @wait_press
+    54
+    55 				    ; 1. Czekaj na puszczenie przycisku FIRE (trzymany z ekranu tytułowego)
+    56 23D3 AD 10 D0		    lda TRIG0
+    57 23D6 F0 0F		    beq @exit            ; wciąż trzyma — zostań w story
+    58 23D8 A9 01		    lda #1
+    59 23DA 8D 8C 23		    sta fire_released_flag
+    60 23DD D0 08		    bne @exit            ; wyjdź w tej klatce
+    61
+    62 23DF			@wait_press
+    63 				    ; 2. Czekaj na ponowne naciśnięcie przycisku FIRE
+    64 23DF AD 10 D0		    lda TRIG0
+    65 23E2 D0 03		    bne @exit            ; jeszcze nie nacisnął ponownie
+    66 23E4 20 D9 25		    jsr advance_stage
+    67 23E7			@exit
+    68 23E7 60			    rts
+    69 				.endp
+    70
+    71 				;==============================================================
+    72 				; copy_story_text — Kopiuje tekst story (320 B) z ROM do RAM ($5E10)
+    73 				;==============================================================
+    74 23E8			.proc copy_story_text
+    75 23E8 A9 7D		    lda #<StoryText_Data
+    76 23EA 85 82		    sta SRC_PTR
+    77 23EC A9 26		    lda #>StoryText_Data
+    78 23EE 85 83		    sta SRC_PTR+1
+    79 23F0 A9 10		    lda #<StoryText_RAM
+    80 23F2 85 84		    sta DST_PTR
+    81 23F4 A9 5E		    lda #>StoryText_RAM
+    82 23F6 85 85		    sta DST_PTR+1
+    83 23F8 20 2F 20		    jsr RLE_Depack
+    84 23FB 60			    rts
+    85 				.endp
+    28 23FC			    icl "scenes/game/game.asm"
+Source: game.asm
+     1 				;----------------------------------------
+     2 				; scenes/game/game.asm — Gra właściwa (ANTIC 4, 40×24 znaków)
+     3 				;----------------------------------------
+     4
+     5 				;---- Adresy pamięci dla gry (współdzielone z main.asm przez .global) ----
+     6 = 6400			GAME_SCREEN   = $6400       ; mapa 40×24 = 960 bajtów (poza bitmapą tytułu)
+     7 = A800			GAME_CHARSET  = $A800       ; charset gry — kafelki terenu (1 KB, CHBASE=$A8)
+     8
+     9 				;---- Zmienne lokalne sceny ----
+    10 23FC			game_fire_released
+    11 23FC 00			    dta $00
+    12
+    13 				;==============================================================
+    14 				; game_init — Konfiguracja ANTIC 4 + PMG
+    15 				;==============================================================
+    16 23FD			.proc game_init
+    17 23FD A9 00		    lda #0
+    18 23FF 8D 00 D4		    sta DMACTL
+    19 2402 8D 0E D4		    sta NMIEN
+    20 2405 8D FC 23		    sta game_fire_released  ; zresetuj stan przycisku FIRE
+    21
+    22 2408 20 03 20		    jsr pmg_clear_all
+    23
+    24 				    ; --- Display List gry (ANTIC 4) ---
+    25 240B A9 6B		    lda #<DLIST_GAME
+    26 240D 8D 02 D4		    sta DLISTL
+    27 2410 A9 3F		    lda #>DLIST_GAME
+    28 2412 8D 03 D4		    sta DLISTH
+    29
+    30 				    ; --- Charset gry ($A800, używamy font.asm jako placeholder) ---
+    31 2415 A9 A8		    lda #$A8
+    32 2417 8D 09 D4		    sta CHBASE
+    33
+    34 				    ; --- Kolory gry (4 kolory: trawa, woda, góry, chaty) ---
+    35 241A A9 94		    lda #$94             ; ciemny niebieski — niebo/woda
+    36 241C 8D 1A D0		    sta COLBK
+    37 241F A9 C8		    lda #$C8             ; zielony — trawa
+    38 2421 8D 16 D0		    sta COLPF0
+    39 2424 A9 16		    lda #$16             ; brązowy — góry/ziemia
+    40 2426 8D 17 D0		    sta COLPF1
+    41 2429 A9 0E		    lda #$0E             ; biały/szary — budynki
+    42 242B 8D 18 D0		    sta COLPF2
+    43 242E A9 00		    lda #$00             ; czarny — obrysy/PMG 5th player
+    44 2430 8D 19 D0		    sta COLPF3
+    45
+    46 				    ; --- PMG: rozmiar normalny, kolor biały dla gracza ---
+    47 2433 A9 00		    lda #$00
+    48 2435 8D 08 D0		    sta SIZEP0
+    49 2438 8D 0C D0		    sta SIZEM
+    50 243B A9 0E		    lda #$0E
+    51 243D 8D 12 D0		    sta PCOLR0
+    52 2440 A9 11		    lda #PRIOR_5TH
+    53 2442 8D 1B D0		    sta PRIOR
+    54
+    55 2445 A9 A0		    lda #>PMBASE_ADDR
+    56 2447 8D 07 D4		    sta PMBASE
+    57 244A A9 03		    lda #GRACTL_PM
+    58 244C 8D 1D D0		    sta GRACTL
+    59
+    60 				    ; --- Pozycja startowa gracza (na środku) ---
+    61 244F A9 60		    lda #$60
+    62 2451 8D 00 D0		    sta HPOSP0
+    63
+    64 				    ; --- Wypełnij mapę testową (placeholder — potem dane z pliku) ---
+    65 2454 20 62 24		    jsr fill_test_map
+    66
+    67 				    ; --- DMA ON ---
+    68 2457 A9 3E		    lda #DMA_PMG_ON
+    69 2459 8D 00 D4		    sta DMACTL
+    70 245C A9 00		    lda #$00             ; bez DLI na razie
+    71 245E 8D 0E D4		    sta NMIEN
+    72
+    73 2461 60			    rts
+    74 				.endp
+    75
+    76 				;==============================================================
+    77 				; fill_test_map — Wypełnia GAME_SCREEN wzorem testowym
+    78 				;==============================================================
+    79 2462			.proc fill_test_map
+    80 2462 A2 00		    ldx #0
+    81 2464			@row
+    82 				    ; 40 znaków na wiersz, 24 wiersze
+    83 2464 8A			    txa
+    84 2465 4A			    lsr @               ; X/4 → różne kafelki co 4 wiersze
+    85 2466 4A			    lsr @
+    86 2467 29 03		    and #$03            ; 4 rodzaje terenu
+    87 2469 A8			    tay
+    88 246A B9 7B 24		    lda TestTiles,y     ; wybierz kafelek
+    89
+    90 246D A0 28		    ldy #40
+    91 246F			@col
+    92 246F 9D 00 64		    sta GAME_SCREEN,x
+    93 2472 E8			    inx
+    94 2473 88			    dey
+    95 2474 D0 F9		    bne @col
+    96
+    97 2476 E0 C0		    cpx #<$03C0          ; 24 × 40 = 960 = $03C0
+    98 2478 D0 EA		    bne @row
+    99
+   100 247A 60			    rts
+   101
+   102 247B			TestTiles
+   103 247B 00 28 50 78		    dta $00,$28,$50,$78  ; 4 testowe kafelki (co 40 znaków w charset)
+   104 				.endp
+   105
+   106 				;==============================================================
+   107 				; game_run — Obsługa klatki (joystick + FIRE)
+   108 				;==============================================================
+   109 247F			.proc game_run
+   110 247F AD FC 23		    lda game_fire_released
+   111 2482 D0 0D		    bne @check_press
+   112
+   113 				    ; Czekaj na puszczenie przycisku FIRE z poprzedniego ekranu
+   114 2484 AD 10 D0		    lda TRIG0
+   115 2487 F0 11		    beq @move            ; wciąż trzyma — nie reaguj i idź do ruchu
+   116 2489 A9 01		    lda #1
+   117 248B 8D FC 23		    sta game_fire_released
+   118 248E 4C 9A 24		    jmp @move
+   119
+   120 2491			@check_press
+   121 				    ; --- TEST: FIRE → następny etap ---
+   122 2491 AD 10 D0		    lda TRIG0
+   123 2494 D0 04		    bne @move
+   124 2496 20 D9 25		    jsr advance_stage
+   125 2499 60			    rts
+   126
+   127 249A			@move
+   128 				    ; --- Odczyt joysticka (PORT A, $D300) ---
+   129 249A AD 00 D3		    lda PORTA
+   130 249D 49 FF		    eor #$FF            ; neguj (0=neutral, 1=aktywny kierunek)
+   131
+   132 				    ; GÓRA
+   133 249F 29 01		    and #$01
+   134 24A1 F0 03		    beq @chk_down
+   135 24A3 CE 00 D0		    dec HPOSP0
+   136
+   137 24A6			@chk_down
+   138 24A6 AD 00 D3		    lda PORTA
+   139 24A9 49 FF		    eor #$FF
+   140 24AB 29 02		    and #$02
+   141 24AD F0 03		    beq @chk_left
+   142 24AF EE 00 D0		    inc HPOSP0
+   143
+   144 24B2			@chk_left
+   145 24B2 AD 00 D3		    lda PORTA
+   146 24B5 49 FF		    eor #$FF
+   147 24B7 29 04		    and #$04
+   148 24B9 F0 03		    beq @chk_right
+   149 24BB CE 00 D0		    dec HPOSP0
+   150
+   151 24BE			@chk_right
+   152 24BE AD 00 D3		    lda PORTA
+   153 24C1 49 FF		    eor #$FF
+   154 24C3 29 08		    and #$08
+   155 24C5 F0 03		    beq @exit
+   156 24C7 EE 00 D0		    inc HPOSP0
+   157
+   158 24CA			@exit
+   159 24CA 60			    rts
+   160 				.endp
+    29 24CB			    icl "scenes/gameover/gameover.asm"
+Source: gameover.asm
+     1 				;----------------------------------------
+     2 				; scenes/gameover/gameover.asm — Ekran końca gry
+     3 				; ANTIC D (128×96, 4 kolory, narrow playfield) + tekst GAME OVER
+     4 				;----------------------------------------
+     5
+     6 				; --- Kolory (generowane z obrazka) ---
+     7 24CB			    icl "../../gen/gameover_colors.asm"
+Source: gameover_colors.asm
+     1 				; Kolory dla: gameover
+     2 				; Automatycznie dopasowane do palety Atari (PAL)
+     3 				;
+     4 				; Zapis BEZPOŚREDNIO do rejestrów GTIA (VBI wyłączony).
+     5 				;
+     6 				;   COLBK  ($D01A)
+     7 				;   COLPF0 ($D016)
+     8 				;   COLPF1 ($D017)
+     9 				;   COLPF2 ($D018)
+    10 				;
+    11 				;   indeks 0 → COLBK  $D01A = $00  (RGB #000001 → hue=0 (szary), lum=0)
+    12 				;   indeks 1 → COLPF0 $D016 = $0A  (RGB #BDBCBD → hue=0 (szary), lum=10)
+    13 				;   indeks 2 → COLPF1 $D017 = $02  (RGB #464646 → hue=0 (szary), lum=2)
+    14 				;   indeks 3 → COLPF2 $D018 = $05  (RGB #7E7E7D → hue=0 (szary), lum=5)
+    15
+    16 				; --- Stałe kolorów (MADS .equ) — do użycia w DLI ---
+    17 = 0000			GAMEOVER_COLBK	= $00
+    18 = 000A			GAMEOVER_COLPF0	= $0A
+    19 = 0002			GAMEOVER_COLPF1	= $02
+    20 = 0005			GAMEOVER_COLPF2	= $05
+    21
+    22 				; --- Inicjalizacja kolorów (GTIA hardware registers) ---
+    23 24CB A9 00			lda #$00
+    24 24CD 8D 1A D0			sta $D01A	; COLBK (tło)
+    25 24D0 A9 0A			lda #$0A
+    26 24D2 8D 16 D0			sta $D016	; COLPF0 (playfield 0)
+    27 24D5 A9 02			lda #$02
+    28 24D7 8D 17 D0			sta $D017	; COLPF1 (playfield 1)
+    29 24DA A9 05			lda #$05
+    30 24DC 8D 18 D0			sta $D018	; COLPF2 (playfield 2)
+     8
+     9 				;---- Zmienne lokalne sceny ----
+    10 24DF			gameover_fire_released
+    11 24DF 00			    dta $00
+    12
+    13 				;==============================================================
+    14 				; DLI_Gameover — Obrazek + płynne migotanie tekstu (ANTIC mode 3)
+    15 				; (1) pierwsza linia DL ($F0) — przywraca kolory obrazka
+    16 				; (2) blank przed tekstem ($F0) — ustawia COLPF2 na kolor z tabeli
+    17 				; Kolor zmienia się co klatkę (10 klatek = pełny cykl)
+    18 				;==============================================================
+    19 = 000A			RAINBOW_LEN = 10
+    20
+    21 24E0			.proc DLI_Gameover
+    22 24E0 48			    pha
+    23 24E1 8A			    txa
+    24 24E2 48			    pha
+    25
+    26 24E3 AD 37 25		    lda go_dli_toggle
+    27 24E6 D0 17		    bne @blink
+    28
+    29 24E8			@restore
+    30 				    ; --- Obrazek: przywróć COLPF0–2 z palety ---
+    31 24E8 A9 0A		    lda #GAMEOVER_COLPF0
+    32 24EA 8D 16 D0		    sta COLPF0
+    33 24ED A9 02		    lda #GAMEOVER_COLPF1
+    34 24EF 8D 17 D0		    sta COLPF1
+    35 24F2 A9 05		    lda #GAMEOVER_COLPF2
+    36 24F4 8D 18 D0		    sta COLPF2
+    37 24F7 A9 01		    lda #1
+    38 24F9 8D 37 25		    sta go_dli_toggle
+    39 24FC 4C 33 25		    jmp @done
+    40
+    41 24FF			@blink
+    42 				    ; --- Migotanie: ustaw COLPF2 na bieżący kolor z tabeli ---
+    43 24FF A9 00		    lda #0
+    44 2501 8D 16 D0		    sta COLPF0            ; nieużywane (standardowe znaki)
+    45 2504 8D 18 D0		    sta COLPF2
+    46 2507 AE 38 25		    ldx go_pulse_idx
+    47 250A BD 3A 25		    lda GoRainbow,x
+    48 250D 8D 17 D0		    sta COLPF1            ; kolor tekstu dla tej klatki
+    49
+    50 				    ; Spowolnienie ×2: inkrementuj go_pulse_idx co 2 klatki
+    51 2510 EE 39 25		    inc go_subframe
+    52 2513 AD 39 25		    lda go_subframe
+    53 2516 C9 02		    cmp #2
+    54 2518 D0 14		    bne @reset_done
+    55 251A A9 00		    lda #0
+    56 251C 8D 39 25		    sta go_subframe
+    57 251F EE 38 25		    inc go_pulse_idx
+    58 2522 AD 38 25		    lda go_pulse_idx
+    59 2525 C9 0A		    cmp #RAINBOW_LEN
+    60 2527 D0 05		    bne @reset_done
+    61 2529 A9 00		    lda #0
+    62 252B 8D 38 25		    sta go_pulse_idx      ; wrap do 0 po pełnym cyklu
+    63 252E			@reset_done
+    64 252E A9 00		    lda #0
+    65 2530 8D 37 25		    sta go_dli_toggle
+    66
+    67 2533			@done
+    68 2533 68			    pla
+    69 2534 AA			    tax
+    70 2535 68			    pla
+    71 2536 40			    rti
+    72 				.endp
+    73
+    74 2537			go_dli_toggle
+    75 2537 00			    dta $00
+    76 2538			go_pulse_idx
+    77 2538 00			    dta $00
+    78 2539			go_subframe
+    79 2539 00			    dta $00
+    80
+    81 				; Kolory migotania dla COLPF2 — 10 kolorów, zmiana co klatkę
+    82 253A			GoRainbow
+    83 253A 30			    dta $30     ; 0: ciemny pomarańcz
+    84 253B 32			    dta $32     ; 1
+    85 253C 34			    dta $34     ; 2
+    86 253D 36			    dta $36     ; 3: czerwony
+    87 253E 38			    dta $38     ; 4
+    88 253F 3A			    dta $3A     ; 5
+    89 2540 3C			    dta $3C     ; 6
+    90 2541 3C			    dta $3C     ; 7
+    91 2542 3E			    dta $3E     ; 8
+    92 2543 3E			    dta $3E     ; 9: jasny pomarańcz
+    93
+    94 2544			.proc gameover_init
+    95 2544 A9 00		    lda #0
+    96 2546 8D 00 D4		    sta DMACTL
+    97 2549 8D 0E D4		    sta NMIEN
+    98 254C 8D 1D D0		    sta GRACTL              ; wyłącz PMG DMA (GTIA)
+    99 254F 8D 1B D0		    sta PRIOR               ; reset priorytetów
+   100 2552 8D DF 24		    sta gameover_fire_released ; zresetuj stan przycisku FIRE
+   101 2555 8D 37 25		    sta go_dli_toggle       ; DLI toggle: 0 = obrazek
+   102 2558 8D 38 25		    sta go_pulse_idx        ; indeks migotania: 0
+   103 255B 8D 39 25		    sta go_subframe         ; spowolnienie ×2: 0
+   104
+   105 255E 20 03 20		    jsr pmg_clear_all
+   106 2561 20 C1 25		    jsr copy_gameover_text
+   107
+   108 				    ; --- Display List (ANTIC D + tekst) ---
+   109 2564 A9 8B		    lda #<DLIST_GAMEOVER
+   110 2566 8D 02 D4		    sta DLISTL
+   111 2569 A9 3F		    lda #>DLIST_GAMEOVER
+   112 256B 8D 03 D4		    sta DLISTH
+   113
+   114 				    ; --- Charset (własny font $6000) ---
+   115 256E A9 60		    lda #$60
+   116 2570 8D 09 D4		    sta CHBASE
+   117
+   118 				    ; --- Kolory z wygenerowanego pliku ---
+   119 2573 A9 00		    lda #GAMEOVER_COLBK
+   120 2575 8D 1A D0		    sta COLBK
+   121 2578 A9 0A		    lda #GAMEOVER_COLPF0
+   122 257A 8D 16 D0		    sta COLPF0
+   123 257D A9 02		    lda #GAMEOVER_COLPF1
+   124 257F 8D 17 D0		    sta COLPF1
+   125 2582 A9 05		    lda #GAMEOVER_COLPF2
+   126 2584 8D 18 D0		    sta COLPF2
+   127 2587 A9 00		    lda #$00
+   128 2589 8D 19 D0		    sta COLPF3            ; 5th player — nieużywany
+   129
+   130 				    ; --- DLI: wektor + enable ---
+   131 258C A9 E0		    lda #<DLI_Gameover
+   132 258E 8D 00 02		    sta VDSLST
+   133 2591 A9 24		    lda #>DLI_Gameover
+   134 2593 8D 01 02		    sta VDSLST+1
+   135 2596 A9 80		    lda #$80              ; DLI on, VBI off
+   136 2598 8D 0E D4		    sta NMIEN
+   137
+   138 				    ; --- DMA ON (narrow playfield — 128 pikseli, bez PMG) ---
+   139 259B A9 21		    lda #$21
+   140 259D 8D 00 D4		    sta DMACTL
+   141
+   142 25A0 60			    rts
+   143 				.endp
+   144
+   145 25A1			.proc gameover_run
+   146 25A1 AD DF 24		    lda gameover_fire_released
+   147 25A4 D0 0D		    bne @check_press
+   148
+   149 				    ; Czekaj na puszczenie przycisku FIRE z poprzedniego ekranu
+   150 25A6 AD 10 D0		    lda TRIG0
+   151 25A9 F0 15		    beq @exit            ; wciąż trzyma — nie reaguj
+   152 25AB A9 01		    lda #1
+   153 25AD 8D DF 24		    sta gameover_fire_released
+   154 25B0 4C C0 25		    jmp @exit
+   155
+   156 25B3			@check_press
+   157 25B3 AD 10 D0		    lda TRIG0
+   158 25B6 D0 08		    bne @exit
+   159 25B8 A9 00		    lda #0
+   160 25BA 8D 0E D4		    sta NMIEN              ; wyłącz DLI przed zmianą stanu
+   161 25BD 20 D9 25		    jsr advance_stage      ; powrót do pierwszego etapu z tablicy
+   162 25C0			@exit
+   163 25C0 60			    rts
+   164 				.endp
+   165
+   166 				;==============================================================
+   167 				; copy_gameover_text — Kopiuje tekst GAME OVER (32 B) z ROM do RAM ($5E10)
+   168 				;==============================================================
+   169 25C1			.proc copy_gameover_text
+   170 25C1 A9 AB		    lda #<GO_TEXT_Data
+   171 25C3 85 82		    sta SRC_PTR
+   172 25C5 A9 27		    lda #>GO_TEXT_Data
+   173 25C7 85 83		    sta SRC_PTR+1
+   174 25C9 A9 10		    lda #<FOOTER_ADDR
+   175 25CB 85 84		    sta DST_PTR
+   176 25CD A9 5E		    lda #>FOOTER_ADDR
+   177 25CF 85 85		    sta DST_PTR+1
+   178 25D1 20 2F 20		    jsr RLE_Depack
+   179 25D4 60			    rts
+   180 				.endp
+    30
+    31 				; ===================================================================
+    32 				; Tablica kolejności etapów (development: zmień DEV_START_STAGE w hardware.asm)
+    33 				; ===================================================================
+    34 25D5			stage_order
+    35 25D5 00			    dta STATE_TITLE     ; 0
+    36 25D6 01			    dta STATE_STORY     ; 1
+    37 25D7 02			    dta STATE_GAME      ; 2
+    38 25D8 03			    dta STATE_OVER      ; 3
+    39 = 0004			STAGE_COUNT = * - stage_order
+    40
+    41 				; ===================================================================
+    42 				; advance_stage — Przechodzi do następnego etapu wg tablicy stage_order
+    43 				; Szuka bieżącego GAME_STATE w tablicy, bierze następny element
+    44 				; (lub pierwszy, jeśli to był ostatni — wrap-around)
+    45 				; Niszczy: A, X
+    46 				; ===================================================================
+    47 25D9			.proc advance_stage
+    48 25D9 A2 00		    ldx #0
+    49 25DB			@find
+    50 25DB BD D5 25		    lda stage_order,x
+    51 25DE C5 81		    cmp GAME_STATE
+    52 25E0 F0 07		    beq @found
+    53 25E2 E8			    inx
+    54 25E3 E0 04		    cpx #STAGE_COUNT
+    55 25E5 D0 F4		    bne @find
+    56 				    ; Nie znaleziono — fallback: idź do pierwszego etapu
+    57 25E7 A2 03		    ldx #STAGE_COUNT-1    ; ostatni indeks — poniżej zrobi +1 → wrap na 0
+    58
+    59 25E9			@found
+    60 25E9 E8			    inx
+    61 25EA E0 04		    cpx #STAGE_COUNT
+    62 25EC D0 02		    bne @store
+    63 25EE A2 00		    ldx #0               ; wrap-around: po ostatnim wróć do pierwszego
+    64
+    65 25F0			@store
+    66 25F0 BD D5 25		    lda stage_order,x
+    67 25F3 85 81		    sta GAME_STATE
+    68 25F5 60			    rts
+    69 				.endp
+    70
+    71 				; ===================================================================
+    72 				; system_init — Wspólna inicjalizacja sprzętu dla wszystkich etapów
+    73 				; Wywoływana przed każdym scene_init (i w start)
+    74 				; Niszczy: A
+    75 				; ===================================================================
+    76 25F6			.proc system_init
+    77 25F6 D8			    cld                     ; clear decimal mode (po resecie D może być nieznany!)
+    78 25F7 78			    sei                     ; blokada IRQ
+    79 25F8 A9 00		    lda #0
+    80 25FA 8D 0E D2		    sta IRQEN               ; wyłącz przerwania POKEY
+    81 25FD 8D 00 D4		    sta DMACTL              ; wyłącz DMA na czas konfiguracji
+    82 2600 8D 0E D4		    sta NMIEN               ; wyłącz NMI (DLI + VBI) — kluczowe przy DEV_START_STAGE>0
+    83 2603 8D 1D D0		    sta GRACTL              ; wyłącz PMG DMA
+    84
+    85 				    ; --- Wyczyszczenie rejestrów GTIA (pozycje, rozmiary i grafika PMG) ---
+    86 2606 A2 11		    ldx #$11
+    87 2608			@clr_gtia
+    88 2608 9D 00 D0		    sta $D000,x
+    89 260B CA			    dex
+    90 260C 10 FA		    bpl @clr_gtia
+    91
+    92 260E A9 FF		    lda #$FF                ; %11111111: bit 0=1 (OS ROM ON), bit 1=1 (BASIC OFF)
+    93 2610 8D 01 D3		    sta PORTB               ; odsłoń RAM spod BASIC ROM ($A000–$BFFF)
+    94 2613 60			    rts
+    95 				.endp
+    96
+    97 				; ===================================================================
+    98 				; 3. Punkt startowy — inicjalizacja systemu
+    99 				; ===================================================================
+   100 2614			start
+   101 2614 20 F6 25		    jsr system_init
+   102
+   103 				    ; Ustaw stan początkowy z tablicy stage_order (wg DEV_START_STAGE)
+   104 2617 A2 00		    ldx #DEV_START_STAGE
+   105 2619 E0 04		    cpx #STAGE_COUNT
+   106 261B 90 02		    bcc @ok
+   107 261D A2 00		    ldx #0                  ; fallback: title
+   108 261F			@ok
+   109 261F BD D5 25		    lda stage_order,x
+   110 2622 85 81		    sta GAME_STATE
+   111
+   112 				; ===================================================================
+   113 				; 4. Pętla główna — maszyna stanów
+   114 				; ===================================================================
+   115 2624			main_loop
+   116 2624 A5 81		    lda GAME_STATE
+   117 2626 C9 00		    cmp #STATE_TITLE
+   118 2628 D0 15		    bne @chk_story
+   119 262A 20 F6 25		    jsr system_init
+   120 262D 20 8B 20		    jsr title_init
+   121 2630 20 CF 21		@tl jsr title_run
+   122 2633 A5 81		    lda GAME_STATE
+   123 2635 C9 00		    cmp #STATE_TITLE
+   124 2637 F0 F7		    beq @tl
+   125 2639 20 19 88		    jsr audio_stop          ; Stop the music on state exit
+   126 263C 4C 24 26		    jmp main_loop
+   127
+   128 263F			@chk_story
+   129 263F C9 01		    cmp #STATE_STORY
+   130 2641 D0 12		    bne @chk_game
+   131 2643 20 F6 25		    jsr system_init
+   132 2646 20 8D 23		    jsr story_init
+   133 2649 20 CE 23		@st jsr story_run
+   134 264C A5 81		    lda GAME_STATE
+   135 264E C9 01		    cmp #STATE_STORY
+   136 2650 F0 F7		    beq @st
+   137 2652 4C 24 26		    jmp main_loop
+   138
+   139 2655			@chk_game
+   140 2655 C9 02		    cmp #STATE_GAME
+   141 2657 D0 12		    bne @chk_over
+   142 2659 20 F6 25		    jsr system_init
+   143 265C 20 FD 23		    jsr game_init
+   144 265F 20 7F 24		@gm jsr game_run
+   145 2662 A5 81		    lda GAME_STATE
+   146 2664 C9 02		    cmp #STATE_GAME
+   147 2666 F0 F7		    beq @gm
+   148 2668 4C 24 26		    jmp main_loop
+   149
+   150 266B			@chk_over
+   151 				    ; Ostatni stan — gameover (domyślnie)
+   152 266B 20 F6 25		    jsr system_init
+   153 266E 20 44 25		    jsr gameover_init
+   154 2671 20 A1 25		@go jsr gameover_run
+   155 2674 A5 81		    lda GAME_STATE
+   156 2676 C9 03		    cmp #STATE_OVER
+   157 2678 F0 F7		    beq @go
+   158 267A 4C 24 26		    jmp main_loop
+   159
+   160 				; --- Dane tekstów (kopiowane do RAM w czasie wykonania) ---
+   161 = 5E10			StoryText_RAM = FOOTER_ADDR
+   162
+   163 267D			StoryText_Data
+   164 267D			    icl "gen/story_text.asm"
+Source: story_text.asm
+     1 				; Plik wygenerowany automatycznie przez rle_compress_text.py
+     2 				; Oryginalny rozmiar: 320 B, Skompresowany: 302 B
+     3 267D 24 00 00 30 6F 00 +     .byte $24, $00, $00, $30, $6f, $00, $77, $69
+     4 2685 65 6C 6F 64 6E 69 +     .byte $65, $6c, $6f, $64, $6e, $69, $6f, $77
+     5 268D 65 6A 00 69 6D 70 +     .byte $65, $6a, $00, $69, $6d, $70, $72, $65
+     6 2695 7A 69 65 00 77 00 +     .byte $7a, $69, $65, $00, $77, $00, $6b, $61
+     7 269D 72 63 7A 6D 69 65 +     .byte $72, $63, $7a, $6d, $69, $65, $83, $00
+     8 26A5 24 07 30 6F 64 00 +     .byte $24, $07, $30, $6f, $64, $00, $34, $72
+     9 26AD 7A 65 6D 61 00 2B +     .byte $7a, $65, $6d, $61, $00, $2b, $75, $66
+    10 26B5 6C 61 6D 69 07 00 +     .byte $6c, $61, $6d, $69, $07, $00, $37, $69
+    11 26BD 65 64 7A 6D 69 6E +     .byte $65, $64, $7a, $6d, $69, $6e, $00, $27
+    12 26C5 65 72 77 61 6E 74 +     .byte $65, $72, $77, $61, $6e, $74, $82, $00
+    13 26CD 6B 62 75 64 7A 69 +     .byte $6b, $62, $75, $64, $7a, $69, $00, $73
+    14 26D5 69 65 00 7A 00 70 +     .byte $69, $65, $00, $7a, $00, $70, $6f, $74
+    15 26DD 65 7A 6E 79 6D 00 +     .byte $65, $7a, $6e, $79, $6d, $00, $6b, $61
+    16 26E5 63 65 6D 0E 00 2E +     .byte $63, $65, $6d, $0e, $00, $2e, $69, $65
+    17 26ED 00 70 61 6D 69 65 +     .byte $00, $70, $61, $6d, $69, $65, $74, $61
+    18 26F5 67 64 7A 69 65 00 +     .byte $67, $64, $7a, $69, $65, $00, $6a, $65
+    19 26FD 73 74 00 30 6C 6F +     .byte $73, $74, $00, $30, $6c, $6f, $74, $6b
+    20 2705 61 0C 00 67 64 7A +     .byte $61, $0c, $00, $67, $64, $7a, $69, $65
+    21 270D 00 73 61 00 6D 69 +     .byte $00, $73, $61, $00, $6d, $69, $65, $63
+    22 2715 7A 65 0C 00 61 6E +     .byte $7a, $65, $0c, $00, $61, $6e, $69, $00
+    23 271D 73 6B 61 64 00 77 +     .byte $73, $6b, $61, $64, $00, $77, $7a, $69
+    24 2725 61 6C 00 73 69 65 +     .byte $61, $6c, $00, $73, $69, $65, $00, $72
+    25 272D 61 63 68 75 6E 65 +     .byte $61, $63, $68, $75, $6e, $65, $6b, $00
+    26 2735 6E 61 00 11 18 82 +     .byte $6e, $61, $00, $11, $18, $82, $10, $07
+    27 273D 00 6F 72 65 6E 6F +     .byte $00, $6f, $72, $65, $6e, $6f, $77, $0e
+    28 2745 82 00 21 37 79 72 +     .byte $82, $00, $21, $37, $79, $72, $75, $73
+    29 274D 7A 61 00 77 00 70 +     .byte $7a, $61, $00, $77, $00, $70, $6f, $64
+    30 2755 72 6F 7A 00 70 72 +     .byte $72, $6f, $7a, $00, $70, $72, $7a, $65
+    31 275D 7A 00 15 00 72 65 +     .byte $7a, $00, $15, $00, $72, $65, $67, $69
+    32 2765 6F 6E 6F 77 0C 83 +     .byte $6f, $6e, $6f, $77, $0c, $83, $00, $26
+    33 276D 62 79 00 6F 64 7A +     .byte $62, $79, $00, $6f, $64, $7a, $79, $73
+    34 2775 6B 61 63 00 73 77 +     .byte $6b, $61, $63, $00, $73, $77, $6f, $6a
+    35 277D 00 64 6F 62 79 74 +     .byte $00, $64, $6f, $62, $79, $74, $65, $6b
+    36 2785 0C 00 77 73 70 6F +     .byte $0c, $00, $77, $73, $70, $6f, $6d, $6e
+    37 278D 69 65 6E 69 61 00 +     .byte $69, $65, $6e, $69, $61, $00, $69, $8a
+    38 2795 00 10 72 65 73 7A +     .byte $00, $10, $72, $65, $73, $7a, $74, $6b
+    39 279D 69 00 67 6F 64 6E +     .byte $69, $00, $67, $6f, $64, $6e, $6f, $73
+    40 27A5 63 69 0E 8B 00 80	    .byte $63, $69, $0e, $8b, $00, $80
+   165
+   166 27AB			GO_TEXT_Data
+   167 27AB			    icl "gen/gameover_text.asm"
+Source: gameover_text.asm
+     1 				; Plik wygenerowany automatycznie przez rle_compress_text.py
+     2 				; Oryginalny rozmiar: 32 B, Skompresowany: 15 B
+     3 27AB 8A 00 08 27 21 2D +     .byte $8a, $00, $08, $27, $21, $2d, $25, $00
+     4 27B3 2F 36 25 32 8B 00 +     .byte $2f, $36, $25, $32, $8b, $00, $80
+   168
+   169 				; Tekst stopki tytułu (ROM — kopiowany do $5E10 w title_init)
+   170 27BA			TitleFooterROM
+   171 				    .rept 8
+   172 				    DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   173 				    .endr
+Source: REPT
+   172 27BA 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   172 27E2 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   172 280A 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   172 2832 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   172 285A 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   172 2882 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   172 28AA 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+   172 28D2 00 00 00 00 00 37 +     DTA D"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
+Source: main.asm
+   174 28FA			TitleFooterROM_End
+   175
+   176 = 28FA			SpriteData = DzikizgonData
+   177
+   178 28FA			    icl "gen/dziki-zgon.asm"
+Source: dziki-zgon.asm
+     1 				; Dane obrazu: DzikizgonData
+     2 				; Rozmiar:      149 bajtów
+     3
+     4 28FA 45 FF 1F CE 79	DzikizgonData	.byte $45,$FF,$1F,$CE,$79
+     5 28FF CF FF 9F CE 7B		.byte $CF,$FF,$9F,$CE,$7B
+     6 2904 CF E7 9F C0 7B		.byte $CF,$E7,$9F,$C0,$7B
+     7 2909 80 E3 83 8E 7B		.byte $80,$E3,$83,$8E,$7B
+     8 290E 8F E3 87 8E 7F		.byte $8F,$E3,$87,$8E,$7F
+     9 2913 8F E3 87 8E 7F		.byte $8F,$E3,$87,$8E,$7F
+    10 2918 0F E3 87 0E 7E		.byte $0F,$E3,$87,$0E,$7E
+    11 291D 0F E3 8F 0E 7F		.byte $0F,$E3,$8F,$0E,$7F
+    12 2922 0F E3 8F 0E 7F		.byte $0F,$E3,$8F,$0E,$7F
+    13 2927 8F E3 8E 0E 7B		.byte $8F,$E3,$8E,$0E,$7B
+    14 292C 8F E3 9E 0E 7B		.byte $8F,$E3,$9E,$0E,$7B
+    15 2931 8F E7 9F CE 7B		.byte $8F,$E7,$9F,$CE,$7B
+    16 2936 CF FF 9F CE 7B		.byte $CF,$FF,$9F,$CE,$7B
+    17 293B CF FF 1F CE 79		.byte $CF,$FF,$1F,$CE,$79
+    18 2940 CF A8 00 49 0C		.byte $CF,$A8,$00,$49,$0C
+    19 2945 03 80 00 FE 3F		.byte $03,$80,$00,$FE,$3F
+    20 294A 0F E3 CF FE 7F		.byte $0F,$E3,$CF,$FE,$7F
+    21 294F 8F E3 CF FE 79		.byte $8F,$E3,$CF,$FE,$79
+    22 2954 9E 73 CF 1C 79		.byte $9E,$73,$CF,$1C,$79
+    23 2959 9E 73 EF 3C 79		.byte $9E,$73,$EF,$3C,$79
+    24 295E 9E 73 FF 3C 78		.byte $9E,$73,$FF,$3C,$78
+    25 2963 1E 73 FF 38 7B		.byte $1E,$73,$FF,$38,$7B
+    26 2968 1E 73 FF 78 7B		.byte $1E,$73,$FF,$78,$7B
+    27 296D 9E 73 FF 78 79		.byte $9E,$73,$FF,$78,$79
+    28 2972 9E 73 FF 70 79		.byte $9E,$73,$FF,$70,$79
+    29 2977 9E 73 DF F0 79		.byte $9E,$73,$DF,$F0,$79
+    30 297C 9E 73 DF FE 79		.byte $9E,$73,$DF,$FE,$79
+    31 2981 9E 73 CF FE 7F		.byte $9E,$73,$CF,$FE,$7F
+    32 2986 0F E3 CF FE 3F		.byte $0F,$E3,$CF,$FE,$3F
+    33 298B 0F E3 CF 80			.byte $0F,$E3,$CF,$80
+   179 298F			    icl "gen/moon.asm"
+Source: moon.asm
+     1 				; Dane obrazu: MoonData
+     2 				; Rozmiar:      98 bajtów
+     3
+     4 298F 16 00 1F C0		MoonData	.byte $16,$00,$1F,$C0
+     5 2993 00 00 77 F8			.byte $00,$00,$77,$F8
+     6 2997 00 01 4B FC			.byte $00,$01,$4B,$FC
+     7 299B 00 00 96 FE			.byte $00,$00,$96,$FE
+     8 299F 00 01 04 7F			.byte $00,$01,$04,$7F
+     9 29A3 00 02 59 7B			.byte $00,$02,$59,$7B
+    10 29A7 82 00 45 BF			.byte $82,$00,$45,$BF
+    11 29AB 80 00 84 7F			.byte $80,$00,$84,$7F
+    12 29AF 80 00 2A FF			.byte $80,$00,$2A,$FF
+    13 29B3 C0 04 07 FB			.byte $C0,$04,$07,$FB
+    14 29B7 C0 00 09 F1			.byte $C0,$00,$09,$F1
+    15 29BB C0 00 97 F1			.byte $C0,$00,$97,$F1
+    16 29BF 80 00 02 FB			.byte $80,$00,$02,$FB
+    17 29C3 C0 00 14 7F			.byte $C0,$00,$14,$7F
+    18 29C7 C0 00 02 FF			.byte $C0,$00,$02,$FF
+    19 29CB C0 04 17 FF			.byte $C0,$04,$17,$FF
+    20 29CF C0 00 03 BB			.byte $C0,$00,$03,$BB
+    21 29D3 C0 01 0F 5D			.byte $C0,$01,$0F,$5D
+    22 29D7 80 00 97 BF			.byte $80,$00,$97,$BF
+    23 29DB 80 02 2A FF			.byte $80,$02,$2A,$FF
+    24 29DF 00 01 47 F6			.byte $00,$01,$47,$F6
+    25 29E3 00 00 AD FC			.byte $00,$00,$AD,$FC
+    26 29E7 00 00 7F F0			.byte $00,$00,$7F,$F0
+    27 29EB 00 00 0F C0			.byte $00,$00,$0F,$C0
+    28 29EF 00 80			.byte $00,$80
+   180
+   181 				; ===================================================================
+   182 				; 6. Display Listy ($3000)
+   183 				; ===================================================================
+   184 29F1			    org DLIST_ADDR
+   185
+   186 				; --- DL tytułu (pełna, z LMS i stopką) ---
+   187 = 4000			TitleData = SCREEN
+   188 3E80			    icl "gen/title_displaylist.asm"    ; definiuje DLIST_TITLE
+Source: title_displaylist.asm
+     1 				; ANTIC Display List dla: title
+     2 				; Tryb ANTIC:   $0E  (160×192, 4 kolory)
+     3 				; Bajtów/linia: 40
+     4 				; Adres ekranu: $4000
+     5 				; Segmentów:    2  (linii łącznie: 192)
+     6 				; Danych (z paddingiem): 7696 bajtów
+     7
+     8 3E80			DLIST_TITLE
+     9 					; 24 puste linie (górna ramka)
+    10 3E80-3FE9> 70 70 70		dta $70, $70, $70
+    11
+    12 					; --- Segment 1: LMS = $4000
+    13 					;     linie 0..101 (102 linii, offset danych 0) ---
+    14 3E83 4E 00 40			dta $4E, a(TitleData + 0)
+    15 					.rept 101
+    16 					DTA $0E
+    17 					.endr
+Source: REPT
+    16 3E86 0E				DTA $0E
+    16 3E87 0E				DTA $0E
+    16 3E88 0E				DTA $0E
+    16 3E89 0E				DTA $0E
+    16 3E8A 0E				DTA $0E
+    16 3E8B 0E				DTA $0E
+    16 3E8C 0E				DTA $0E
+    16 3E8D 0E				DTA $0E
+    16 3E8E 0E				DTA $0E
+    16 3E8F 0E				DTA $0E
+    16 3E90 0E				DTA $0E
+    16 3E91 0E				DTA $0E
+    16 3E92 0E				DTA $0E
+    16 3E93 0E				DTA $0E
+    16 3E94 0E				DTA $0E
+    16 3E95 0E				DTA $0E
+    16 3E96 0E				DTA $0E
+    16 3E97 0E				DTA $0E
+    16 3E98 0E				DTA $0E
+    16 3E99 0E				DTA $0E
+    16 3E9A 0E				DTA $0E
+    16 3E9B 0E				DTA $0E
+    16 3E9C 0E				DTA $0E
+    16 3E9D 0E				DTA $0E
+    16 3E9E 0E				DTA $0E
+    16 3E9F 0E				DTA $0E
+    16 3EA0 0E				DTA $0E
+    16 3EA1 0E				DTA $0E
+    16 3EA2 0E				DTA $0E
+    16 3EA3 0E				DTA $0E
+    16 3EA4 0E				DTA $0E
+    16 3EA5 0E				DTA $0E
+    16 3EA6 0E				DTA $0E
+    16 3EA7 0E				DTA $0E
+    16 3EA8 0E				DTA $0E
+    16 3EA9 0E				DTA $0E
+    16 3EAA 0E				DTA $0E
+    16 3EAB 0E				DTA $0E
+    16 3EAC 0E				DTA $0E
+    16 3EAD 0E				DTA $0E
+    16 3EAE 0E				DTA $0E
+    16 3EAF 0E				DTA $0E
+    16 3EB0 0E				DTA $0E
+    16 3EB1 0E				DTA $0E
+    16 3EB2 0E				DTA $0E
+    16 3EB3 0E				DTA $0E
+    16 3EB4 0E				DTA $0E
+    16 3EB5 0E				DTA $0E
+    16 3EB6 0E				DTA $0E
+    16 3EB7 0E				DTA $0E
+    16 3EB8 0E				DTA $0E
+    16 3EB9 0E				DTA $0E
+    16 3EBA 0E				DTA $0E
+    16 3EBB 0E				DTA $0E
+    16 3EBC 0E				DTA $0E
+    16 3EBD 0E				DTA $0E
+    16 3EBE 0E				DTA $0E
+    16 3EBF 0E				DTA $0E
+    16 3EC0 0E				DTA $0E
+    16 3EC1 0E				DTA $0E
+    16 3EC2 0E				DTA $0E
+    16 3EC3 0E				DTA $0E
+    16 3EC4 0E				DTA $0E
+    16 3EC5 0E				DTA $0E
+    16 3EC6 0E				DTA $0E
+    16 3EC7 0E				DTA $0E
+    16 3EC8 0E				DTA $0E
+    16 3EC9 0E				DTA $0E
+    16 3ECA 0E				DTA $0E
+    16 3ECB 0E				DTA $0E
+    16 3ECC 0E				DTA $0E
+    16 3ECD 0E				DTA $0E
+    16 3ECE 0E				DTA $0E
+    16 3ECF 0E				DTA $0E
+    16 3ED0 0E				DTA $0E
+    16 3ED1 0E				DTA $0E
+    16 3ED2 0E				DTA $0E
+    16 3ED3 0E				DTA $0E
+    16 3ED4 0E				DTA $0E
+    16 3ED5 0E				DTA $0E
+    16 3ED6 0E				DTA $0E
+    16 3ED7 0E				DTA $0E
+    16 3ED8 0E				DTA $0E
+    16 3ED9 0E				DTA $0E
+    16 3EDA 0E				DTA $0E
+    16 3EDB 0E				DTA $0E
+    16 3EDC 0E				DTA $0E
+    16 3EDD 0E				DTA $0E
+    16 3EDE 0E				DTA $0E
+    16 3EDF 0E				DTA $0E
+    16 3EE0 0E				DTA $0E
+    16 3EE1 0E				DTA $0E
+    16 3EE2 0E				DTA $0E
+    16 3EE3 0E				DTA $0E
+    16 3EE4 0E				DTA $0E
+    16 3EE5 0E				DTA $0E
+    16 3EE6 0E				DTA $0E
+    16 3EE7 0E				DTA $0E
+    16 3EE8 0E				DTA $0E
+    16 3EE9 0E				DTA $0E
+    16 3EEA 0E				DTA $0E
+Source: title_displaylist.asm
+    18 					; --- Segment 2: LMS = $5000
+    19 					;     linie 102..191 (90 linii, offset danych 4096) ---
+    20 3EEB 4E 00 50			dta $4E, a(TitleData + 4096)
+    21 					.rept 89
+    22 					DTA $0E
+    23 					.endr
+Source: REPT
+    22 3EEE 0E				DTA $0E
+    22 3EEF 0E				DTA $0E
+    22 3EF0 0E				DTA $0E
+    22 3EF1 0E				DTA $0E
+    22 3EF2 0E				DTA $0E
+    22 3EF3 0E				DTA $0E
+    22 3EF4 0E				DTA $0E
+    22 3EF5 0E				DTA $0E
+    22 3EF6 0E				DTA $0E
+    22 3EF7 0E				DTA $0E
+    22 3EF8 0E				DTA $0E
+    22 3EF9 0E				DTA $0E
+    22 3EFA 0E				DTA $0E
+    22 3EFB 0E				DTA $0E
+    22 3EFC 0E				DTA $0E
+    22 3EFD 0E				DTA $0E
+    22 3EFE 0E				DTA $0E
+    22 3EFF 0E				DTA $0E
+    22 3F00 0E				DTA $0E
+    22 3F01 0E				DTA $0E
+    22 3F02 0E				DTA $0E
+    22 3F03 0E				DTA $0E
+    22 3F04 0E				DTA $0E
+    22 3F05 0E				DTA $0E
+    22 3F06 0E				DTA $0E
+    22 3F07 0E				DTA $0E
+    22 3F08 0E				DTA $0E
+    22 3F09 0E				DTA $0E
+    22 3F0A 0E				DTA $0E
+    22 3F0B 0E				DTA $0E
+    22 3F0C 0E				DTA $0E
+    22 3F0D 0E				DTA $0E
+    22 3F0E 0E				DTA $0E
+    22 3F0F 0E				DTA $0E
+    22 3F10 0E				DTA $0E
+    22 3F11 0E				DTA $0E
+    22 3F12 0E				DTA $0E
+    22 3F13 0E				DTA $0E
+    22 3F14 0E				DTA $0E
+    22 3F15 0E				DTA $0E
+    22 3F16 0E				DTA $0E
+    22 3F17 0E				DTA $0E
+    22 3F18 0E				DTA $0E
+    22 3F19 0E				DTA $0E
+    22 3F1A 0E				DTA $0E
+    22 3F1B 0E				DTA $0E
+    22 3F1C 0E				DTA $0E
+    22 3F1D 0E				DTA $0E
+    22 3F1E 0E				DTA $0E
+    22 3F1F 0E				DTA $0E
+    22 3F20 0E				DTA $0E
+    22 3F21 0E				DTA $0E
+    22 3F22 0E				DTA $0E
+    22 3F23 0E				DTA $0E
+    22 3F24 0E				DTA $0E
+    22 3F25 0E				DTA $0E
+    22 3F26 0E				DTA $0E
+    22 3F27 0E				DTA $0E
+    22 3F28 0E				DTA $0E
+    22 3F29 0E				DTA $0E
+    22 3F2A 0E				DTA $0E
+    22 3F2B 0E				DTA $0E
+    22 3F2C 0E				DTA $0E
+    22 3F2D 0E				DTA $0E
+    22 3F2E 0E				DTA $0E
+    22 3F2F 0E				DTA $0E
+    22 3F30 0E				DTA $0E
+    22 3F31 0E				DTA $0E
+    22 3F32 0E				DTA $0E
+    22 3F33 0E				DTA $0E
+    22 3F34 0E				DTA $0E
+    22 3F35 0E				DTA $0E
+    22 3F36 0E				DTA $0E
+    22 3F37 0E				DTA $0E
+    22 3F38 0E				DTA $0E
+    22 3F39 0E				DTA $0E
+    22 3F3A 0E				DTA $0E
+    22 3F3B 0E				DTA $0E
+    22 3F3C 0E				DTA $0E
+    22 3F3D 0E				DTA $0E
+    22 3F3E 0E				DTA $0E
+    22 3F3F 0E				DTA $0E
+    22 3F40 0E				DTA $0E
+    22 3F41 0E				DTA $0E
+    22 3F42 0E				DTA $0E
+    22 3F43 0E				DTA $0E
+    22 3F44 0E				DTA $0E
+    22 3F45 0E				DTA $0E
+    22 3F46 0E				DTA $0E
+Source: title_displaylist.asm
+    24
+    25 					; --- Stopka: 1 pusta linia + DLI → ANTIC mode 2 ---
+    26 3F47 80				dta $80	; 1 pusta linia + DLI
+    27 3F48 42 10 5E			dta $42, a($5E10)
+    28
+    29 					; Koniec Display List
+    30 3F4B 41 80 3E			dta $41, a(DLIST_TITLE)	; JVB – skok z oczekiwaniem na VBLANK
+   189
+   190 				; --- DL story — ANTIC mode 2, tekst 8 linii wyśrodkowany ---
+   191 3F4E			DLIST_STORY
+   192 3F4E 70 70 70		    dta $70,$70,$70        ; 3 blank
+   193 3F51 70 70		    dta $70,$70            ; 2 blank (razem 5 blank na gorze)
+   194 3F53 42 10 5E		    dta $42,a(StoryText_RAM) ; LMS + ANTIC mode 2 -> adres StoryText_RAM ($5E10)
+   195 3F56 70			    dta $70                ; Blank line 1
+   196 3F57 02			    dta $02                ; ANTIC mode 2 (Line 2 - Text)
+   197 3F58 70			    dta $70                ; Blank line 2
+   198 3F59 02			    dta $02                ; ANTIC mode 2 (Line 3 - Text)
+   199 3F5A 70			    dta $70                ; Blank line 3
+   200 3F5B 02			    dta $02                ; ANTIC mode 2 (Line 4 - Text)
+   201 3F5C 70			    dta $70                ; Blank line 4
+   202 3F5D 02			    dta $02                ; ANTIC mode 2 (Line 5 - Text)
+   203 3F5E 70			    dta $70                ; Blank line 5
+   204 3F5F 02			    dta $02                ; ANTIC mode 2 (Line 6 - Text)
+   205 3F60 70			    dta $70                ; Blank line 6
+   206 3F61 02			    dta $02                ; ANTIC mode 2 (Line 7 - Text)
+   207 3F62 70			    dta $70                ; Blank line 7
+   208 3F63 02			    dta $02                ; ANTIC mode 2 (Line 8 - Text)
+   209 3F64 70 70 70		    dta $70,$70,$70        ; 3 blank
+   210 3F67 70			    dta $70                ; 1 blank (razem 4 blank na dole)
+   211 3F68 41 4E 3F		    dta $41,a(DLIST_STORY) ; JVB
+   212
+   213 				; --- DL gra — ANTIC 4, 40×24 znaków ---
+   214 3F6B			DLIST_GAME
+   215 3F6B 70 70 70		    dta $70,$70,$70        ; 3 puste linie
+   216 3F6E 44 00 64		    dta $44,a(GAME_SCREEN) ; LMS + ANTIC 4
+   217 				    .rept 22
+   218 				    DTA $04                
+   219 				    .endr
+Source: REPT
+   218 3F71 04			    DTA $04                
+   218 3F72 04			    DTA $04                
+   218 3F73 04			    DTA $04                
+   218 3F74 04			    DTA $04                
+   218 3F75 04			    DTA $04                
+   218 3F76 04			    DTA $04                
+   218 3F77 04			    DTA $04                
+   218 3F78 04			    DTA $04                
+   218 3F79 04			    DTA $04                
+   218 3F7A 04			    DTA $04                
+   218 3F7B 04			    DTA $04                
+   218 3F7C 04			    DTA $04                
+   218 3F7D 04			    DTA $04                
+   218 3F7E 04			    DTA $04                
+   218 3F7F 04			    DTA $04                
+   218 3F80 04			    DTA $04                
+   218 3F81 04			    DTA $04                
+   218 3F82 04			    DTA $04                
+   218 3F83 04			    DTA $04                
+   218 3F84 04			    DTA $04                
+   218 3F85 04			    DTA $04                
+   218 3F86 04			    DTA $04                
+Source: main.asm
+   220 3F87 04			    dta $04                ; ostatnia linia (razem 24)
+   221 3F88 41 6B 3F		    dta $41,a(DLIST_GAME)  ; JVB
+   222
+   223 				; --- DL game over (ANTIC D, narrow, 128×96, 4 kolory) ---
+   224 = 7000			GameoverData = GO_SCREEN
+   225 3F8B			    icl "gen/gameover_displaylist.asm"    ; definiuje DLIST_GAMEOVER
+Source: gameover_displaylist.asm
+     1 				; ANTIC Display List dla: gameover
+     2 				; Tryb ANTIC:   $0D  (128×87, 4 kolory)
+     3 				; Bajtów/linia: 32
+     4 				; Adres ekranu: $7000
+     5 				; Segmentów:    1  (linii łącznie: 87)
+     6 				; Danych (z paddingiem): 2784 bajtów
+     7
+     8 3F8B			DLIST_GAMEOVER
+     9 					; 24 puste linie (górna ramka)
+    10 3F8B 70 70 70			dta $70, $70, $70
+    11
+    12 					; --- Segment 1: LMS = $7000
+    13 					;     linie 0..86 (87 linii, offset danych 0) ---
+    14 3F8E 4D 00 70			dta $4D, a(GameoverData + 0)
+    15 					.rept 86
+    16 					DTA $0D
+    17 					.endr
+Source: REPT
+    16 3F91 0D				DTA $0D
+    16 3F92 0D				DTA $0D
+    16 3F93 0D				DTA $0D
+    16 3F94 0D				DTA $0D
+    16 3F95 0D				DTA $0D
+    16 3F96 0D				DTA $0D
+    16 3F97 0D				DTA $0D
+    16 3F98 0D				DTA $0D
+    16 3F99 0D				DTA $0D
+    16 3F9A 0D				DTA $0D
+    16 3F9B 0D				DTA $0D
+    16 3F9C 0D				DTA $0D
+    16 3F9D 0D				DTA $0D
+    16 3F9E 0D				DTA $0D
+    16 3F9F 0D				DTA $0D
+    16 3FA0 0D				DTA $0D
+    16 3FA1 0D				DTA $0D
+    16 3FA2 0D				DTA $0D
+    16 3FA3 0D				DTA $0D
+    16 3FA4 0D				DTA $0D
+    16 3FA5 0D				DTA $0D
+    16 3FA6 0D				DTA $0D
+    16 3FA7 0D				DTA $0D
+    16 3FA8 0D				DTA $0D
+    16 3FA9 0D				DTA $0D
+    16 3FAA 0D				DTA $0D
+    16 3FAB 0D				DTA $0D
+    16 3FAC 0D				DTA $0D
+    16 3FAD 0D				DTA $0D
+    16 3FAE 0D				DTA $0D
+    16 3FAF 0D				DTA $0D
+    16 3FB0 0D				DTA $0D
+    16 3FB1 0D				DTA $0D
+    16 3FB2 0D				DTA $0D
+    16 3FB3 0D				DTA $0D
+    16 3FB4 0D				DTA $0D
+    16 3FB5 0D				DTA $0D
+    16 3FB6 0D				DTA $0D
+    16 3FB7 0D				DTA $0D
+    16 3FB8 0D				DTA $0D
+    16 3FB9 0D				DTA $0D
+    16 3FBA 0D				DTA $0D
+    16 3FBB 0D				DTA $0D
+    16 3FBC 0D				DTA $0D
+    16 3FBD 0D				DTA $0D
+    16 3FBE 0D				DTA $0D
+    16 3FBF 0D				DTA $0D
+    16 3FC0 0D				DTA $0D
+    16 3FC1 0D				DTA $0D
+    16 3FC2 0D				DTA $0D
+    16 3FC3 0D				DTA $0D
+    16 3FC4 0D				DTA $0D
+    16 3FC5 0D				DTA $0D
+    16 3FC6 0D				DTA $0D
+    16 3FC7 0D				DTA $0D
+    16 3FC8 0D				DTA $0D
+    16 3FC9 0D				DTA $0D
+    16 3FCA 0D				DTA $0D
+    16 3FCB 0D				DTA $0D
+    16 3FCC 0D				DTA $0D
+    16 3FCD 0D				DTA $0D
+    16 3FCE 0D				DTA $0D
+    16 3FCF 0D				DTA $0D
+    16 3FD0 0D				DTA $0D
+    16 3FD1 0D				DTA $0D
+    16 3FD2 0D				DTA $0D
+    16 3FD3 0D				DTA $0D
+    16 3FD4 0D				DTA $0D
+    16 3FD5 0D				DTA $0D
+    16 3FD6 0D				DTA $0D
+    16 3FD7 0D				DTA $0D
+    16 3FD8 0D				DTA $0D
+    16 3FD9 0D				DTA $0D
+    16 3FDA 0D				DTA $0D
+    16 3FDB 0D				DTA $0D
+    16 3FDC 0D				DTA $0D
+    16 3FDD 0D				DTA $0D
+    16 3FDE 0D				DTA $0D
+    16 3FDF 0D				DTA $0D
+    16 3FE0 0D				DTA $0D
+    16 3FE1 0D				DTA $0D
+    16 3FE2 0D				DTA $0D
+    16 3FE3 0D				DTA $0D
+    16 3FE4 0D				DTA $0D
+    16 3FE5 0D				DTA $0D
+    16 3FE6 0D				DTA $0D
+Source: gameover_displaylist.asm
+    18
+    19 					; Koniec Display List
+    20 3FE7 41 8B 3F			dta $41, a(DLIST_GAMEOVER)	; JVB – skok z oczekiwaniem na VBLANK
+   226
+   227 = 005C			JVB_OFFSET = * - DLIST_GAMEOVER - 3
+   228
+   229 				    ; DLI na pierwszej pustej linii — przywraca kolory obrazka (COLPF1)
+   230 3FEA			    org DLIST_GAMEOVER
+   231 3F8B-3F8B> F0		    dta $F0                     ; blank + DLI (było $70)
+   232
+   233 				    ; Nadpisz JVB: blank + DLI + ANTIC 3 (tekst "GAME OVER", tęcza co klatkę)
+   234 3F8C			    org DLIST_GAMEOVER + JVB_OFFSET
+   235 3FE7-3FED> F0		    dta $F0                     ; 1 pusta linia + DLI (przełącza COLPF1 na tęczę)
+   236 3FE8 43 10 5E		    dta $43,a(GO_TEXT)          ; LMS + ANTIC mode 3 (8×10 znaków, narrow: 32 znaki)
+   237 3FEB 41 8B 3F		    dta $41,a(DLIST_GAMEOVER)   ; JVB — powrót na początek DL
+   238
+   239 				; ===================================================================
+   240 				; 7. Dane ekranu ($4000)
+   241 				; ===================================================================
+   242 3FEE			    org SCREEN
+   243
+   244 4000-5E0F> 00 00 00 00 +     ins "gen/title.bin"
+   245
+   246 				; ===================================================================
+   247 				; 8. Stopka tekstowa ($5E10) — współdzielona (tytuł/story/gameover)
+   248 				; ===================================================================
+   249 5E10			    org FOOTER_ADDR
+   250 = 5E10			    .ds 320                 ; 8 linii × 40 znaków — zerowane na starcie
+   251
+   252 				; ===================================================================
+   253 				; 10. Czcionka ($6000, 1 KB aligned → CHBASE=$60)
+   254 				; ===================================================================
+   255 5F50			    org $6000
+   256 6000			    icl "gen/font.asm"
+Source: font.asm
+     1 					; Size: 1024 bytes
+     2 6000-63FF> 00 00 00 00 + FontData DTA 0,0,0,0,0,0,0,0
+     3 6008 0C 0C 0C 18 20 1C + 	DTA 12,12,12,24,32,28,24,0
+     4 6010 26 66 88 00 00 00 + 	DTA 38,102,136,0,0,0,0,0
+     5 6018 00 24 7E EC 6E FC + 	DTA 0,36,126,236,110,252,72,0
+     6 6020 00 0C 1E 31 1C 86 + 	DTA 0,12,30,49,28,134,124,48
+     7 6028 40 E3 4E 1C 3A 73 + 	DTA 64,227,78,28,58,115,198,0
+     8 6030 38 4C 64 78 DA CD + 	DTA 56,76,100,120,218,205,118,0
+     9 6038 0C 18 00 00 00 00 + 	DTA 12,24,0,0,0,0,0,0
+    10 6040 0E 18 18 30 30 32 + 	DTA 14,24,24,48,48,50,28,0
+    11 6048 30 18 0C 0C 0C 4C + 	DTA 48,24,12,12,12,76,56,0
+    12 6050 00 00 08 6A 3D D6 + 	DTA 0,0,8,106,61,214,16,0
+    13 6058 00 00 18 18 7E B0 + 	DTA 0,0,24,24,126,176,48,0
+    14 6060 00 00 00 00 00 00 + 	DTA 0,0,0,0,0,0,88,48
+    15 6068 00 00 00 7E 00 00 + 	DTA 0,0,0,126,0,0,0,0
+    16 6070 00 00 00 00 00 30 + 	DTA 0,0,0,0,0,48,24,0
+    17 6078 00 06 0C 18 30 60 + 	DTA 0,6,12,24,48,96,64,0
+    18 6080 0E 3B 33 63 66 E7 + 	DTA 14,59,51,99,102,231,60,0
+    19 6088 1E 3C 4C 1C 18 99 + 	DTA 30,60,76,28,24,153,126,0
+    20 6090 3C 66 86 0C 38 63 + 	DTA 60,102,134,12,56,99,254,0
+    21 6098 3F 46 0E 1A 8D CC + 	DTA 63,70,14,26,141,204,120,0
+    22 60A0 0E 1C 34 6C FE 0D + 	DTA 14,28,52,108,254,13,24,0
+    23 60A8 3E 32 70 7C 86 2D + 	DTA 62,50,112,124,134,45,56,0
+    24 60B0 0C 32 60 6C D6 C7 + 	DTA 12,50,96,108,214,199,124,0
+    25 60B8 7E 66 86 3C 0D 1A + 	DTA 126,102,134,60,13,26,12,0
+    26 60C0 1E 33 33 3C E6 67 + 	DTA 30,51,51,60,230,103,60,0
+    27 60C8 1C 36 66 36 1E 9B + 	DTA 28,54,102,54,30,155,112,0
+    28 60D0 00 00 18 0C 00 30 + 	DTA 0,0,24,12,0,48,24,0
+    29 60D8 00 00 18 0C 00 00 + 	DTA 0,0,24,12,0,0,88,48
+    30 60E0 00 01 06 1C 70 9D + 	DTA 0,1,6,28,112,157,6,0
+    31 60E8 00 00 00 7E 00 FC + 	DTA 0,0,0,126,0,252,0,0
+    32 60F0 00 80 60 38 0E B9 + 	DTA 0,128,96,56,14,185,96,0
+    33 60F8 3E 67 43 1E 18 24 + 	DTA 62,103,67,30,24,36,56,0
+    34 6100 1C 36 66 6A 7E B1 + 	DTA 28,54,102,106,126,177,30,0
+    35 6108 3E 14 36 7E E6 67 + 	DTA 62,20,54,126,230,103,118,0
+    36 6110 7C B6 36 3C 66 EF + 	DTA 124,182,54,60,102,239,124,0
+    37 6118 1D 33 30 60 61 E6 + 	DTA 29,51,48,96,97,230,60,0
+    38 6120 78 B4 36 66 66 E7 + 	DTA 120,180,54,102,102,231,188,0
+    39 6128 72 BE 31 3C 60 64 + 	DTA 114,190,49,60,96,100,248,0
+    40 6130 76 BA 31 3C 60 68 + 	DTA 118,186,49,60,96,104,240,0
+    41 6138 1A 36 60 6E C6 CD + 	DTA 26,54,96,110,198,205,118,0
+    42 6140 63 B6 36 3E 6C ED + 	DTA 99,182,54,62,108,237,110,0
+    43 6148 3B 2E 0C 0C 19 5A + 	DTA 59,46,12,12,25,90,188,0
+    44 6150 09 17 06 06 2D ED + 	DTA 9,23,6,6,45,237,56,0
+    45 6158 E6 6D 6C 78 CC CD + 	DTA 230,109,108,120,204,205,230,0
+    46 6160 6C 38 30 30 64 62 + 	DTA 108,56,48,48,100,98,254,0
+    47 6168 C6 6E 7E 76 CC CD + 	DTA 198,110,126,118,204,205,230,0
+    48 6170 EE 66 76 7E DC CD + 	DTA 238,102,118,126,220,205,230,0
+    49 6178 0E 3B 33 63 E6 67 + 	DTA 14,59,51,99,230,103,60,0
+    50 6180 7C B6 36 3C 60 68 + 	DTA 124,182,54,60,96,104,240,0
+    51 6188 1C 36 66 C6 DA DD + 	DTA 28,54,102,198,218,221,118,0
+    52 6190 7E B3 36 3C 66 77 + 	DTA 126,179,54,60,102,119,238,0
+    53 6198 3D 67 71 3C 4F E3 + 	DTA 61,103,113,60,79,227,190,0
+    54 61A0 3F 2D 4C 18 18 BB + 	DTA 63,45,76,24,24,187,76,0
+    55 61A8 E6 6D 6C CC D8 D8 + 	DTA 230,109,108,204,216,216,112,0
+    56 61B0 EF E6 6C 6C 68 78 + 	DTA 239,230,108,108,104,120,240,0
+    57 61B8 EF 63 D6 D6 FE FF + 	DTA 239,99,214,214,254,255,108,0
+    58 61C0 C6 EE BC 30 78 ED + 	DTA 198,238,188,48,120,237,198,0
+    59 61C8 E6 6E 6C 38 59 9A + 	DTA 230,110,108,56,89,154,28,0
+    60 61D0 7E 46 0C 18 31 E2 + 	DTA 126,70,12,24,49,226,126,0
+    61 61D8 3C 32 30 60 60 64 + 	DTA 60,50,48,96,96,100,120,0
+    62 61E0 00 20 70 18 0C 06 + 	DTA 0,32,112,24,12,6,6,0
+    63 61E8 1E 26 06 0C 0C 4C + 	DTA 30,38,6,12,12,76,60,0
+    64 61F0 10 78 FC 92 20 20 + 	DTA 16,120,252,146,32,32,32,0
+    65 61F8 00 00 00 00 00 00 + 	DTA 0,0,0,0,0,0,0,255
+    66 6200 00 36 7F 7F 3E 1C + 	DTA 0,54,127,127,62,28,8,0
+    67 6208 18 18 18 1F 1F 18 + 	DTA 24,24,24,31,31,24,24,24
+    68 6210 03 03 03 03 03 03 + 	DTA 3,3,3,3,3,3,3,3
+    69 6218 18 18 18 F8 F8 00 + 	DTA 24,24,24,248,248,0,0,0
+    70 6220 18 18 18 F8 F8 18 + 	DTA 24,24,24,248,248,24,24,24
+    71 6228 00 00 00 F8 F8 18 + 	DTA 0,0,0,248,248,24,24,24
+    72 6230 03 07 0E 1C 38 70 + 	DTA 3,7,14,28,56,112,224,192
+    73 6238 C0 E0 70 38 1C 0E + 	DTA 192,224,112,56,28,14,7,3
+    74 6240 01 03 07 0F 1F 3F + 	DTA 1,3,7,15,31,63,127,255
+    75 6248 00 00 00 00 0F 0F + 	DTA 0,0,0,0,15,15,15,15
+    76 6250 80 C0 E0 F0 F8 FC + 	DTA 128,192,224,240,248,252,254,255
+    77 6258 0F 0F 0F 0F 00 00 + 	DTA 15,15,15,15,0,0,0,0
+    78 6260 F0 F0 F0 F0 00 00 + 	DTA 240,240,240,240,0,0,0,0
+    79 6268 FF FF 00 00 00 00 + 	DTA 255,255,0,0,0,0,0,0
+    80 6270 00 00 00 00 00 00 + 	DTA 0,0,0,0,0,0,255,255
+    81 6278 00 00 00 00 F0 F0 + 	DTA 0,0,0,0,240,240,240,240
+    82 6280 00 1C 1C 77 77 08 + 	DTA 0,28,28,119,119,8,28,0
+    83 6288 00 00 00 1F 1F 18 + 	DTA 0,0,0,31,31,24,24,24
+    84 6290 00 00 00 FF FF 00 + 	DTA 0,0,0,255,255,0,0,0
+    85 6298 18 18 18 FF FF 18 + 	DTA 24,24,24,255,255,24,24,24
+    86 62A0 00 00 3C 7E 7E 7E + 	DTA 0,0,60,126,126,126,60,0
+    87 62A8 00 00 00 00 FF FF + 	DTA 0,0,0,0,255,255,255,255
+    88 62B0 C0 C0 C0 C0 C0 C0 + 	DTA 192,192,192,192,192,192,192,192
+    89 62B8 00 00 00 FF FF 18 + 	DTA 0,0,0,255,255,24,24,24
+    90 62C0 18 18 18 FF FF 00 + 	DTA 24,24,24,255,255,0,0,0
+    91 62C8 F0 F0 F0 F0 F0 F0 + 	DTA 240,240,240,240,240,240,240,240
+    92 62D0 18 18 18 1F 1F 00 + 	DTA 24,24,24,31,31,0,0,0
+    93 62D8 78 60 78 60 7E 18 + 	DTA 120,96,120,96,126,24,30,0
+    94 62E0 00 18 3C 7E 18 18 + 	DTA 0,24,60,126,24,24,24,0
+    95 62E8 00 18 18 18 7E 3C + 	DTA 0,24,24,24,126,60,24,0
+    96 62F0 00 18 30 7E 30 18 + 	DTA 0,24,48,126,48,24,0,0
+    97 62F8 00 18 0C 7E 0C 18 + 	DTA 0,24,12,126,12,24,0,0
+    98 6300 00 18 3C 7E 7E 3C + 	DTA 0,24,60,126,126,60,24,0
+    99 6308 00 00 3C 06 7C CD + 	DTA 0,0,60,6,124,205,118,0
+   100 6310 3C 18 1E 33 33 E7 + 	DTA 60,24,30,51,51,231,126,0
+   101 6318 00 00 1E 36 60 E3 + 	DTA 0,0,30,54,96,227,62,0
+   102 6320 0F 06 3E 66 CC CD + 	DTA 15,6,62,102,204,205,118,0
+   103 6328 00 00 1C 36 7C E1 + 	DTA 0,0,28,54,124,225,62,0
+   104 6330 0E 19 18 7C 32 B0 + 	DTA 14,25,24,124,50,176,96,0
+   105 6338 00 00 1B 36 66 3D + 	DTA 0,0,27,54,102,61,140,120
+   106 6340 78 30 3C 36 66 ED + 	DTA 120,48,60,54,102,237,110,0
+   107 6348 0C 00 1C 2C D9 1A + 	DTA 12,0,28,44,217,26,60,0
+   108 6350 06 00 0E 06 07 8D + 	DTA 6,0,14,6,7,141,236,120
+   109 6358 70 B0 32 36 7C 66 + 	DTA 112,176,50,54,124,102,227,0
+   110 6360 18 2C 0C 18 18 58 + 	DTA 24,44,12,24,24,88,54,0
+   111 6368 00 00 EE 7F DB D6 + 	DTA 0,0,238,127,219,214,195,0
+   112 6370 00 00 7C B6 36 67 + 	DTA 0,0,124,182,54,103,236,0
+   113 6378 00 00 1C 36 66 ED + 	DTA 0,0,28,54,102,237,56,0
+   114 6380 00 00 6C B6 36 7D + 	DTA 0,0,108,182,54,125,96,240
+   115 6388 00 00 36 6D 6D BC + 	DTA 0,0,54,109,109,188,24,60
+   116 6390 00 00 6E 3A 19 B0 + 	DTA 0,0,110,58,25,176,120,0
+   117 6398 00 00 3C 66 39 8C + 	DTA 0,0,60,102,57,140,120,0
+   118 63A0 00 30 78 30 E3 66 + 	DTA 0,48,120,48,227,102,60,0
+   119 63A8 00 00 EE 66 CC CD + 	DTA 0,0,238,102,204,205,118,0
+   120 63B0 00 00 EF 66 ED 38 + 	DTA 0,0,239,102,237,56,48,0
+   121 63B8 00 00 D6 D6 7D FC + 	DTA 0,0,214,214,125,252,40,0
+   122 63C0 00 00 36 3E 1B FC + 	DTA 0,0,54,62,27,252,108,0
+   123 63C8 00 00 66 EE 6D 38 + 	DTA 0,0,102,238,109,56,176,224
+   124 63D0 00 00 7E 4C 38 73 + 	DTA 0,0,126,76,56,115,252,0
+   125 63D8 00 18 3C 7E 7E 18 + 	DTA 0,24,60,126,126,24,60,0
+   126 63E0 18 18 18 18 18 18 + 	DTA 24,24,24,24,24,24,24,24
+   127 63E8 00 7E 78 7C 6E 66 + 	DTA 0,126,120,124,110,102,6,0
+   128 63F0 08 18 38 78 38 18 + 	DTA 8,24,56,120,56,24,8,0
+   129 63F8 10 18 1C 1E 1C 18 + 	DTA 16,24,28,30,28,24,16,0
+   257
+   258 				; ===================================================================
+   259 				; 11. Dane ekranu Game Over ($7000, ANTIC D, 160×96)
+   260 				; ===================================================================
+   261 = 7000			GO_SCREEN = $7000
+   262 6400			    org GO_SCREEN
+   263 7000-7ADF> 00 00 00 00 +     ins "gen/gameover.bin"
+   264
+   265 				; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
+   266 = 5E10			GO_TEXT = FOOTER_ADDR
+   267
+   268 				; --- Muzyka i odtwarzacz ($8800) ---
+   269 7AE0			    icl "music/audio.asm"
+Source: audio.asm
+     1 				; ===================================================================
+     2 				; music/audio.asm — MADS configuration and integration of RMT player
+     3 				; Configured to load at free RAM sector $8800
+     4 				; ===================================================================
+     5
+     6 = E45C			SETVBV = $E45C
+     7 = E462			XITVBV = $E462
+     8
+     9 7AE0			    org $8800
+    10
+    11 				; --- Initialize RMT and set up Deferred VBLANK ---
+    12 8800			audio_init
+    13 8800-8845> A2 00		    ldx #<MODUL
+    14 8802 A0 92		    ldy #>MODUL
+    15 8804 A9 00		    lda #0                  ; Subsong number
+    16 8806 20 00 8C		    jsr RASTERMUSICTRACKER  ; Init player
+    17
+    18 8809 A9 07		    lda #7                  ; Deferred VBLANK slot
+    19 880B A2 88		    ldx #>vblank_player     ; High byte of handler
+    20 880D A0 13		    ldy #<vblank_player     ; Low byte of handler
+    21 880F 20 5C E4		    jsr SETVBV              ; Install VBI via OS
+    22 8812 60			    rts
+    23
+    24 				; --- Deferred VBI Music player handler ---
+    25 8813			vblank_player
+    26 8813 20 03 8C		    jsr RASTERMUSICTRACKER+3 ; Play one frame
+    27 8816 4C 62 E4		    jmp XITVBV              ; Exit Deferred VBI handler
+    28
+    29 				; --- Stop audio and silence Pokey ---
+    30 8819			audio_stop
+    31 8819 A9 07		    lda #7                  ; Deferred VBLANK slot
+    32 881B A2 88		    ldx #>dummy_vbi         ; High byte of dummy handler
+    33 881D A0 43		    ldy #<dummy_vbi         ; Low byte of dummy handler
+    34 881F 20 5C E4		    jsr SETVBV              ; Unhook vblank_player
+    35
+    36 8822 20 09 8C		    jsr RASTERMUSICTRACKER+9 ; Silence tracker player
+    37
+    38 				    ; Clear Pokey audio registers
+    39 8825 A9 00		    lda #0
+    40 8827 8D 00 D2		    sta $D200
+    41 882A 8D 01 D2		    sta $D201
+    42 882D 8D 02 D2		    sta $D202
+    43 8830 8D 03 D2		    sta $D203
+    44 8833 8D 04 D2		    sta $D204
+    45 8836 8D 05 D2		    sta $D205
+    46 8839 8D 06 D2		    sta $D206
+    47 883C 8D 07 D2		    sta $D207
+    48 883F 8D 08 D2		    sta $D208
+    49 8842 60			    rts
+    50
+    51 8843			dummy_vbi
+    52 8843 4C 62 E4		    jmp XITVBV
+    53
+    54 				; --- Player and variables mapping ---
+    55 				; Define player location (must be page aligned)
+    56 = 8C00			PLAYER = $8C00
+    57
+    58 				; Include the converted player code
+    59 8846			    icl "gen/rmtplayr.asm"
+Source: rmtplayr.asm
+     1 				;*
+     2 				;* Raster Music Tracker, RMT Atari routine version 1.20090108
+     3 				;* (c) Radek Sterba, Raster/C.P.U., 2002 - 2009
+     4 				;* http://raster.atari.org
+     5 				;*
+     6 				;* Warnings:
+     7 				;*
+     8 				;* 1. RMT player routine needs 19 itself reserved bytes in zero page (no accessed
+     9 				;*    from any other routines) as well as cca 1KB of memory before the "PLAYER"
+    10 				;*    address for frequency tables and functionary variables. It's:
+    11 				;*	  a) from PLAYER-$03c0 to PLAYER for stereo RMTplayer
+    12 				;*    b) from PLAYER-$0320 to PLAYER for mono RMTplayer
+    13 				;*
+    14 				;* 2. RMT player routine MUST (!!!) be compiled from the begin of the memory page.
+    15 				;*    i.e. "PLAYER" address can be $..00 only!
+    16 				;*
+    17 				;* 3. Because of RMTplayer provides a lot of effects, it spent a lot of CPU time.
+    18 				;*
+    19 				;* STEREOMODE	equ 0..3			;0 => compile RMTplayer for 4 tracks mono
+    20 				;*									;1 => compile RMTplayer for 8 tracks stereo
+    21 				;*									;2 => compile RMTplayer for 4 tracks stereo L1 R2 R3 L4
+    22 				;*									;3 => compile RMTplayer for 4 tracks stereo L1 L2 R3 R4
+    23 				;*
+    24 					IFT STEREOMODE==1
+    25 				TRACKS		equ 8
+    26 					ELS
+    27 = 0004			TRACKS		equ 4
+    28 					EIF
+    29 				;*
+    30 				; PLAYER defined externally
+    31 				;*
+    32 				;* RMT FEATures definitions file
+    33 				;* For optimizations of RMT player routine to concrete RMT modul only!
+    34 8846				icl "music/rmt_feat.asm"
+Source: rmt_feat.asm
+     1 				; music/rmt_feat.asm — Default RMT features for MADS
+     2 = 0000			STEREOMODE = 0
+     3
+     4 = 0000			FEAT_SFX = 0
+     5 = 0001			FEAT_GLOBALVOLUMEFADE = 1
+     6 = 0000			FEAT_NOSTARTINGSONGLINE = 0
+     7 = 0001			FEAT_INSTRSPEED = 1
+     8 = 0000			FEAT_CONSTANTSPEED = 0
+     9 = 0001			FEAT_COMMAND1 = 1
+    10 = 0001			FEAT_COMMAND2 = 1
+    11 = 0001			FEAT_COMMAND3 = 1
+    12 = 0001			FEAT_COMMAND4 = 1
+    13 = 0001			FEAT_COMMAND5 = 1
+    14 = 0001			FEAT_COMMAND6 = 1
+    15 = 0001			FEAT_COMMAND7SETNOTE = 1
+    16 = 0001			FEAT_COMMAND7VOLUMEONLY = 1
+    17 = 0001			FEAT_PORTAMENTO = 1
+    18 = 0001			FEAT_FILTER = 1
+    19 = 0001			FEAT_FILTERG0L = 1
+    20 = 0001			FEAT_FILTERG1L = 1
+    21 = 0001			FEAT_FILTERG0R = 1
+    22 = 0001			FEAT_FILTERG1R = 1
+    23 = 0001			FEAT_BASS16 = 1
+    24 = 0001			FEAT_BASS16G1L = 1
+    25 = 0001			FEAT_BASS16G3L = 1
+    26 = 0001			FEAT_BASS16G1R = 1
+    27 = 0001			FEAT_BASS16G3R = 1
+    28 = 0001			FEAT_VOLUMEONLYG0L = 1
+    29 = 0001			FEAT_VOLUMEONLYG2L = 1
+    30 = 0001			FEAT_VOLUMEONLYG3L = 1
+    31 = 0001			FEAT_VOLUMEONLYG0R = 1
+    32 = 0001			FEAT_VOLUMEONLYG2R = 1
+    33 = 0001			FEAT_VOLUMEONLYG3R = 1
+    34 = 0001			FEAT_TABLETYPE = 1
+    35 = 0001			FEAT_TABLEMODE = 1
+    36 = 0001			FEAT_TABLEGO = 1
+    37 = 0001			FEAT_AUDCTLMANUALSET = 1
+    38 = 0001			FEAT_VOLUMEMIN = 1
+    39 = 0001			FEAT_EFFECTVIBRATO = 1
+    40 = 0001			FEAT_EFFECTFSHIFT = 1
+    35 				;*
+    36 				;* RMT ZeroPage addresses
+    37 8846				org 203
+    38 00CB			p_tis
+    39 00CB			p_instrstable	org *+2
+    40 00CD			p_trackslbstable	org *+2
+    41 00CF			p_trackshbstable	org *+2
+    42 00D1			p_song			org *+2
+    43 00D3			ns				org *+2
+    44 00D5			nr				org *+2
+    45 00D7			nt				org *+2
+    46 00D9			reg1			org *+1
+    47 00DA			reg2			org *+1
+    48 00DB			reg3			org *+1
+    49 00DC			tmp				org *+1
+    50 					IFT FEAT_COMMAND2
+    51 00DD			frqaddcmd2		org *+1
+    52 					EIF
+    53 					IFT TRACKS>4
+    54 					org PLAYER-$400+$40
+    55 					ELS
+    56 00DE				org PLAYER-$400+$e0
+    57 					EIF
+    58 88E0			track_variables
+    59 88E0			trackn_db	org *+TRACKS
+    60 88E4			trackn_hb	org *+TRACKS
+    61 88E8			trackn_idx	org *+TRACKS
+    62 88EC			trackn_pause	org *+TRACKS
+    63 88F0			trackn_note	org *+TRACKS
+    64 88F4			trackn_volume	org *+TRACKS
+    65 88F8			trackn_distor 	org *+TRACKS
+    66 88FC			trackn_shiftfrq	org *+TRACKS
+    67 					IFT FEAT_PORTAMENTO
+    68 8900			trackn_portafrqc org *+TRACKS
+    69 8904			trackn_portafrqa org *+TRACKS
+    70 8908			trackn_portaspeed org *+TRACKS
+    71 890C			trackn_portaspeeda org *+TRACKS
+    72 8910			trackn_portadepth org *+TRACKS
+    73 					EIF
+    74 8914			trackn_instrx2	org *+TRACKS
+    75 8918			trackn_instrdb	org *+TRACKS
+    76 891C			trackn_instrhb	org *+TRACKS
+    77 8920			trackn_instridx	org *+TRACKS
+    78 8924			trackn_instrlen	org *+TRACKS
+    79 8928			trackn_instrlop	org *+TRACKS
+    80 892C			trackn_instrreachend	org *+TRACKS
+    81 8930			trackn_volumeslidedepth org *+TRACKS
+    82 8934			trackn_volumeslidevalue org *+TRACKS
+    83 					IFT FEAT_VOLUMEMIN
+    84 8938			trackn_volumemin		org *+TRACKS
+    85 					EIF
+    86 = 0001			FEAT_EFFECTS equ FEAT_EFFECTVIBRATO||FEAT_EFFECTFSHIFT
+    87 					IFT FEAT_EFFECTS
+    88 893C			trackn_effdelay			org *+TRACKS
+    89 					EIF
+    90 					IFT FEAT_EFFECTVIBRATO
+    91 8940			trackn_effvibratoa		org *+TRACKS
+    92 					EIF
+    93 					IFT FEAT_EFFECTFSHIFT
+    94 8944			trackn_effshift		org *+TRACKS
+    95 					EIF
+    96 8948			trackn_tabletypespeed org *+TRACKS
+    97 					IFT FEAT_TABLEMODE
+    98 894C			trackn_tablemode	org *+TRACKS
+    99 					EIF
+   100 8950			trackn_tablenote	org *+TRACKS
+   101 8954			trackn_tablea		org *+TRACKS
+   102 8958			trackn_tableend		org *+TRACKS
+   103 					IFT FEAT_TABLEGO
+   104 895C			trackn_tablelop		org *+TRACKS
+   105 					EIF
+   106 8960			trackn_tablespeeda	org *+TRACKS
+   107 					IFT FEAT_FILTER||FEAT_BASS16
+   108 8964			trackn_command		org *+TRACKS
+   109 					EIF
+   110 					IFT FEAT_BASS16
+   111 8968			trackn_outnote		org *+TRACKS
+   112 					EIF
+   113 					IFT FEAT_FILTER
+   114 896C			trackn_filter		org *+TRACKS
+   115 					EIF
+   116 8970			trackn_audf	org *+TRACKS
+   117 8974			trackn_audc	org *+TRACKS
+   118 					IFT FEAT_AUDCTLMANUALSET
+   119 8978			trackn_audctl	org *+TRACKS
+   120 					EIF
+   121 897C			v_aspeed		org *+1
+   122 897D			track_endvariables
+   123 897D					org PLAYER-$100-$140-$40+2
+   124 = 000C			INSTRPAR	equ 12
+   125 8982			tabbeganddistor
+   126 8982-9140> 80 00		 dta frqtabpure-frqtab,$00
+   127 8984 80 20		 dta frqtabpure-frqtab,$20
+   128 8986 80 40		 dta frqtabpure-frqtab,$40
+   129 8988 00 C0		 dta frqtabbass1-frqtab,$c0
+   130 898A 80 80		 dta frqtabpure-frqtab,$80
+   131 898C 80 A0		 dta frqtabpure-frqtab,$a0
+   132 898E 00 C0		 dta frqtabbass1-frqtab,$c0
+   133 8990 40 C0		 dta frqtabbass2-frqtab,$c0
+   134 						IFT FEAT_EFFECTVIBRATO
+   135 8992 00 01 05 0B		vibtabbeg dta 0,vib1-vib0,vib2-vib0,vib3-vib0
+   136 8996 00			vib0	dta 0
+   137 8997 01 FF FF 01		vib1	dta 1,-1,-1,1
+   138 899B 01 00 FF FF 00 01	vib2	dta 1,0,-1,-1,0,1
+   139 89A1 01 01 00 FF FF FF + vib3	dta 1,1,0,-1,-1,-1,-1,0,1,1
+   140 89AB			vibtabnext
+   141 89AB 00					dta vib0-vib0+0
+   142 89AC 02 03 04 01				dta vib1-vib0+1,vib1-vib0+2,vib1-vib0+3,vib1-vib0+0
+   143 89B0 06 07 08 09 0A 05			dta vib2-vib0+1,vib2-vib0+2,vib2-vib0+3,vib2-vib0+4,vib2-vib0+5,vib2-vib0+0
+   144 89B6 0C 0D 0E 0F 10 11 + 		dta vib3-vib0+1,vib3-vib0+2,vib3-vib0+3,vib3-vib0+4,vib3-vib0+5,vib3-vib0+6,vib3-vib0+7,vib3-vib0+8,vib3-vib0+9,vib3-vib0+0
+   145 						EIF
+   146 89C0					org PLAYER-$100-$140
+   147 					IFT FEAT_BASS16
+   148 89C0			frqtabbasslo
+   149 89C0 F2 33 96 E2 38 8C + 	dta $F2,$33,$96,$E2,$38,$8C,$00,$6A,$E8,$6A,$EF,$80,$08,$AE,$46,$E6
+   150 89D0 95 41 F6 B0 6E 30 + 	dta $95,$41,$F6,$B0,$6E,$30,$F6,$BB,$84,$52,$22,$F4,$C8,$A0,$7A,$55
+   151 89E0 34 14 F5 D8 BD A4 + 	dta $34,$14,$F5,$D8,$BD,$A4,$8D,$77,$60,$4E,$38,$27,$15,$06,$F7,$E8
+   152 89F0 DB CF C3 B8 AC A2 + 	dta $DB,$CF,$C3,$B8,$AC,$A2,$9A,$90,$88,$7F,$78,$70,$6A,$64,$5E,$00
+   153 					EIF
+   154 8A00					org PLAYER-$100-$100
+   155 8A00			frqtab
+   156 					ERT [<frqtab]!=0	;* frqtab must begin at the memory page bound! (i.e. $..00 address)
+   157 8A00			frqtabbass1
+   158 8A00 BF B6 AA A1 98 8F + 	dta $BF,$B6,$AA,$A1,$98,$8F,$89,$80,$F2,$E6,$DA,$CE,$BF,$B6,$AA,$A1
+   159 8A10 98 8F 89 80 7A 71 + 	dta $98,$8F,$89,$80,$7A,$71,$6B,$65,$5F,$5C,$56,$50,$4D,$47,$44,$3E
+   160 8A20 3C 38 35 32 2F 2D + 	dta $3C,$38,$35,$32,$2F,$2D,$2A,$28,$25,$23,$21,$1F,$1D,$1C,$1A,$18
+   161 8A30 17 16 14 13 12 11 + 	dta $17,$16,$14,$13,$12,$11,$10,$0F,$0E,$0D,$0C,$0B,$0A,$09,$08,$07
+   162 8A40			frqtabbass2
+   163 8A40 FF F1 E4 D8 CA C0 + 	dta $FF,$F1,$E4,$D8,$CA,$C0,$B5,$AB,$A2,$99,$8E,$87,$7F,$79,$73,$70
+   164 8A50 66 61 5A 55 52 4B + 	dta $66,$61,$5A,$55,$52,$4B,$48,$43,$3F,$3C,$39,$37,$33,$30,$2D,$2A
+   165 8A60 28 25 24 21 1F 1E + 	dta $28,$25,$24,$21,$1F,$1E,$1C,$1B,$19,$17,$16,$15,$13,$12,$11,$10
+   166 8A70 0F 0E 0D 0C 0B 0A + 	dta $0F,$0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00
+   167 8A80			frqtabpure
+   168 8A80 F3 E6 D9 CC C1 B5 + 	dta $F3,$E6,$D9,$CC,$C1,$B5,$AD,$A2,$99,$90,$88,$80,$79,$72,$6C,$66
+   169 8A90 60 5B 55 51 4C 48 + 	dta $60,$5B,$55,$51,$4C,$48,$44,$40,$3C,$39,$35,$32,$2F,$2D,$2A,$28
+   170 8AA0 25 23 21 1F 1D 1C + 	dta $25,$23,$21,$1F,$1D,$1C,$1A,$18,$17,$16,$14,$13,$12,$11,$10,$0F
+   171 8AB0 0E 0D 0C 0B 0A 09 + 	dta $0E,$0D,$0C,$0B,$0A,$09,$08,$07,$06,$05,$04,$03,$02,$01,$00,$00
+   172 					IFT FEAT_BASS16
+   173 8AC0			frqtabbasshi
+   174 8AC0 0D 0D 0C 0B 0B 0A + 	dta $0D,$0D,$0C,$0B,$0B,$0A,$0A,$09,$08,$08,$07,$07,$07,$06,$06,$05
+   175 8AD0 05 05 04 04 04 04 + 	dta $05,$05,$04,$04,$04,$04,$03,$03,$03,$03,$03,$02,$02,$02,$02,$02
+   176 8AE0 02 02 01 01 01 01 + 	dta $02,$02,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$00,$00
+   177 8AF0 00 00 00 00 00 00 + 	dta $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   178 					EIF
+   179 8B00					org PLAYER-$0100
+   180 8B00			volumetab
+   181 8B00 00 00 00 00 00 00 + 	dta $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+   182 8B10 00 00 00 00 00 00 + 	dta $00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$01,$01
+   183 8B20 00 00 00 00 01 01 + 	dta $00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$01,$01,$02,$02,$02,$02
+   184 8B30 00 00 00 01 01 01 + 	dta $00,$00,$00,$01,$01,$01,$01,$01,$02,$02,$02,$02,$02,$03,$03,$03
+   185 8B40 00 00 01 01 01 01 + 	dta $00,$00,$01,$01,$01,$01,$02,$02,$02,$02,$03,$03,$03,$03,$04,$04
+   186 8B50 00 00 01 01 01 02 + 	dta $00,$00,$01,$01,$01,$02,$02,$02,$03,$03,$03,$04,$04,$04,$05,$05
+   187 8B60 00 00 01 01 02 02 + 	dta $00,$00,$01,$01,$02,$02,$02,$03,$03,$04,$04,$04,$05,$05,$06,$06
+   188 8B70 00 00 01 01 02 02 + 	dta $00,$00,$01,$01,$02,$02,$03,$03,$04,$04,$05,$05,$06,$06,$07,$07
+   189 8B80 00 01 01 02 02 03 + 	dta $00,$01,$01,$02,$02,$03,$03,$04,$04,$05,$05,$06,$06,$07,$07,$08
+   190 8B90 00 01 01 02 02 03 + 	dta $00,$01,$01,$02,$02,$03,$04,$04,$05,$05,$06,$07,$07,$08,$08,$09
+   191 8BA0 00 01 01 02 03 03 + 	dta $00,$01,$01,$02,$03,$03,$04,$05,$05,$06,$07,$07,$08,$09,$09,$0A
+   192 8BB0 00 01 01 02 03 04 + 	dta $00,$01,$01,$02,$03,$04,$04,$05,$06,$07,$07,$08,$09,$0A,$0A,$0B
+   193 8BC0 00 01 02 02 03 04 + 	dta $00,$01,$02,$02,$03,$04,$05,$06,$06,$07,$08,$09,$0A,$0A,$0B,$0C
+   194 8BD0 00 01 02 03 03 04 + 	dta $00,$01,$02,$03,$03,$04,$05,$06,$07,$08,$09,$0A,$0A,$0B,$0C,$0D
+   195 8BE0 00 01 02 03 04 05 + 	dta $00,$01,$02,$03,$04,$05,$06,$07,$07,$08,$09,$0A,$0B,$0C,$0D,$0E
+   196 8BF0 00 01 02 03 04 05 + 	dta $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0A,$0B,$0C,$0D,$0E,$0F
+   197 8C00				org PLAYER
+   198 				;*
+   199 				;* Set of RMT main vectors:
+   200 				;*
+   201 8C00			RASTERMUSICTRACKER
+   202 8C00 4C 0F 8C			jmp rmt_init
+   203 8C03 4C EF 8D			jmp rmt_play
+   204 8C06 4C 09 8E			jmp rmt_p3
+   205 8C09 4C 4F 8C			jmp rmt_silence
+   206 8C0C 4C 0B 91			jmp SetPokey
+   207 					IFT FEAT_SFX
+   208 					jmp rmt_sfx			;* A=note(0,..,60),X=channel(0,..,3 or 0,..,7),Y=instrument*2(0,2,4,..,126)
+   209 					EIF
+   210 8C0F			rmt_init
+   211 8C0F 86 D3			stx ns
+   212 8C11 84 D4			sty ns+1
+   213 					IFT FEAT_NOSTARTINGSONGLINE==0
+   214 8C13 48				pha
+   215 					EIF
+   216 					IFT track_endvariables-track_variables>255
+   217 					ldy #0
+   218 					tya
+   219 				ri0	sta track_variables,y
+   220 					sta track_endvariables-$100,y
+   221 					iny
+   222 					bne ri0
+   223 					ELS
+   224 8C14 A0 9D			ldy #track_endvariables-track_variables
+   225 8C16 A9 00			lda #0
+   226 8C18 99 DF 88		ri0	sta track_variables-1,y
+   227 8C1B 88				dey
+   228 8C1C D0 FA			bne ri0
+   229 					EIF
+   230 8C1E A0 04			ldy #4
+   231 8C20 B1 D3			lda (ns),y
+   232 8C22 8D FD 8D			sta v_maxtracklen
+   233 8C25 C8				iny
+   234 					IFT FEAT_CONSTANTSPEED==0
+   235 8C26 B1 D3			lda (ns),y
+   236 8C28 8D B5 8C			sta v_speed
+   237 					EIF
+   238 					IFT FEAT_INSTRSPEED==0
+   239 					iny
+   240 					lda (ns),y
+   241 					sta v_instrspeed
+   242 					sta v_ainstrspeed
+   243 					ELI FEAT_INSTRSPEED>1
+   244 					lda #FEAT_INSTRSPEED
+   245 					sta v_ainstrspeed
+   246 					EIF
+   247 8C2B A0 08			ldy #8
+   248 8C2D B1 D3		ri1	lda (ns),y
+   249 8C2F 99 C3 00			sta p_tis-8,y
+   250 8C32 C8				iny
+   251 8C33 C0 10			cpy #8+8
+   252 8C35 D0 F6			bne ri1
+   253 					IFT FEAT_NOSTARTINGSONGLINE==0
+   254 8C37 68				pla
+   255 8C38 48				pha
+   256 					IFT TRACKS>4
+   257 					asl @
+   258 					asl @
+   259 					asl @
+   260 					clc
+   261 					adc p_song
+   262 					sta p_song
+   263 					pla
+   264 					php
+   265 					and #$e0
+   266 					asl @
+   267 					rol @
+   268 					rol @
+   269 					rol @
+   270 					ELS
+   271 8C39 0A				asl @
+   272 8C3A 0A				asl @
+   273 8C3B 18				clc
+   274 8C3C 65 D1			adc p_song
+   275 8C3E 85 D1			sta p_song
+   276 8C40 68				pla
+   277 8C41 08				php
+   278 8C42 29 C0			and #$c0
+   279 8C44 0A				asl @
+   280 8C45 2A				rol @
+   281 8C46 2A				rol @
+   282 					EIF
+   283 8C47 28				plp
+   284 8C48 65 D2			adc p_song+1
+   285 8C4A 85 D2			sta p_song+1
+   286 					EIF
+   287 8C4C 20 64 8C			jsr GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
+   288 8C4F			rmt_silence
+   289 					IFT STEREOMODE>0
+   290 					lda #0
+   291 					sta $d208
+   292 					sta $d218
+   293 					ldy #3
+   294 					sty $d20f
+   295 					sty $d21f
+   296 					ldy #8
+   297 				si1	sta $d200,y
+   298 					sta $d210,y
+   299 					dey
+   300 					bpl si1
+   301 					ELS
+   302 8C4F A9 00			lda #0
+   303 8C51 8D 08 D2			sta $d208
+   304 8C54 A0 03			ldy #3
+   305 8C56 8C 0F D2			sty $d20f
+   306 8C59 A0 08			ldy #8
+   307 8C5B 99 00 D2		si1	sta $d200,y
+   308 8C5E 88				dey
+   309 8C5F 10 FA			bpl si1
+   310 					EIF
+   311 					IFT FEAT_INSTRSPEED==0
+   312 					lda v_instrspeed
+   313 					ELS
+   314 8C61 A9 01			lda #FEAT_INSTRSPEED
+   315 					EIF
+   316 8C63 60				rts
+   317 8C64			GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
+   318 8C64			GetSongLine
+   319 8C64 A2 00			ldx #0
+   320 8C66 8E FB 8D			stx v_abeat
+   321 8C69			nn0
+   322 8C69 8A			nn1	txa
+   323 8C6A A8				tay
+   324 8C6B B1 D1			lda (p_song),y
+   325 8C6D C9 FE			cmp #$fe
+   326 8C6F B0 2D			bcs nn2
+   327 8C71 A8				tay
+   328 8C72 B1 CD			lda (p_trackslbstable),y
+   329 8C74 9D E0 88			sta trackn_db,x
+   330 8C77 B1 CF			lda (p_trackshbstable),y
+   331 8C79 9D E4 88		nn1a sta trackn_hb,x
+   332 8C7C A9 00			lda #0
+   333 8C7E 9D E8 88			sta trackn_idx,x
+   334 8C81 A9 01			lda #1
+   335 8C83 9D EC 88		nn1a2 sta trackn_pause,x
+   336 8C86 A9 80			lda #$80
+   337 8C88 9D 14 89			sta trackn_instrx2,x
+   338 8C8B E8				inx
+   339 8C8C E0 04		xtracks01	cpx #TRACKS
+   340 8C8E D0 D9			bne nn1
+   341 8C90 A5 D1			lda p_song
+   342 8C92 18				clc
+   343 8C93 69 04		xtracks02	adc #TRACKS
+   344 8C95 85 D1			sta p_song
+   345 8C97 90 1B			bcc GetTrackLine
+   346 8C99 E6 D2			inc p_song+1
+   347 8C9B			nn1b
+   348 8C9B 4C B4 8C			jmp GetTrackLine
+   349 8C9E			nn2
+   350 8C9E F0 04			beq nn3
+   351 8CA0			nn2a
+   352 8CA0 A9 00			lda #0
+   353 8CA2 F0 DF			beq nn1a2
+   354 8CA4			nn3
+   355 8CA4 A0 02			ldy #2
+   356 8CA6 B1 D1			lda (p_song),y
+   357 8CA8 AA				tax
+   358 8CA9 C8				iny
+   359 8CAA B1 D1			lda (p_song),y
+   360 8CAC 85 D2			sta p_song+1
+   361 8CAE 86 D1			stx p_song
+   362 8CB0 A2 00			ldx #0
+   363 8CB2 F0 B5			beq nn0
+   364 8CB4			GetTrackLine
+   365 8CB4			oo0
+   366 8CB4			oo0a
+   367 					IFT FEAT_CONSTANTSPEED==0
+   368 8CB4 A9 FF			lda #$ff
+   369 = 8CB5			v_speed equ *-1
+   370 8CB6 8D 12 8D			sta v_bspeed
+   371 					EIF
+   372 8CB9 A2 FF			ldx #-1
+   373 8CBB			oo1
+   374 8CBB E8				inx
+   375 8CBC DE EC 88			dec trackn_pause,x
+   376 8CBF D0 4C			bne oo1x
+   377 8CC1			oo1b
+   378 8CC1 BD E0 88			lda trackn_db,x
+   379 8CC4 85 D3			sta ns
+   380 8CC6 BD E4 88			lda trackn_hb,x
+   381 8CC9 85 D4			sta ns+1
+   382 8CCB			oo1i
+   383 8CCB BC E8 88			ldy trackn_idx,x
+   384 8CCE FE E8 88			inc trackn_idx,x
+   385 8CD1 B1 D3			lda (ns),y
+   386 8CD3 85 D9			sta reg1
+   387 8CD5 29 3F			and #$3f
+   388 8CD7 C9 3D			cmp #61
+   389 8CD9 F0 11			beq oo1a
+   390 8CDB B0 3F			bcs oo2
+   391 8CDD 9D F0 88			sta trackn_note,x
+   392 					IFT FEAT_BASS16
+   393 8CE0 9D 68 89			sta trackn_outnote,x
+   394 					EIF
+   395 8CE3 C8				iny
+   396 8CE4 B1 D3			lda (ns),y
+   397 8CE6 4A				lsr @
+   398 8CE7 29 7E			and #$3f*2
+   399 8CE9 9D 14 89			sta trackn_instrx2,x
+   400 8CEC			oo1a
+   401 8CEC A9 01			lda #1
+   402 8CEE 9D EC 88			sta trackn_pause,x
+   403 8CF1 BC E8 88			ldy trackn_idx,x
+   404 8CF4 FE E8 88			inc trackn_idx,x
+   405 8CF7 B1 D3			lda (ns),y
+   406 8CF9 4A				lsr @
+   407 8CFA 66 D9			ror reg1
+   408 8CFC 4A				lsr @
+   409 8CFD 66 D9			ror reg1
+   410 8CFF A5 D9			lda reg1
+   411 					IFT FEAT_GLOBALVOLUMEFADE
+   412 8D01 38				sec
+   413 8D02 E9 00			sbc #$00
+   414 = 8D03			RMTGLOBALVOLUMEFADE equ *-1
+   415 8D04 B0 02			bcs voig
+   416 8D06 A9 00			lda #0
+   417 8D08			voig
+   418 					EIF
+   419 8D08 29 F0			and #$f0
+   420 8D0A 9D F4 88			sta trackn_volume,x
+   421 8D0D			oo1x
+   422 8D0D E0 03		xtracks03sub1	cpx #TRACKS-1
+   423 8D0F D0 AA			bne oo1
+   424 					IFT FEAT_CONSTANTSPEED==0
+   425 8D11 A9 FF			lda #$ff
+   426 = 8D12			v_bspeed equ *-1
+   427 8D13 8D B5 8C			sta v_speed
+   428 					ELS
+   429 					lda #FEAT_CONSTANTSPEED
+   430 					EIF
+   431 8D16 8D 7C 89			sta v_aspeed
+   432 8D19 4C 61 8D			jmp InitOfNewSetInstrumentsOnly
+   433 8D1C			oo2
+   434 8D1C C9 3F			cmp #63
+   435 8D1E F0 1B			beq oo63
+   436 8D20 A5 D9			lda reg1
+   437 8D22 29 C0			and #$c0
+   438 8D24 F0 09			beq oo62_b
+   439 8D26 0A				asl @
+   440 8D27 2A				rol @
+   441 8D28 2A				rol @
+   442 8D29 9D EC 88			sta trackn_pause,x
+   443 8D2C 4C 0D 8D			jmp oo1x
+   444 8D2F			oo62_b
+   445 8D2F C8				iny
+   446 8D30 B1 D3			lda (ns),y
+   447 8D32 9D EC 88			sta trackn_pause,x
+   448 8D35 FE E8 88			inc trackn_idx,x
+   449 8D38 4C 0D 8D			jmp oo1x
+   450 8D3B			oo63
+   451 8D3B A5 D9			lda reg1
+   452 					IFT FEAT_CONSTANTSPEED==0
+   453 8D3D 30 0C			bmi oo63_1X
+   454 8D3F C8				iny
+   455 8D40 B1 D3			lda (ns),y
+   456 8D42 8D 12 8D			sta v_bspeed
+   457 8D45 FE E8 88			inc trackn_idx,x
+   458 8D48 4C CB 8C			jmp oo1i
+   459 8D4B			oo63_1X
+   460 					EIF
+   461 8D4B C9 FF			cmp #255
+   462 8D4D F0 09			beq oo63_11
+   463 8D4F C8				iny
+   464 8D50 B1 D3			lda (ns),y
+   465 8D52 9D E8 88			sta trackn_idx,x
+   466 8D55 4C CB 8C			jmp oo1i
+   467 8D58			oo63_11
+   468 8D58 4C 64 8C			jmp GetSongLine
+   469 8D5B 4C 09 8E		p2xrmtp3	jmp rmt_p3
+   470 8D5E CA			p2x0 dex
+   471 8D5F 30 FA			 bmi p2xrmtp3
+   472 8D61			InitOfNewSetInstrumentsOnly
+   473 8D61 BC 14 89		p2x1 ldy trackn_instrx2,x
+   474 8D64 30 F8			bmi p2x0
+   475 					IFT FEAT_SFX
+   476 					jsr SetUpInstrumentY2
+   477 					jmp p2x0
+   478 				rmt_sfx
+   479 					sta trackn_note,x
+   480 					IFT FEAT_BASS16
+   481 					sta trackn_outnote,x
+   482 					EIF
+   483 					lda #$f0				;* sfx note volume*16
+   484 				RMTSFXVOLUME equ *-1		;* label for sfx note volume parameter overwriting
+   485 					sta trackn_volume,x
+   486 					EIF
+   487 8D66			SetUpInstrumentY2
+   488 8D66 B1 CB			lda (p_instrstable),y
+   489 8D68 9D 18 89			sta trackn_instrdb,x
+   490 8D6B 85 D7			sta nt
+   491 8D6D C8				iny
+   492 8D6E B1 CB			lda (p_instrstable),y
+   493 8D70 9D 1C 89			sta trackn_instrhb,x
+   494 8D73 85 D8			sta nt+1
+   495 					IFT FEAT_FILTER
+   496 8D75 A9 01			lda #1
+   497 8D77 9D 6C 89			sta trackn_filter,x
+   498 					EIF
+   499 					IFT FEAT_TABLEGO
+   500 					IFT FEAT_FILTER
+   501 8D7A A8				tay
+   502 					ELS
+   503 					ldy #1
+   504 					EIF
+   505 8D7B B1 D7			lda (nt),y
+   506 8D7D 9D 5C 89			sta trackn_tablelop,x
+   507 8D80 C8				iny
+   508 					ELS
+   509 					ldy #2
+   510 					EIF
+   511 8D81 B1 D7			lda (nt),y
+   512 8D83 9D 24 89			sta trackn_instrlen,x
+   513 8D86 C8				iny
+   514 8D87 B1 D7			lda (nt),y
+   515 8D89 9D 28 89			sta trackn_instrlop,x
+   516 8D8C C8				iny
+   517 8D8D B1 D7			lda (nt),y
+   518 8D8F 9D 48 89			sta trackn_tabletypespeed,x
+   519 					IFT FEAT_TABLETYPE||FEAT_TABLEMODE
+   520 8D92 29 3F			and #$3f
+   521 					EIF
+   522 8D94 9D 60 89			sta trackn_tablespeeda,x
+   523 					IFT FEAT_TABLEMODE
+   524 8D97 B1 D7			lda (nt),y
+   525 8D99 29 40			and #$40
+   526 8D9B 9D 4C 89			sta trackn_tablemode,x
+   527 					EIF
+   528 					IFT FEAT_AUDCTLMANUALSET
+   529 8D9E C8				iny
+   530 8D9F B1 D7			lda (nt),y
+   531 8DA1 9D 78 89			sta trackn_audctl,x
+   532 8DA4 C8				iny
+   533 					ELS
+   534 					ldy #6
+   535 					EIF
+   536 8DA5 B1 D7			lda (nt),y
+   537 8DA7 9D 30 89			sta trackn_volumeslidedepth,x
+   538 					IFT FEAT_VOLUMEMIN
+   539 8DAA C8				iny
+   540 8DAB B1 D7			lda (nt),y
+   541 8DAD 9D 38 89			sta trackn_volumemin,x
+   542 					IFT FEAT_EFFECTS
+   543 8DB0 C8				iny
+   544 					EIF
+   545 					ELS
+   546 					IFT FEAT_EFFECTS
+   547 					ldy #8
+   548 					EIF
+   549 					EIF
+   550 					IFT FEAT_EFFECTS
+   551 8DB1 B1 D7			lda (nt),y
+   552 8DB3 9D 3C 89			sta trackn_effdelay,x
+   553 					IFT FEAT_EFFECTVIBRATO
+   554 8DB6 C8				iny
+   555 8DB7 B1 D7			lda (nt),y
+   556 8DB9 A8				tay
+   557 8DBA B9 92 89			lda vibtabbeg,y
+   558 8DBD 9D 40 89			sta trackn_effvibratoa,x
+   559 					EIF
+   560 					IFT FEAT_EFFECTFSHIFT
+   561 8DC0 A0 0A			ldy #10
+   562 8DC2 B1 D7			lda (nt),y
+   563 8DC4 9D 44 89			sta trackn_effshift,x
+   564 					EIF
+   565 					EIF
+   566 8DC7 A9 80			lda #128
+   567 8DC9 9D 34 89			sta trackn_volumeslidevalue,x
+   568 8DCC 9D 14 89			sta trackn_instrx2,x
+   569 8DCF 0A				asl @
+   570 8DD0 9D 2C 89			sta trackn_instrreachend,x
+   571 8DD3 9D FC 88			sta trackn_shiftfrq,x
+   572 8DD6 A8				tay
+   573 8DD7 B1 D7			lda (nt),y
+   574 8DD9 9D 58 89			sta trackn_tableend,x
+   575 8DDC 69 00			adc #0
+   576 8DDE 9D 20 89			sta trackn_instridx,x
+   577 8DE1 A9 0C			lda #INSTRPAR
+   578 8DE3 9D 54 89			sta trackn_tablea,x
+   579 8DE6 A8				tay
+   580 8DE7 B1 D7			lda (nt),y
+   581 8DE9 9D 50 89			sta trackn_tablenote,x
+   582 8DEC			xata_rtshere
+   583 					IFT FEAT_SFX
+   584 					rts
+   585 					ELS
+   586 8DEC 4C 5E 8D			jmp p2x0
+   587 					EIF
+   588 8DEF			rmt_play
+   589 8DEF			rmt_p0
+   590 8DEF 20 0B 91			jsr SetPokey
+   591 8DF2			rmt_p1
+   592 					IFT FEAT_INSTRSPEED==0||FEAT_INSTRSPEED>1
+   593 					dec v_ainstrspeed
+   594 					bne rmt_p3
+   595 					EIF
+   596 					IFT FEAT_INSTRSPEED==0
+   597 					lda #$ff
+   598 				v_instrspeed	equ *-1
+   599 					sta v_ainstrspeed
+   600 					ELI FEAT_INSTRSPEED>1
+   601 					lda #FEAT_INSTRSPEED
+   602 					sta v_ainstrspeed
+   603 					EIF
+   604 8DF2			rmt_p2
+   605 8DF2 CE 7C 89			dec v_aspeed
+   606 8DF5 D0 12			bne rmt_p3
+   607 8DF7 EE FB 8D			inc v_abeat
+   608 8DFA A9 FF			lda #$ff
+   609 = 8DFB			v_abeat equ *-1
+   610 8DFC C9 FF			cmp #$ff
+   611 = 8DFD			v_maxtracklen equ *-1
+   612 8DFE F0 03			beq p2o3
+   613 8E00 4C B4 8C			jmp GetTrackLine
+   614 8E03			p2o3
+   615 8E03 4C 64 8C			jmp GetSongLineTrackLineInitOfNewSetInstrumentsOnlyRmtp3
+   616 8E06 4C 40 90		go_ppnext	jmp ppnext
+   617 8E09			rmt_p3
+   618 8E09 A9 8A			lda #>frqtab
+   619 8E0B 85 D6			sta nr+1
+   620 8E0D A2 03		xtracks05sub1	ldx #TRACKS-1
+   621 8E0F			pp1
+   622 8E0F BD 1C 89			lda trackn_instrhb,x
+   623 8E12 F0 F2			beq go_ppnext
+   624 8E14 85 D4			sta ns+1
+   625 8E16 BD 18 89			lda trackn_instrdb,x
+   626 8E19 85 D3			sta ns
+   627 8E1B BC 20 89			ldy trackn_instridx,x
+   628 8E1E B1 D3			lda (ns),y
+   629 8E20 85 D9			sta reg1
+   630 8E22 C8				iny
+   631 8E23 B1 D3			lda (ns),y
+   632 8E25 85 DA			sta reg2
+   633 8E27 C8				iny
+   634 8E28 B1 D3			lda (ns),y
+   635 8E2A 85 DB			sta reg3
+   636 8E2C C8				iny
+   637 8E2D 98				tya
+   638 8E2E DD 24 89			cmp trackn_instrlen,x
+   639 8E31 90 0A			bcc pp2
+   640 8E33 F0 08			beq pp2
+   641 8E35 A9 80			lda #$80
+   642 8E37 9D 2C 89			sta trackn_instrreachend,x
+   643 8E3A			pp1b
+   644 8E3A BD 28 89			lda trackn_instrlop,x
+   645 8E3D 9D 20 89		pp2	sta trackn_instridx,x
+   646 8E40 A5 D9			lda reg1
+   647 					IFT TRACKS>4
+   648 					cpx #4
+   649 					bcc pp2s
+   650 					lsr @
+   651 					lsr @
+   652 					lsr @
+   653 					lsr @
+   654 				pp2s
+   655 					EIF
+   656 8E42 29 0F			and #$0f
+   657 8E44 1D F4 88			ora trackn_volume,x
+   658 8E47 A8				tay
+   659 8E48 B9 00 8B			lda volumetab,y
+   660 8E4B 85 DC			sta tmp
+   661 8E4D A5 DA			lda reg2
+   662 8E4F 29 0E			and #$0e
+   663 8E51 A8				tay
+   664 8E52 B9 82 89			lda tabbeganddistor,y
+   665 8E55 85 D5			sta nr
+   666 8E57 A5 DC			lda tmp
+   667 8E59 19 83 89			ora tabbeganddistor+1,y
+   668 8E5C 9D 74 89			sta trackn_audc,x
+   669 8E5F			InstrumentsEffects
+   670 					IFT FEAT_EFFECTS
+   671 8E5F BD 3C 89			lda trackn_effdelay,x
+   672 8E62 F0 21			beq ei2
+   673 8E64 C9 01			cmp #1
+   674 8E66 D0 1A			bne ei1
+   675 8E68 BD FC 88			lda trackn_shiftfrq,x
+   676 					IFT FEAT_EFFECTFSHIFT
+   677 8E6B 18				clc
+   678 8E6C 7D 44 89			adc trackn_effshift,x
+   679 					EIF
+   680 					IFT FEAT_EFFECTVIBRATO
+   681 8E6F 18				clc
+   682 8E70 BC 40 89			ldy trackn_effvibratoa,x
+   683 8E73 79 96 89			adc vib0,y
+   684 					EIF
+   685 8E76 9D FC 88			sta trackn_shiftfrq,x
+   686 					IFT FEAT_EFFECTVIBRATO
+   687 8E79 B9 AB 89			lda vibtabnext,y
+   688 8E7C 9D 40 89			sta trackn_effvibratoa,x
+   689 					EIF
+   690 8E7F 4C 85 8E			jmp ei2
+   691 8E82			ei1
+   692 8E82 DE 3C 89			dec trackn_effdelay,x
+   693 8E85			ei2
+   694 					EIF
+   695 8E85 BC 58 89			ldy trackn_tableend,x
+   696 8E88 C0 0D			cpy #INSTRPAR+1
+   697 8E8A 90 3C			bcc ei3
+   698 8E8C BD 60 89			lda trackn_tablespeeda,x
+   699 8E8F 10 31			bpl ei2f
+   700 8E91			ei2c
+   701 8E91 98				tya
+   702 8E92 DD 54 89			cmp trackn_tablea,x
+   703 8E95 D0 08			bne ei2c2
+   704 					IFT FEAT_TABLEGO
+   705 8E97 BD 5C 89			lda trackn_tablelop,x
+   706 					ELS
+   707 					lda #INSTRPAR
+   708 					EIF
+   709 8E9A 9D 54 89			sta trackn_tablea,x
+   710 8E9D D0 03			bne ei2a
+   711 8E9F			ei2c2
+   712 8E9F FE 54 89			inc trackn_tablea,x
+   713 8EA2			ei2a
+   714 8EA2 BD 18 89			lda trackn_instrdb,x
+   715 8EA5 85 D7			sta nt
+   716 8EA7 BD 1C 89			lda trackn_instrhb,x
+   717 8EAA 85 D8			sta nt+1
+   718 8EAC BC 54 89			ldy trackn_tablea,x
+   719 8EAF B1 D7			lda (nt),y
+   720 					IFT FEAT_TABLEMODE
+   721 8EB1 BC 4C 89			ldy trackn_tablemode,x
+   722 8EB4 F0 04			beq ei2e
+   723 8EB6 18				clc
+   724 8EB7 7D 50 89			adc trackn_tablenote,x
+   725 8EBA			ei2e
+   726 					EIF
+   727 8EBA 9D 50 89			sta trackn_tablenote,x
+   728 8EBD BD 48 89			lda trackn_tabletypespeed,x
+   729 					IFT FEAT_TABLETYPE||FEAT_TABLEMODE
+   730 8EC0 29 3F			and #$3f
+   731 					EIF
+   732 8EC2			ei2f
+   733 8EC2 38				sec
+   734 8EC3 E9 01			sbc #1
+   735 8EC5 9D 60 89			sta trackn_tablespeeda,x
+   736 8EC8			ei3
+   737 8EC8 BD 2C 89			lda trackn_instrreachend,x
+   738 8ECB 10 1F			bpl ei4
+   739 8ECD BD F4 88			lda trackn_volume,x
+   740 8ED0 F0 1A			beq ei4
+   741 					IFT FEAT_VOLUMEMIN
+   742 8ED2 DD 38 89			cmp trackn_volumemin,x
+   743 8ED5 F0 15			beq ei4
+   744 8ED7 90 13			bcc ei4
+   745 					EIF
+   746 8ED9 A8				tay
+   747 8EDA BD 34 89			lda trackn_volumeslidevalue,x
+   748 8EDD 18				clc
+   749 8EDE 7D 30 89			adc trackn_volumeslidedepth,x
+   750 8EE1 9D 34 89			sta trackn_volumeslidevalue,x
+   751 8EE4 90 06			bcc ei4
+   752 8EE6 98				tya
+   753 8EE7 E9 10			sbc #16
+   754 8EE9 9D F4 88			sta trackn_volume,x
+   755 8EEC			ei4
+   756 					IFT FEAT_COMMAND2
+   757 8EEC A9 00			lda #0
+   758 8EEE 85 DD			sta frqaddcmd2
+   759 					EIF
+   760 					IFT FEAT_COMMAND1||FEAT_COMMAND2||FEAT_COMMAND3||FEAT_COMMAND4||FEAT_COMMAND5||FEAT_COMMAND6||FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   761 8EF0 A5 DA			lda reg2
+   762 					IFT FEAT_FILTER||FEAT_BASS16
+   763 8EF2 9D 64 89			sta trackn_command,x
+   764 					EIF
+   765 8EF5 29 70			and #$70
+   766 					IFT 1==[FEAT_COMMAND1+FEAT_COMMAND2+FEAT_COMMAND3+FEAT_COMMAND4+FEAT_COMMAND5+FEAT_COMMAND6+[FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY]]
+   767 					beq cmd0
+   768 					ELS
+   769 8EF7 4A				lsr @
+   770 8EF8 4A				lsr @
+   771 8EF9 8D FD 8E			sta jmx+1
+   772 8EFC 90 FE		jmx	bcc *
+   773 8EFE 4C B3 8F			jmp cmd0
+   774 8F01 EA				nop
+   775 8F02 4C 1D 8F			jmp cmd1
+   776 					IFT FEAT_COMMAND2||FEAT_COMMAND3||FEAT_COMMAND4||FEAT_COMMAND5||FEAT_COMMAND6||FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   777 8F05 EA				nop
+   778 8F06 4C 22 8F			jmp cmd2
+   779 					EIF
+   780 					IFT FEAT_COMMAND3||FEAT_COMMAND4||FEAT_COMMAND5||FEAT_COMMAND6||FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   781 8F09 EA				nop
+   782 8F0A 4C 2C 8F			jmp cmd3
+   783 					EIF
+   784 					IFT FEAT_COMMAND4||FEAT_COMMAND5||FEAT_COMMAND6||FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   785 8F0D EA				nop
+   786 8F0E 4C 38 8F			jmp cmd4
+   787 					EIF
+   788 					IFT FEAT_COMMAND5||FEAT_COMMAND6||FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   789 8F11 EA				nop
+   790 8F12 4C 47 8F			jmp cmd5
+   791 					EIF
+   792 					IFT FEAT_COMMAND6||FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   793 8F15 EA				nop
+   794 8F16 4C 8A 8F			jmp cmd6
+   795 					EIF
+   796 					IFT FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   797 8F19 EA				nop
+   798 8F1A 4C 99 8F			jmp cmd7
+   799 					EIF
+   800 					EIF
+   801 					ELS
+   802 					IFT FEAT_FILTER||FEAT_BASS16
+   803 					lda reg2
+   804 					sta trackn_command,x
+   805 					EIF
+   806 					EIF
+   807 8F1D			cmd1
+   808 					IFT FEAT_COMMAND1
+   809 8F1D A5 DB			lda reg3
+   810 8F1F 4C F6 8F			jmp cmd0c
+   811 					EIF
+   812 8F22			cmd2
+   813 					IFT FEAT_COMMAND2
+   814 8F22 A5 DB			lda reg3
+   815 8F24 85 DD			sta frqaddcmd2
+   816 8F26 BD F0 88			lda trackn_note,x
+   817 8F29 4C B9 8F			jmp cmd0a
+   818 					EIF
+   819 8F2C			cmd3
+   820 					IFT FEAT_COMMAND3
+   821 8F2C BD F0 88			lda trackn_note,x
+   822 8F2F 18				clc
+   823 8F30 65 DB			adc reg3
+   824 8F32 9D F0 88			sta trackn_note,x
+   825 8F35 4C B9 8F			jmp cmd0a
+   826 					EIF
+   827 8F38			cmd4
+   828 					IFT FEAT_COMMAND4
+   829 8F38 BD FC 88			lda trackn_shiftfrq,x
+   830 8F3B 18				clc
+   831 8F3C 65 DB			adc reg3
+   832 8F3E 9D FC 88			sta trackn_shiftfrq,x
+   833 8F41 BD F0 88			lda trackn_note,x
+   834 8F44 4C B9 8F			jmp cmd0a
+   835 					EIF
+   836 8F47			cmd5
+   837 					IFT FEAT_COMMAND5&&FEAT_PORTAMENTO
+   838 					IFT FEAT_TABLETYPE
+   839 8F47 BD 48 89			lda trackn_tabletypespeed,x
+   840 8F4A 10 0C			bpl cmd5a1
+   841 8F4C BC F0 88			ldy trackn_note,x
+   842 8F4F B1 D5			lda (nr),y
+   843 8F51 18				clc
+   844 8F52 7D 50 89			adc trackn_tablenote,x
+   845 8F55 4C 68 8F			jmp cmd5ax
+   846 					EIF
+   847 8F58			cmd5a1
+   848 8F58 BD F0 88			lda trackn_note,x
+   849 8F5B 18				clc
+   850 8F5C 7D 50 89			adc trackn_tablenote,x
+   851 8F5F C9 3D			cmp #61
+   852 8F61 90 02			bcc cmd5a2
+   853 8F63 A9 3F			lda #63
+   854 8F65			cmd5a2
+   855 8F65 A8				tay
+   856 8F66 B1 D5			lda (nr),y
+   857 8F68			cmd5ax
+   858 8F68 9D 00 89			sta trackn_portafrqc,x
+   859 8F6B A4 DB			ldy reg3
+   860 8F6D D0 03			bne cmd5a
+   861 8F6F 9D 04 89			sta trackn_portafrqa,x
+   862 8F72			cmd5a
+   863 8F72 98				tya
+   864 8F73 4A				lsr @
+   865 8F74 4A				lsr @
+   866 8F75 4A				lsr @
+   867 8F76 4A				lsr @
+   868 8F77 9D 08 89			sta trackn_portaspeed,x
+   869 8F7A 9D 0C 89			sta trackn_portaspeeda,x
+   870 8F7D A5 DB			lda reg3
+   871 8F7F 29 0F			and #$0f
+   872 8F81 9D 10 89			sta trackn_portadepth,x
+   873 8F84 BD F0 88			lda trackn_note,x
+   874 8F87 4C B9 8F			jmp cmd0a
+   875 					ELI FEAT_COMMAND5
+   876 					lda trackn_note,x
+   877 					jmp cmd0a
+   878 					EIF
+   879 8F8A			cmd6
+   880 					IFT FEAT_COMMAND6&&FEAT_FILTER
+   881 8F8A A5 DB			lda reg3
+   882 8F8C 18				clc
+   883 8F8D 7D 6C 89			adc trackn_filter,x
+   884 8F90 9D 6C 89			sta trackn_filter,x
+   885 8F93 BD F0 88			lda trackn_note,x
+   886 8F96 4C B9 8F			jmp cmd0a
+   887 					ELI FEAT_COMMAND6
+   888 					lda trackn_note,x
+   889 					jmp cmd0a
+   890 					EIF
+   891 8F99			cmd7
+   892 					IFT FEAT_COMMAND7SETNOTE||FEAT_COMMAND7VOLUMEONLY
+   893 					IFT FEAT_COMMAND7SETNOTE
+   894 8F99 A5 DB			lda reg3
+   895 					IFT FEAT_COMMAND7VOLUMEONLY
+   896 8F9B C9 80			cmp #$80
+   897 8F9D F0 06			beq cmd7a
+   898 					EIF
+   899 8F9F 9D F0 88			sta trackn_note,x
+   900 8FA2 4C B9 8F			jmp cmd0a
+   901 					EIF
+   902 					IFT FEAT_COMMAND7VOLUMEONLY
+   903 8FA5			cmd7a
+   904 8FA5 BD 74 89			lda trackn_audc,x
+   905 8FA8 09 F0			ora #$f0
+   906 8FAA 9D 74 89			sta trackn_audc,x
+   907 8FAD BD F0 88			lda trackn_note,x
+   908 8FB0 4C B9 8F			jmp cmd0a
+   909 					EIF
+   910 					EIF
+   911 8FB3			cmd0
+   912 8FB3 BD F0 88			lda trackn_note,x
+   913 8FB6 18				clc
+   914 8FB7 65 DB			adc reg3
+   915 8FB9			cmd0a
+   916 					IFT FEAT_TABLETYPE
+   917 8FB9 BC 48 89			ldy trackn_tabletypespeed,x
+   918 8FBC 30 1F			bmi cmd0b
+   919 					EIF
+   920 8FBE 18				clc
+   921 8FBF 7D 50 89			adc trackn_tablenote,x
+   922 8FC2 C9 3D			cmp #61
+   923 8FC4 90 07			bcc cmd0a1
+   924 8FC6 A9 00			lda #0
+   925 8FC8 9D 74 89			sta trackn_audc,x
+   926 8FCB A9 3F			lda #63
+   927 8FCD			cmd0a1
+   928 					IFT FEAT_BASS16
+   929 8FCD 9D 68 89			sta trackn_outnote,x
+   930 					EIF
+   931 8FD0 A8				tay
+   932 8FD1 B1 D5			lda (nr),y
+   933 8FD3 18				clc
+   934 8FD4 7D FC 88			adc trackn_shiftfrq,x
+   935 					IFT FEAT_COMMAND2
+   936 8FD7 18				clc
+   937 8FD8 65 DD			adc frqaddcmd2
+   938 					EIF
+   939 					IFT FEAT_TABLETYPE
+   940 8FDA 4C F6 8F			jmp cmd0c
+   941 8FDD			cmd0b
+   942 8FDD C9 3D			cmp #61
+   943 8FDF 90 07			bcc cmd0b1
+   944 8FE1 A9 00			lda #0
+   945 8FE3 9D 74 89			sta trackn_audc,x
+   946 8FE6 A9 3F			lda #63
+   947 8FE8			cmd0b1
+   948 8FE8 A8				tay
+   949 8FE9 BD FC 88			lda trackn_shiftfrq,x
+   950 8FEC 18				clc
+   951 8FED 7D 50 89			adc trackn_tablenote,x
+   952 8FF0 18				clc
+   953 8FF1 71 D5			adc (nr),y
+   954 					IFT FEAT_COMMAND2
+   955 8FF3 18				clc
+   956 8FF4 65 DD			adc frqaddcmd2
+   957 					EIF
+   958 					EIF
+   959 8FF6			cmd0c
+   960 8FF6 9D 70 89			sta trackn_audf,x
+   961 8FF9			pp9
+   962 					IFT FEAT_PORTAMENTO
+   963 8FF9 BD 0C 89			lda trackn_portaspeeda,x
+   964 8FFC F0 32			beq pp10
+   965 8FFE DE 0C 89			dec trackn_portaspeeda,x
+   966 9001 D0 2D			bne pp10
+   967 9003 BD 08 89			lda trackn_portaspeed,x
+   968 9006 9D 0C 89			sta trackn_portaspeeda,x
+   969 9009 BD 04 89			lda trackn_portafrqa,x
+   970 900C DD 00 89			cmp trackn_portafrqc,x
+   971 900F F0 1F			beq pp10
+   972 9011 B0 0D			bcs pps1
+   973 9013 7D 10 89			adc trackn_portadepth,x
+   974 9016 B0 12			bcs pps8
+   975 9018 DD 00 89			cmp trackn_portafrqc,x
+   976 901B B0 0D			bcs pps8
+   977 901D 4C 2D 90			jmp pps9
+   978 9020			pps1
+   979 9020 FD 10 89			sbc trackn_portadepth,x
+   980 9023 90 05			bcc pps8
+   981 9025 DD 00 89			cmp trackn_portafrqc,x
+   982 9028 B0 03			bcs pps9
+   983 902A			pps8
+   984 902A BD 00 89			lda trackn_portafrqc,x
+   985 902D			pps9
+   986 902D 9D 04 89			sta trackn_portafrqa,x
+   987 9030			pp10
+   988 9030 A5 DA			lda reg2
+   989 9032 29 01			and #$01
+   990 9034 F0 0A			beq pp11
+   991 9036 BD 04 89			lda trackn_portafrqa,x
+   992 9039 18				clc
+   993 903A 7D FC 88			adc trackn_shiftfrq,x
+   994 903D 9D 70 89			sta trackn_audf,x
+   995 9040			pp11
+   996 					EIF
+   997 9040			ppnext
+   998 9040 CA				dex
+   999 9041 30 03			bmi rmt_p4
+  1000 9043 4C 0F 8E			jmp pp1
+  1001 9046			rmt_p4
+  1002 					IFT FEAT_AUDCTLMANUALSET
+  1003 9046 AD 78 89			lda trackn_audctl+0
+  1004 9049 0D 79 89			ora trackn_audctl+1
+  1005 904C 0D 7A 89			ora trackn_audctl+2
+  1006 904F 0D 7B 89			ora trackn_audctl+3
+  1007 9052 AA				tax
+  1008 					ELS
+  1009 					ldx #0
+  1010 					EIF
+  1011 9053			qq1
+  1012 9053 8E 0C 91			stx v_audctl
+  1013 					IFT FEAT_FILTER
+  1014 					IFT FEAT_FILTERG0L
+  1015 9056 AD 64 89			lda trackn_command+0
+  1016 9059 10 21			bpl qq2
+  1017 905B AD 74 89			lda trackn_audc+0
+  1018 905E 29 0F			and #$0f
+  1019 9060 F0 1A			beq qq2
+  1020 9062 AD 70 89			lda trackn_audf+0
+  1021 9065 18				clc
+  1022 9066 6D 6C 89			adc trackn_filter+0
+  1023 9069 8D 72 89			sta trackn_audf+2
+  1024 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG2L
+  1025 906C AD 76 89			lda trackn_audc+2
+  1026 906F 29 10			and #$10
+  1027 9071 D0 05			bne qq1a
+  1028 					EIF
+  1029 9073 A9 00			lda #0
+  1030 9075 8D 76 89			sta trackn_audc+2
+  1031 9078			qq1a
+  1032 9078 8A				txa
+  1033 9079 09 04			ora #4
+  1034 907B AA				tax
+  1035 					EIF
+  1036 907C			qq2
+  1037 					IFT FEAT_FILTERG1L
+  1038 907C AD 65 89			lda trackn_command+1
+  1039 907F 10 21			bpl qq3
+  1040 9081 AD 75 89			lda trackn_audc+1
+  1041 9084 29 0F			and #$0f
+  1042 9086 F0 1A			beq qq3
+  1043 9088 AD 71 89			lda trackn_audf+1
+  1044 908B 18				clc
+  1045 908C 6D 6D 89			adc trackn_filter+1
+  1046 908F 8D 73 89			sta trackn_audf+3
+  1047 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG3L
+  1048 9092 AD 77 89			lda trackn_audc+3
+  1049 9095 29 10			and #$10
+  1050 9097 D0 05			bne qq2a
+  1051 					EIF
+  1052 9099 A9 00			lda #0
+  1053 909B 8D 77 89			sta trackn_audc+3
+  1054 909E			qq2a
+  1055 909E 8A				txa
+  1056 909F 09 02			ora #2
+  1057 90A1 AA				tax
+  1058 					EIF
+  1059 90A2			qq3
+  1060 					IFT FEAT_FILTERG0L||FEAT_FILTERG1L
+  1061 90A2 EC 0C 91			cpx v_audctl
+  1062 90A5 D0 5E			bne qq5
+  1063 					EIF
+  1064 					EIF
+  1065 					IFT FEAT_BASS16
+  1066 					IFT FEAT_BASS16G1L
+  1067 90A7 AD 65 89			lda trackn_command+1
+  1068 90AA 29 0E			and #$0e
+  1069 90AC C9 06			cmp #6
+  1070 90AE D0 26			bne qq4
+  1071 90B0 AD 75 89			lda trackn_audc+1
+  1072 90B3 29 0F			and #$0f
+  1073 90B5 F0 1F			beq qq4
+  1074 90B7 AC 69 89			ldy trackn_outnote+1
+  1075 90BA B9 C0 89			lda frqtabbasslo,y
+  1076 90BD 8D 70 89			sta trackn_audf+0
+  1077 90C0 B9 C0 8A			lda frqtabbasshi,y
+  1078 90C3 8D 71 89			sta trackn_audf+1
+  1079 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG0L
+  1080 90C6 AD 74 89			lda trackn_audc+0
+  1081 90C9 29 10			and #$10
+  1082 90CB D0 05			bne qq3a
+  1083 					EIF
+  1084 90CD A9 00			lda #0
+  1085 90CF 8D 74 89			sta trackn_audc+0
+  1086 90D2			qq3a
+  1087 90D2 8A				txa
+  1088 90D3 09 50			ora #$50
+  1089 90D5 AA				tax
+  1090 					EIF
+  1091 90D6			qq4
+  1092 					IFT FEAT_BASS16G3L
+  1093 90D6 AD 67 89			lda trackn_command+3
+  1094 90D9 29 0E			and #$0e
+  1095 90DB C9 06			cmp #6
+  1096 90DD D0 26			bne qq5
+  1097 90DF AD 77 89			lda trackn_audc+3
+  1098 90E2 29 0F			and #$0f
+  1099 90E4 F0 1F			beq qq5
+  1100 90E6 AC 6B 89			ldy trackn_outnote+3
+  1101 90E9 B9 C0 89			lda frqtabbasslo,y
+  1102 90EC 8D 72 89			sta trackn_audf+2
+  1103 90EF B9 C0 8A			lda frqtabbasshi,y
+  1104 90F2 8D 73 89			sta trackn_audf+3
+  1105 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG2L
+  1106 90F5 AD 76 89			lda trackn_audc+2
+  1107 90F8 29 10			and #$10
+  1108 90FA D0 05			bne qq4a
+  1109 					EIF
+  1110 90FC A9 00			lda #0
+  1111 90FE 8D 76 89			sta trackn_audc+2
+  1112 9101			qq4a
+  1113 9101 8A				txa
+  1114 9102 09 28			ora #$28
+  1115 9104 AA				tax
+  1116 					EIF
+  1117 					EIF
+  1118 9105			qq5
+  1119 9105 8E 0C 91			stx v_audctl
+  1120 					IFT TRACKS>4
+  1121 					IFT FEAT_AUDCTLMANUALSET
+  1122 					lda trackn_audctl+4
+  1123 					ora trackn_audctl+5
+  1124 					ora trackn_audctl+6
+  1125 					ora trackn_audctl+7
+  1126 					tax
+  1127 					ELS
+  1128 					ldx #0
+  1129 					EIF
+  1130 					stx v_audctl2
+  1131 					IFT FEAT_FILTER
+  1132 					IFT FEAT_FILTERG0R
+  1133 					lda trackn_command+0+4
+  1134 					bpl qs2
+  1135 					lda trackn_audc+0+4
+  1136 					and #$0f
+  1137 					beq qs2
+  1138 					lda trackn_audf+0+4
+  1139 					clc
+  1140 					adc trackn_filter+0+4
+  1141 					sta trackn_audf+2+4
+  1142 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG2R
+  1143 					lda trackn_audc+2+4
+  1144 					and #$10
+  1145 					bne qs1a
+  1146 					EIF
+  1147 					lda #0
+  1148 					sta trackn_audc+2+4
+  1149 				qs1a
+  1150 					txa
+  1151 					ora #4
+  1152 					tax
+  1153 					EIF
+  1154 				qs2
+  1155 					IFT FEAT_FILTERG1R
+  1156 					lda trackn_command+1+4
+  1157 					bpl qs3
+  1158 					lda trackn_audc+1+4
+  1159 					and #$0f
+  1160 					beq qs3
+  1161 					lda trackn_audf+1+4
+  1162 					clc
+  1163 					adc trackn_filter+1+4
+  1164 					sta trackn_audf+3+4
+  1165 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG3R
+  1166 					lda trackn_audc+3+4
+  1167 					and #$10
+  1168 					bne qs2a
+  1169 					EIF
+  1170 					lda #0
+  1171 					sta trackn_audc+3+4
+  1172 				qs2a
+  1173 					txa
+  1174 					ora #2
+  1175 					tax
+  1176 					EIF
+  1177 				qs3
+  1178 					IFT FEAT_FILTERG0R||FEAT_FILTERG1R
+  1179 					cpx v_audctl2
+  1180 					bne qs5
+  1181 					EIF
+  1182 					EIF
+  1183 					IFT FEAT_BASS16
+  1184 					IFT FEAT_BASS16G1R
+  1185 					lda trackn_command+1+4
+  1186 					and #$0e
+  1187 					cmp #6
+  1188 					bne qs4
+  1189 					lda trackn_audc+1+4
+  1190 					and #$0f
+  1191 					beq qs4
+  1192 					ldy trackn_outnote+1+4
+  1193 					lda frqtabbasslo,y
+  1194 					sta trackn_audf+0+4
+  1195 					lda frqtabbasshi,y
+  1196 					sta trackn_audf+1+4
+  1197 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG0R
+  1198 					lda trackn_audc+0+4
+  1199 					and #$10
+  1200 					bne qs3a
+  1201 					EIF
+  1202 					lda #0
+  1203 					sta trackn_audc+0+4
+  1204 				qs3a
+  1205 					txa
+  1206 					ora #$50
+  1207 					tax
+  1208 					EIF
+  1209 				qs4
+  1210 					IFT FEAT_BASS16G3R
+  1211 					lda trackn_command+3+4
+  1212 					and #$0e
+  1213 					cmp #6
+  1214 					bne qs5
+  1215 					lda trackn_audc+3+4
+  1216 					and #$0f
+  1217 					beq qs5
+  1218 					ldy trackn_outnote+3+4
+  1219 					lda frqtabbasslo,y
+  1220 					sta trackn_audf+2+4
+  1221 					lda frqtabbasshi,y
+  1222 					sta trackn_audf+3+4
+  1223 					IFT FEAT_COMMAND7VOLUMEONLY&&FEAT_VOLUMEONLYG2R
+  1224 					lda trackn_audc+2+4
+  1225 					and #$10
+  1226 					bne qs4a
+  1227 					EIF
+  1228 					lda #0
+  1229 					sta trackn_audc+2+4
+  1230 				qs4a
+  1231 					txa
+  1232 					ora #$28
+  1233 					tax
+  1234 					EIF
+  1235 					EIF
+  1236 				qs5
+  1237 					stx v_audctl2
+  1238 					EIF
+  1239 9108			rmt_p5
+  1240 					IFT FEAT_INSTRSPEED==0||FEAT_INSTRSPEED>1
+  1241 					lda #$ff
+  1242 				v_ainstrspeed equ *-1
+  1243 					ELS
+  1244 9108 A9 01			lda #1
+  1245 					EIF
+  1246 910A 60				rts
+  1247 910B			SetPokey
+  1248 					IFT STEREOMODE==1		;* L1 L2 L3 L4 R1 R2 R3 R4
+  1249 					ldy #$ff
+  1250 				v_audctl2 equ *-1
+  1251 					lda trackn_audf+0+4
+  1252 					ldx trackn_audf+0
+  1253 				xstastx01	sta $d210
+  1254 					stx $d200
+  1255 					lda trackn_audc+0+4
+  1256 					ldx trackn_audc+0
+  1257 				xstastx02	sta $d211
+  1258 					stx $d201
+  1259 					lda trackn_audf+1+4
+  1260 					ldx trackn_audf+1
+  1261 				xstastx03	sta $d212
+  1262 					stx $d202
+  1263 					lda trackn_audc+1+4
+  1264 					ldx trackn_audc+1
+  1265 				xstastx04	sta $d213
+  1266 					stx $d203
+  1267 					lda trackn_audf+2+4
+  1268 					ldx trackn_audf+2
+  1269 				xstastx05	sta $d214
+  1270 					stx $d204
+  1271 					lda trackn_audc+2+4
+  1272 					ldx trackn_audc+2
+  1273 				xstastx06	sta $d215
+  1274 					stx $d205
+  1275 					lda trackn_audf+3+4
+  1276 					ldx trackn_audf+3
+  1277 				xstastx07	sta $d216
+  1278 					stx $d206
+  1279 					lda trackn_audc+3+4
+  1280 					ldx trackn_audc+3
+  1281 				xstastx08	sta $d217
+  1282 					stx $d207
+  1283 					lda #$ff
+  1284 				v_audctl equ *-1
+  1285 				xstysta01	sty $d218
+  1286 					sta $d208
+  1287 					ELI STEREOMODE==0		;* L1 L2 L3 L4
+  1288 910B A0 FF			ldy #$ff
+  1289 = 910C			v_audctl equ *-1
+  1290 910D AD 70 89			lda trackn_audf+0
+  1291 9110 AE 74 89			ldx trackn_audc+0
+  1292 9113 8D 00 D2			sta $d200
+  1293 9116 8E 01 D2			stx $d201
+  1294 9119 AD 71 89			lda trackn_audf+1
+  1295 911C AE 75 89			ldx trackn_audc+1
+  1296 911F 8D 02 D2			sta $d200+2
+  1297 9122 8E 03 D2			stx $d201+2
+  1298 9125 AD 72 89			lda trackn_audf+2
+  1299 9128 AE 76 89			ldx trackn_audc+2
+  1300 912B 8D 04 D2			sta $d200+4
+  1301 912E 8E 05 D2			stx $d201+4
+  1302 9131 AD 73 89			lda trackn_audf+3
+  1303 9134 AE 77 89			ldx trackn_audc+3
+  1304 9137 8D 06 D2			sta $d200+6
+  1305 913A 8E 07 D2			stx $d201+6
+  1306 913D 8C 08 D2			sty $d208
+  1307 					ELI STEREOMODE==2		;* L1 R2 R3 L4
+  1308 					ldy #$ff
+  1309 				v_audctl equ *-1
+  1310 					lda trackn_audf+0
+  1311 					ldx trackn_audc+0
+  1312 					sta $d200
+  1313 					stx $d201
+  1314 					sta $d210
+  1315 					lda trackn_audf+1
+  1316 					ldx trackn_audc+1
+  1317 					sta $d210+2
+  1318 					stx $d211+2
+  1319 					lda trackn_audf+2
+  1320 					ldx trackn_audc+2
+  1321 					sta $d210+4
+  1322 					stx $d211+4
+  1323 					sta $d200+4
+  1324 					lda trackn_audf+3
+  1325 					ldx trackn_audc+3
+  1326 					sta $d200+6
+  1327 					stx $d201+6
+  1328 					sta $d210+6
+  1329 					sty $d218
+  1330 					sty $d208
+  1331 					ELI STEREOMODE==3		;* L1 L2 R3 R4
+  1332 					ldy #$ff
+  1333 				v_audctl equ *-1
+  1334 					lda trackn_audf+0
+  1335 					ldx trackn_audc+0
+  1336 					sta $d200
+  1337 					stx $d201
+  1338 					lda trackn_audf+1
+  1339 					ldx trackn_audc+1
+  1340 					sta $d200+2
+  1341 					stx $d201+2
+  1342 					lda trackn_audf+2
+  1343 					ldx trackn_audc+2
+  1344 					sta $d210+4
+  1345 					stx $d211+4
+  1346 					sta $d200+4
+  1347 					lda trackn_audf+3
+  1348 					ldx trackn_audc+3
+  1349 					sta $d210+6
+  1350 					stx $d211+6
+  1351 					sta $d200+6
+  1352 					sty $d218
+  1353 					sty $d208
+  1354 					EIF
+  1355 9140 60				rts
+  1356 9141			RMTPLAYEREND
+    60
+    61 				; Song data module
+    62 9141			    .align 256
+    63 9200			MODUL
+    64 9200			    icl "gen/title.asm"
+Source: title.asm
+     1 				; RMT4 file converted from gen/title.rmt with rmt2atasm
+     2 				; Original size: $0311 bytes @ $4000
+     3 9200			    .local
+     4 9200			RMT_SONG_DATA
+     5 9200			?start
+     6 9200-9510> 32 2D 34 14	    dta "RMT4"
+     7 9204			?song_info
+     8 9204 40			    dta $40            ; Track length = 64
+     9 9205 05			    dta $05            ; Song speed
+    10 9206 01			    dta $01            ; Player Frequency
+    11 9207 01			    dta $01            ; Format version
+    12 				; ptrs to tables
+    13 9208			?ptrInstrumentTbl
+    14 9208 10 92		    dta a(?InstrumentsTable); start + $0010
+    15 920A			?ptrTracksTblLo
+    16 920A 1C 92		    dta a(?TracksTblLo); start + $001c
+    17 920C			?ptrTracksTblHi
+    18 920C 28 92		    dta a(?TracksTblHi); start + $0028
+    19 920E			?ptrSong
+    20 920E C5 94		    dta a(?SongData); start + $02c5
+    21
+    22 				; List of ptrs to instruments
+    23 9210			?InstrumentsTable
+    24 9210 34 92 44 92 54 92 +     dta a(?Instrument_0, ?Instrument_1, ?Instrument_2, ?Instrument_3, ?Instrument_4, ?Instrument_5)
+    25
+    26 921C			?TracksTblLo
+    27 921C BF F3 27 5B A3 BA +     dta <?Track_00, <?Track_01, <?Track_02, <?Track_03, <?Track_04, <?Track_05, <?Track_06, <?Track_07
+    28 9224 2F 53 87 AE		    dta <?Track_08, <?Track_09, <?Track_0a, <?Track_0b
+    29 9228			?TracksTblHi
+    30 9228 92 92 93 93 93 93 +     dta >?Track_00, >?Track_01, >?Track_02, >?Track_03, >?Track_04, >?Track_05, >?Track_06, >?Track_07
+    31 9230 94 94 94 94		    dta >?Track_08, >?Track_09, >?Track_0a, >?Track_0b
+    32
+    33 				; Instrument data
+    34 9234			?Instrument_0
+    35 9234 0C 0C 0D 0D 00 00 +     dta $0c, $0c, $0d, $0d, $00, $00, $40, $00, $00, $00, $00, $00, $00, $ee, $06, $00
+    36 9244			?Instrument_1
+    37 9244 0C 0C 0D 0D 00 00 +     dta $0c, $0c, $0d, $0d, $00, $00, $80, $50, $08, $02, $00, $00, $00, $ff, $0a, $00
+    38 9254			?Instrument_2
+    39 9254 0E 0C 0F 0F 01 00 +     dta $0e, $0c, $0f, $0f, $01, $00, $90, $00, $00, $00, $00, $00, $00, $04, $07, $cc
+    40 9264 0A 00		    dta $0a, $00
+    41 9266			?Instrument_3
+    42 9266 0E 0C 0F 0F 01 00 +     dta $0e, $0c, $0f, $0f, $01, $00, $90, $00, $00, $00, $00, $00, $00, $03, $07, $cc
+    43 9276 0A 00		    dta $0a, $00
+    44 9278			?Instrument_4
+    45 9278 0C 0C 28 22 00 00 +     dta $0c, $0c, $28, $22, $00, $00, $50, $00, $00, $00, $00, $00, $00, $ff, $1a, $8f
+    46 9288 CC 1A 9F EE 18 07 +     dta $cc, $1a, $9f, $ee, $18, $07, $55, $1c, $10, $bb, $18, $07, $44, $1c, $10, $99
+    47 9298 18 07 33 1C 10 66 +     dta $18, $07, $33, $1c, $10, $66, $18, $07, $22, $1c, $10
+    48 92A3			?Instrument_5
+    49 92A3 0C 0C 19 19 00 00 +     dta $0c, $0c, $19, $19, $00, $00, $ff, $00, $00, $00, $00, $00, $00, $ff, $08, $00
+    50 92B3 88 08 00 44 08 00 +     dta $88, $08, $00, $44, $08, $00, $22, $08, $00, $00, $08, $00
+    51
+    52 				; Track data
+    53 92BF			?Track_00
+    54 92BF C5 03 3E 05 C5 03 +     dta $c5, $03, $3e, $05, $c5, $03, $7e, $c5, $03, $3e, $05, $c5, $03, $fe, $c5, $03
+    55 92CF FE C5 03 7E C5 03 +     dta $fe, $c5, $03, $7e, $c5, $03, $fe, $c5, $03, $fe, $c5, $03, $3e, $05, $c5, $03
+    56 92DF 7E C5 03 3E 05 C5 +     dta $7e, $c5, $03, $3e, $05, $c5, $03, $fe, $c5, $03, $fe, $c5, $03, $7e, $c5, $03
+    57 92EF FE C7 03 FE		    dta $fe, $c7, $03, $fe
+    58 92F3			?Track_01
+    59 92F3 CC 03 3E 05 CC 03 +     dta $cc, $03, $3e, $05, $cc, $03, $7e, $cc, $03, $3e, $05, $cc, $03, $fe, $cc, $03
+    60 9303 FE CC 03 7E CC 03 +     dta $fe, $cc, $03, $7e, $cc, $03, $fe, $ce, $03, $fe, $c9, $03, $3e, $05, $c9, $03
+    61 9313 7E C9 03 3E 05 C9 +     dta $7e, $c9, $03, $3e, $05, $c9, $03, $fe, $c9, $03, $fe, $c9, $03, $7e, $c9, $03
+    62 9323 FE C9 03 FE		    dta $fe, $c9, $03, $fe
+    63 9327			?Track_02
+    64 9327 CE 07 FE CC 07 7E +     dta $ce, $07, $fe, $cc, $07, $7e, $ce, $07, $3e, $05, $cc, $07, $7e, $ce, $07, $fe
+    65 9337 D0 07 FE CE 07 FE +     dta $d0, $07, $fe, $ce, $07, $fe, $cc, $07, $3e, $05, $ce, $07, $fe, $cc, $07, $7e
+    66 9347 CE 07 3E 05 CC 07 +     dta $ce, $07, $3e, $05, $cc, $07, $7e, $ce, $07, $fe, $d0, $07, $fe, $ce, $07, $fe
+    67 9357 CC 07 3E 05		    dta $cc, $07, $3e, $05
+    68 935B			?Track_03
+    69 935B CC 17 FE D8 0B 7E +     dta $cc, $17, $fe, $d8, $0b, $7e, $d8, $0b, $7e, $cc, $13, $7e, $d8, $0b, $7e, $d8
+    70 936B 0B 7E CC 17 FE D8 +     dta $0b, $7e, $cc, $17, $fe, $d8, $0b, $fe, $d8, $0b, $7e, $cc, $13, $7e, $d8, $0b
+    71 937B 7E CC 13 FE CC 17 +     dta $7e, $cc, $13, $fe, $cc, $17, $fe, $d5, $0f, $7e, $d5, $0f, $7e, $cc, $13, $7e
+    72 938B D5 0F 7E D5 0F 7E +     dta $d5, $0f, $7e, $d5, $0f, $7e, $cc, $17, $fe, $d5, $0f, $fe, $d5, $0f, $7e, $cc
+    73 939B 13 7E D5 0F 7E CC +     dta $13, $7e, $d5, $0f, $7e, $cc, $13, $fe
+    74 93A3			?Track_04
+    75 93A3 CC 07 3E 11 7D 01 +     dta $cc, $07, $3e, $11, $7d, $01, $7e, $3d, $01, $7e, $fd, $00, $7e, $bd, $00, $7e
+    76 93B3 7D 00 7E 3D 00 3E +     dta $7d, $00, $7e, $3d, $00, $3e, $23
+    77 93BA			?Track_05
+    78 93BA CC 17 FE D1 0B 7E +     dta $cc, $17, $fe, $d1, $0b, $7e, $d1, $0b, $7e, $cc, $13, $7e, $d1, $0b, $7e, $d1
+    79 93CA 0B 7E CC 17 FE D1 +     dta $0b, $7e, $cc, $17, $fe, $d1, $0b, $fe, $d1, $0b, $7e, $cc, $13, $7e, $d1, $0b
+    80 93DA 7E CC 13 FE CC 17 +     dta $7e, $cc, $13, $fe, $cc, $17, $fe, $d1, $0b, $7e, $d1, $0b, $7e, $cc, $13, $7e
+    81 93EA D1 0B 7E D1 0B 7E +     dta $d1, $0b, $7e, $d1, $0b, $7e, $cc, $17, $fe, $d1, $0b, $fe, $d1, $0b, $7e, $cc
+    82 93FA 13 7E D1 0B 7E CC +     dta $13, $7e, $d1, $0b, $7e, $cc, $13, $fe
+    83 9402			?Track_06
+    84 9402 CC 07 3E 07 CE 07 +     dta $cc, $07, $3e, $07, $ce, $07, $fe, $d0, $07, $3e, $0b, $d1, $07, $fe, $d0, $07
+    85 9412 3E 17 CC 07 7E CC +     dta $3e, $17, $cc, $07, $7e, $cc, $07, $7e, $d3, $07, $7e, $d0, $07, $7e, $d0, $07
+    86 9422 FE			    dta $fe
+    87 9423			?Track_07
+    88 9423 CC 07 3E 17 D0 07 +     dta $cc, $07, $3e, $17, $d0, $07, $3e, $07, $cc, $07, $3e, $1f
+    89 942F			?Track_08
+    90 942F CC 07 3E 07 CE 07 +     dta $cc, $07, $3e, $07, $ce, $07, $fe, $d0, $07, $3e, $0b, $d1, $07, $fe, $d5, $07
+    91 943F FE D3 07 3E 13 CC +     dta $fe, $d3, $07, $3e, $13, $cc, $07, $7e, $cc, $07, $7e, $d3, $07, $7e, $d0, $07
+    92 944F 7E D0 07 FE		    dta $7e, $d0, $07, $fe
+    93 9453			?Track_09
+    94 9453 CE 07 FE CC 07 7E +     dta $ce, $07, $fe, $cc, $07, $7e, $ce, $07, $3e, $05, $cc, $07, $7e, $ce, $07, $fe
+    95 9463 D0 07 FE D3 07 FE +     dta $d0, $07, $fe, $d3, $07, $fe, $d0, $07, $3e, $05, $ce, $07, $fe, $cc, $07, $7e
+    96 9473 CE 07 3E 05 CC 07 +     dta $ce, $07, $3e, $05, $cc, $07, $7e, $ce, $07, $fe, $d0, $07, $fe, $ce, $07, $fe
+    97 9483 CC 07 3E 05		    dta $cc, $07, $3e, $05
+    98 9487			?Track_0a
+    99 9487 CE 07 FE CC 07 7E +     dta $ce, $07, $fe, $cc, $07, $7e, $ce, $07, $3e, $05, $cc, $07, $7e, $ce, $07, $3e
+   100 9497 05 C9 07 3E 0B CC +     dta $05, $c9, $07, $3e, $0b, $cc, $07, $3e, $07, $ce, $07, $3e, $07, $d0, $07, $3e
+   101 94A7 07 D1 07 FE D5 07 +     dta $07, $d1, $07, $fe, $d5, $07, $fe
+   102 94AE			?Track_0b
+   103 94AE D3 07 3E 1F D5 07 +     dta $d3, $07, $3e, $1f, $d5, $07, $3e, $13, $cc, $07, $7e, $cc, $07, $7e, $d3, $07
+   104 94BE 7E D0 07 7E D0 07 +     dta $7e, $d0, $07, $7e, $d0, $07, $fe
+   105
+   106 				; Song data
+   107 94C5			?SongData
+   108 94C5 FF 01 FF 03		?line_00:  dta $ff, $01, $ff, $03
+   109 94C9 FF 00 FF 05		?line_01:  dta $ff, $00, $ff, $05
+   110 94CD FF 01 02 03		?line_02:  dta $ff, $01, $02, $03
+   111 94D1 FF 00 04 05		?line_03:  dta $ff, $00, $04, $05
+   112 94D5 FF 01 02 03		?line_04:  dta $ff, $01, $02, $03
+   113 94D9 FF 00 04 05		?line_05:  dta $ff, $00, $04, $05
+   114 94DD FF 01 06 03		?line_06:  dta $ff, $01, $06, $03
+   115 94E1 FF 00 07 05		?line_07:  dta $ff, $00, $07, $05
+   116 94E5 FF 01 08 03		?line_08:  dta $ff, $01, $08, $03
+   117 94E9 FF 00 07 05		?line_09:  dta $ff, $00, $07, $05
+   118 94ED FF 01 02 03		?line_0a:  dta $ff, $01, $02, $03
+   119 94F1 FF 00 02 05		?line_0b:  dta $ff, $00, $02, $05
+   120 94F5 FF 01 09 03		?line_0c:  dta $ff, $01, $09, $03
+   121 94F9 FF 00 0A 05		?line_0d:  dta $ff, $00, $0a, $05
+   122 94FD FF 01 0B 03		?line_0e:  dta $ff, $01, $0b, $03
+   123 9501 FF 00 07 05		?line_0f:  dta $ff, $00, $07, $05
+   124 9505 FF 01 06 03		?line_10:  dta $ff, $01, $06, $03
+   125 9509 FF 00 07 05		?line_11:  dta $ff, $00, $07, $05
+   126 950D FE 02 CD 94		?line_12:  dta $fe, $02, <?line_02, >?line_02
+   127 				.endl
