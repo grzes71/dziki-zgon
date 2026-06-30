@@ -64,8 +64,13 @@ witcher-atari-game/
 ├── fonts/
 │   └── font.asm                 # Własna czcionka 128 znaków (1 KB, $6000)
 ├── scripts/
+│   ├── atasm2mads.py            # Konwerter kodu asemblera z ATasm na dyrektywy MADS (odtwarzacz + muzyka)
+│   ├── fnt2asm.py               # Konwerter plików czcionek (.fnt) na dane asemblera MADS (.asm)
+│   ├── fnt2png.py               # Konwerter pliku czcionki (.fnt) na podgląd obrazu PNG (8x8)
+│   ├── png2fnt.py               # Konwerter siatki znaków PNG na plik binarny czcionki (.fnt)
 │   ├── img2asm.py               # Konwerter PNG/BMP/GIF → .bin + .asm + DL + kolory
-│   └── rle_compress_text.py     # Skrypt do kodowania i kompresji tekstów RLE
+│   ├── rle_compress_text.py     # Skrypt do kodowania i kompresji tekstów RLE
+│   └── cleanup_docs.py          # Skrypt pomocniczy do porządkowania dokumentacji projektu
 ├── img/
 │   ├── title.png                # Ekran tytułowy (160×192, 4 kolory)
 │   ├── game-over.png            # Ekran game over (128×96, 4 kolory)
