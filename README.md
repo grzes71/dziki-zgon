@@ -37,7 +37,7 @@ witcher-atari-game/
 │   └── rle.asm                  # Wspólny dekompresor RLE (6502)
 ├── music/                       # Silnik audio i utwory muzyczne
 │   ├── title.sap                # Oryginalny plik muzyki w formacie ASAP (.sap)
-│   ├── audio.asm                # Integracja odtwarzacza w VBI, start/stop, wyciszanie POKEY
+│   ├── title_audio.asm          # Integracja odtwarzacza w VBI, start/stop, wyciszanie POKEY
 │   ├── rmt_feat.asm             # Konfiguracja funkcji (features) odtwarzacza RMT
 │   └── rmtplayr.asm             # Kod asemblera odtwarzacza RMT (mono, relocatable)
 ├── scenes/

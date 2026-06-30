@@ -45,7 +45,7 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6400` – `$67BF`** | 960 B | `GAME_SCREEN` | VRAM / Bufor | Ekran gry właściwej (tryb ANTIC 4, 40×24 znaków). Przeniesiony z $4000 by uniknąć nadpisywania bitmapy tytułu. |
 | **`$67C0` – `$7FFF`** | **6208 B** | — | **WOLNY RAM** | Wolny ciągły blok RAM w środkowym obszarze. |
 | **`$8000` – `$87FF`** | **2048 B** | — | **WOLNY RAM** | Wolna pamięć w górnym RAM. |
-| **`$8800` – `$8874`** | 117 B | `audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY. |
+| **`$8800` – `$8874`** | 117 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY. |
 | **`$8875` – `$8981`** | **269 B** | — | **WOLNY RAM** | Wolna przestrzeń przed odtwarzaczem (w tym zmienne RMT $88E0-$8981). |
 | **`$8982` – `$9140`** | 1983 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). |
 | **`$9141` – `$91FF`** | **191 B** | — | **WOLNY RAM** | Padding wyrównania do następnej strony pamięci. |

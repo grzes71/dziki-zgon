@@ -10,7 +10,7 @@ SYSVBV = $E45F
     org $8800
 
 ; --- Initialize RMT and set up Immediate VBLANK ---
-audio_init
+title_audio_init
     ldx #<MODUL
     ldy #>MODUL
     lda #0                  ; Subsong number
@@ -39,7 +39,7 @@ vblank_player
     jmp SYSVBV              ; Exit to OS VBI processing (SYSVBV)
 
 ; --- Stop audio and silence Pokey ---
-audio_stop
+title_audio_stop
     ; Restore original Immediate VBI vector ($0222)
     lda #0
     sta NMIEN               ; Disable NMIs temporarily

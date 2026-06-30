@@ -202,7 +202,7 @@ title_fire_released
     lda #$C0             ; DLI on, VBI on (required for music)
     sta NMIEN
 
-    jsr audio_init
+    jsr title_audio_init
     rts
 .endp
 

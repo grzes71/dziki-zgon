@@ -122,7 +122,7 @@ main_loop
     lda GAME_STATE
     cmp #STATE_TITLE
     beq @tl
-    jsr audio_stop          ; Stop the music on state exit
+    jsr title_audio_stop          ; Stop the music on state exit
     jmp main_loop
 
 @chk_story
@@ -266,4 +266,4 @@ GO_SCREEN = $7000
 GO_TEXT = FOOTER_ADDR
 
 ; --- Muzyka i odtwarzacz ($8800) ---
-    icl "music/audio.asm"
+    icl "music/title_audio.asm"
