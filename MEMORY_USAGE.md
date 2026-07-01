@@ -43,8 +43,10 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$5F50` – `$5FFF`** | **176 B** | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Czcionka własna gry (128 znaków × 8 B). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67BF`** | 960 B | `GAME_SCREEN` | VRAM / Bufor | Ekran gry właściwej (tryb ANTIC 4, 40×24 znaków). Przeniesiony z $4000 by uniknąć nadpisywania bitmapy tytułu. |
-| **`$67C0` – `$7FFF`** | **6208 B** | — | **WOLNY RAM** | Wolny ciągły blok RAM w środkowym obszarze. |
-| **`$8000` – `$87FF`** | **2048 B** | — | **WOLNY RAM** | Wolna pamięć w górnym RAM. |
+| **`$67C0` – `$6FFF`** | **2112 B** | — | **WOLNY RAM** | Wolny ciągły blok RAM w środkowym obszarze przed Game Over. |
+| **`$7000` – `$7ADF`** | 2784 B | `GO_SCREEN` | VRAM / Bufor | Ekran Game Over (ANTIC D, 160×96 px, 4 kolory). |
+| **`$7AE0` – `$7B54`** | 117 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
+| **`$7B55` – `$7FFF`** | **1195 B** | — | **WOLNY RAM** | Wolny RAM za procedurami audio do granicy strony `$8000`. |
 | **`$8000` – `$9FFF`** | **8192 B** | — | **WOLNY RAM** | Skonsolidowany, wielki blok wolnej pamięci w górnym RAM na silnik i dane. |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
@@ -52,10 +54,9 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$A500` – `$A5FF`** | 256 B | `PLAYER1` | Pamięć PMG | Klatka/obraz gracza P1. |
 | **`$A600` – `$A6FF`** | 256 B | `PLAYER2` | Pamięć PMG | Klatka/obraz gracza P2. |
 | **`$A700` – `$A7FF`** | 256 B | `PLAYER3` | Pamięć PMG | Klatka/obraz gracza P3. |
-| **`$A800` – `$ABFF`** | 1024 B | `GAME_CHARSET` | Dane (Charset) | Zestaw kafelków terenu gry (tryb ANTIC 4). Wskazywany przez `CHBASE = $A8`. |
-| **`$AC00` – `$AC74`** | 117 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY. |
-| **`$AC75` – `$ACFF`** | **139 B** | — | **WOLNY RAM** | Wolna przestrzeń przed odtwarzaczem (w tym zmienne RMT). |
-| **`$AD00` – `$B4BE`** | 1983 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). |
+| **`$A800` – `$ABFF`** | 1024 B | `GAME_CHARSET` | Dane (Charset) | Zestaw kafelków terenu gry. Wskazywany przez `CHBASE = $A8`. Uwaga: Odtwarzacz RMT nadpisuje część tego obszaru (od `$A9E0`). |
+| **`$AC00` – `$ACFF`** | **256 B** | — | **WOLNY RAM** | Wolna pamięć (pokrywa się częściowo ze zmiennymi i kodem RMT). |
+| **`$AD00` – `$B4BE`** | 1983 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). Część danych i zmiennych rozciąga się wstecz od `$AA82` do `$ACFF`. |
 | **`$B4BF` – `$B4FF`** | **65 B** | — | **WOLNY RAM** | Padding wyrównania do następnej strony pamięci dla modułu muzycznego. |
 | **`$B500` – `$B810`** | 785 B | `title_music.asm`| Dane (Muzyka) | Skompilowany i dostrojony moduł muzyczny RMT ekranu tytułowego. |
 | **`$B811` – `$BFFF`** | **2031 B** | — | **WOLNY RAM** | Wolna pamięć za modułem muzycznym (pod ROM-em BASIC-a). |
