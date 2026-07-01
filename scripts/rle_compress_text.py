@@ -3,7 +3,22 @@ import argparse
 import os
 import sys
 
+POLISH_CHARS = {
+    'ą': 0x7B, 'Ą': 0x7B,
+    'ć': 0x7C, 'Ć': 0x7C,
+    'ę': 0x7D, 'Ę': 0x7D,
+    'ł': 0x7E, 'Ł': 0x7E,
+    'ń': 0x7F, 'Ń': 0x7F,
+    'ó': 0x5F, 'Ó': 0x5F,
+    'ś': 0x5E, 'Ś': 0x5E,
+    'ź': 0x5D, 'Ź': 0x5D,
+    'ż': 0x5C, 'Ż': 0x5C
+}
+
 def to_atari_screencode(c):
+    if c in POLISH_CHARS:
+        return POLISH_CHARS[c]
+        
     val = ord(c)
     if 32 <= val <= 95:
         return val - 32
@@ -63,6 +78,8 @@ def main():
         input_file = "texts/story.txt"
     elif args.input == "gameover":
         input_file = "texts/gameover.txt"
+    elif args.input == "title":
+        input_file = "texts/title.txt"
     else:
         input_file = args.input
 
@@ -75,8 +92,8 @@ def main():
 
     # Przygotuj dane wejściowe
     raw_bytes = bytearray()
-    if "story" in input_file.lower():
-        # Story oczekuje 8 linii po dokładnie 40 znaków
+    if "story" in input_file.lower() or "title" in input_file.lower():
+        # Story i Title oczekują 8 linii po dokładnie 40 znaków
         for line in lines[:8]:
             line = line.rstrip("\r\n")
             line = line.ljust(40)[:40]

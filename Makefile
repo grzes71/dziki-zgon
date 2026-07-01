@@ -57,8 +57,7 @@ MUSIC_ASM_ATASM := $(GEN_DIR)/title_atasm.asm
 MUSIC_ASM       := $(GEN_DIR)/title_music.asm
 PLAYR_ASM       := $(GEN_DIR)/rmtplayr.asm
 
-# Teksty skompresowane RLE
-TEXTS_ASM   := $(GEN_DIR)/story_text.asm $(GEN_DIR)/gameover_text.asm
+TEXTS_ASM := $(GEN_DIR)/story_text.asm $(GEN_DIR)/gameover_text.asm $(GEN_DIR)/title_text.asm
 
 # ---- Cele ----
 .PHONY: all xex bg go sprites texts fonts music clean run
@@ -79,6 +78,10 @@ $(GEN_DIR)/story_text.asm: scripts/rle_compress_text.py texts/story.txt
 $(GEN_DIR)/gameover_text.asm: scripts/rle_compress_text.py texts/gameover.txt
 	-@mkdir $(GEN_DIR)
 	$(PYTHON) scripts/rle_compress_text.py -i gameover -o $@
+
+$(GEN_DIR)/title_text.asm: scripts/rle_compress_text.py texts/title.txt
+	-@mkdir $(GEN_DIR)
+	$(PYTHON) scripts/rle_compress_text.py -i title -o $@
 
 # Generowanie tła (bin + colors + display list)
 bg: $(BG_BIN)

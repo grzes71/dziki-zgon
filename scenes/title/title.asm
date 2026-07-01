@@ -462,17 +462,13 @@ DLI_Nop
 ; Niszczy: A, X, Y
 ;==============================================================
 .proc copy_title_footer
-    ldx #0
-@lp
-    lda TitleFooterROM,x
-    sta FOOTER_ADDR,x
-    inx
-    bne @lp                ; 256 bajtów (0..255)
-@rest
-    lda TitleFooterROM+256,x
-    sta FOOTER_ADDR+256,x
-    inx
-    cpx #64                ; pozostałe 64 bajty (320-256)
-    bne @rest
-    rts
+    lda #<TitleFooterROM
+    sta SRC_PTR
+    lda #>TitleFooterROM
+    sta SRC_PTR+1
+    lda #<FOOTER_ADDR
+    sta DST_PTR
+    lda #>FOOTER_ADDR
+    sta DST_PTR+1
+    jmp RLE_Depack
 .endp

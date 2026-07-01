@@ -178,10 +178,7 @@ GO_TEXT_Data
 
 ; Tekst stopki tytułu (ROM — kopiowany do $5E10 w title_init)
 TitleFooterROM
-    .rept 8
-    dta d"     WCISNIJ FIRE BY ROZPOCZAC GRE      "
-    .endr
-TitleFooterROM_End
+    icl "gen/title_text.asm"
 
 SpriteData = DzikizgonData
 
