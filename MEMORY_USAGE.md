@@ -38,16 +38,14 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$2891` – `$3E7F`** | **5615 B** | — | **WOLNY RAM** | Główny, ciągły obszar wolnej pamięci w dolnym RAM-ie na logikę gry / silnik. |
 | **`$3E80` – `$3FEE`** | 367 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry (Title, Story, Game, GameOver). |
 | **`$3FEF` – `$3FFF`** | **17 B** | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
-| **`$4000` – `$5E0F`** | 7696 B | `TitleData` | VRAM / Bufor | Pamięć bitmapy ekranu tytułowego (ANTIC E, 160×192, 4 kolory). |
+| **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). Rozpakowywana w runtime, zwalnia ogromne połacie RAM. |
 | **`$5E10` – `$5F4F`** | 320 B | `FOOTER_ADDR` | VRAM / Bufor | Tekst stopki tytułowej / tekst Story / tekst GameOver. *Współdzielony.* |
 | **`$5F50` – `$5FFF`** | **176 B** | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Czcionka własna gry (128 znaków × 8 B). Wskazywana przez `CHBASE = $60`. |
-| **`$6400` – `$67BF`** | 960 B | `GAME_SCREEN` | VRAM / Bufor | Ekran gry właściwej (tryb ANTIC 4, 40×24 znaków). Przeniesiony z $4000 by uniknąć nadpisywania bitmapy tytułu. |
-| **`$67C0` – `$6FFF`** | **2112 B** | — | **WOLNY RAM** | Wolny ciągły blok RAM w środkowym obszarze przed Game Over. |
-| **`$7000` – `$7ADF`** | 2784 B | `GO_SCREEN` | VRAM / Bufor | Ekran Game Over (ANTIC D, 160×96 px, 4 kolory). |
-| **`$7AE0` – `$7B54`** | 117 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
-| **`$7B55` – `$7FFF`** | **1195 B** | — | **WOLNY RAM** | Wolny RAM za procedurami audio do granicy strony `$8000`. |
-| **`$8000` – `$9FFF`** | **8192 B** | — | **WOLNY RAM** | Skonsolidowany, wielki blok wolnej pamięci w górnym RAM na silnik i dane. |
+| **`$6400` – `$7FFF`** | **7168 B** | — | **WOLNY RAM** | Gigantyczny, ciągły blok wolnego RAM-u odzyskany dzięki VRAM_ARENA! Całkowicie pusty. |
+| **`$8000` – `$9DC3`** | 7620 B | `ROM_DATA` | Dane (ROM) | Skompresowane grafiki w XEX (`title.rle` oraz `gameover.rle`). Rozpakowywane do `VRAM_ARENA`. |
+| **`$9DC4` – `$9E2F`** | 108 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
+| **`$9E30` – `$9FFF`** | **464 B** | — | **WOLNY RAM** | Wolna pamięć powyżej skompresowanych danych RLE, tuż pod granicą PMG. |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |

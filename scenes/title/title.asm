@@ -20,6 +20,17 @@ title_fire_released
     sta DMACTL
     sta title_fire_released
 
+    ; --- Rozpakuj ekran tytułowy (RLE) do VRAM_ARENA ---
+    lda #<TitleScreen_Data
+    sta SRC_PTR
+    lda #>TitleScreen_Data
+    sta SRC_PTR+1
+    lda #<VRAM_ARENA
+    sta DST_PTR
+    lda #>VRAM_ARENA
+    sta DST_PTR+1
+    jsr RLE_Depack
+
     ; --- Wyczyść całą pamięć PMG ---
     jsr pmg_clear_all
 

@@ -247,11 +247,10 @@ JVB_OFFSET = * - DLIST_GAMEOVER - 3
     dta $41,a(DLIST_GAMEOVER)   ; JVB — powrót na początek DL
 
 ; ===================================================================
-; 7. Dane ekranu ($4000)
+; 7. Współdzielona Arena VRAM ($4000)
 ; ===================================================================
-    org SCREEN
-
-    ins "gen/title.bin"
+VRAM_ARENA = SCREEN
+; Zamiast "ins" surowego obrazka, rozpakowujemy go z ROM_DATA w title_init.
 
 ; ===================================================================
 ; 8. Stopka tekstowa ($5E10) — współdzielona (tytuł/story/gameover)
@@ -265,12 +264,19 @@ JVB_OFFSET = * - DLIST_GAMEOVER - 3
     org $6000
     icl "gen/font.asm"
 
+; 11. Dane ekranu Game Over (w VRAM_ARENA)
 ; ===================================================================
-; 11. Dane ekranu Game Over ($7000, ANTIC D, 160×96)
+GO_SCREEN = VRAM_ARENA
+; Gameover grafika jest kompresowana i wypakowywana w gameover_init.
+
 ; ===================================================================
-GO_SCREEN = $7000
-    org GO_SCREEN
-    ins "gen/gameover.bin"
+; 12. Dane skompresowane w darmowym RAM-ie ($8000)
+; ===================================================================
+    org $8000
+TitleScreen_Data
+    ins "gen/title.rle"
+GameOverScreen_Data
+    ins "gen/gameover.rle"
 
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR

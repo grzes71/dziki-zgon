@@ -98,6 +98,17 @@ GoRainbow
     sta GRACTL              ; wyłącz PMG DMA (GTIA)
     sta PRIOR               ; reset priorytetów
     sta gameover_fire_released ; zresetuj stan przycisku FIRE
+
+    ; --- Rozpakuj grafikę GameOver (RLE) do VRAM_ARENA ---
+    lda #<GameOverScreen_Data
+    sta SRC_PTR
+    lda #>GameOverScreen_Data
+    sta SRC_PTR+1
+    lda #<VRAM_ARENA
+    sta DST_PTR
+    lda #>VRAM_ARENA
+    sta DST_PTR+1
+    jsr RLE_Depack
     sta go_dli_toggle       ; DLI toggle: 0 = obrazek
     sta go_pulse_idx        ; indeks migotania: 0
     sta go_subframe         ; spowolnienie ×2: 0

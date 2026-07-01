@@ -3,7 +3,7 @@
 
 # ---- Narzędzia ----
 MADS    := c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
-PYTHON  := python
+PYTHON  := $(CURDIR)/.venv/Scripts/python.exe
 ASAPCONV  := C:/Apps/ASAP/asapconv.exe
 RMT2ATASM := C:/Apps/rmt2atasm.exe
 
@@ -86,7 +86,7 @@ bg: $(BG_BIN)
 $(BG_BIN): $(BG_IMG) scripts/img2asm.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(BG_IMG) → $(BG_PREFIX).* ==="
-	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(BG_IMG) 2 --all -o $(BG_PREFIX) --footer 0x5E10
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(BG_IMG) 2 --all -o $(BG_PREFIX) --footer 0x5E10 --screen-base 0x4000 -c rle
 
 # Generowanie sprite'ów
 sprites: $(MOON_ASM) $(TITLE_ASM)
@@ -107,7 +107,7 @@ go: $(GO_BIN)
 $(GO_BIN): $(GO_IMG) scripts/img2asm.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(GO_IMG) → $(GO_PREFIX).* ==="
-	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(GO_IMG) 2 --all -o $(GO_PREFIX) --screen-base 0x7000
+	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(GO_IMG) 2 --all -o $(GO_PREFIX) --screen-base 0x4000 -c rle
 
 # Generowanie czcionek
 fonts: $(FONT_ASM)
