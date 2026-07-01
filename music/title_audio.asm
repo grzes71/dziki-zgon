@@ -7,8 +7,6 @@ SETVBV = $E45C
 XITVBV = $E462
 SYSVBV = $E45F
 
-    org $8800
-
 ; --- Initialize RMT and set up Immediate VBLANK for Title Screen ---
 title_audio_init
     ldx #<MODUL
@@ -74,7 +72,7 @@ dummy_vbi
 
 ; --- Player and variables mapping ---
 ; Define player location (must be page aligned)
-PLAYER = $8C00
+PLAYER = $AD00
 
 ; Include the converted player code
     icl "gen/rmtplayr.asm"

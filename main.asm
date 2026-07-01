@@ -18,6 +18,14 @@
 
     jmp start              ; jawny skok do inicjalizacji
 
+disable_basic_loader
+    pha
+    lda #$FF
+    sta PORTB
+    pla
+    rts
+    ini disable_basic_loader
+
     ; --- Biblioteki (procedury wielokrotnego użytku) ---
     icl "lib/pmg.asm"
     icl "lib/rle.asm"
@@ -269,3 +277,5 @@ GO_TEXT = FOOTER_ADDR
 
 ; --- Muzyka i odtwarzacz ($8800) ---
     icl "music/title_audio.asm"
+
+    run start

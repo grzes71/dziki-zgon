@@ -57,6 +57,21 @@ make clean    # usuwa wygenerowane
 Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 Instalacja zależności: `pip install -r requirements.txt`
 
+## Testowanie i Debugowanie
+
+W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie problemów z pamięcią gry:
+
+1. **`atari-smoke-test`**
+   - Własna aplikacja CLI (Python) służąca do automatycznego weryfikowania poprawności uruchamiania obrazów XEX w emulatorze Altirra.
+   - Jeśli po uruchomieniu gry emulator "wisi" albo wyłącza się przedwcześnie, `atari-smoke-test` to wykryje i rzuci odpowiedni błąd (np. kod wyjścia 5 - `EmulatorCrashedError`).
+   - Uruchamianie (w środowisku `.venv`): `python -m atari_smoke_test.main --xex dziki_zgon.xex --timeout 5`
+   - Testy jednostkowe: `pytest tests/`
+
+2. **`dump.py` (Zrzucanie segmentów pamięci XEX)**
+   - W przypadku pojawienia się błędu "PROGRAM ERROR" lub zawieszenia programu zaraz po starcie, użyj skryptu `dump.py` do sprawdzenia wewnętrznej struktury wybudowanego pliku XEX.
+   - Uruchamianie: `python dump.py`
+   - Pokazuje on przedziały adresów każdego z zapisanych bloków, dzięki czemu łatwo wykryjesz czy MADS połączył ("zmergował") bloki leżące blisko siebie w jeden wielki segment i czy przez to np. blok inicjalizacyjny (jak `org $AC00`) nie został przykryty zerami ładującymi się z bloku nadrzędnego (jak `org $AA82` w `rmtplayr`).
+
 ## Tryb graficzny
 
 - **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia — ekran tytułowy, gameover

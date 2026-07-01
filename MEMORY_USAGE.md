@@ -45,12 +45,7 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6400` – `$67BF`** | 960 B | `GAME_SCREEN` | VRAM / Bufor | Ekran gry właściwej (tryb ANTIC 4, 40×24 znaków). Przeniesiony z $4000 by uniknąć nadpisywania bitmapy tytułu. |
 | **`$67C0` – `$7FFF`** | **6208 B** | — | **WOLNY RAM** | Wolny ciągły blok RAM w środkowym obszarze. |
 | **`$8000` – `$87FF`** | **2048 B** | — | **WOLNY RAM** | Wolna pamięć w górnym RAM. |
-| **`$8800` – `$8874`** | 117 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY. |
-| **`$8875` – `$8981`** | **269 B** | — | **WOLNY RAM** | Wolna przestrzeń przed odtwarzaczem (w tym zmienne RMT $88E0-$8981). |
-| **`$8982` – `$9140`** | 1983 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). |
-| **`$9141` – `$91FF`** | **191 B** | — | **WOLNY RAM** | Padding wyrównania do następnej strony pamięci. |
-| **`$9200` – `$9510`** | 785 B | `title_music.asm`| Dane (Muzyka) | Skompilowany i dostrojony moduł muzyczny RMT ekranu tytułowego. |
-| **`$9511` – `$9FFF`** | **2799 B** | — | **WOLNY RAM** | Wolna pamięć za modułem muzycznym. |
+| **`$8000` – `$9FFF`** | **8192 B** | — | **WOLNY RAM** | Skonsolidowany, wielki blok wolnej pamięci w górnym RAM na silnik i dane. |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |
@@ -58,24 +53,28 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$A600` – `$A6FF`** | 256 B | `PLAYER2` | Pamięć PMG | Klatka/obraz gracza P2. |
 | **`$A700` – `$A7FF`** | 256 B | `PLAYER3` | Pamięć PMG | Klatka/obraz gracza P3. |
 | **`$A800` – `$ABFF`** | 1024 B | `GAME_CHARSET` | Dane (Charset) | Zestaw kafelków terenu gry (tryb ANTIC 4). Wskazywany przez `CHBASE = $A8`. |
-| **`$AC00` – `$BFFF`** | **5120 B** | — | **WOLNY RAM** | Obszar RAM pod BASIC-em. Wolny na mapy regionów / dialogi. |
+| **`$AC00` – `$AC74`** | 117 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY. |
+| **`$AC75` – `$ACFF`** | **139 B** | — | **WOLNY RAM** | Wolna przestrzeń przed odtwarzaczem (w tym zmienne RMT). |
+| **`$AD00` – `$B4BE`** | 1983 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). |
+| **`$B4BF` – `$B4FF`** | **65 B** | — | **WOLNY RAM** | Padding wyrównania do następnej strony pamięci dla modułu muzycznego. |
+| **`$B500` – `$B810`** | 785 B | `title_music.asm`| Dane (Muzyka) | Skompilowany i dostrojony moduł muzyczny RMT ekranu tytułowego. |
+| **`$B811` – `$BFFF`** | **2031 B** | — | **WOLNY RAM** | Wolna pamięć za modułem muzycznym (pod ROM-em BASIC-a). |
 
 ---
 
 ## Analiza Wolnej Pamięci RAM
 
-Dzięki wdrożonym optymalizacjom gra posiada obecnie **`22 426 bajtów`** (~21.9 KB) wolnego i w pełni adresowalnego RAM-u, podzielonego na następujące duże bloki:
+Dzięki przeniesieniu odtwarzacza RMT pod ROM BASIC-a, gra posiada zredukowaną fragmentację i bardzo duże bloki wolnego RAM-u, podzielone na następujące obszary:
 
 1.  **`$2891` – `$3E7F` (5 615 B)**: Główny silnik gry, logika ruchu przeciwników, mechanika walki.
 2.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionką.
 3.  **`$67C0` – `$7FFF` (6 208 B)**: Dane map, tabele położeń obiektów.
-4.  **`$8000` – `$87FF` (2 048 B)**: Wolna pamięć w górnym RAM.
-5.  **`$8875` – `$8981` (269 B)**: Wolny obszar (część zajęta przez dynamiczne zmienne RMT).
-6.  **`$9141` – `$91FF` (191 B)**: Wyrównanie pamięci.
-7.  **`$9511` – `$9FFF` (2 799 B)**: Wolny RAM nad modułem muzycznym.
-8.  **`$AC00` – `$BFFF` (5 120 B)**: Wolna przestrzeń pod ROM-em BASIC-a (statyczne teksty, dialogi).
+4.  **`$8000` – `$9FFF` (8 192 B)**: **Skonsolidowany, wielki blok (8 KB)** w górnym RAM uzyskany po przeniesieniu muzyki. Idealny na bardzo duże zasoby, wczytywane pliki czy duże mapy.
+5.  **`$AC75` – `$ACFF` (139 B)**: Wolny obszar między inicjalizacją dźwięku a playerem.
+6.  **`$B4BF` – `$B4FF` (65 B)**: Wyrównanie pamięci dla muzyki.
+7.  **`$B811` – `$BFFF` (2 031 B)**: Pozostała wolna przestrzeń pod ROM-em BASIC-a po załadowaniu playera i modułu.
 
-Zredukowano fragmentację pamięci z 8 małych dziur do zaledwie kilku dużych, jednolitych bloków, co ułatwi projektowanie bardziej złożonej logiki gry.
+Zredukowano znacznie fragmentację pamięci z 8 małych dziur do potężnych, jednolitych bloków (głównie `$8000-$9FFF`), co dramatycznie ułatwia projektowanie złożonej logiki gry.
 
 ---
 
