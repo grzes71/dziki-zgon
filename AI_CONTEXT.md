@@ -75,8 +75,8 @@ W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie prob
 ## Tryb graficzny
 
 - **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia — ekran tytułowy, gameover
-- **ANTIC 2** (Graphics 0), 40×24 znaków (rozszerzony liniami pustymi $70 w display liście), 1 kolor (biały na czarnym, COLPF1=$0E), 320 B ekranu na $6400 — ekran opisu (story)
-- **ANTIC 4** (Graphics 12), 40×24 znaków (4×8 px), 4 kolory — gra właściwa
+- **ANTIC 2** (Graphics 0), 40×24 znaków (rozszerzony liniami pustymi $70 w display liście), 1 kolor (biały na czarnym, COLPF1=$0E), 320 B ekranu na $5E10 — współdzielony ekran opisu (story) i stopek
+- **ANTIC 5 + ANTIC 2** (Split screen) — gra właściwa: górne 9 linii w trybie ANTIC 5 (znakowy, 4 kolory, podwójna wysokość - 16 scanlinii na znak, 360 B), dolne 6 linii w trybie ANTIC 2 (znakowy, 1 kolor, 8 scanlinii na znak, 240 B). Razem 600 B ekranu gry.
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
 - Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) — VBI wyłączony. Zawiera też stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`–2) do użycia w DLI — plik includowany globalnie (dla stałych) i lokalnie w `_init` (dla `lda`/`sta`)
 
@@ -89,12 +89,11 @@ Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w 
 | $0080–$0081 | Page zero: SRC_TMP ($80), GAME_STATE ($81) |
 | $2000–$2FFF | Kod: main + lib/pmg + scenes/* + dane sprite'ów (~1.2 KB) |
 | $3000–$30FF | Display List (title, story, game, gameover — każda oddzielna etykieta) |
-| $4000–$5E0F | Dane ekranu (tytuł), współdzielone przez sceny (nadpisywane przy przejściu) |
-| $5E10–$5FFF | Stopka tekstowa (ANTIC mode 2, 8 linii × 40 znaków) |
+| $4000–$5E0F | **VRAM_ARENA** (7.7 KB) — współdzielony bufor ekranu (nadpisywany przy przejściu między scenami) |
+| $5E10–$5FFF | Współdzielony bufor tekstowy (ANTIC mode 2, 8 linii × 40 znaków) dla stopek i Story |
 | $6000–$63FF | **Czcionka własna** — `fonts/font.asm`, 128 znaków × 8 B (1 KB) — CHBASE=$60 |
-| $6400–$653F | Tekst / ekran story (8 linii × 40 B = 320 B) |
-| $6540–$7FFF | Wolne (6.7 KB) — dane pomocnicze, mapy |
-| $8000–$87FF | PMG (1K-aligned): $8300=missiles, $8400=P0, $8500=P1, $8600=P2, $8700=P3 |
+| $6400–$7FFF | **WOLNE (7 KB)** — odzyskane dzięki VRAM_ARENA, doskonałe na logikę gry |
+| $8000–$87FF | Skompresowane wideo (ROM_DATA: title.rle, gameover.rle) oraz początek PMG (1K-aligned) |
 | $A000–$A3FF | **Charset gry** — kafelki terenu (1 KB, ANTIC 4, CHBASE=$A0) |
 | $A400–$BFFF | Wolne (7 KB) — mapy regionów, dane gry |
 
@@ -146,4 +145,4 @@ KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
 3. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
 4. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA
 5. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter
-6. **ANTIC 4 vs E vs 2**: Gra używa ANTIC 4 (znakowy, 960 B ekranu, 1 KB charset), tytuł/gameover używają ANTIC E (bitmapa, 7.7 KB, adres $4000), a story używa ANTIC 2 (tekstowy, 320 B ekranu na $6400). $4000 jest współdzielone przez tytuł i grę (każda scena nadpisuje), natomiast story ma wydzieloną pamięć na $6400, by nie kolidować z tłem.
+6. **Współdzielona Arena VRAM**: Wprowadzono VRAM_ARENA na $4000. Sceny tytułu, gry i game over w pełni nadpisują tę arenę, a ciężkie bitmapy (.rle) są przechowywane skompresowane w wolnym RAM-ie ($8000+) i rozpakowywane na bieżąco za pomocą RLE_Depack. Tekst stopki/story/gameover współdzieli bufor na $5E10. Dzięki temu odzyskano całą pamięć od $6400 do $7FFF!

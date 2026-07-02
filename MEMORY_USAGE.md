@@ -81,11 +81,11 @@ Zredukowano znacznie fragmentację pamięci z 8 małych dziur do potężnych, je
 
 Projekt wysoce optymalizuje zużycie pamięci poprzez nakładanie na siebie buforów ekranów, które nie są wyświetlane jednocześnie:
 
-*   **Bufor Wideo `$4000–$5FFF`**:
-    *   W stanie **Title** obszar ten zajmuje pełna bitmapa ekranu tytułowego `$4000–$5E0F` (7696 B) oraz stopka `$5E10–$5F4F` (320 B).
-    *   W stanie **Game** ekran gry został przeniesiony do `GAME_SCREEN = $6400` (960 B), aby nie nadpisywać bitmapy tytułu przy powrocie z gry do ekranu tytułowego.
-    *   W stanie **GameOver** bitmapa znajduje się w `GO_SCREEN = $7000` (2784 B), a tekst w `GO_TEXT = $7C00` (32 B) — niezależnie od obszaru tytułu.
-    *   Dzięki tym zmianom wszystkie trzy ekrany nie kolidują ze sobą, a przejścia między stanami nie wymagają przeładowywania bitmap z ROM-u.
+*   **Współdzielona Arena VRAM (`$4000–$5E0F`)**:
+    *   Rozległe bitmapy i bufory nie są już trzymane osobno - wszystkie sceny (Title, Game, GameOver) używają wspólnie pamięci na `$4000`.
+    *   W stanie **Game**, ekran gry (rozgrywka) używa trybu **ANTIC 5** (górne 9 linii, podwójna wysokość) oraz **ANTIC 2** (dolne 6 linii). Zajmuje to jedynie 600 B (360 B + 240 B), rezydując we wspólnej arenie na `$4000`.
+    *   W stanie **GameOver** i **Title**, skompresowane w `ROM_DATA` grafiki `.rle` są dekompresowane proceduralnie przez depacker na `$4000`, przywracając ekran w całości.
+    *   Dzięki temu rozwiązaniu udało się odzyskać gigantyczny ciągły obszar od `$6400` do `$7FFF` na logikę gry.
 
 *   **Współdzielona Stopka Tekstowa (`$5E10–$5F4F`)**:
     *   W stanie **Title** `copy_title_footer` przywraca tekst zachęty z ROM (`TitleFooterROM`).
@@ -99,5 +99,5 @@ Pamięć PMG została przeniesiona do obszaru pod ROM-em BASIC (**`PMBASE = $A0`
 *   Adres bazowy: `PMBASE_ADDR = $A000`
 *   Pociski (`MISSILES`) zajmują offset `$300` → adres `$A300`.
 *   Gracze (`PLAYER0`–`PLAYER3`) zajmują kolejne offsety co 256 B → `$A400`, `$A500`, `$A600`, `$A700`.
-*   `GAME_CHARSET` został przesunięty na `$A800` (CHBASE = $A8), tuż za obszarem PMG.
+*   `GAME_CHARSET` został przesunięty na `$A800` (CHBASE = $A8), tuż za obszarem PMG. (Zestaw będzie współdzielony pomiędzy ANTIC 5 a ANTIC 2)
 *   Dziura wyrównania `$A000–$A2FF` (768 B) znajduje się teraz pod ROM-em BASIC, gdzie i tak nie byłaby użyteczna dla ciągłego kodu/danych — nie marnuje cennego dolnego RAM-u.
