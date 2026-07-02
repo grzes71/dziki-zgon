@@ -73,14 +73,6 @@ fire_released_flag
 ; copy_story_text — Kopiuje tekst story (320 B) z ROM do RAM ($5E10)
 ;==============================================================
 .proc copy_story_text
-    lda #<StoryText_Data
-    sta SRC_PTR
-    lda #>StoryText_Data
-    sta SRC_PTR+1
-    lda #<StoryText_RAM
-    sta DST_PTR
-    lda #>StoryText_RAM
-    sta DST_PTR+1
-    jsr RLE_Depack
+    mRLE_Depack StoryText_Data StoryText_RAM
     rts
 .endp

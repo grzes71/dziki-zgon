@@ -21,15 +21,7 @@ title_fire_released
     sta title_fire_released
 
     ; --- Rozpakuj ekran tytułowy (RLE) do VRAM_ARENA ---
-    lda #<TitleScreen_Data
-    sta SRC_PTR
-    lda #>TitleScreen_Data
-    sta SRC_PTR+1
-    lda #<VRAM_ARENA
-    sta DST_PTR
-    lda #>VRAM_ARENA
-    sta DST_PTR+1
-    jsr RLE_Depack
+    mRLE_Depack TitleScreen_Data VRAM_ARENA
 
     ; --- Wyczyść całą pamięć PMG ---
     jsr pmg_clear_all
@@ -39,15 +31,7 @@ title_fire_released
     ; Format PMG:       per-player, ciągiem 128 B, offset TOP_MARGIN
     
     ; Rozpakuj SpriteData (logo) do bufora tymczasowego $3000
-    lda #<SpriteData
-    sta SRC_PTR
-    lda #>SpriteData
-    sta SRC_PTR+1
-    lda #$00
-    sta DST_PTR
-    lda #$30
-    sta DST_PTR+1
-    jsr RLE_Depack
+    mRLE_Depack SpriteData $3000
 
     ldx #SPRITE_ROWS-1
 
@@ -88,15 +72,7 @@ title_fire_released
     bpl @mclear
 
     ; Rozpakuj MoonData (księżyc) do bufora tymczasowego $3000
-    lda #<MoonData
-    sta SRC_PTR
-    lda #>MoonData
-    sta SRC_PTR+1
-    lda #$00
-    sta DST_PTR
-    lda #$30
-    sta DST_PTR+1
-    jsr RLE_Depack
+    mRLE_Depack MoonData $3000
 
     ldx #MOON_ROWS-1
 @moon_loop
@@ -462,13 +438,6 @@ DLI_Nop
 ; Niszczy: A, X, Y
 ;==============================================================
 .proc copy_title_footer
-    lda #<TitleFooterROM
-    sta SRC_PTR
-    lda #>TitleFooterROM
-    sta SRC_PTR+1
-    lda #<FOOTER_ADDR
-    sta DST_PTR
-    lda #>FOOTER_ADDR
-    sta DST_PTR+1
-    jmp RLE_Depack
+    mRLE_Depack TitleFooterROM FOOTER_ADDR
+    rts
 .endp

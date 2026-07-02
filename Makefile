@@ -57,31 +57,29 @@ MUSIC_ASM_ATASM := $(GEN_DIR)/title_atasm.asm
 MUSIC_ASM       := $(GEN_DIR)/title_music.asm
 PLAYR_ASM       := $(GEN_DIR)/rmtplayr.asm
 
-TEXTS_ASM := $(GEN_DIR)/story_text.asm $(GEN_DIR)/gameover_text.asm $(GEN_DIR)/title_text.asm
+TEXTS_SRC := $(wildcard texts/*.txt)
+TEXTS_ASM := $(patsubst texts/%.txt, $(GEN_DIR)/%_text.asm, $(TEXTS_SRC))
 
 # ---- Cele ----
 .PHONY: all xex bg go sprites texts fonts music clean run
 
 all: texts sprites bg go fonts music xex
 
-xex: $(TEXTS_ASM) $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(ASM_MAIN)
+xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT)
 
 # Generowanie tekstów
-texts: $(TEXTS_ASM)
+texts: $(GEN_DIR)/all_texts.asm
 
-$(GEN_DIR)/story_text.asm: scripts/rle_compress_text.py texts/story.txt
+$(GEN_DIR)/all_texts.asm: $(TEXTS_ASM) scripts/gen_texts_list.py
+	@echo "=== Generowanie $@ ==="
 	-@mkdir $(GEN_DIR)
-	$(PYTHON) scripts/rle_compress_text.py -i story -o $@
+	$(PYTHON) scripts/gen_texts_list.py $@ $(TEXTS_ASM)
 
-$(GEN_DIR)/gameover_text.asm: scripts/rle_compress_text.py texts/gameover.txt
+$(GEN_DIR)/%_text.asm: texts/%.txt scripts/rle_compress_text.py
 	-@mkdir $(GEN_DIR)
-	$(PYTHON) scripts/rle_compress_text.py -i gameover -o $@
-
-$(GEN_DIR)/title_text.asm: scripts/rle_compress_text.py texts/title.txt
-	-@mkdir $(GEN_DIR)
-	$(PYTHON) scripts/rle_compress_text.py -i title -o $@
+	$(PYTHON) scripts/rle_compress_text.py -i $< -o $@
 
 # Generowanie tła (bin + colors + display list)
 bg: $(BG_BIN)

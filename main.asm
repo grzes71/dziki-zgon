@@ -170,15 +170,14 @@ main_loop
 ; --- Dane tekstów (kopiowane do RAM w czasie wykonania) ---
 StoryText_RAM = FOOTER_ADDR
 
-StoryText_Data
-    icl "gen/story_text.asm"
+StoryText_Data = text_story
+GO_TEXT_Data = text_gameover
+TitleFooterROM = text_title
 
-GO_TEXT_Data
-    icl "gen/gameover_text.asm"
-
-; Tekst stopki tytułu (ROM — kopiowany do $5E10 w title_init)
-TitleFooterROM
-    icl "gen/title_text.asm"
+    ; Wyrównaj dane tekstowe do granicy strony, aby uniknąć kar
+    ; za przekraczanie stron w pętli dekodera RLE.
+    .align $0100
+    icl "gen/all_texts.asm"
 
 SpriteData = DzikizgonData
 

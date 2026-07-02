@@ -100,15 +100,7 @@ GoRainbow
     sta gameover_fire_released ; zresetuj stan przycisku FIRE
 
     ; --- Rozpakuj grafikę GameOver (RLE) do VRAM_ARENA ---
-    lda #<GameOverScreen_Data
-    sta SRC_PTR
-    lda #>GameOverScreen_Data
-    sta SRC_PTR+1
-    lda #<VRAM_ARENA
-    sta DST_PTR
-    lda #>VRAM_ARENA
-    sta DST_PTR+1
-    jsr RLE_Depack
+    mRLE_Depack GameOverScreen_Data VRAM_ARENA
     sta go_dli_toggle       ; DLI toggle: 0 = obrazek
     sta go_pulse_idx        ; indeks migotania: 0
     sta go_subframe         ; spowolnienie ×2: 0
@@ -179,14 +171,6 @@ GoRainbow
 ; copy_gameover_text — Kopiuje tekst GAME OVER (32 B) z ROM do RAM ($5E10)
 ;==============================================================
 .proc copy_gameover_text
-    lda #<GO_TEXT_Data
-    sta SRC_PTR
-    lda #>GO_TEXT_Data
-    sta SRC_PTR+1
-    lda #<FOOTER_ADDR
-    sta DST_PTR
-    lda #>FOOTER_ADDR
-    sta DST_PTR+1
-    jsr RLE_Depack
+    mRLE_Depack GO_TEXT_Data FOOTER_ADDR
     rts
 .endp

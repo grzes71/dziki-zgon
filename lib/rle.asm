@@ -14,6 +14,18 @@
 ; Niszczy: A, X, Y
 ; =============================================================================
 
+.macro mRLE_Depack
+        lda #<:1
+        sta SRC_PTR
+        lda #>:1
+        sta SRC_PTR+1
+        lda #<:2
+        sta DST_PTR
+        lda #>:2
+        sta DST_PTR+1
+        jsr RLE_Depack
+.endm
+
 .proc RLE_Depack
         ldy #0
 

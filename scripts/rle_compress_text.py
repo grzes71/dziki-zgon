@@ -69,19 +69,12 @@ def rle_compress(data):
 
 def main():
     parser = argparse.ArgumentParser(description="Kompresuje tekst do RLE dla Atari 8-bit")
-    parser.add_argument("-i", "--input", required=True, help="Nazwa zasobu ('story' lub 'gameover') lub plik tekstowy")
+    parser.add_argument("-i", "--input", required=True, help="Plik wejściowy .txt")
     parser.add_argument("-o", "--output", required=True, help="Plik wyjściowy .asm")
     args = parser.parse_args()
 
-    # Wczytaj tekst
-    if args.input == "story":
-        input_file = "texts/story.txt"
-    elif args.input == "gameover":
-        input_file = "texts/gameover.txt"
-    elif args.input == "title":
-        input_file = "texts/title.txt"
-    else:
-        input_file = args.input
+    input_file = args.input
+    basename = os.path.splitext(os.path.basename(input_file))[0]
 
     if not os.path.exists(input_file):
         print(f"Error: Plik {input_file} nie istnieje.", file=sys.stderr)
@@ -92,7 +85,7 @@ def main():
 
     # Przygotuj dane wejściowe
     raw_bytes = bytearray()
-    if "story" in input_file.lower() or "title" in input_file.lower():
+    if basename in ["story", "title"]:
         # Story i Title oczekują 8 linii po dokładnie 40 znaków
         for line in lines[:8]:
             line = line.rstrip("\r\n")
@@ -102,7 +95,7 @@ def main():
         # Upewnij się, że mamy dokładnie 320 bajtów
         while len(raw_bytes) < 320:
             raw_bytes.append(0) # spacja to 0 w screencodes
-    elif "gameover" in input_file.lower():
+    elif basename == "gameover":
         # Game Over oczekuje dokładnie 32 znaków
         text = "".join(lines).replace("\r", "").replace("\n", "")
         text = text.ljust(32)[:32]
@@ -121,7 +114,8 @@ def main():
     os.makedirs(os.path.dirname(args.output), exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
         f.write("; Plik wygenerowany automatycznie przez rle_compress_text.py\n")
-        f.write(f"; Oryginalny rozmiar: {len(raw_bytes)} B, Skompresowany: {len(compressed)} B\n")
+        f.write(f"; Oryginalny rozmiar: {len(raw_bytes)} B, Skompresowany: {len(compressed)} B\n\n")
+        f.write(f"text_{basename}\n")
         
         # Zapisz bajty w liniach po 8
         for idx in range(0, len(compressed), 8):
