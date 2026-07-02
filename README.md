@@ -45,14 +45,16 @@ witcher-atari-game/
 │   ├── story/story.asm          # Ekran opisu (dekompresja story do stopki)
 │   ├── game/game.asm            # Gra właściwa
 │   └── gameover/gameover.asm    # Ekran końca gry (ANTIC D narrow + ANTIC 3 tęcza)
-├── gen/                         # Pliki generowane (nie commitować)
+├── gen/                         # Pliki generowane podczas buildu (część jest trzymana w repo)
 │   ├── title.bin                # Surowe dane binarne ekranu tytułu
+│   ├── title.rle                # Skompresowany ekran tytułu (używany w runtime)
 │   ├── title.asm                # Dane .byte ekranu tytułu (MADS)
 │   ├── title_colors.asm         # Kolory tytułu: stałe .equ + kod init
 │   ├── title_displaylist.asm    # ANTIC Display List tytułu (2 segmenty)
 │   ├── title_music.asm          # Skonwertowany moduł muzyczny MADS (title.sap -> title_music.asm)
 │   ├── rmtplayr.asm             # Skonwertowany kod playera RMT (MADS)
 │   ├── gameover.bin             # Surowe dane binarne ekranu game over
+│   ├── gameover.rle             # Skompresowany ekran game over (używany w runtime)
 │   ├── gameover.asm             # Dane .byte ekranu game over (MADS)
 │   ├── gameover_colors.asm      # Kolory game over: stałe .equ + kod init
 │   ├── gameover_displaylist.asm # ANTIC Display List game over (ANTIC D)
@@ -103,7 +105,7 @@ make
 
 # Tylko konkretne cele
 make sprites   # generuje gen/moon.asm + gen/dziki-zgon.asm
-make bg        # generuje gen/title.bin + gen/title_colors.asm + gen/title_displaylist.asm
+make bg        # generuje m.in. gen/title.bin, gen/title.rle, gen/title_colors.asm, gen/title_displaylist.asm
 make music     # konwertuje muzykę: music/title.sap -> gen/title_music.asm + music/rmtplayr.asm -> gen/rmtplayr.asm
 make clean     # usuwa katalog gen/ oraz plik XEX
 
@@ -124,7 +126,7 @@ Argumenty:
   bpp                1=2 kolory, 2=4 kolory, 4=16, 8=256
 
 Opcje:
-  --all              Generuj wszystkie formaty (.bin, .asm, _colors.asm, _displaylist.asm)
+  --all              Generuj wszystkie formaty (.bin, .asm, _colors.asm, _displaylist.asm; przy -c rle także .rle)
   --bin              Tylko surowy plik .bin
   --asm              Tylko dane .byte (MADS)
   --colors           Tylko plik z kolorami (_colors.asm)
@@ -163,7 +165,7 @@ python scripts/img2asm.py --test
 | Tryb ANTIC | **E** (Graphics 7) | **2** (Graphics 0) | **4** (Graphics 12) | **D** (Graphics 7 narrow) + **3** (tekst) |
 | Rozdzielczość | 160 × 192 px | 40 × 24 znaków (8×8 px) | 40 × 24 znaków (4×8 px) | 128 × 96 px + 32 znaki tekstu |
 | Kolory | 4 (2 bpp) | 1 + COLBK (biały na czarnym) | 4 + COLBK | 4 (2 bpp) + DLI tęcza |
-| Pamięć ekranu | $4000–$5E0F (7696 B) | $5E10–$5F4F (320 B, RLE) | $4000–$43BF (960 B) | $7000–$7ADF (2784 B) + $7C00 tekst |
+| Pamięć ekranu | $4000–$5E0F (7696 B) | $5E10–$5F4F (320 B, RLE) | $4000–$43BF (960 B, wspólna arena VRAM) | $4000–$4ADF (2784 B, wspólna arena VRAM) + $5E10 tekst |
 | Charset | $6000–$63FF (font.asm) | $6000–$63FF (font.asm) | $A800–$ABFF (kafelki terenu) | $6000–$63FF (font.asm) |
 | Display List | $3E80 | $3E80 | $3E80 | $3E80 |
 | Kod programu | $2000 | $2000 | $2000 | $2000 |
@@ -173,7 +175,7 @@ python scripts/img2asm.py --test
 ### Rejestry kolorów
 
 **ANTIC E** mapuje 2-bitowe indeksy pikseli na rejestry GTIA.
-Kolory zapisywane **bezpośrednio do sprzętu** (VBI OS wyłączony).
+Kolory zapisywane **bezpośrednio do sprzętu** (bez użycia rejestrów shadow OS).
 Plik `title_colors.asm` zawiera zarówno kod inicjalizacji, jak i stałe `.equ`
 (`TITLE_COLBK`, `TITLE_COLPF0`–`TITLE_COLPF2`) do użycia w DLI.
 
@@ -190,7 +192,7 @@ COLPF3 dostępny jako 5. kolor (bit 7 kodu znaku) lub dla PMG.
 
 ### Rejestry sprzętowe (przerwania systemowe)
 
-Program działa przy włączonym OS ROM, obsługując przerwania NMI (DLI + VBI) w celu koordynacji odtwarzacza muzycznego. Odtwarzacz jest podpięty pod Immediate VBLANK (`$0222`), co gwarantuje stabilne odtwarzanie muzyki w tle i zapobiega blokadzie za pośrednictwem systemowej flagi `CRITIC`.
+Program działa przy włączonym OS ROM. Sceny korzystające z muzyki i DLI włączają NMI (DLI + VBI), a odtwarzacz jest podpięty pod Immediate VBLANK (`$0222`), co stabilizuje odtwarzanie i unika blokady przez flagę `CRITIC`.
 
 Wszystkie rejestry sprzętowe są modyfikowane bezpośrednio:
 

@@ -40,7 +40,7 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 | `scenes/title/title.asm` | Logika ekranu tytułowego (init, run, DLI, tabele kolorów) |
 | `scenes/*/` | Kolejne sceny — każda z własnym `_init` i `_run` |
 | `lib/pmg.asm` | Współdzielone procedury PMG |
-| `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm |
+| `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm (+ `.rle` przy `-c rle`) |
 | `fonts/font.asm` | Własna czcionka 128 znaków (1 KB, $6000, CHBASE=$60) |
 | `MEMORY_USAGE.md` | Szczegółowa mapa pamięci i alokacji wolnego RAM-u |
 | `docs/KONSPEKT.md` | Dokument projektowy — fabuła, regiony, mechaniki |
@@ -74,30 +74,35 @@ W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie prob
 
 ## Tryb graficzny
 
-- **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia — ekran tytułowy, gameover
-- **ANTIC 2** (Graphics 0), 40×24 znaków (rozszerzony liniami pustymi $70 w display liście), 1 kolor (biały na czarnym, COLPF1=$0E), 320 B ekranu na $5E10 — współdzielony ekran opisu (story) i stopek
-- **ANTIC 5 + ANTIC 2** (Split screen) — gra właściwa: górne 9 linii w trybie ANTIC 5 (znakowy, 4 kolory, podwójna wysokość - 16 scanlinii na znak, 360 B), dolne 6 linii w trybie ANTIC 2 (znakowy, 1 kolor, 8 scanlinii na znak, 240 B). Razem 600 B ekranu gry.
+- **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia — ekran tytułowy
+- **ANTIC D** (Graphics 7 narrow), 128×96 px, 4 kolory (2 bpp) — ekran game over
+- **ANTIC 2** (Graphics 0), 40×24 znaków, 1 kolor (biały na czarnym, COLPF1=$0E) — ekran opisu (story) i współdzielony bufor tekstu pod $5E10
+- **ANTIC 4** (Graphics 12), 40×24 znaków (4×8 px), 4 kolory + COLBK — rozgrywka
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
-- Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) — VBI wyłączony. Zawiera też stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`–2) do użycia w DLI — plik includowany globalnie (dla stałych) i lokalnie w `_init` (dla `lda`/`sta`)
+- Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) i dostarcza stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`-2) do użycia w DLI
 
 ## Mapa pamięci
 
-Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w dedykowanym dokumencie [MEMORY_USAGE.md](file:///c:/Users/grzes/Documents/Projects/witcher-atari-game/MEMORY_USAGE.md). Skrócony podział pamięci:
+Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w dedykowanym dokumencie [MEMORY_USAGE.md](MEMORY_USAGE.md). Skrócony podział pamięci:
 
 | Adres | Zawartość |
 |---|---|
-| $0080–$0081 | Page zero: SRC_TMP ($80), GAME_STATE ($81) |
-| $2000–$2FFF | Kod: main + lib/pmg + scenes/* + dane sprite'ów (~1.2 KB) |
-| $3000–$30FF | Display List (title, story, game, gameover — każda oddzielna etykieta) |
-| $4000–$5E0F | **VRAM_ARENA** (7.7 KB) — współdzielony bufor ekranu (nadpisywany przy przejściu między scenami) |
-| $5E10–$5FFF | Współdzielony bufor tekstowy (ANTIC mode 2, 8 linii × 40 znaków) dla stopek i Story |
-| $6000–$63FF | **Czcionka własna** — `fonts/font.asm`, 128 znaków × 8 B (1 KB) — CHBASE=$60 |
-| $6400–$7FFF | **WOLNE (7 KB)** — odzyskane dzięki VRAM_ARENA, doskonałe na logikę gry |
-| $8000–$87FF | Skompresowane wideo (ROM_DATA: title.rle, gameover.rle) oraz początek PMG (1K-aligned) |
-| $A000–$A3FF | **Charset gry** — kafelki terenu (1 KB, ANTIC 4, CHBASE=$A0) |
-| $A400–$BFFF | Wolne (7 KB) — mapy regionów, dane gry |
+| $0080-$0085 | Page zero: `SRC_TMP`, `GAME_STATE`, `SRC_PTR`, `DST_PTR` |
+| $2000-$2664 | Kod: main + lib + scenes |
+| $2700-$295A | Dane tekstów i sprite'ów (RLE) |
+| $295B-$3E7F | Duży wolny blok RAM |
+| $3E80-$3FEE | Display Lists (Title/Story/Game/GameOver) |
+| $4000-$5E0F | **VRAM_ARENA** (współdzielony bufor ekranu scen) |
+| $5E10-$5F4F | Współdzielony bufor tekstu (Story/GameOver/stopka tytułu) |
+| $6000-$63FF | Charset systemowy gry (`CHBASE=$60`) |
+| $6400-$7FFF | Duży wolny blok RAM (odzyskany po VRAM_ARENA) |
+| $8000-$9DC3 | `ROM_DATA` (`title.rle`, `gameover.rle`) |
+| $A000-$A7FF | PMG (`PMBASE_ADDR=$A000`, single-line) |
+| $A800-$ABFF | `GAME_CHARSET` (`CHBASE=$A8`) |
+| $AD00-$B4BE | Odtwarzacz RMT |
+| $B500-$B810 | Moduł muzyki title |
 
-> PORTB=$FD — tylko BASIC wyłączony (8 KB zysk). OS ROM włączony → NMI działa normalnie przez OS. `jmp start` na $2000 zamiast `run start` (MADS domyślnie startuje od pierwszego `org`).
+> PORTB=$FF (OS ROM on, BASIC off). Program startuje jawnie przez `jmp start` na $2000.
 
 ## Display List — generator i ograniczenia ANTIC
 
@@ -111,28 +116,22 @@ Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczeni
 
 ## PMG (Player/Missile Graphics)
 
-- **Single-line resolution** (DMACTL bit 4=$10), PMBASE=$8000
-- **System wyłączony**: `sei` + `IRQEN=0`, NMIEN=$80 (tylko DLI, bez VBI OS). PORTB=$FD (BASIC off, OS ROM on — NMI przez OS)
+- **Single-line resolution** (`DMA_PMG_ON=$3E`), `PMBASE_ADDR=$A000`
+- Układ PMG: `MISSILES=$A300`, `PLAYER0=$A400`, `PLAYER1=$A500`, `PLAYER2=$A600`, `PLAYER3=$A700`
 - Wszystkie rejestry zapisywane bezpośrednio do sprzętu (shadow nieużywane)
-- 4 graczy (P0–P3) + missiles (M0–M3), PRIOR sterowany przez DLI
-- Tytuł: x1 (SIZEP0–3=$00), PRIOR=$11 (5th player), COLPF3 dla missile
-- Księżyc + gwiazdy: x1 (SIZEP=$00), PRIOR=$01 (bez 5th player, niezależne HPOSM)
-- Gwiazdy dzielą kolor księżyca ($40) — PCOLR0-3 wspólne
-- **Missile HPOS w odwrotnej kolejności**: M3(lewy)→M2→M1→M0(prawy), odstęp +2
-- Dane sprite'ów transponowane z formatu wierszowego `[P0,P1,P2,P3,M]×37` do per-player
-- Pozycje tytułu: $30, $38, $40, $48, $50 (co 8 color clocków przy x1)
+- 4 graczy (P0-P3) + missiles (M0-M3), PRIOR zależny od sceny
+- Tytuł: x1 (`SIZEP0-3=$00`), `PRIOR=$11` (5th player), `COLPF3` dla missile
+- Story/GameOver: PMG wyłączane (`GRACTL=0`, czyszczenie PMG)
+- Dane sprite'ów transponowane z formatu wierszowego `[P0,P1,P2,P3,M]xN` do per-player
 
-## DLI — sekcje (tylko tytuł)
+## DLI — sekcje
 
-DLI odpala na `DLIST+2` (ostatnia pusta linia $70 przed trybem E) — brak DMA, pełne CPU. Gra nie używa DLI.
+Projekt używa DLI w co najmniej dwóch scenach:
 
-1. **Kolory tła**: COLPF0–2 + COLBK ustawiane ze stałych `TITLE_*` z `title_colors.asm` (generowane z obrazka)
-2. **Tytuł**: SIZEP=x1, HPOSP=$30/$38/$40/$48, PRIOR=$11, 37 linii tęczy (RainbowColors → PCOLR0-3 + COLPF3)
-3. **Po tęczy**: PRIOR=$01, PCOLR=$40, SIZEP=1x — wspólne dla gwiazd i księżyca
-4. **Gwiazdy**: HPOSM = STARn_X (niezależne pozycje missile)
-5. **Księżyc**: HPOSP = MOON_X+0/8/16/24, HPOSM = STARn_X (odświeżone)
+1. **Title**: DLI_Handler steruje kolorami, PRIOR i tęczą PMG (logo + księżyc/gwiazdy).
+2. **GameOver**: DLI_Gameover przełącza paletę pomiędzy obrazkiem i migotaniem tekstu (efekt pulse/rainbow).
 
-KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
+Scena **Game** obecnie działa bez DLI.
 
 ## Dopasowanie kolorów (CIELAB/CIE2000)
 
@@ -140,9 +139,9 @@ KOREKTA=8 — dostrojone doświadczalnie dla DLI_DELAY.
 
 ## Znane pułapki
 
-1. **System OFF**: `sei` + `IRQEN=0`, `PORTB=$FD` (tylko BASIC off, OS ROM on), NMIEN=$80 (tylko DLI), DMACTL=$3E, DLISTL/DLISTH hardware ($D402/$D403). Entry point: `jmp start` na $2000 — nie używaj `run start` przy wielu `org` (MADS generuje błędne adresy INIT/RUN)
-2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow $02C4-$02C8) — VBI nie kopiuje. Plik `_colors.asm` includowany **dwukrotnie**: globalnie (dla stałych `.equ` widocznych w DLI) i wewnątrz `_init` (dla kodu `lda`/`sta`)
-3. **PMG blank offset**: PMG counter start = TV line 8, liczy też puste linie DL ($70×3=24)
-4. **DLI timing**: DMA kradnie cykle → DLI na pustej linii, nie na trybie z DMA
-5. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter
-6. **Współdzielona Arena VRAM**: Wprowadzono VRAM_ARENA na $4000. Sceny tytułu, gry i game over w pełni nadpisują tę arenę, a ciężkie bitmapy (.rle) są przechowywane skompresowane w wolnym RAM-ie ($8000+) i rozpakowywane na bieżąco za pomocą RLE_Depack. Tekst stopki/story/gameover współdzieli bufor na $5E10. Dzięki temu odzyskano całą pamięć od $6400 do $7FFF!
+1. **Init scen i NMI**: `system_init` zeruje `DMACTL/NMIEN/GRACTL` przed wejściem do sceny. Każda scena musi jawnie przywrócić potrzebne ustawienia.
+2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow OS). Plik `_colors.asm` jest includowany globalnie (stałe `.equ`) i lokalnie w `_init` (kod `lda`/`sta`).
+3. **DLI timing**: DMA kradnie cykle, więc punkty DLI muszą być testowane na docelowym emulatorze/sprzęcie.
+4. **VRAM_ARENA ownership**: Title/Game/GameOver współdzielą ten sam bufor `$4000-$5E0F`; każda scena musi kompletnie odtworzyć własny ekran w `_init`.
+5. **Wspólny bufor tekstu**: Story/GameOver/stopka Title współdzielą `$5E10-$5F4F`; przejścia scen nie mogą zakładać trwałości poprzedniej treści.
+6. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter dyrektyw i ostrożności przy wielu segmentach `org`.

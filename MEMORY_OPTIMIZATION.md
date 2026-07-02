@@ -1,5 +1,7 @@
 # Optymalizacja pamięci — wnioski architektoniczne
 
+Status weryfikacji z kodem: 2026-07-02.
+
 Poniższe punkty wynikają z analizy aktualnej struktury kodu i mapy RAM (main + sceny + audio + DL).
 Skupienie: nie pojedyncze bajty, tylko zmiany architektury, ktore uwalniaja najwiecej pamieci bez destabilizacji projektu.
 
@@ -144,11 +146,12 @@ Rekomendacja: traktowac jako etap 3, dopiero po wdrozeniu zmian 1-4.
 
 ## Priorytet wdrozenia (praktyczny plan)
 
-1. Scene VRAM Arena + jawne ownership buforow.
-2. Kontrakty scen (init/run/exit + wymagania zasobow).
-3. Jedna mutowalna Display List.
-4. PMG double-line (jesli testy wizualne przejda).
-5. Overlays kodu scen przy rozbudowie gameplayu.
+1. Kontrakty scen (init/run/exit + wymagania zasobow).
+2. Jedna mutowalna Display List.
+3. PMG double-line (jesli testy wizualne przejda).
+4. Overlays kodu scen przy rozbudowie gameplayu.
+
+Uwaga: Scene VRAM Arena jest juz wdrozona i nie jest dalej traktowana jako otwarty etap.
 
 ---
 
@@ -171,38 +174,17 @@ Ten plan zaklada utrzymanie kompatybilnosci z obecnym ukladem projektu i stopnio
 
 Cel: miec punkt odniesienia do porownania po kazdym etapie.
 
-## Etap 1 - Scene VRAM Arena (najwiekszy zysk, niski risk)
+## Etap 1 - Scene VRAM Arena
 
-Adresy docelowe:
+Status: ZAMKNIETE.
 
-- SCENE_ARENA_BASE: $4000
-- SCENE_ARENA_END: $5E0F
-- SCENE_TEXT_SHARED: $5E10-$5F4F (bez zmian)
+Krotkie podsumowanie:
 
-Mapowanie scen po migracji:
+- Wspolna arena VRAM dziala pod $4000-$5E0F.
+- Footer wspoldzielony pozostaje pod $5E10-$5F4F.
+- Odzyskano 3744 B (obszary $6400-$67BF i $7000-$7ADF).
 
-- title screen buffer -> $4000-$5E0F
-- game screen buffer -> $4000-$43BF (w ramach tej samej areny)
-- gameover screen buffer -> $4000-$4ADF (w ramach tej samej areny)
-
-Pamiec uwolniona po tym kroku:
-
-- $6400-$67BF (960 B)
-- $7000-$7ADF (2784 B)
-- razem: 3744 B
-
-Checklist:
-
-- [ ] Ustaw GAME_SCREEN na $4000.
-- [ ] Ustaw GO_SCREEN na $4000.
-- [ ] Usun stale rezerwacje ekranow game/gameover poza arena.
-- [ ] Zostaw FOOTER_ADDR na $5E10 jako wspoldzielony tekst.
-
-Definition of done:
-
-- [ ] Wszystkie 4 sceny wyswietlaja sie poprawnie.
-- [ ] Brak artefaktow po wielokrotnym cyklu przejsc.
-- [ ] Mapa pamieci pokazuje wolne $6400-$67BF i $7000-$7ADF.
+Szczegoly implementacyjne zostaly przeniesione do dokumentacji mapy pamieci i aktualnego kodu.
 
 ## Etap 2 - Jeden bufor Display List
 
@@ -327,11 +309,23 @@ Definition of done:
 
 ---
 
-## Podsumowanie zyskow po etapach 1-5
+## Podsumowanie zyskow - otwarte etapy
 
-- Etap 1: 3744 B
 - Etap 2: ~239 B
 - Etap 4: ~640 B (konserwatywnie)
 - Etap 5: kilka B do kilkunastu B
 
-Lacznie (konserwatywnie, bez overlays): ok. 4.6 KB+ odzyskanego RAM.
+Lacznie (konserwatywnie, bez overlays i bez Etapu 1): ok. 0.9 KB dodatkowego RAM.
+
+Zysk juz zrealizowany historycznie:
+
+- Etap 1: 3744 B (VRAM Arena)
+
+## Status na dzis (co zostalo realnie do zrobienia)
+
+- Etap 1: ZREALIZOWANY (zysk juz uzyskany).
+- Etap 2: OTWARTY (w kodzie nadal kilka statycznych Display List, nie jeden bufor mutowalny).
+- Etap 3: OTWARTY (brak centralnej tablicy deskryptorow scen i jawnego managera zasobow).
+- Etap 4: OTWARTY (PMG pracuje w single-line; brak wdrozenia wariantu double-line).
+- Etap 5: OTWARTY (flagi FIRE nadal rozproszone per scena).
+- Etap 6: OTWARTY (brak loadera overlay i wspolnego slotu kodu scen).
