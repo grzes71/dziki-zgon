@@ -103,6 +103,9 @@ stage_status_palettes
 
     ; --- Wypełnij mapę (ANTIC 5 i ANTIC 2) ---
     jsr clear_game_screens
+    
+    ; --- TEST: wypełnij ekrany znakami (do usunięcia w przyszłości) ---
+    jsr fill_test_screens
 
     ; --- PMG: rozmiar normalny, włącz PMG ---
     lda #$00
@@ -148,6 +151,38 @@ stage_status_palettes
 @skip
     inx
     bne @loop
+    rts
+.endp
+
+;==============================================================
+; fill_test_screens — Wypełnia ekrany testowymi znakami (0..255)
+;==============================================================
+.proc fill_test_screens
+    ; Wypełnienie ANTIC 5 (400 bajtów)
+    ldx #0
+@lp1
+    txa
+    sta GAME_SCREEN_A5,x
+    inx
+    bne @lp1
+    
+    ldx #0
+@lp2
+    txa
+    sta GAME_SCREEN_A5+$0100,x
+    inx
+    cpx #144             ; 400 - 256 = 144
+    bne @lp2
+
+    ; Wypełnienie ANTIC 2 (160 bajtów)
+    ldx #0
+@lp3
+    txa
+    sta GAME_SCREEN_A2,x
+    inx
+    cpx #160
+    bne @lp3
+    
     rts
 .endp
 
