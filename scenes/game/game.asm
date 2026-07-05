@@ -10,18 +10,68 @@ GAME_CHARSET  = $A800       ; charset gry — kafelki terenu (1 KB, CHBASE=$A8)
 ;---- Zmienne lokalne sceny ----
 game_fire_released
     dta $00
+game_stage
+    dta $00             ; Aktualny etap gry (0-4)
 
-; Paleta kolorów sprzętowych od PCOLR0 ($D012) do COLBK ($D01A)
+; Zmienne przechowujące aktywne kolory dla obu stref (nadpisywane co etap)
+; Paleta kolorów sprzętowych dla planszy (ANTIC 5) od PCOLR0 ($D012) do COLBK ($D01A)
 game_palette
-    dta $0E             ; PCOLR0
-    dta $0E             ; PCOLR1
-    dta $0E             ; PCOLR2
-    dta $0E             ; PCOLR3
-    dta $C8             ; COLPF0
-    dta $16             ; COLPF1
-    dta $0E             ; COLPF2
-    dta $00             ; COLPF3
-    dta $94             ; COLBK
+    .ds 9
+
+; Paleta kolorów sprzętowych dla panelu statusu (ANTIC 2) od PCOLR0 do COLBK
+game_status_palette
+    .ds 9
+
+; Offsety do tablic palet (dla każdego etapu: 0, 9, 18, 27, 36)
+stage_palette_offsets
+    dta 0, 9, 18, 27, 36
+
+; Definicje wszystkich kolorów dla 5 etapów (gra właściwa)
+stage_palettes
+    ; Etap 0 (startowy)
+    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $94
+    ; Etap 1
+    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $84
+    ; Etap 2
+    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $74
+    ; Etap 3
+    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $64
+    ; Etap 4
+    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $54
+
+; Definicje wszystkich kolorów dla 5 etapów (panel statusu)
+stage_status_palettes
+    ; Etap 0
+    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
+    ; Etap 1
+    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
+    ; Etap 2
+    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
+    ; Etap 3
+    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
+    ; Etap 4
+    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
+
+;==============================================================
+; update_stage_colors — kopiuje odpowiednie kolory w oparciu o game_stage
+;==============================================================
+.proc update_stage_colors
+    ldx game_stage
+    ldy stage_palette_offsets,x
+    
+    ldx #0
+@loop
+    lda stage_palettes,y
+    sta game_palette,x
+    lda stage_status_palettes,y
+    sta game_status_palette,x
+    iny
+    inx
+    cpx #9
+    bne @loop
+
+    rts
+.endp
 
 ;==============================================================
 ; game_init — Konfiguracja ANTIC 4 + PMG
@@ -33,6 +83,9 @@ game_palette
     sta game_fire_released  ; zresetuj stan przycisku FIRE
 
     jsr pmg_clear_all
+    
+    ; --- Inicjalizacja kolorów wybranego etapu ---
+    jsr update_stage_colors
 
     ; --- Display List gry (ANTIC 4) ---
     lda #<DLIST_GAME
@@ -133,12 +186,18 @@ game_palette
 
 .proc game_dli_2
     pha
+    txa
+    pha
 
     sta WSYNC            ; stabilizacja
-    lda #$00             ; czarne tło (lub inny kolor wg uznania)
-    sta COLPF2           ; kolor tła w ANTIC 2
-    lda #$0F             ; biały tekst
-    sta COLPF1           ; kolor znaków w ANTIC 2
+    
+    ; Ustawienie całej palety ze zdefiniowanej tablicy (status area)
+    ldx #8
+@set_status_colors
+    lda game_status_palette,x
+    sta PCOLR0,x         ; PCOLR0 to $D012, aż do COLBK $D01A
+    dex
+    bpl @set_status_colors
 
     ; Zmień font na font.fnt ($6000 -> CHBASE=$60)
     lda #$60
@@ -150,6 +209,8 @@ game_palette
     lda #>game_dli_1
     sta VDSLST+1
 
+    pla
+    tax
     pla
     rti
 .endp

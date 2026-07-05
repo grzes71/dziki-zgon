@@ -72,12 +72,19 @@ W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie prob
    - Uruchamianie: `python dump.py`
    - Pokazuje on przedziały adresów każdego z zapisanych bloków, dzięki czemu łatwo wykryjesz czy MADS połączył ("zmergował") bloki leżące blisko siebie w jeden wielki segment i czy przez to np. blok inicjalizacyjny (jak `org $AC00`) nie został przykryty zerami ładującymi się z bloku nadrzędnego (jak `org $AA82` w `rmtplayr`).
 
+3. **`check_memory.py` (Automatyczna walidacja mapy pamięci)**
+   - Skrypt zintegrowany bezpośrednio z Makefile. Podczas kompilacji (`make all`) automatycznie weryfikuje zajętość RAM-u.
+   - Analizuje zrzuconą przez kompilator tablicę symboli `game.lab` i samodzielnie aktualizuje tabele adresów i pojemności bloków w `MEMORY_USAGE.md`.
+   - Zwalnia nas to z ręcznego aktualizowania dokumentacji pamięci — plik MD zawsze w 100% odpowiada temu, co siedzi w pliku XEX.
+
 ## Tryb graficzny
 
 - **ANTIC E** (Graphics 7), 160×192 px, 4 kolory (2 bpp), 40 B/linia — ekran tytułowy
 - **ANTIC D** (Graphics 7 narrow), 128×96 px, 4 kolory (2 bpp) — ekran game over
 - **ANTIC 2** (Graphics 0), 40×24 znaków, 1 kolor (biały na czarnym, COLPF1=$0E) — ekran opisu (story) i współdzielony bufor tekstu pod $5E10
-- **ANTIC 4** (Graphics 12), 40×24 znaków (4×8 px), 4 kolory + COLBK — rozgrywka
+- **Gra właściwa** używa dwóch trybów łączonych w jednym ekranie (Display List):
+  - **ANTIC 5** (górne 10 linii), 40×10 znaków podwójnej wysokości, kolorowa plansza gry (używa czcionki kafelków pod $6400)
+  - **ANTIC 2** (dolne 4 linie), 40×4 znaków, panel statusowy (używa systemowej czcionki pod $6000)
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
 - Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) i dostarcza stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`-2) do użycia w DLI
 
@@ -94,11 +101,12 @@ Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w 
 | $3E80-$3FEE | Display Lists (Title/Story/Game/GameOver) |
 | $4000-$5E0F | **VRAM_ARENA** (współdzielony bufor ekranu scen) |
 | $5E10-$5F4F | Współdzielony bufor tekstu (Story/GameOver/stopka tytułu) |
-| $6000-$63FF | Charset systemowy gry (`CHBASE=$60`) |
-| $6400-$7FFF | Duży wolny blok RAM (odzyskany po VRAM_ARENA) |
+| $6000-$63FF | Czcionka systemowa (interfejs) gry (`font.asm`, `CHBASE=$60`) |
+| $6400-$67FF | Czcionka mapy gry (`game_font.asm`, `CHBASE=$64`) |
+| $6800-$7FFF | Duży wolny blok RAM (odzyskany po VRAM_ARENA) |
 | $8000-$9DC3 | `ROM_DATA` (`title.rle`, `gameover.rle`) |
 | $A000-$A7FF | PMG (`PMBASE_ADDR=$A000`, single-line) |
-| $A800-$ABFF | `GAME_CHARSET` (`CHBASE=$A8`) |
+| $A800-$ABFF | Dawniej `GAME_CHARSET`, obecnie rezerwa (nieużywana) |
 | $AD00-$B4BE | Odtwarzacz RMT |
 | $B500-$B810 | Moduł muzyki title |
 
@@ -130,8 +138,11 @@ Projekt używa DLI w co najmniej dwóch scenach:
 
 1. **Title**: DLI_Handler steruje kolorami, PRIOR i tęczą PMG (logo + księżyc/gwiazdy).
 2. **GameOver**: DLI_Gameover przełącza paletę pomiędzy obrazkiem i migotaniem tekstu (efekt pulse/rainbow).
+3. **Game**: Używa łańcucha dwóch DLI (przełączają się nawzajem na koniec swojego wykonania):
+   - `game_dli_1`: ładuje 9-kolorową paletę (tło + PMG) odpowiadającą bieżącemu etapowi (od 0 do 4) oraz ustawia charset mapy na `CHBASE=$64`.
+   - `game_dli_2`: uruchamia się przed strefą statusową, zmieniając kolory tekstu i tła oraz ładując czytelny charset `CHBASE=$60`.
 
-Scena **Game** obecnie działa bez DLI.
+System palet etapów oparty jest na szybkim indeksowaniu tablic konfiguracyjnych w trakcie startu sceny (`update_stage_colors`).
 
 ## Dopasowanie kolorów (CIELAB/CIE2000)
 
