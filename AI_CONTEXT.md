@@ -107,7 +107,7 @@ Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w 
 
 | Adres | Zawartość |
 |---|---|
-| $0080-$0085 | Page zero: `SRC_TMP`, `GAME_STATE`, `SRC_PTR`, `DST_PTR` |
+| $0080-$0091 | Page zero: `SRC_TMP`, `GAME_STATE`, `SRC_PTR`, `DST_PTR`, wskaźniki World Buildera |
 | $2000-$2664 | Kod: main + lib + scenes |
 | $2700-$295A | Dane tekstów i sprite'ów (RLE) |
 | $295B-$3E7F | Duży wolny blok RAM |
@@ -117,7 +117,7 @@ Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w 
 | $6000-$63FF | Czcionka systemowa (interfejs) gry (`font.asm`, `CHBASE=$60`) |
 | $6400-$67FF | Czcionka mapy gry (`game_font.asm`, `CHBASE=$64`) |
 | $6800-$7FFF | Duży wolny blok RAM (odzyskany po VRAM_ARENA) |
-| $8000-$9DC3 | `ROM_DATA` (`title.rle`, `gameover.rle`) |
+| $8000-$8FFF | `ROM_DATA` (`title.rle`, `gameover.rle`) + dane wygenerowane przez World Builder |
 | $A000-$A7FF | PMG (`PMBASE_ADDR=$A000`, single-line) |
 | $A800-$ABFF | Dawniej `GAME_CHARSET`, obecnie rezerwa (nieużywana) |
 | $AD00-$B4BE | Odtwarzacz RMT |

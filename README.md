@@ -81,7 +81,9 @@ witcher-atari-game/
 ├── docs/
 │   ├── KONSPEKT.md              # Dokument projektowy — fabuła, regiony, mechaniki
 │   └── py65.md                  # Dokumentacja emulatora Py65 (6502 w Pythonie)
-├── tests/                       # Testy jednostkowe i integracyjne (Py65)
+├── world/                       # Dane wejściowe w formacie YAML definiujące świat, ekrany i obiekty gry
+├── world_builder/               # Dedykowany kompilator map gry w Pythonie (YAML → ASM)
+├── tests/                       # Testy jednostkowe i integracyjne (Py65, World Builder)
 └── rgb2a8/                      # Referencyjna paleta Atari PAL (256 wartości RGB)
 ```
 
@@ -92,6 +94,8 @@ witcher-atari-game/
 | [MADS](https://mads.atari8.info/) | 2.1.x | Asembler 6502/65816 dla Atari 8-bit |
 | [Python](https://www.python.org/) | 3.10+ | Do uruchamiania konwertera `img2asm.py` |
 | [Pillow](https://python-pillow.org/) | 12.x | Biblioteka do przetwarzania obrazów (`pip install -r requirements.txt`) |
+| [PyYAML](https://pyyaml.org/) | — | Do parsowania plików map w World Builderze (`pip install -r requirements.txt`) |
+| [Pydantic](https://docs.pydantic.dev/) | 2.x | Do zaawansowanej walidacji struktury map i obiektów (`pip install -r requirements.txt`) |
 | Emulator Atari | — | Np. [Altirra](https://www.virtualdub.org/altirra.html), Atari800 |
 | [Atari Image Converter](https://github.com/grzes71/py-image-converter/#atari-image-converter) | — | Konwersja obrazów na formaty Atari (PNG → GR7, GR8, MIC, i inne) |
 | [html-to-markdown](https://github.com/grzes71/html-to-markdown#html-to-markdown) | — | Konwersja dokumentacji HTML do Markdown
@@ -104,6 +108,7 @@ witcher-atari-game/
 make
 
 # Tylko konkretne cele
+make world     # kompiluje wejściowe mapy YAML do zoptymalizowanych struktur ASM
 make sprites   # generuje gen/moon.asm + gen/dziki-zgon.asm
 make bg        # generuje m.in. gen/title.bin, gen/title.rle, gen/title_colors.asm, gen/title_displaylist.asm
 make music     # konwertuje muzykę: music/title.sap -> gen/title_music.asm + music/rmtplayr.asm -> gen/rmtplayr.asm

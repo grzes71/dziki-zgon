@@ -18,6 +18,10 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$0081` – `$0081`** | 1 B | `GAME_STATE` | Zero Page | Bieżący stan maszyny stanów gry (0=Title, 1=Story, 2=Game, 3=GameOver). |
 | **`$0082` – `$0083`** | 2 B | `SRC_PTR` | Zero Page | Wskaźnik źródłowy dla depackera RLE (2 bajty). |
 | **`$0084` – `$0085`** | 2 B | `DST_PTR` | Zero Page | Wskaźnik docelowy dla depackera RLE (2 bajty). |
+| **`$0086` – `$0087`** | 2 B | `SCREEN_PTR` | Zero Page | Wskaźnik na dane obiektów aktualnego ekranu gry. |
+| **`$0088` – `$0089`** | 2 B | `TILE_PTR` | Zero Page | Wskaźnik na kafelki obiektu (World Builder). |
+| **`$008A` – `$008A`** | 1 B | `GAME_SCREEN_ID` | Zero Page | Globalny ID aktualnego ekranu mapy. |
+| **`$008B` – `$0091`** | 7 B | Zmienne renderera | Zero Page | Rejestry iteracyjne pętli renderującej (X, Y, W, H, CODE, TMP_X, TMP_Y). |
 | **`$00CB` – `$00DD`** | 21 B | `p_tis` .. `tmp` | Zero Page | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera). |
 | **`$0200` – `$0201`** | 2 B | `VDSLST` | OS RAM | Wektor przerwania DLI (Display List Interrupt) w pamięci cieni OS. |
 | **`$2000` – `$2002`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
