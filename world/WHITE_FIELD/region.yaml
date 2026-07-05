@@ -1,0 +1,7 @@
+id: WHITE_FIELD
+name: White Field
+layout:
+  rows: 4
+  columns: 5
+start_screen: TAVERN
+music: WHITE_FIELD

@@ -27,9 +27,11 @@ stage_palette_offsets
     dta 0, 9, 18, 27, 36
 
 ; Definicje wszystkich kolorów dla 5 etapów (gra właściwa)
+; Kolejność rejestrów (9 bajtów):
+; PCOLR0, PCOLR1, PCOLR2, PCOLR3, COLPF0, COLPF1, COLPF2, COLPF3, COLBK
 stage_palettes
     ; Etap 0 (startowy)
-    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $94
+    dta $14, $18, $C2, $82, $14, $18, $C2, $82, $00
     ; Etap 1
     dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $84
     ; Etap 2
@@ -101,11 +103,15 @@ stage_status_palettes
     lda #$00
     sta COLBK
 
+    ; --- Inicjalizacja pierwszej mapy ---
+    lda #START_SCREEN_ID
+    sta GAME_SCREEN_ID
+
     ; --- Wypełnij mapę (ANTIC 5 i ANTIC 2) ---
     jsr clear_game_screens
     
-    ; --- TEST: wypełnij ekrany znakami (do usunięcia w przyszłości) ---
-    jsr fill_test_screens
+    ; --- Zbuduj ekran gry bazując na World Builderze ---
+    jsr build_screen
 
     ; --- PMG: rozmiar normalny, włącz PMG ---
     lda #$00
@@ -155,36 +161,138 @@ stage_status_palettes
 .endp
 
 ;==============================================================
-; fill_test_screens — Wypełnia ekrany testowymi znakami (0..255)
+; Tablice offsetów wierszy dla ANTIC 5 (szerokość = 40)
+; Używane do błyskawicznego obliczania adresów VRAM: Y * 40
 ;==============================================================
-.proc fill_test_screens
-    ; Wypełnienie ANTIC 5 (400 bajtów)
-    ldx #0
-@lp1
-    txa
-    sta GAME_SCREEN_A5,x
-    inx
-    bne @lp1
-    
-    ldx #0
-@lp2
-    txa
-    sta GAME_SCREEN_A5+$0100,x
-    inx
-    cpx #144             ; 400 - 256 = 144
-    bne @lp2
+row_offsets_lo
+    dta <(GAME_SCREEN_A5 + 0*40), <(GAME_SCREEN_A5 + 1*40), <(GAME_SCREEN_A5 + 2*40), <(GAME_SCREEN_A5 + 3*40)
+    dta <(GAME_SCREEN_A5 + 4*40), <(GAME_SCREEN_A5 + 5*40), <(GAME_SCREEN_A5 + 6*40), <(GAME_SCREEN_A5 + 7*40)
+    dta <(GAME_SCREEN_A5 + 8*40), <(GAME_SCREEN_A5 + 9*40)
 
-    ; Wypełnienie ANTIC 2 (160 bajtów)
-    ldx #0
-@lp3
-    txa
-    sta GAME_SCREEN_A2,x
-    inx
-    cpx #160
-    bne @lp3
+row_offsets_hi
+    dta >(GAME_SCREEN_A5 + 0*40), >(GAME_SCREEN_A5 + 1*40), >(GAME_SCREEN_A5 + 2*40), >(GAME_SCREEN_A5 + 3*40)
+    dta >(GAME_SCREEN_A5 + 4*40), >(GAME_SCREEN_A5 + 5*40), >(GAME_SCREEN_A5 + 6*40), >(GAME_SCREEN_A5 + 7*40)
+    dta >(GAME_SCREEN_A5 + 8*40), >(GAME_SCREEN_A5 + 9*40)
+
+;==============================================================
+; build_screen — buduje ekran z danych mapy dla GAME_SCREEN_ID
+;==============================================================
+.proc build_screen
+    ldx GAME_SCREEN_ID
+    lda SCREEN_POINTERS_LO,x
+    sta SCREEN_PTR
+    lda SCREEN_POINTERS_HI,x
+    sta SCREEN_PTR+1
+
+    ldy #0
+    lda (SCREEN_PTR),y          ; Liczba obiektów
+    beq @end                    ; Jeśli 0 -> koniec
+    tax                         ; X = licznik obiektów
+
+@object_loop
+    iny
+    lda (SCREEN_PTR),y
+    sta OBJ_CODE
     
+    iny
+    lda (SCREEN_PTR),y
+    sta OBJ_X
+
+    iny
+    lda (SCREEN_PTR),y
+    sta OBJ_Y
+
+    txa
+    pha                         ; Zapisz licznik obiektów
+    tya
+    pha                         ; Zapisz offset SCREEN_PTR
+
+    ; Wypakuj rozmiar
+    ldx OBJ_CODE
+    lda OBJ_SIZE,x
+    
+    ; Szerokość: górne 4 bity + 1
+    pha
+    lsr
+    lsr
+    lsr
+    lsr
+    clc
+    adc #1
+    sta OBJ_W
+    
+    ; Wysokość: dolne 4 bity + 1
+    pla
+    and #$0F
+    clc
+    adc #1
+    sta OBJ_H
+
+    ; Pobierz wskaźnik kafelków
+    lda OBJ_TILES_LO,x
+    sta TILE_PTR
+    lda OBJ_TILES_HI,x
+    sta TILE_PTR+1
+
+    ; Rysowanie
+    lda #0
+    sta TMP_Y
+    ldx #0                      ; X = tile index
+
+@row_loop
+    lda #0
+    sta TMP_X
+    
+    ; Oblicz DST_PTR używając tablic dla wiersza (OBJ_Y + TMP_Y)
+    lda OBJ_Y
+    clc
+    adc TMP_Y
+    tay                         ; Y = Screen Row Index
+    
+    lda row_offsets_lo,y
+    clc
+    adc OBJ_X
+    sta DST_PTR
+    lda row_offsets_hi,y
+    adc #0
+    sta DST_PTR+1
+
+    ldy #0                      ; Y = offset w kolumnach na ekranie
+
+@col_loop
+    txa
+    tay                         ; Y = indeks kafelka
+    lda (TILE_PTR),y            ; Pobierz kafelek
+
+    ldy TMP_X                   ; Y = kolumna (offset ekranu dla danego wiersza)
+    sta (DST_PTR),y             ; Rysuj na ekran
+
+    inx                         ; Następny kafelek
+    
+    inc TMP_X
+    lda TMP_X
+    cmp OBJ_W
+    bne @col_loop
+
+    inc TMP_Y
+    lda TMP_Y
+    cmp OBJ_H
+    bne @row_loop
+
+    ; Powrót do pętli głównej
+    pla
+    tay                         ; Przywróć Y offset w ekranie
+    pla
+    tax                         ; Przywróć X (licznik obiektów)
+
+    dex
+    beq @end
+    jmp @object_loop
+
+@end
     rts
 .endp
+
 
 ;==============================================================
 ; Przerwania DLI
@@ -194,6 +302,11 @@ stage_status_palettes
     pha
     txa
     pha
+    
+
+    ; Ustawienie fontu dla górnej części ekranu (game.fnt pod $6400 -> CHBASE=$64)
+    lda #$64
+    sta CHBASE
 
     ; Ustawienie całej palety ze zdefiniowanej tablicy
     ldx #8
@@ -202,10 +315,6 @@ stage_status_palettes
     sta PCOLR0,x         ; PCOLR0 to $D012, aż do COLBK $D01A
     dex
     bpl @set_colors
-
-    ; Ustawienie fontu dla górnej części ekranu (game.fnt pod $6400 -> CHBASE=$64)
-    lda #$64
-    sta CHBASE
 
     ; Przygotuj wektor na drugie DLI
     lda #<game_dli_2
@@ -224,8 +333,11 @@ stage_status_palettes
     txa
     pha
 
-    sta WSYNC            ; stabilizacja
-    
+
+    ; Zmień font na font.fnt ($6000 -> CHBASE=$60)
+    lda #$60
+    sta CHBASE
+
     ; Ustawienie całej palety ze zdefiniowanej tablicy (status area)
     ldx #8
 @set_status_colors
@@ -233,10 +345,6 @@ stage_status_palettes
     sta PCOLR0,x         ; PCOLR0 to $D012, aż do COLBK $D01A
     dex
     bpl @set_status_colors
-
-    ; Zmień font na font.fnt ($6000 -> CHBASE=$60)
-    lda #$60
-    sta CHBASE
 
     ; Przywróć wektor na pierwsze DLI (na następną klatkę)
     lda #<game_dli_1

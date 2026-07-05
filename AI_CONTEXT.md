@@ -41,6 +41,7 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 | `scenes/*/` | Kolejne sceny — każda z własnym `_init` i `_run` |
 | `lib/pmg.asm` | Współdzielone procedury PMG |
 | `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm (+ `.rle` przy `-c rle`) |
+| `world_builder/` | Kompilator świata gry (YAML → optymalne struktury ASM i tablice wskaźników) |
 | `fonts/font.asm` | Własna czcionka 128 znaków (1 KB, $6000, CHBASE=$60) |
 | `MEMORY_USAGE.md` | Szczegółowa mapa pamięci i alokacji wolnego RAM-u |
 | `docs/KONSPEKT.md` | Dokument projektowy — fabuła, regiony, mechaniki |
@@ -56,6 +57,18 @@ make clean    # usuwa wygenerowane
 
 Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 Instalacja zależności: `pip install -r requirements.txt`
+
+## Narzędzie World Builder
+
+Projekt używa dedykowanego kompilatora w Pythonie (`world_builder/`) do konwersji definicji świata gry w formacie YAML na zoptymalizowany kod asemblera dla układu 6502. 
+- Uruchamianie: `python -m world_builder <input_dir> <output_dir>` (np. `python -m world_builder world gen/world`)
+- **Struktura YAML (SSOT)**: 
+  - `world.yaml` (ustawienia początkowe gracza)
+  - `objects.yaml` (lista obiektów: `code`, `size`, `flags`)
+  - Katalogi regionów (np. `WHITE_FIELD/`), a w nich `region.yaml` oraz definicje poszczególnych ekranów w podkatalogu `screens/*.yaml`.
+- **Zoptymalizowany kod ASM**: Kompilator przetwarza obiekty na format "Structure of Arrays" (SoA) gotowy do bezpośredniego indeksowania `LDA OBJ_SIZE,x` po kodzie obiektu. Rozmiary (`width`/`height`) pakowane są do 4 bitów poprzez odjęcie `1` (zakres wymiarów 1-16).
+- **Zarządzanie Pamięcią**: Automatycznie generuje tablice wskaźników 16-bit (LO/HI) do poszczególnych ekranów i regionów oraz przydziela im globalne identyfikatory `ScreenId` / `RegionId`.
+- **Rygorystyczna Walidacja**: Wykrywa niedostępne ekrany, nakładanie się obiektów, wyjścia obiektów poza sprzętowy ekran (bazując na "śladzie" `X+W` i `Y+H`) oraz błędy nawigacyjne.
 
 ## Testowanie i Debugowanie
 

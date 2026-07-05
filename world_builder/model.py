@@ -1,0 +1,61 @@
+from pydantic import BaseModel, Field
+from typing import List, Optional
+
+class ObjectSize(BaseModel):
+    width: int = Field(ge=1, le=16)
+    height: int = Field(ge=1, le=16)
+
+class ObjectFlags(BaseModel):
+    blocking: bool = False
+    interactive: bool = False
+
+class ObjectDefinition(BaseModel):
+    id: str
+    code: int = Field(ge=1, le=255)
+    size: ObjectSize
+    flags: ObjectFlags
+    tiles: List[int]
+
+class ObjectInstance(BaseModel):
+    object: str
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=9)
+
+class ScreenExits(BaseModel):
+    north: Optional[str]
+    south: Optional[str]
+    east: Optional[str]
+    west: Optional[str]
+
+class ScreenDef(BaseModel):
+    id: str
+    exits: ScreenExits
+    objects: List[ObjectInstance] = Field(default_factory=list)
+
+class RegionLayout(BaseModel):
+    rows: int
+    columns: int
+
+class RegionDef(BaseModel):
+    id: str
+    name: str
+    layout: RegionLayout
+    start_screen: str
+    music: str
+    screens: List[ScreenDef] = Field(default_factory=list)
+    # the directory name for matching validation
+    _dir_name: str = ""
+
+class StartPosition(BaseModel):
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=9)
+
+class WorldConfig(BaseModel):
+    start_region: str
+    start_screen: str
+    start_position: StartPosition
+
+class GameWorld(BaseModel):
+    world: WorldConfig
+    objects: List[ObjectDefinition] = Field(default_factory=list)
+    regions: List[RegionDef] = Field(default_factory=list)

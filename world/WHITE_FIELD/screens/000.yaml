@@ -1,0 +1,13 @@
+id: TAVERN
+exits:
+  north: null
+  south: VILLAGE
+  west: null
+  east: CROSSROADS
+objects:
+  - object: HOUSE_SMALL
+    x: 10
+    y: 6
+  - object: TREE_SMALL
+    x: 2
+    y: 2

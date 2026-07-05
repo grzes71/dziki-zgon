@@ -218,8 +218,8 @@ DLIST_STORY
 
 ; --- DL gra ---
 DLIST_GAME
-    dta $70,$70            ; 16 pustych linii
-    dta $F0                ; 8 pustych linii + DLI (koniec marginesu górnego)
+    dta $70,$70,$70        ; 24 puste linie (margines górny)
+    dta $90                ; 1 pusta linia + DLI przed panelem gry
     dta $45,a(GAME_SCREEN_A5) ; ANTIC 5, 10 linii
     .rept 9
     dta $05
@@ -282,6 +282,13 @@ GameOverScreen_Data
 
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR
+
+; --- Dane Świata (World Builder) ---
+    icl "gen/world/world.inc"
+    icl "gen/world/objects.asm"
+    icl "gen/world/regions.asm"
+    icl "gen/world/screens.asm"
+    icl "gen/world/exits.asm"
 
 ; --- Muzyka i odtwarzacz ($8800) ---
     icl "music/title_audio.asm"

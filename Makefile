@@ -62,18 +62,31 @@ PLAYR_ASM       := $(GEN_DIR)/rmtplayr.asm
 TEXTS_SRC := $(wildcard texts/*.txt)
 TEXTS_ASM := $(patsubst texts/%.txt, $(GEN_DIR)/%_text.asm, $(TEXTS_SRC))
 
-# ---- Cele ----
-.PHONY: all xex bg go sprites texts fonts music clean run
+# Śwat Gry (World Builder)
+WORLD_DIR := world
+WORLD_GEN_DIR := $(GEN_DIR)/world
+WORLD_INC := $(WORLD_GEN_DIR)/world.inc
+WORLD_YAMLS := $(wildcard $(WORLD_DIR)/*.yaml) $(wildcard $(WORLD_DIR)/*/*.yaml) $(wildcard $(WORLD_DIR)/*/screens/*.yaml)
 
-all: texts sprites bg go fonts music xex
+# ---- Cele ----
+.PHONY: all xex bg go sprites texts fonts music world clean run
+
+all: texts sprites bg go fonts music world xex
 
 # Updated Makefile rules
-xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(ASM_MAIN)
+xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
 	@echo "=== Weryfikacja mapy pamięci ==="
 	$(PYTHON) scripts/check_memory.py $(GEN_DIR)/game.lab MEMORY_USAGE.md
 
+# Kompilator świata gry
+world: $(WORLD_INC)
+
+$(WORLD_INC): $(WORLD_YAMLS)
+	-@mkdir $(WORLD_GEN_DIR) 2>nul || mkdir -p $(WORLD_GEN_DIR)
+	@echo "=== Kompilacja świata gry ==="
+	$(PYTHON) -m world_builder $(WORLD_DIR) $(WORLD_GEN_DIR)
 
 # Generowanie tekstów
 texts: $(GEN_DIR)/all_texts.asm
@@ -160,6 +173,7 @@ clean:
 help:
 	@echo "Dostępne cele:"
 	@echo "  make          — buduje wszystko + $(XEX_OUT)"
+	@echo "  make world    — buduje świat z plików YAML do gen/world"
 	@echo "  make bg       — konwertuje obraz tła ($(BG_IMG))"
 	@echo "  make sprites  — konwertuje sprite'y (moon + dziki-zgon)"
 	@echo "  make fonts    — konwertuje czcionki (.fnt → .asm)"
