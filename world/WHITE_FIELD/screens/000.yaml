@@ -26,9 +26,7 @@ objects:
   - object: TREE_SMALL
     x: 32
     y: 5
-  - object: FENCE_8
+  - object: FENCE_1
     x: 0
     y: 0
-  - object: FENCE_16
-    x: 9
-    y: 0
+    repeat-x: 40

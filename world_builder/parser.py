@@ -30,11 +30,47 @@ def parse_world_dir(base_dir: Path) -> GameWorld:
                 
             region_data = load_yaml(region_yaml)
             
+            objects_dict = {obj.get("id"): obj for obj in objects_data.get("objects", [])}
+            
             screens = []
             screens_dir = item / "screens"
             if screens_dir.exists() and screens_dir.is_dir():
                 for screen_file in screens_dir.glob("*.yaml"):
                     screen_data = load_yaml(screen_file)
+                    
+                    expanded_objects = []
+                    for obj_inst in screen_data.get("objects", []):
+                        obj_id = obj_inst.get("object")
+                        repeat_x = obj_inst.get("repeat-x", 1)
+                        repeat_y = obj_inst.get("repeat-y", 1)
+                        
+                        if repeat_x > 1 or repeat_y > 1:
+                            w = 1
+                            h = 1
+                            if obj_id in objects_dict:
+                                size = objects_dict[obj_id].get("size", {})
+                                w = size.get("width", 1)
+                                h = size.get("height", 1)
+                                
+                            base_x = obj_inst.get("x", 0)
+                            base_y = obj_inst.get("y", 0)
+                            
+                            for ry in range(repeat_y):
+                                for rx in range(repeat_x):
+                                    new_inst = dict(obj_inst)
+                                    new_inst.pop("repeat-x", None)
+                                    new_inst.pop("repeat-y", None)
+                                    new_inst["x"] = base_x + rx * w
+                                    new_inst["y"] = base_y + ry * h
+                                    expanded_objects.append(new_inst)
+                        else:
+                            # Also remove repeat flags if they are 1
+                            new_inst = dict(obj_inst)
+                            new_inst.pop("repeat-x", None)
+                            new_inst.pop("repeat-y", None)
+                            expanded_objects.append(new_inst)
+                            
+                    screen_data["objects"] = expanded_objects
                     screens.append(screen_data)
                     
             region_data['screens'] = screens

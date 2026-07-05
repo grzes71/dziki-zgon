@@ -84,7 +84,6 @@ xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FON
 world: $(WORLD_INC)
 
 $(WORLD_INC): $(WORLD_YAMLS)
-	-@mkdir $(WORLD_GEN_DIR) 2>nul || mkdir -p $(WORLD_GEN_DIR)
 	@echo "=== Kompilacja świata gry ==="
 	$(PYTHON) -m world_builder $(WORLD_DIR) $(WORLD_GEN_DIR)
 
