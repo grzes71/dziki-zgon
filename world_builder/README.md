@@ -100,6 +100,8 @@ grid:
 ### 4. Ekran (`screens/000.yaml` itp.)
 Ekrany budują właściwą planszę gry (odpowiadają trybowi graficznemu ANTIC 5, matrycy 40x10 kafelków). Zawierają listę zinstancjonowanych `objects` oraz system przejść do sąsiednich plansz `exits`.
 
+Dodatkowo, dla wygody projektowania poziomów, każdy obiekt na ekranie wspiera parametry `repeat-x` oraz `repeat-y`. Pozwala to na szybkie i bezkosztowe budowanie wielkich struktur (np. długich płotów czy ścian lasu) poprzez zduplikowanie danego obiektu, które pod spodem zostanie automatycznie przesunięte o fizyczną szerokość/wysokość definicji kafelka (tzw. "pędzel").
+
 ```yaml
 id: TAVERN
 objects:
@@ -110,6 +112,11 @@ objects:
   - object: TREE_SMALL
     x: 30
     y: 5
+  # Zbuduj płot składający się z 10 kafelków zaczynając od x=0, y=0
+  - object: FENCE_1
+    x: 0
+    y: 0
+    repeat-x: 10
 
 exits:
   # Przejdź na ekran VILLAGE, gdy gracz wejdzie w południową krawędź planszy
