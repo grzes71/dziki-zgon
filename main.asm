@@ -216,14 +216,17 @@ DLIST_STORY
     dta $70                ; 1 blank (razem 4 blank na dole)
     dta $41,a(DLIST_STORY) ; JVB
 
-; --- DL gra — ANTIC 4, 40×24 znaków ---
+; --- DL gra ---
 DLIST_GAME
-    dta $70,$70,$70        ; 3 puste linie
-    dta $44,a(GAME_SCREEN) ; LMS + ANTIC 4
-    .rept 22
-    dta $04                ; ANTIC 4 (kolejne linie)
+    dta $70,$70            ; 16 pustych linii
+    dta $F0                ; 8 pustych linii + DLI (koniec marginesu górnego)
+    dta $45,a(GAME_SCREEN_A5) ; ANTIC 5, 10 linii
+    .rept 9
+    dta $05
     .endr
-    dta $04                ; ostatnia linia (razem 24)
+    dta $90                ; 1 pusta linia + DLI
+    dta $42,a(GAME_SCREEN_A2) ; ANTIC 2, 4 linie
+    dta $02,$02,$02
     dta $41,a(DLIST_GAME)  ; JVB
 
 ; --- DL game over (ANTIC D, narrow, 128×96, 4 kolory) ---
@@ -259,6 +262,9 @@ VRAM_ARENA = SCREEN
 ; ===================================================================
     org $6000
     icl "gen/font.asm"
+
+    org $6400
+    icl "gen/game_font.asm"
 
 ; 11. Dane ekranu Game Over (w VRAM_ARENA)
 ; ===================================================================

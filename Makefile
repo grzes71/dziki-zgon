@@ -49,6 +49,8 @@ TITLE_IMG   := img/dziki-zgon.png
 # Czcionki
 FONT_FNT    := fonts/font.fnt
 FONT_ASM    := $(GEN_DIR)/font.asm
+GAME_FONT_FNT := fonts/game.fnt
+GAME_FONT_ASM := $(GEN_DIR)/game_font.asm
 
 # Muzyka
 MUSIC_SAP       := music/title.sap
@@ -65,9 +67,13 @@ TEXTS_ASM := $(patsubst texts/%.txt, $(GEN_DIR)/%_text.asm, $(TEXTS_SRC))
 
 all: texts sprites bg go fonts music xex
 
-xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(ASM_MAIN)
+# Updated Makefile rules
+xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
-	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT)
+	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
+	@echo "=== Weryfikacja mapy pamięci ==="
+	$(PYTHON) scripts/check_memory.py $(GEN_DIR)/game.lab MEMORY_USAGE.md
+
 
 # Generowanie tekstów
 texts: $(GEN_DIR)/all_texts.asm
@@ -111,12 +117,17 @@ $(GO_BIN): $(GO_IMG) scripts/img2asm.py
 	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(GO_IMG) 2 --all -o $(GO_PREFIX) --screen-base 0x4000 -c rle
 
 # Generowanie czcionek
-fonts: $(FONT_ASM)
+fonts: $(FONT_ASM) $(GAME_FONT_ASM)
 
 $(FONT_ASM): $(FONT_FNT) scripts/fnt2asm.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(FONT_FNT) → $(FONT_ASM) ==="
 	$(PYTHON) scripts/fnt2asm.py -i $(FONT_FNT) -o $@ -l FontData
+
+$(GAME_FONT_ASM): $(GAME_FONT_FNT) scripts/fnt2asm.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Konwersja $(GAME_FONT_FNT) → $(GAME_FONT_ASM) ==="
+	$(PYTHON) scripts/fnt2asm.py -i $(GAME_FONT_FNT) -o $@ -l GameFontData
 
 # Generowanie muzyki
 music: $(MUSIC_ASM) $(PLAYR_ASM)

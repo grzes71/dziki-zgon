@@ -10,15 +10,15 @@
 ;--------------------------------------------------------------
 .proc pmg_clear_all
     lda #0
-    ldx #239
+    tax
 @lp
     sta PLAYER0,x
     sta PLAYER1,x
     sta PLAYER2,x
     sta PLAYER3,x
     sta MISSILES,x
-    dex
-    bpl @lp
+    inx
+    bne @lp
     rts
 .endp
 

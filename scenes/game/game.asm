@@ -3,12 +3,25 @@
 ;----------------------------------------
 
 ;---- Adresy pamięci dla gry (współdzielone z main.asm przez .global) ----
-GAME_SCREEN   = SCREEN      ; mapa 40×24 = 960 bajtów (współdzielona arena VRAM)
+GAME_SCREEN_A5 = SCREEN      ; mapa 40×10 (ANTIC 5) = 400 bajtów
+GAME_SCREEN_A2 = SCREEN+400  ; mapa 40×4 (ANTIC 2) = 160 bajtów
 GAME_CHARSET  = $A800       ; charset gry — kafelki terenu (1 KB, CHBASE=$A8)
 
 ;---- Zmienne lokalne sceny ----
 game_fire_released
     dta $00
+
+; Paleta kolorów sprzętowych od PCOLR0 ($D012) do COLBK ($D01A)
+game_palette
+    dta $0E             ; PCOLR0
+    dta $0E             ; PCOLR1
+    dta $0E             ; PCOLR2
+    dta $0E             ; PCOLR3
+    dta $C8             ; COLPF0
+    dta $16             ; COLPF1
+    dta $0E             ; COLPF2
+    dta $00             ; COLPF3
+    dta $94             ; COLBK
 
 ;==============================================================
 ; game_init — Konfiguracja ANTIC 4 + PMG
@@ -27,80 +40,118 @@ game_fire_released
     lda #>DLIST_GAME
     sta DLISTH
 
-    ; --- Charset gry ($A800, używamy font.asm jako placeholder) ---
-    lda #$A8
+    ; --- Wczytanie początkowego charsetu (górny panel gry, game.fnt) ---
+    lda #$64
     sta CHBASE
 
-    ; --- Kolory gry (4 kolory: trawa, woda, góry, chaty) ---
-    lda #$94             ; ciemny niebieski — niebo/woda
+    ; --- Kolory (początkowe, bezpieczne) ---
+    lda #$00
     sta COLBK
-    lda #$C8             ; zielony — trawa
-    sta COLPF0
-    lda #$16             ; brązowy — góry/ziemia
-    sta COLPF1
-    lda #$0E             ; biały/szary — budynki
-    sta COLPF2
-    lda #$00             ; czarny — obrysy/PMG 5th player
-    sta COLPF3
 
-    ; --- PMG: rozmiar normalny, kolor biały dla gracza ---
+    ; --- Wypełnij mapę (ANTIC 5 i ANTIC 2) ---
+    jsr clear_game_screens
+
+    ; --- PMG: rozmiar normalny, włącz PMG ---
     lda #$00
     sta SIZEP0
     sta SIZEM
-    lda #$0E
-    sta PCOLR0
     lda #PRIOR_5TH
     sta PRIOR
-
     lda #>PMBASE_ADDR
     sta PMBASE
     lda #GRACTL_PM
     sta GRACTL
-
-    ; --- Pozycja startowa gracza (na środku) ---
     lda #$60
     sta HPOSP0
 
-    ; --- Wypełnij mapę testową (placeholder — potem dane z pliku) ---
-    jsr fill_test_map
+    ; --- Przygotuj przerwania DLI ---
+    lda #<game_dli_1
+    sta VDSLST
+    lda #>game_dli_1
+    sta VDSLST+1
 
     ; --- DMA ON ---
     lda #DMA_PMG_ON
     sta DMACTL
-    lda #$00             ; bez DLI na razie
+    lda #$80             ; włącz DLI
     sta NMIEN
 
     rts
 .endp
 
 ;==============================================================
-; fill_test_map — Wypełnia GAME_SCREEN wzorem testowym
+; clear_game_screens — Zeruje pamięć ekranów (ANTIC 5 + ANTIC 2)
+; Łącznie do wyzerowania 560 bajtów (400 + 160).
 ;==============================================================
-.proc fill_test_map
-    ldx #0
-@row
-    ; 40 znaków na wiersz, 24 wiersze
-    txa
-    lsr @               ; X/4 → różne kafelki co 4 wiersze
-    lsr @
-    and #$03            ; 4 rodzaje terenu
-    tay
-    lda TestTiles,y     ; wybierz kafelek
-
-    ldy #40
-@col
-    sta GAME_SCREEN,x
+.proc clear_game_screens
+    lda #0
+    tax
+@loop
+    sta GAME_SCREEN_A5,x
+    sta GAME_SCREEN_A5+$0100,x
+    cpx #$30                ; 512 + 48 = 560 bajtów
+    bcs @skip
+    sta GAME_SCREEN_A5+$0200,x
+@skip
     inx
-    dey
-    bne @col
-
-    cpx #<$03C0          ; 24 × 40 = 960 = $03C0
-    bne @row
-
+    bne @loop
     rts
+.endp
 
-TestTiles
-    dta $00,$28,$50,$78  ; 4 testowe kafelki (co 40 znaków w charset)
+;==============================================================
+; Przerwania DLI
+;==============================================================
+
+.proc game_dli_1
+    pha
+    txa
+    pha
+
+    ; Ustawienie całej palety ze zdefiniowanej tablicy
+    ldx #8
+@set_colors
+    lda game_palette,x
+    sta PCOLR0,x         ; PCOLR0 to $D012, aż do COLBK $D01A
+    dex
+    bpl @set_colors
+
+    ; Ustawienie fontu dla górnej części ekranu (game.fnt pod $6400 -> CHBASE=$64)
+    lda #$64
+    sta CHBASE
+
+    ; Przygotuj wektor na drugie DLI
+    lda #<game_dli_2
+    sta VDSLST
+    lda #>game_dli_2
+    sta VDSLST+1
+
+    pla
+    tax
+    pla
+    rti
+.endp
+
+.proc game_dli_2
+    pha
+
+    sta WSYNC            ; stabilizacja
+    lda #$00             ; czarne tło (lub inny kolor wg uznania)
+    sta COLPF2           ; kolor tła w ANTIC 2
+    lda #$0F             ; biały tekst
+    sta COLPF1           ; kolor znaków w ANTIC 2
+
+    ; Zmień font na font.fnt ($6000 -> CHBASE=$60)
+    lda #$60
+    sta CHBASE
+
+    ; Przywróć wektor na pierwsze DLI (na następną klatkę)
+    lda #<game_dli_1
+    sta VDSLST
+    lda #>game_dli_1
+    sta VDSLST+1
+
+    pla
+    rti
 .endp
 
 ;==============================================================
