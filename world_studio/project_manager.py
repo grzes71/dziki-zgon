@@ -89,12 +89,14 @@ class ProjectManager:
             screens_dict = self.screens.get(region_id, {})
             for screen_id, screen_def in screens_dict.items():
                 s_path = r_dir / "screens" / f"{screen_id}.yaml"
-                s_data = screen_def.model_dump(by_alias=True, exclude_defaults=True)
+                s_data = screen_def.model_dump(by_alias=True)
                 
-                # Pydantic might leave empty exits or objects. Clean them up if needed.
-                if 'exits' in s_data and not any(s_data['exits'].values()):
-                    # keep it, just in case, but usually exits is a dict with nulls
-                    pass
+                # Manual cleanup to match World Builder expectations
+                for obj in s_data.get("objects", []):
+                    if obj.get("repeat-x") == 1:
+                        del obj["repeat-x"]
+                    if obj.get("repeat-y") == 1:
+                        del obj["repeat-y"]
                 
                 # Make flow style for lists
                 # yaml.dump doesn't easily let us mix flow and block without custom representers

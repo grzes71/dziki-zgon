@@ -2,6 +2,6 @@ id: CROSSROADS
 exits:
   north: null
   south: null
-  west: TAVERN
   east: null
+  west: TAVERN
 objects: []

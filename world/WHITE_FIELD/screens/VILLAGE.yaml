@@ -2,9 +2,9 @@ id: VILLAGE
 exits:
   north: TAVERN
   south: null
-  west: null
   east: null
+  west: null
 objects:
-  - object: WELL
-    x: 15
-    y: 4
+- object: WELL
+  x: 15
+  y: 4
