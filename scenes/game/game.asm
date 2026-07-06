@@ -1,5 +1,5 @@
 ;----------------------------------------
-; scenes/game/game.asm — Gra właściwa (ANTIC 4, 40×24 znaków)
+; scenes/game/game.asm — Gra właściwa    
 ;----------------------------------------
 
 ;---- Adresy pamięci dla gry (współdzielone z main.asm przez .global) ----
