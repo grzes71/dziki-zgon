@@ -69,13 +69,31 @@ class ScreenCanvasWidget(QWidget):
                     self.project.world_config.start_position.y = int(y)
                     self.screen_changed.emit()
             elif self.active_tool:
-                # Add object
-                # first remove any exactly at this position to avoid dupes? 
-                # World Builder doesn't care, but for studio it's better.
-                self.screen_def.objects = [o for o in self.screen_def.objects if not (o.x == x and o.y == y)]
-                new_obj = ObjectInstance(object=self.active_tool, x=int(x), y=int(y), **{"repeat-x": 1, "repeat-y": 1})
-                self.screen_def.objects.append(new_obj)
-                self.screen_changed.emit()
+                active_obj_def = next((o for o in self.project.objects if o.id == self.active_tool), None)
+                if not active_obj_def:
+                    return
+                    
+                new_w = active_obj_def.size.width
+                new_h = active_obj_def.size.height
+                
+                overlap = False
+                obj_dict = {o.id: o for o in self.project.objects}
+                for inst in self.screen_def.objects:
+                    odef = obj_dict.get(inst.object)
+                    if not odef:
+                        continue
+                        
+                    inst_w = odef.size.width * inst.repeat_x
+                    inst_h = odef.size.height * inst.repeat_y
+                    
+                    if not (x >= inst.x + inst_w or inst.x >= x + new_w or y >= inst.y + inst_h or inst.y >= y + new_h):
+                        overlap = True
+                        break
+                        
+                if not overlap:
+                    new_obj = ObjectInstance(object=self.active_tool, x=int(x), y=int(y), **{"repeat-x": 1, "repeat-y": 1})
+                    self.screen_def.objects.append(new_obj)
+                    self.screen_changed.emit()
                 
         elif event.button() == Qt.RightButton:
             # Delete object at this pos

@@ -104,3 +104,89 @@ class ProjectManager:
                 self._save_yaml(s_path, s_data)
                 
         return True
+
+    def add_region(self, region_id: str, name: str, rows: int, columns: int) -> bool:
+        if region_id in self.regions:
+            return False
+            
+        region_def = RegionDef(
+            id=region_id,
+            name=name,
+            layout={"rows": rows, "columns": columns},
+            start_screen="START",
+            music=region_id
+        )
+        self.regions[region_id] = region_def
+        self.screens[region_id] = {}
+        return True
+
+    def add_screen(self, region_id: str, screen_id: str, exits: dict = None) -> bool:
+        if region_id not in self.regions:
+            return False
+            
+        if screen_id in self.screens[region_id]:
+            return False
+            
+        if exits is None:
+            exits = {}
+            
+        screen_def = ScreenDef(
+            id=screen_id,
+            exits={},
+            objects=[]
+        )
+        self.screens[region_id][screen_id] = screen_def
+        
+        self.update_screen_exits(region_id, screen_id, exits)
+        return True
+
+    def validate_screen_exits(self, region_id: str, screen_id: str, exits: dict) -> tuple[bool, str]:
+        if region_id not in self.regions:
+            return False, "Region not found."
+            
+        opposites = {
+            "north": "south",
+            "south": "north",
+            "east": "west",
+            "west": "east"
+        }
+        
+        for d, target_screen_id in exits.items():
+            if not target_screen_id:
+                continue
+            if target_screen_id == screen_id:
+                return False, f"Screen cannot link to itself ({d})."
+            
+            target_screen = self.screens[region_id].get(target_screen_id)
+            if target_screen:
+                opp = opposites[d]
+                existing_link = getattr(target_screen.exits, opp)
+                if existing_link and existing_link != screen_id:
+                    return False, f"Cannot set {d} exit to {target_screen_id}. It already has a {opp} exit pointing to {existing_link}."
+                    
+        return True, ""
+
+    def update_screen_exits(self, region_id: str, screen_id: str, exits: dict) -> bool:
+        if region_id not in self.regions or screen_id not in self.screens[region_id]:
+            return False
+            
+        screen_def = self.screens[region_id][screen_id]
+        screen_def.exits.north = exits.get("north")
+        screen_def.exits.south = exits.get("south")
+        screen_def.exits.east = exits.get("east")
+        screen_def.exits.west = exits.get("west")
+        
+        # Automatyczne ustawienie obustronnych przejść
+        opposites = {
+            "north": "south",
+            "south": "north",
+            "east": "west",
+            "west": "east"
+        }
+        
+        for d, opp in opposites.items():
+            linked_screen = exits.get(d)
+            if linked_screen and linked_screen in self.screens[region_id]:
+                setattr(self.screens[region_id][linked_screen].exits, opp, screen_id)
+                
+        return True

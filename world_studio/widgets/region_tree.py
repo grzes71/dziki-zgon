@@ -1,17 +1,23 @@
-from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem
-from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem, QMenu
+from PySide6.QtCore import Signal, Qt
+from PySide6.QtGui import QAction
 from world_studio.project_manager import ProjectManager
 
 class RegionTreeWidget(QTreeWidget):
     # Signals
     screen_double_clicked = Signal(str, str) # region_id, screen_id
     region_selected = Signal(str) # region_id
+    request_add_region = Signal()
+    request_add_screen = Signal(str) # region_id
+    request_edit_screen = Signal(str, str) # region_id, screen_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setHeaderHidden(True)
         self.itemDoubleClicked.connect(self._on_item_double_clicked)
         self.itemSelectionChanged.connect(self._on_selection_changed)
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self._on_context_menu)
 
     def populate(self, project: ProjectManager):
         self.clear()
@@ -47,3 +53,31 @@ class RegionTreeWidget(QTreeWidget):
             region_id = item.data(0, 33)
             screen_id = item.data(0, 34)
             self.screen_double_clicked.emit(region_id, screen_id)
+
+    def _on_context_menu(self, pos):
+        item = self.itemAt(pos)
+        menu = QMenu(self)
+
+        act_add_region = QAction("Add Region", self)
+        act_add_region.triggered.connect(lambda: self.request_add_region.emit())
+        
+        if not item:
+            menu.addAction(act_add_region)
+        else:
+            item_type = item.data(0, 32)
+            region_id = item.data(0, 33)
+            
+            if item_type == "REGION":
+                menu.addAction(act_add_region)
+                if region_id:
+                    act_add_screen = QAction(f"Add Screen to {region_id}", self)
+                    act_add_screen.triggered.connect(lambda: self.request_add_screen.emit(region_id))
+                    menu.addAction(act_add_screen)
+            elif item_type == "SCREEN":
+                screen_id = item.data(0, 34)
+                if region_id and screen_id:
+                    act_edit_screen = QAction(f"Edit Screen {screen_id}", self)
+                    act_edit_screen.triggered.connect(lambda: self.request_edit_screen.emit(region_id, screen_id))
+                    menu.addAction(act_edit_screen)
+
+        menu.exec_(self.viewport().mapToGlobal(pos))
