@@ -13,7 +13,11 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 ├── hardware.asm             # Wszystkie equ dla GTIA/ANTIC/POKEY/OS + stałe projektu
 ├── zeropage.asm             # Zmienne page zero ($80 SRC_TMP, $81 GAME_STATE)
 ├── lib/
-│   └── pmg.asm              # Procedury PMG: pmg_clear_all, pmg_clear_range
+│   ├── pmg.asm              # Procedury PMG: pmg_clear_all, pmg_clear_range
+│   └── world_renderer.asm   # Procedury renderowania map świata (build_screen)
+├── tests/
+│   ├── test_*.py            # Skrypty testowe dla środowiska Python oraz py65
+│   └── *_test.asm           # Wsady testowe dla jednostkowych/integracyjnych testów MPU 6502
 ├── fonts/
 │   └── font.asm             # Własna czcionka 128 znaków (1 KB)
 └── scenes/
@@ -40,6 +44,8 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 | `scenes/title/title.asm` | Logika ekranu tytułowego (init, run, DLI, tabele kolorów) |
 | `scenes/*/` | Kolejne sceny — każda z własnym `_init` i `_run` |
 | `lib/pmg.asm` | Współdzielone procedury PMG |
+| `lib/world_renderer.asm` | Renderowanie świata wygenerowanego w World Builder do VRAM |
+| `tests/` | Konfiguracje testów asercyjnych i wsady symulujące pamięć dla 6502 |
 | `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm (+ `.rle` przy `-c rle`) |
 | `world_builder/` | Kompilator świata gry (YAML → optymalne struktury ASM i tablice wskaźników) |
 | `fonts/font.asm` | Własna czcionka 128 znaków (1 KB, $6000, CHBASE=$60) |
@@ -49,9 +55,10 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 ## Build
 
 ```bash
-make          # wszystko: sprite'y → tło → XEX
+make          # wszystko: sprite'y → tło → yaml → TESTY → XEX
 make sprites  # tylko moon + dziki-zgon
 make bg       # tylko tło
+make test     # uruchamia zestaw testów jednostkowych i integracyjnych z pytest
 make clean    # usuwa wygenerowane
 ```
 
@@ -74,18 +81,23 @@ Projekt używa dedykowanego kompilatora w Pythonie (`world_builder/`) do konwers
 
 W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie problemów z pamięcią gry:
 
-1. **`atari-smoke-test`**
+1. **Automatyczne Testy (Pytest + Py65)**
+   - Wbudowane zautomatyzowane ramy testów dla kodu 6502 (`make test`, będące też częścią `make all`).
+   - Pozwalają na testowanie modułów asemblera (np. `build_screen`) symulując mikroprocesor za pomocą `py65.devices.mpu6502.MPU()`.
+   - **Testy jednostkowe**: Inicjują czystą pamięć, wstrzykują atrapy rejestrów, uruchamiają MPU i badają zrzutowany VRAM.
+   - **Testy integracyjne**: Potrafią parsować autentyczne pliki `.yaml` z mapą, wyliczać poprawną macierz oczekiwanych płytek ekranowych i porównywać je w 100% z wykonanym skompilowanym blokiem gry po przejściu procedur asemblerowych. Zapobiega to np. ukrytym błędom przekroczenia limitu rozmiaru tablic przez instrukcje procesora (wykryto np. wrap 8-bitowy).
+
+2. **`atari-smoke-test`**
    - Własna aplikacja CLI (Python) służąca do automatycznego weryfikowania poprawności uruchamiania obrazów XEX w emulatorze Altirra.
    - Jeśli po uruchomieniu gry emulator "wisi" albo wyłącza się przedwcześnie, `atari-smoke-test` to wykryje i rzuci odpowiedni błąd (np. kod wyjścia 5 - `EmulatorCrashedError`).
    - Uruchamianie (w środowisku `.venv`): `python -m atari_smoke_test.main --xex dziki_zgon.xex --timeout 5`
-   - Testy jednostkowe: `pytest tests/`
 
-2. **`dump.py` (Zrzucanie segmentów pamięci XEX)**
+3. **`dump.py` (Zrzucanie segmentów pamięci XEX)**
    - W przypadku pojawienia się błędu "PROGRAM ERROR" lub zawieszenia programu zaraz po starcie, użyj skryptu `dump.py` do sprawdzenia wewnętrznej struktury wybudowanego pliku XEX.
    - Uruchamianie: `python dump.py`
    - Pokazuje on przedziały adresów każdego z zapisanych bloków, dzięki czemu łatwo wykryjesz czy MADS połączył ("zmergował") bloki leżące blisko siebie w jeden wielki segment i czy przez to np. blok inicjalizacyjny (jak `org $AC00`) nie został przykryty zerami ładującymi się z bloku nadrzędnego (jak `org $AA82` w `rmtplayr`).
 
-3. **`check_memory.py` (Automatyczna walidacja mapy pamięci)**
+4. **`check_memory.py` (Automatyczna walidacja mapy pamięci)**
    - Skrypt zintegrowany bezpośrednio z Makefile. Podczas kompilacji (`make all`) automatycznie weryfikuje zajętość RAM-u.
    - Analizuje zrzuconą przez kompilator tablicę symboli `game.lab` i samodzielnie aktualizuje tabele adresów i pojemności bloków w `MEMORY_USAGE.md`.
    - Zwalnia nas to z ręcznego aktualizowania dokumentacji pamięci — plik MD zawsze w 100% odpowiada temu, co siedzi w pliku XEX.
