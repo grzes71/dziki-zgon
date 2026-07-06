@@ -60,9 +60,12 @@ def parse_world_dir(base_dir: Path) -> GameWorld:
                                     new_inst = dict(obj_inst)
                                     new_inst.pop("repeat-x", None)
                                     new_inst.pop("repeat-y", None)
-                                    new_inst["x"] = base_x + rx * w
-                                    new_inst["y"] = base_y + ry * h
-                                    expanded_objects.append(new_inst)
+                                    new_x = base_x + rx * w
+                                    new_y = base_y + ry * h
+                                    if new_x <= 39 and new_y <= 9:
+                                        new_inst["x"] = new_x
+                                        new_inst["y"] = new_y
+                                        expanded_objects.append(new_inst)
                         else:
                             # Also remove repeat flags if they are 1
                             new_inst = dict(obj_inst)

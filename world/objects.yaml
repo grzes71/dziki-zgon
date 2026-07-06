@@ -1,50 +1,302 @@
 objects:
-  - id: HOUSE_SMALL
-    code: 1
-    size:
-      width: 4
-      height: 2
-    flags:
-      blocking: true
-      interactive: false
-    tiles: [1, 2, 3, 4, 65, 66, 163, 164]
-
-  - id: TREE_SMALL
-    code: 2
-    size:
-      width: 2
-      height: 2
-    flags:
-      blocking: true
-      interactive: false
-    tiles: [53, 54, 85, 86]
-
-  - id: WELL
-    code: 3
-    size:
-      width: 2
-      height: 2
-    flags:
-      blocking: true
-      interactive: true
-    tiles: [30, 31, 62, 63]
-
-  - id: THE_TAVERN
-    code: 4
-    size:
-      width: 6
-      height: 2
-    flags:
-      blocking: true
-      interactive: false
-    tiles: [129, 130, 131, 131, 130, 132, 163, 164, 193, 194, 163, 164]
-
-  - id: FENCE_1
-    code: 5
-    size:
-      width: 1
-      height: 1
-    flags:
-      blocking: true
-      interactive: false
-    tiles: [21]
+- object: HOUSE_SMALL
+  id: HOUSE_SMALL
+  code: 1
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [1, 2, 3, 4, 65, 66, 163, 164]
+- object: TREE_SMALL
+  id: TREE_SMALL
+  code: 2
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [53, 54, 85, 86]
+- object: WELL
+  id: WELL
+  code: 3
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [30, 31, 62, 63]
+- object: THE_TAVERN
+  id: THE_TAVERN
+  code: 4
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [129, 130, 131, 131, 130, 132, 163, 164, 87, 88, 163, 164]
+- object: FENCE_1
+  id: FENCE_1
+  code: 5
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [21, 22]
+- object: TREE_2
+  id: TREE_2
+  code: 6
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [51, 52, 83, 84]
+- object: BRIDGE
+  id: BRIDGE
+  code: 7
+  size:
+    width: 4
+    height: 1
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [23, 24, 25, 26]
+- object: HOUSE_TALL
+  id: HOUSE_TALL
+  code: 8
+  size:
+    width: 4
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [1, 2, 3, 4, 34, 35, 36, 34, 65, 66, 34, 67]
+- object: TOWER
+  id: TOWER
+  code: 9
+  size:
+    width: 2
+    height: 6
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [224, 225, 33, 34, 34, 33, 33, 34, 34, 33, 87, 88]
+- object: CASTLE_SMALL
+  id: CASTLE_SMALL
+  code: 10
+  size:
+    width: 8
+    height: 2
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [59, 60, 55, 55, 55, 55, 59, 60, 91, 92, 33, 87, 88, 33, 91, 92]
+- object: CASTLE_BIG
+  id: CASTLE_BIG
+  code: 11
+  size:
+    width: 8
+    height: 4
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [0, 0, 0, 96, 97, 0, 0, 0, 59, 60, 55, 58, 58, 55, 59, 60, 91, 92, 33, 33,
+    33, 33, 91, 92, 91, 92, 34, 27, 28, 34, 91, 92]
+- object: ROCK_1
+  id: ROCK_1
+  code: 12
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [10, 12]
+- object: ROCK_2
+  id: ROCK_2
+  code: 13
+  size:
+    width: 3
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [10, 11, 12]
+- object: BRICK_WALL
+  id: BRICK_WALL
+  code: 14
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [29]
+- object: CROSS_1
+  id: CROSS_1
+  code: 15
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [43, 44]
+- object: CROSS_2
+  id: CROSS_2
+  code: 16
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [46, 47]
+- object: CROSS_3
+  id: CROSS_3
+  code: 17
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [75, 76]
+- object: SIGNPOINT_RIGHT
+  id: SIGNPOINT_RIGHT
+  code: 18
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [169, 170]
+- object: GROUND_BROWN_UP
+  id: GROUND_BROWN_UP
+  code: 19
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [45]
+- object: GROUND_BROWN_DOWN
+  id: GROUND_BROWN_DOWN
+  code: 20
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [77]
+- object: GROUND_GREEN_UP
+  id: GROUND_GREEN_UP
+  code: 21
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [32]
+- object: GROUND_GREEN_DOWN
+  id: GROUND_GREEN_DOWN
+  code: 22
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [64]
+- object: WATER_UP
+  id: WATER_UP
+  code: 23
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [160]
+- object: WATER_DOWN
+  id: WATER_DOWN
+  code: 24
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [192]
+- object: WATER
+  id: WATER
+  code: 25
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [202]
+- object: WAVES
+  id: WAVES
+  code: 26
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [133]
+- object: TREE_3
+  id: TREE_3
+  code: 27
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [7, 8, 39, 40]
+- object: SIGNPOINT_LEFT
+  id: SIGNPOINT_LEFT
+  code: 28
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [165, 166]
+- object: WAVES_UP
+  id: WAVES_UP
+  code: 29
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [102]
+- object: WAVES_DOWN
+  id: WAVES_DOWN
+  code: 30
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [101]

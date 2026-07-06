@@ -83,6 +83,7 @@ witcher-atari-game/
 │   └── py65.md                  # Dokumentacja emulatora Py65 (6502 w Pythonie)
 ├── world/                       # Dane wejściowe w formacie YAML definiujące świat, ekrany i obiekty gry
 ├── world_builder/               # Dedykowany kompilator map gry w Pythonie (YAML → ASM)
+├── object_studio/               # Graficzny edytor obiektów gry w PySide6 (GUI do edycji world/objects.yaml)
 ├── tests/                       # Testy jednostkowe i integracyjne (Py65, World Builder)
 └── rgb2a8/                      # Referencyjna paleta Atari PAL (256 wartości RGB)
 ```
@@ -96,6 +97,7 @@ witcher-atari-game/
 | [Pillow](https://python-pillow.org/) | 12.x | Biblioteka do przetwarzania obrazów (`pip install -r requirements.txt`) |
 | [PyYAML](https://pyyaml.org/) | — | Do parsowania plików map w World Builderze (`pip install -r requirements.txt`) |
 | [Pydantic](https://docs.pydantic.dev/) | 2.x | Do zaawansowanej walidacji struktury map i obiektów (`pip install -r requirements.txt`) |
+| [PySide6](https://doc.qt.io/qtforpython-6/) | 6.x | Do interfejsu graficznego narzędzia Object Studio (`pip install pyside6`) |
 | Emulator Atari | — | Np. [Altirra](https://www.virtualdub.org/altirra.html), Atari800 |
 | [Atari Image Converter](https://github.com/grzes71/py-image-converter/#atari-image-converter) | — | Konwersja obrazów na formaty Atari (PNG → GR7, GR8, MIC, i inne) |
 | [html-to-markdown](https://github.com/grzes71/html-to-markdown#html-to-markdown) | — | Konwersja dokumentacji HTML do Markdown
