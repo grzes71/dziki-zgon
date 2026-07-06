@@ -84,6 +84,7 @@ witcher-atari-game/
 ├── world/                       # Dane wejściowe w formacie YAML definiujące świat, ekrany i obiekty gry
 ├── world_builder/               # Dedykowany kompilator map gry w Pythonie (YAML → ASM)
 ├── object_studio/               # Graficzny edytor obiektów gry w PySide6 (GUI do edycji world/objects.yaml)
+├── world_studio/                # Graficzny edytor map świata w PySide6 (GUI do wizualnej edycji regionów i ekranów)
 ├── tests/                       # Testy jednostkowe i integracyjne (Py65, World Builder)
 └── rgb2a8/                      # Referencyjna paleta Atari PAL (256 wartości RGB)
 ```

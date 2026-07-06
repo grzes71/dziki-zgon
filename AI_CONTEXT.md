@@ -65,6 +65,12 @@ make clean    # usuwa wygenerowane
 Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
 Instalacja zależności: `pip install -r requirements.txt`
 
+## Narzędzia GUI (Object Studio & World Studio)
+
+Do wizualnego projektowania danych (YAML) bez dotykania kodu używane są dwie natywne aplikacje napisane w PySide6:
+1. **Object Studio** (`object_studio/`): Graficzny kreator `world/objects.yaml`. Renderuje kafelki na podstawie załadowanej czcionki (`.fnt`) oraz definicji kolorów (ANTIC 4/5), pozwalając na edycję rozmiarów, flag (blocking/interactive) i z mapowania na znaki Atari.
+2. **World Studio** (`world_studio/`): Kompleksowy edytor map i ekranów regionów. Zapewnia skalowalny makro-widok całego regionu (renderowany dynamicznie z powiązań między ekranami) oraz mikro-edytor (`Screen Canvas` - 40x10 znaków) pozwalający na łatwe rozmieszczanie wygenerowanych obiektów, wsparcie poleceń powtarzania (`repeat-x/y` docinane do granic ekranu) oraz ustawianie pozycji startowej Gracza. Zapisuje wprost do plików `.yaml` zgodnie z zasadą SSOT.
+
 ## Narzędzie World Builder
 
 Projekt używa dedykowanego kompilatora w Pythonie (`world_builder/`) do konwersji definicji świata gry w formacie YAML na zoptymalizowany kod asemblera dla układu 6502. 
