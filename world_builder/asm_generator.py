@@ -154,16 +154,6 @@ class AsmGenerator:
         out.append("\n; Global Screen Translation Constants")
         for s in self.screens_sorted:
             out.append(f"SCREEN_ID_{s.id} = {self.screen_idx[s.id]}")
-            
-        out.append("\n; Player Spawn Configuration")
-        start_region = self.world.world.start_region
-        start_screen = self.world.world.start_screen
-        start_pos = self.world.world.start_position
-        
-        out.append(f"START_REGION_ID = {self.region_idx[start_region]}")
-        out.append(f"START_SCREEN_ID = {self.screen_idx[start_screen]}")
-        out.append(f"START_POS_X = {start_pos.x}")
-        out.append(f"START_POS_Y = {start_pos.y}")
         
         with open(self.out_dir / "world.inc", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")

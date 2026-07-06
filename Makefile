@@ -69,9 +69,9 @@ WORLD_INC := $(WORLD_GEN_DIR)/world.inc
 WORLD_YAMLS := $(wildcard $(WORLD_DIR)/*.yaml) $(wildcard $(WORLD_DIR)/*/*.yaml) $(wildcard $(WORLD_DIR)/*/screens/*.yaml)
 
 # ---- Cele ----
-.PHONY: all xex bg go sprites texts fonts music world clean run
+.PHONY: all xex bg go sprites texts fonts music world clean run smoke-test test
 
-all: texts sprites bg go fonts music world xex
+all: texts sprites bg go fonts music world test xex
 
 # Updated Makefile rules
 xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
@@ -156,6 +156,14 @@ $(MUSIC_ASM_ATASM): $(MUSIC_RMT)
 $(MUSIC_ASM): $(MUSIC_ASM_ATASM) scripts/atasm2mads.py
 	@echo "=== Konwersja ATasm → MADS ==="
 	$(PYTHON) scripts/atasm2mads.py -i $< -o $@
+
+smoke-test: all
+	@echo "=== Uruchamianie atari-smoke-test ==="
+	$(PYTHON) -m atari_smoke_test.main --xex $(XEX_OUT) --timeout 5
+
+test:
+	@echo "=== Uruchamianie testów jednostkowych (Py65) ==="
+	$(PYTHON) -m pytest tests/
 
 $(PLAYR_ASM): music/rmtplayr.asm scripts/atasm2mads.py
 	-@mkdir $(GEN_DIR)

@@ -30,3 +30,7 @@ objects:
     x: 0
     y: 0
     repeat-x: 40
+  - object: FENCE_1
+    x: 0
+    y: 9
+    repeat-x: 40

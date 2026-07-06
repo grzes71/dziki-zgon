@@ -29,6 +29,7 @@ disable_basic_loader
     ; --- Biblioteki (procedury wielokrotnego użytku) ---
     icl "lib/pmg.asm"
     icl "lib/rle.asm"
+    icl "lib/world_renderer.asm"
 
     ; --- Sceny (każda eksportuje _init i _run) ---
     icl "scenes/title/title.asm"
