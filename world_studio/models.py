@@ -1,0 +1,57 @@
+from pydantic import BaseModel, Field, ConfigDict
+from typing import List, Optional, Dict
+
+class ObjectSize(BaseModel):
+    width: int = Field(ge=1, le=16)
+    height: int = Field(ge=1, le=16)
+
+class ObjectFlags(BaseModel):
+    blocking: bool = False
+    interactive: bool = False
+
+class ObjectDefinition(BaseModel):
+    id: str
+    code: int = Field(ge=1, le=255)
+    size: ObjectSize
+    flags: ObjectFlags
+    tiles: List[int]
+    
+class ObjectInstance(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    
+    object: str
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=9)
+    repeat_x: int = Field(default=1, alias="repeat-x")
+    repeat_y: int = Field(default=1, alias="repeat-y")
+
+class ScreenExits(BaseModel):
+    north: Optional[str] = None
+    south: Optional[str] = None
+    east: Optional[str] = None
+    west: Optional[str] = None
+
+class ScreenDef(BaseModel):
+    id: str
+    exits: ScreenExits = Field(default_factory=ScreenExits)
+    objects: List[ObjectInstance] = Field(default_factory=list)
+
+class RegionLayout(BaseModel):
+    rows: int
+    columns: int
+
+class RegionDef(BaseModel):
+    id: str
+    name: str
+    layout: RegionLayout
+    start_screen: str
+    music: str
+
+class StartPosition(BaseModel):
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=9)
+
+class WorldConfig(BaseModel):
+    start_region: str
+    start_screen: str
+    start_position: StartPosition
