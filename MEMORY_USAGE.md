@@ -22,66 +22,65 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$0088` – `$0089`** | 2 B | `TILE_PTR` | Zero Page | Wskaźnik na kafelki obiektu (World Builder). |
 | **`$008A` – `$008A`** | 1 B | `GAME_SCREEN_ID` | Zero Page | Globalny ID aktualnego ekranu mapy. |
 | **`$008B` – `$0091`** | 7 B | Zmienne renderera | Zero Page | Rejestry iteracyjne pętli renderującej (X, Y, W, H, CODE, TMP_X, TMP_Y). |
-| **`$00CB` – `$00DD`** | 21 B | `p_tis` .. `tmp` | Zero Page | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera). |
+| **`$00CB` – `$00DD`** | 19 B | `p_tis` .. `tmp` | Zero Page | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera). |
 | **`$0200` – `$0201`** | 2 B | `VDSLST` | OS RAM | Wektor przerwania DLI (Display List Interrupt) w pamięci cieni OS. |
 | **`$2000` – `$2002`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
-| **`$2003` – `$200A`** | 8 B | `disable_basic_loader`| Kod programu | Wyłączenie BASICa (obsługa ini). |
-| **`$200B` – `$2036`** | 44 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$2036` – `$207D`** | 71 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$207D` – `$2376`** | 761 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
-| **`$2453` – `$2377`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
-| **`$2454` – `$23E6`** | 111 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$24C6` – `$23E7`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
-| **`$24C7` – `$24C9`** | 226 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
-| **`$266E` – `$24CA`** | 1 B | `gameover_fire_released`| Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$266F` – `$25BF`** | 245 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
-| **`$279B` – `$2664`** | 165 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
-| **`$2665` – `$26FF`** | 155 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
-| **`$2900` – `$270E`** | 15 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
-| **`$290F` – `$283C`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
-| **`$2A3D` – `$2863`** | 39 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
-| **`$2A64` – `$28F8`** | 149 B | `DzikizgonData` | Dane (Sprites) | Skompresowane RLE dane graficzne logo "Dziki Zgon". |
-| **`$2AF9` – `$295A`** | 98 B | `MoonData` | Dane (Sprites) | Skompresowane RLE dane graficzne księżyca. |
-| **`$295B` – `$3E7F`** | **5413 B** | — | **WOLNY RAM** | Główny, ciągły obszar wolnej pamięci w dolnym RAM-ie na logikę gry / silnik. |
-| **`$3E80` – `$3FEE`** | 367 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry (Title, Story, Game, GameOver). |
-| **`$3FEF` – `$3FFF`** | **17 B** | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
+| **`$2003` – `$200A`** | 8 B | `disable_basic_loader` | Kod programu | Wyłączenie BASICa (obsługa ini). |
+| **`$200B` – `$2035`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
+| **`$2036` – `$2141`** | 268 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$2142` – `$2452`** | 785 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
+| **`$2453` – `$2453`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
+| **`$2454` – `$24C5`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
+| **`$24C6` – `$24C6`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
+| **`$2557` – `$266D`** | 279 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
+| **`$266E` – `$266E`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
+| **`$26D3` – `$279A`** | 200 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
+| **`$279B` – `$28FF`** | 357 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$27C9` – `$28FF`** | 311 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
+| **`$2900` – `$290E`** | 15 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
+| **`$290F` – `$2A3C`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
+| **`$2A3D` – `$2A63`** | 39 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
+| **`$2A64` – `$2AF8`** | 149 B | `DzikizgonData` | Dane (Sprites) | Skompresowane RLE dane graficzne logo "Dziki Zgon". |
+| **`$2AF9` – `$2B5A`** | 98 B | `MoonData` | Dane (Sprites) | Skompresowane RLE dane graficzne księżyca. |
+| **`$2B5B` – `$3E7F`** | 4901 B | — | **WOLNY RAM** | Główny, ciągły obszar wolnej pamięci w dolnym RAM-ie na logikę gry / silnik. |
+| **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry (Title, Story, Game, GameOver). |
+| **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
 | **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). Rozpakowywana w runtime, zwalnia ogromne połacie RAM. |
 | **`$5E10` – `$5F4F`** | 320 B | `FOOTER_ADDR` | VRAM / Bufor | Tekst stopki tytułowej / tekst Story / tekst GameOver. *Współdzielony.* |
-| **`$5F50` – `$5FFF`** | **176 B** | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
+| **`$5F50` – `$5FFF`** | 176 B | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. Wskazywana przez `CHBASE = $64`. |
-| **`$6800` – `$7FFF`** | **6144 B** | — | **WOLNY RAM** | Gigantyczny, ciągły blok wolnego RAM-u odzyskany dzięki VRAM_ARENA. |
-| **`$8000` – `$9DC3`** | 7620 B | `ROM_DATA` | Dane (ROM) | Skompresowane grafiki w XEX (`title.rle` oraz `gameover.rle`). Rozpakowywane do `VRAM_ARENA`. |
-| **`$9DC4` – `$9E2F`** | 108 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
-| **`$9E30` – `$9FFF`** | **464 B** | — | **WOLNY RAM** | Wolna pamięć powyżej skompresowanych danych RLE, tuż pod granicą PMG. |
+| **`$6800` – `$7FFF`** | 6144 B | — | **WOLNY RAM** | Gigantyczny, ciągły blok wolnego RAM-u odzyskany dzięki VRAM_ARENA. |
+| **`$8000` – `$9F5A`** | 8027 B | `ROM_DATA` | Dane (ROM) | Skompresowane grafiki w XEX (`title.rle` oraz `gameover.rle`). Rozpakowywane do `VRAM_ARENA`. |
+| **`$9F5B` – `$9FC3`** | 105 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
+| **`$9FC4` – `$9FFF`** | 60 B | `DUMMY_VBI` | Kod programu | Zapasowy handler VBI używany przez system audio (obszar zajęty, nie jest wolnym RAM-em). |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |
 | **`$A500` – `$A5FF`** | 256 B | `PLAYER1` | Pamięć PMG | Klatka/obraz gracza P1. |
 | **`$A600` – `$A6FF`** | 256 B | `PLAYER2` | Pamięć PMG | Klatka/obraz gracza P2. |
 | **`$A700` – `$A7FF`** | 256 B | `PLAYER3` | Pamięć PMG | Klatka/obraz gracza P3. |
-| **`$A800` – `$ABFF`** | 1024 B | `GAME_CHARSET` | Dane (Opcj.) | Pierwotnie miejsce na charset, aktualnie nieużywane przez grę, z powodu przeniesienia fontów pod $6000/$6400. Rezerwa. Odtwarzacz RMT nadpisuje część tego obszaru. |
-| **`$AC00` – `$ACFF`** | **256 B** | — | **WOLNY RAM** | Wolna pamięć (pokrywa się częściowo ze zmiennymi i kodem RMT). |
-| **`$AD00` – `$B4BE`** | 1983 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). Część danych i zmiennych rozciąga się wstecz od `$AA82` do `$ACFF`. |
-| **`$B4BF` – `$B4FF`** | **65 B** | — | **WOLNY RAM** | Padding wyrównania do następnej strony pamięci dla modułu muzycznego. |
-| **`$B500` – `$B810`** | 785 B | `title_music.asm`| Dane (Muzyka) | Skompilowany i dostrojony moduł muzyczny RMT ekranu tytułowego. |
-| **`$B811` – `$BFFF`** | **2031 B** | — | **WOLNY RAM** | Wolna pamięć za modułem muzycznym (pod ROM-em BASIC-a). |
+| **`$A800` – `$A9DF`** | 480 B | `GAME_CHARSET` | Dane (Opcj.) | Pierwotnie miejsce na charset, aktualnie nieużywane przez grę, z powodu przeniesienia fontów pod $6000/$6400. Rezerwa. Odtwarzacz RMT nadpisuje część tego obszaru. |
+| **`$A9E0` – `$ACFF`** | 800 B | `rmtplayr_vars` | Dane (Odtwarzacz) | Zmienne i tabele odtwarzacza RMT (`TRACK_VARIABLES`, `FRQTAB`, `VOLUMETAB`); obszar zajęty. |
+| **`$AD00` – `$B241`** | 1346 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT (kod + tabele częstotliwości). Część danych i zmiennych rozciąga się wstecz od `$AA82` do `$ACFF`. |
+| **`$B242` – `$B2FF`** | 190 B | — | **WOLNY RAM** | Padding wyrównania do następnej strony pamięci dla modułu muzycznego. |
+| **`$B300` – `$B610`** | 785 B | `title_music.asm` | Dane (Muzyka) | Skompilowany i dostrojony moduł muzyczny RMT ekranu tytułowego. |
+| **`$B611` – `$BFFF`** | 2543 B | — | **WOLNY RAM** | Wolna pamięć za modułem muzycznym (pod ROM-em BASIC-a). |
 
 ---
 
 ## Analiza Wolnej Pamięci RAM
 
-Dzięki przeniesieniu odtwarzacza RMT pod ROM BASIC-a, gra posiada zredukowaną fragmentację i bardzo duże bloki wolnego RAM-u, podzielone na następujące obszary:
+Dostępne wolne obszary RAM (zgodne z tabelą powyżej):
 
-1.  **`$2891` – `$3E7F` (5 615 B)**: Główny silnik gry, logika ruchu przeciwników, mechanika walki.
-2.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionką.
-3.  **`$6800` – `$7FFF` (6 144 B)**: Dane map, tabele położeń obiektów.
-4.  **`$8000` – `$9FFF` (8 192 B)**: **Skonsolidowany, wielki blok (8 KB)** w górnym RAM uzyskany po przeniesieniu muzyki. Idealny na bardzo duże zasoby, wczytywane pliki czy duże mapy.
-5.  **`$AC75` – `$ACFF` (139 B)**: Wolny obszar między inicjalizacją dźwięku a playerem.
-6.  **`$B4BF` – `$B4FF` (65 B)**: Wyrównanie pamięci dla muzyki.
-7.  **`$B811` – `$BFFF` (2 031 B)**: Pozostała wolna przestrzeń pod ROM-em BASIC-a po załadowaniu playera i modułu.
+1.  **`$2B5B` – `$3E7F` (4 901 B)**: Główny, ciągły blok wolnej pamięci w dolnym RAM-ie na logikę gry.
+2.  **`$3FE8` – `$3FFF` (24 B)**: Mały bufor pomiędzy Display Listami a areną VRAM.
+3.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionkami.
+4.  **`$6800` – `$7FFF` (6 144 B)**: Największy wolny blok w dolnym RAM-ie, dobry na duże struktury danych.
+5.  **`$B242` – `$B2FF` (190 B)**: Wolny obszar pomiędzy kodem playera RMT a modułem muzycznym.
+6.  **`$B611` – `$BFFF` (2 543 B)**: Wolna pamięć pod ROM-em BASIC-a za modułem muzycznym.
 
-Zredukowano znacznie fragmentację pamięci z 8 małych dziur do potężnych, jednolitych bloków (głównie `$8000-$9FFF`), co dramatycznie ułatwia projektowanie złożonej logiki gry.
+Łącznie wolny RAM z tych bloków to **13 978 B**.
 
 ---
 
