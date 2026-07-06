@@ -124,45 +124,10 @@ make clean BG_PREFIX=title-0a && make
 altirra dziki_zgon.xex
 ```
 
-## Konwerter obrazów (`scripts/img2asm.py`)
+## Narzędzia
 
-```
-python img2asm.py <obraz> <bpp> [opcje]
+Szczegółowe opisy wszystkich dedykowanych narzędzi, w tym **Konwertera obrazów**, kompilatora **World Builder**, oraz wizualnych edytorów GUI (**World Studio**, **Object Studio**), przeniesiono do pliku: [TOOLS.md](TOOLS.md).
 
-Argumenty:
-  obraz              Plik PNG, BMP lub GIF
-  bpp                1=2 kolory, 2=4 kolory, 4=16, 8=256
-
-Opcje:
-  --all              Generuj wszystkie formaty (.bin, .asm, _colors.asm, _displaylist.asm; przy -c rle także .rle)
-  --bin              Tylko surowy plik .bin
-  --asm              Tylko dane .byte (MADS)
-  --colors           Tylko plik z kolorami (_colors.asm)
-  --dl               Tylko Display List (_displaylist.asm)
-  --screen-base ADR  Adres bazowy ekranu (domyślnie: 0x4000)
-  -c {rle}           Wybór kompresji (RLE)
-  -l N               Bajtów na linię w .byte (domyślnie: 8)
-  --test             Uruchom testy jednostkowe DL
-  -o NAZWA           Bazowa nazwa plików wyjściowych
-```
-
-### Przykłady
-
-```bash
-# Konwersja ekranu 160×192, 4 kolory — wszystkie pliki do katalogu gen/
-mkdir -p gen
-cd gen && python ../scripts/img2asm.py ../img/title.png 2 --all -o title --footer 0x5E10
-
-# Sprite'y — same dane .byte (do katalogu gen/)
-cd gen && python ../scripts/img2asm.py ../img/moon.png 1 --asm -o moon.asm -l 4
-cd gen && python ../scripts/img2asm.py ../img/dziki-zgon.png 1 --asm -o dziki-zgon.asm -l 5
-
-# Tylko dane .byte z kompresją RLE
-python scripts/img2asm.py img/sprite.bmp 2 --asm -c rle
-
-# Testy algorytmu Display List
-python scripts/img2asm.py --test
-```
 
 ## Szczegóły techniczne
 
