@@ -160,15 +160,15 @@ objects:
     blocking: true
     interactive: false
   tiles: [46, 47]
-- object: CROSS_3
-  id: CROSS_3
+- object: PLOTKA
+  id: PLOTKA
   code: 17
   size:
     width: 2
     height: 1
   flags:
     blocking: true
-    interactive: false
+    interactive: true
   tiles: [75, 76]
 - object: SIGNPOINT_RIGHT
   id: SIGNPOINT_RIGHT
@@ -289,7 +289,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [102]
+  tiles: [230]
 - object: WAVES_DOWN
   id: WAVES_DOWN
   code: 30
@@ -299,4 +299,95 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [101]
+  tiles: [229]
+- object: PYRAMID_SMALL
+  id: PYRAMID_SMALL
+  code: 31
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [232, 233]
+- object: PYRAMID_MEDIUM
+  id: PYRAMID_MEDIUM
+  code: 32
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 227, 34, 234, 233]
+- object: PYRAMID_BIG
+  id: PYRAMID_BIG
+  code: 33
+  size:
+    width: 10
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [0, 0, 0, 0, 232, 233, 0, 0, 0, 0, 0, 0, 232, 231, 227, 34, 234, 233, 0,
+    0, 232, 231, 227, 227, 227, 34, 34, 34, 234, 233]
+- object: PALM_TREE
+  id: PALM_TREE
+  code: 34
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [78, 79, 110, 111]
+- object: CART
+  id: CART
+  code: 35
+  size:
+    width: 3
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [240, 113, 242]
+- object: PLOTKA_2
+  id: PLOTKA_2
+  code: 36
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [203, 76]
+- object: TREASURE
+  id: TREASURE
+  code: 37
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [49]
+- object: BARN_SMALL
+  id: BARN_SMALL
+  code: 38
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [16, 17, 18, 48, 0, 50]
+- object: BARN_MEDIUM
+  id: BARN_MEDIUM
+  code: 39
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [16, 17, 17, 18, 48, 0, 0, 50]
