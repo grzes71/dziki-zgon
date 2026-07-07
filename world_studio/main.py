@@ -13,6 +13,7 @@ from world_studio.widgets.region_tree import RegionTreeWidget
 from world_studio.widgets.object_palette import ObjectPaletteWidget
 from world_studio.widgets.live_region_view import LiveRegionViewWidget
 from world_studio.widgets.screen_canvas import ScreenCanvasWidget
+from world_studio.widgets.preview_dialog import PreviewDialog
 
 class WorldStudioMainWindow(QMainWindow):
     def __init__(self):
@@ -69,6 +70,7 @@ class WorldStudioMainWindow(QMainWindow):
         self.live_view.empty_cell_add_requested.connect(self._on_empty_cell_add_requested)
         self.live_view.screen_edit_requested.connect(self._on_screen_rename_requested)
         self.live_view.screen_delete_requested.connect(self._on_screen_delete_requested)
+        self.live_view.screen_preview_requested.connect(self._on_screen_preview_requested)
         self.scroll_live.setWidget(self.live_view)
         self.tabs.addTab(self.scroll_live, "Live Region")
         
@@ -225,6 +227,11 @@ class WorldStudioMainWindow(QMainWindow):
                 if self.current_screen_id == screen_id:
                     self.current_screen_id = new_id
                     self.canvas_view.set_data(sdef, self.project, self.charset)
+
+    def _on_screen_preview_requested(self, region_id, screen_id):
+        dialog = PreviewDialog(region_id, screen_id, self.project, self.charset, self)
+        dialog.showFullScreen()
+        dialog.exec()
 
     def _on_screen_changed(self):
         self.live_view.update() # Refresh live region

@@ -10,6 +10,7 @@ class LiveRegionViewWidget(QWidget):
     empty_cell_add_requested = Signal(str, int, int) # region_id, col, row
     screen_edit_requested = Signal(str, str) # region_id, screen_id
     screen_delete_requested = Signal(str, str) # region_id, screen_id
+    screen_preview_requested = Signal(str, str) # region_id, screen_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -147,10 +148,13 @@ class LiveRegionViewWidget(QWidget):
                 
         menu = QMenu(self)
         if screen_id:
-            edit_action = menu.addAction("Edit Screen...")
+            preview_action = menu.addAction("Preview Screen")
+            edit_action = menu.addAction("Rename Screen...")
             del_action = menu.addAction("Remove Screen")
             action = menu.exec(event.globalPos())
-            if action == edit_action:
+            if action == preview_action:
+                self.screen_preview_requested.emit(self.region_id, screen_id)
+            elif action == edit_action:
                 self.screen_edit_requested.emit(self.region_id, screen_id)
             elif action == del_action:
                 self.screen_delete_requested.emit(self.region_id, screen_id)
