@@ -104,6 +104,23 @@ class AsmGenerator:
             start_idx = self.screen_idx[r.start_screen]
             out.append(f"    dta {start_idx} ; Start ScreenId ({r.start_screen})")
             
+        out.append("\n; Region Palette Offsets (Indexed by RegionId)")
+        out.append("REGION_PALETTE_OFFSETS")
+        for i, r in enumerate(self.regions_sorted):
+            out.append(f"    dta {i * 9} ; Region {r.id}")
+            
+        out.append("\n; Region Palettes (9 bytes per region: PCOLR0-3, COLPF0-3, COLBK)")
+        out.append("REGION_PALETTES")
+        for r in self.regions_sorted:
+            p = r.palette
+            # order: PCOLR0, PCOLR1, PCOLR2, PCOLR3, COLPF0, COLPF1, COLPF2, COLPF3_INV, COLBK
+            p_bytes = [
+                p.get("PCOLR0", 0x0E), p.get("PCOLR1", 0x0E), p.get("PCOLR2", 0x0E), p.get("PCOLR3", 0x0E),
+                p.get("PF0", 0), p.get("PF1", 0), p.get("PF2", 0), p.get("PF3_INV", 0), p.get("BACKGROUND", 0)
+            ]
+            hex_bytes = ", ".join(f"${b:02X}" for b in p_bytes)
+            out.append(f"    dta {hex_bytes} ; Region {r.id}")
+            
         with open(self.out_dir / "regions.asm", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")
 

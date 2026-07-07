@@ -4,7 +4,7 @@ from world_studio.project_manager import ProjectManager
 from world_studio.charset import Charset
 from world_studio.models import ScreenDef
 
-def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Charset, mark_start_pos=False) -> QImage:
+def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Charset, mark_start_pos=False, region_id: str=None) -> QImage:
     w_tiles = 40
     h_tiles = 10
     
@@ -12,17 +12,18 @@ def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Chars
     px_h = h_tiles * 8
     
     img = QImage(px_w, px_h, QImage.Format_RGB32)
-    img.fill(QColor(*project.colors.get("BACKGROUND", (0,0,0))))
+    colors_dict = project.region_colors.get(region_id, project.colors) if region_id else project.colors
+    img.fill(QColor(*colors_dict.get("BACKGROUND", (0,0,0))))
     
     if not charset:
         return img
         
     colors = [
-        QColor(*project.colors.get("BACKGROUND", (0,0,0))),
-        QColor(*project.colors.get("PF0", (0,0,0))),
-        QColor(*project.colors.get("PF1", (0,0,0))),
-        QColor(*project.colors.get("PF2", (0,0,0))),
-        QColor(*project.colors.get("PF3_INV", (0,0,0))),
+        QColor(*colors_dict.get("BACKGROUND", (0,0,0))),
+        QColor(*colors_dict.get("PF0", (0,0,0))),
+        QColor(*colors_dict.get("PF1", (0,0,0))),
+        QColor(*colors_dict.get("PF2", (0,0,0))),
+        QColor(*colors_dict.get("PF3_INV", (0,0,0))),
     ]
     
     # create object dictionary

@@ -43,6 +43,7 @@ class RegionDef(BaseModel):
     start_screen: str
     music: str
     screens: List[ScreenDef] = Field(default_factory=list)
+    palette: dict = Field(default_factory=dict)
     # the directory name for matching validation
     _dir_name: str = ""
 

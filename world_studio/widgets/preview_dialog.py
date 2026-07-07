@@ -24,7 +24,7 @@ class PreviewDialog(QDialog):
         if not screen_def:
             return
             
-        img = render_screen(screen_def, self.project, self.charset, mark_start_pos=False)
+        img = render_screen(screen_def, self.project, self.charset, mark_start_pos=False, region_id=self.region_id)
         # We use FastTransformation because Atari graphics look best when scaled linearly (no blurring)
         scaled = img.scaled(self.width(), self.height(), Qt.KeepAspectRatio, Qt.FastTransformation)
         

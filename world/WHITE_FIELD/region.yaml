@@ -5,3 +5,34 @@ layout:
   columns: 5
 start_screen: TAVERN
 music: WHITE_FIELD
+colors:
+  BACKGROUND:
+    rgb:
+    - 0
+    - 0
+    - 0
+    atari: 0
+  PF0:
+    rgb:
+    - 132
+    - 59
+    - 0
+    atari: 0
+  PF1:
+    rgb:
+    - 193
+    - 120
+    - 29
+    atari: 0
+  PF2:
+    rgb:
+    - 3
+    - 80
+    - 0
+    atari: 0
+  PF3_INV:
+    rgb:
+    - 0
+    - 48
+    - 139
+    atari: 0

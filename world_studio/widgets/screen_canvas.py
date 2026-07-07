@@ -14,6 +14,7 @@ class ScreenCanvasWidget(QWidget):
         self.screen_def = None
         self.project = None
         self.charset = None
+        self.region_id = None
         
         self.zoom = 4
         self.grid_width = 40
@@ -26,10 +27,11 @@ class ScreenCanvasWidget(QWidget):
         self.setMinimumSize(self.grid_width * self.tile_w_px * self.zoom, 
                             self.grid_height * self.tile_h_px * self.zoom)
 
-    def set_data(self, screen_def: ScreenDef, project: ProjectManager, charset: Charset):
+    def set_data(self, screen_def: ScreenDef, project: ProjectManager, charset: Charset, region_id: str = None):
         self.screen_def = screen_def
         self.project = project
         self.charset = charset
+        self.region_id = region_id
         self.update()
 
     def paintEvent(self, event):
@@ -37,7 +39,7 @@ class ScreenCanvasWidget(QWidget):
             return
             
         painter = QPainter(self)
-        img = render_screen(self.screen_def, self.project, self.charset, mark_start_pos=True)
+        img = render_screen(self.screen_def, self.project, self.charset, mark_start_pos=True, region_id=self.region_id)
         scaled_img = img.scaled(img.width() * self.zoom, img.height() * self.zoom, Qt.KeepAspectRatio, Qt.FastTransformation)
         painter.drawImage(0, 0, scaled_img)
         

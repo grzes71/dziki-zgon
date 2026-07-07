@@ -7,7 +7,8 @@ class ProjectManager:
     def __init__(self):
         self.world_dir: Optional[Path] = None
         self.world_config: Optional[WorldConfig] = None
-        self.colors: Dict[str, tuple] = {}
+        self.colors: Dict[str, tuple] = {} # Deprecated global colors
+        self.region_colors: Dict[str, Dict[str, tuple]] = {}
         self.objects: List[ObjectDefinition] = []
         self.regions: Dict[str, RegionDef] = {}
         self.screens: Dict[str, Dict[str, ScreenDef]] = {}
@@ -34,11 +35,13 @@ class ProjectManager:
         if "world" in w_data:
             self.world_config = WorldConfig.model_validate(w_data["world"])
             
-        # colors.yaml
+        # colors.yaml (global fallback if it exists, though deprecated)
         c_data = self._load_yaml(world_dir / "colors.yaml")
         self.colors.clear()
         for k, v in c_data.items():
-            if isinstance(v, list) and len(v) == 3:
+            if isinstance(v, dict) and "rgb" in v:
+                self.colors[k] = tuple(v["rgb"])
+            elif isinstance(v, list) and len(v) == 3:
                 self.colors[k] = tuple(v)
                 
         # objects.yaml
@@ -56,6 +59,16 @@ class ProjectManager:
                     region_def = RegionDef.model_validate(r_data)
                     self.regions[item.name] = region_def
                     self.screens[item.name] = {}
+                    
+                    # Load region colors from region.yaml
+                    r_colors_data = r_data.get("colors", {})
+                    r_colors = {}
+                    for k, v in r_colors_data.items():
+                        if isinstance(v, dict) and "rgb" in v:
+                            r_colors[k] = tuple(v["rgb"])
+                        elif isinstance(v, list) and len(v) == 3:
+                            r_colors[k] = tuple(v)
+                    self.region_colors[item.name] = r_colors
                     
                     screens_dir = item / "screens"
                     if screens_dir.exists():
@@ -78,18 +91,20 @@ class ProjectManager:
             
         # save world.yaml
         self._save_yaml(self.world_dir / "world.yaml", {"world": self.world_config.model_dump()})
-        
-        # colors.yaml
-        if self.colors:
-            colors_list = {k: list(v) for k, v in self.colors.items()}
-            self._save_yaml(self.world_dir / "colors.yaml", colors_list)
-            
         # objects.yaml is loaded in read-only mode, so we don't save it.
         
         for region_id, region_def in self.regions.items():
             r_dir = self.world_dir / region_id
-            self._save_yaml(r_dir / "region.yaml", region_def.model_dump())
             
+            r_dump = region_def.model_dump()
+            
+            # Save region colors into region.yaml
+            if region_id in self.region_colors and self.region_colors[region_id]:
+                c_data = {k: {"rgb": list(v), "atari": 0} for k, v in self.region_colors[region_id].items()}
+                r_dump["colors"] = c_data
+                
+            self._save_yaml(r_dir / "region.yaml", r_dump)
+                
             screens_dict = self.screens.get(region_id, {})
             for screen_id, screen_def in screens_dict.items():
                 s_path = r_dir / "screens" / f"{screen_id}.yaml"

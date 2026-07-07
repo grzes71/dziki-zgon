@@ -108,7 +108,7 @@ class WorldStudioMainWindow(QMainWindow):
         if folder:
             if self.project.load_project(Path(folder)):
                 self.region_tree.populate(self.project)
-                self.object_palette.populate(self.project, self.charset)
+                self.object_palette.populate(self.project, self.charset, self.current_region_id)
                 self.statusBar().showMessage(f"World loaded: {folder}")
             else:
                 QMessageBox.warning(self, "Error", "Invalid world folder (missing world.yaml).")
@@ -117,7 +117,7 @@ class WorldStudioMainWindow(QMainWindow):
         path, _ = QFileDialog.getOpenFileName(self, "Load Charset", "", "Atari Font (*.fnt);;All Files (*)")
         if path:
             if self.charset.load(Path(path)):
-                self.object_palette.populate(self.project, self.charset)
+                self.object_palette.populate(self.project, self.charset, self.current_region_id)
                 self._refresh_views()
                 self.statusBar().showMessage(f"Charset loaded: {path}")
             else:
@@ -133,6 +133,7 @@ class WorldStudioMainWindow(QMainWindow):
     def _on_region_selected(self, region_id):
         self.current_region_id = region_id
         self.live_view.set_data(region_id, self.project, self.charset)
+        self.object_palette.populate(self.project, self.charset, region_id)
         self.tabs.setCurrentIndex(0)
 
     def _on_screen_double_clicked(self, region_id, screen_id):
@@ -141,7 +142,7 @@ class WorldStudioMainWindow(QMainWindow):
         
         screen_def = self.project.screens.get(region_id, {}).get(screen_id)
         if screen_def:
-            self.canvas_view.set_data(screen_def, self.project, self.charset)
+            self.canvas_view.set_data(screen_def, self.project, self.charset, region_id)
             self.tabs.setCurrentIndex(1)
 
     def _on_object_selected(self, object_id):
@@ -208,7 +209,7 @@ class WorldStudioMainWindow(QMainWindow):
             self.live_view.update()
             if self.current_screen_id == screen_id:
                 self.current_screen_id = None
-                self.canvas_view.set_data(None, None, None)
+                self.canvas_view.set_data(None, None, None, None)
 
     def _on_screen_rename_requested(self, region_id, screen_id):
         text, ok = QInputDialog.getText(self, "Rename Screen", "New Screen ID:", text=screen_id)
@@ -226,7 +227,7 @@ class WorldStudioMainWindow(QMainWindow):
                 self.live_view.update()
                 if self.current_screen_id == screen_id:
                     self.current_screen_id = new_id
-                    self.canvas_view.set_data(sdef, self.project, self.charset)
+                    self.canvas_view.set_data(sdef, self.project, self.charset, region_id)
 
     def _on_screen_preview_requested(self, region_id, screen_id):
         dialog = PreviewDialog(region_id, screen_id, self.project, self.charset, self)
@@ -242,7 +243,7 @@ class WorldStudioMainWindow(QMainWindow):
         if self.current_region_id and self.current_screen_id:
             screen_def = self.project.screens.get(self.current_region_id, {}).get(self.current_screen_id)
             if screen_def:
-                self.canvas_view.set_data(screen_def, self.project, self.charset)
+                self.canvas_view.set_data(screen_def, self.project, self.charset, self.current_region_id)
 
     def closeEvent(self, event):
         reply = QMessageBox.question(

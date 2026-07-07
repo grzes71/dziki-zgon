@@ -29,36 +29,8 @@ game_palette
 game_status_palette
     .ds 9
 
-; Offsety do tablic palet (dla każdego etapu: 0, 9, 18, 27, 36)
-stage_palette_offsets
-    dta 0, 9, 18, 27, 36
-
-; Definicje wszystkich kolorów dla 5 etapów (gra właściwa)
-; Kolejność rejestrów (9 bajtów):
-; PCOLR0, PCOLR1, PCOLR2, PCOLR3, COLPF0, COLPF1, COLPF2, COLPF3, COLBK
-stage_palettes
-    ; Etap 0 (startowy)
-    dta $14, $18, $C2, $82, $14, $18, $C2, $82, $00
-    ; Etap 1
-    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $84
-    ; Etap 2
-    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $74
-    ; Etap 3
-    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $64
-    ; Etap 4
-    dta $0E, $0E, $0E, $0E, $C8, $16, $0E, $00, $54
-
-; Definicje wszystkich kolorów dla 5 etapów (panel statusu)
-stage_status_palettes
-    ; Etap 0
-    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
-    ; Etap 1
-    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
-    ; Etap 2
-    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
-    ; Etap 3
-    dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
-    ; Etap 4
+; Jedna wspólna paleta dla panelu statusu (ANTIC 2)
+status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
 ;==============================================================
@@ -66,13 +38,13 @@ stage_status_palettes
 ;==============================================================
 .proc update_stage_colors
     ldx game_stage
-    ldy stage_palette_offsets,x
+    ldy REGION_PALETTE_OFFSETS,x
     
     ldx #0
 @loop
-    lda stage_palettes,y
+    lda REGION_PALETTES,y
     sta game_palette,x
-    lda stage_status_palettes,y
+    lda status_palette,x
     sta game_status_palette,x
     iny
     inx

@@ -30,6 +30,18 @@ def parse_world_dir(base_dir: Path) -> GameWorld:
                 
             region_data = load_yaml(region_yaml)
             
+            # Load region colors
+            c_data = region_data.get("colors", {})
+            region_palette = {
+                "PCOLR0": 0x0E, "PCOLR1": 0x0E, "PCOLR2": 0x0E, "PCOLR3": 0x0E,
+                "PF0": 0x00, "PF1": 0x00, "PF2": 0x00, "PF3_INV": 0x00, "BACKGROUND": 0x00
+            }
+            if c_data:
+                for k, v in c_data.items():
+                    if k in region_palette and isinstance(v, dict) and "atari" in v:
+                        region_palette[k] = v["atari"]
+            region_data["palette"] = region_palette
+            
             objects_dict = {obj.get("id"): obj for obj in objects_data.get("objects", [])}
             
             screens = []

@@ -22,16 +22,6 @@ objects:
 - object: TREE_SMALL
   x: 32
   y: 5
-- object: FENCE_1
-  x: 0
-  y: 0
-  repeat-x: 40
-- object: TREE_2
-  x: 36
-  y: 6
-- object: TREE_2
-  x: 38
-  y: 4
 - object: TREE_2
   x: 34
   y: 2
@@ -50,18 +40,24 @@ objects:
 - object: HOUSE_TALL
   x: 1
   y: 4
-- object: TREE_3
-  x: 14
-  y: 8
-- object: TREE_3
-  x: 24
-  y: 1
-- object: ROCK_2
+- object: TREE_2
+  x: 35
+  y: 6
+- object: TREE_2
   x: 0
-  y: 9
-- object: ROCK_2
+  y: 2
+- object: TREE_2
+  x: 2
+  y: 1
+- object: TREE_2
+  x: 0
+  y: 0
+- object: TREE_2
   x: 4
-  y: 9
-- object: ROCK_1
-  x: 7
-  y: 9
+  y: 0
+- object: TREE_2
+  x: 6
+  y: 1
+- object: HOUSE_SMALL
+  x: 8
+  y: 0

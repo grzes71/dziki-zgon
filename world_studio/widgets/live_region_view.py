@@ -78,7 +78,7 @@ class LiveRegionViewWidget(QWidget):
                 
                 if screen_id:
                     screen_def = screens[screen_id]
-                    img = render_screen(screen_def, self.project, self.charset, mark_start_pos=True)
+                    img = render_screen(screen_def, self.project, self.charset, mark_start_pos=True, region_id=self.region_id)
                     scaled = img.scaled(sw, sh, Qt.KeepAspectRatio, Qt.FastTransformation)
                     painter.drawImage(px, py, scaled)
                     

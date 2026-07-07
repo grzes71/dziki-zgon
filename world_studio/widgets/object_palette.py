@@ -58,13 +58,17 @@ class ObjectPaletteWidget(QWidget):
         self.list_widget.itemSelectionChanged.connect(self._on_selection_changed)
         layout.addWidget(self.list_widget)
 
-    def populate(self, project: ProjectManager, charset: Charset):
+    def populate(self, project: ProjectManager, charset: Charset, region_id: str = None):
         self.list_widget.clear()
         if not project:
             return
             
+        colors_dict = project.region_colors.get(region_id, project.colors) if region_id else project.colors
+        if not colors_dict and project.region_colors:
+            colors_dict = list(project.region_colors.values())[0]
+            
         for obj in project.objects:
-            pixmap = render_object_pixmap(obj, charset, project.colors, zoom=3)
+            pixmap = render_object_pixmap(obj, charset, colors_dict, zoom=3)
             item = QListWidgetItem(obj.id)
             item.setIcon(pixmap)
             item.setData(Qt.UserRole, obj.id)
