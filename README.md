@@ -118,6 +118,16 @@ Poniżej znajduje się opis kroków potrzebnych, aby zacząć development gry na
 5. Instalacja asapconv.exe (https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download) - do lokalizacji `C:\Apps\ASAP\`
 6. Instalacja emulatora Altirra (do lokalizacji `C:\Apps\Altirra-4.40`)
 
+### Tworzenie środowiska wirtualnego
+
+Aby zainstalować pakiety Pythona, utwórz i aktywuj środowisko wirtualne, a następnie zainstaluj zależności:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
 ## Kompilacja
 
 ```bash
