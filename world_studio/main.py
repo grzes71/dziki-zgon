@@ -184,6 +184,14 @@ class WorldStudioMainWindow(QMainWindow):
         if not self.project.world_dir:
             return
             
+        region_def = self.project.regions.get(region_id)
+        if region_def:
+            current_screens = len(self.project.screens.get(region_id, {}))
+            max_screens = region_def.layout.rows * region_def.layout.columns
+            if current_screens >= max_screens:
+                QMessageBox.warning(self, "Error", f"Cannot add more screens.\nRegion {region_id} layout is {region_def.layout.rows}x{region_def.layout.columns} (max {max_screens} screens).")
+                return
+            
         dialog = QDialog(self)
         dialog.setWindowTitle(f"Add Screen to {region_id}")
         layout = QFormLayout(dialog)

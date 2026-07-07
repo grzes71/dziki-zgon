@@ -351,16 +351,16 @@ objects:
     blocking: true
     interactive: false
   tiles: [240, 113, 242]
-- object: PLOTKA_2
-  id: PLOTKA_2
+- object: WATERFALL
+  id: WATERFALL
   code: 36
   size:
-    width: 2
-    height: 1
+    width: 5
+    height: 2
   flags:
     blocking: false
     interactive: false
-  tiles: [203, 76]
+  tiles: [0, 10, 230, 12, 0, 10, 11, 202, 9, 12]
 - object: TREASURE
   id: TREASURE
   code: 37
@@ -391,3 +391,13 @@ objects:
     blocking: true
     interactive: false
   tiles: [16, 17, 17, 18, 48, 0, 0, 50]
+- object: LAKE
+  id: LAKE
+  code: 40
+  size:
+    width: 5
+    height: 3
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [133, 230, 230, 230, 133, 0, 202, 202, 202, 143, 133, 229, 229, 229, 133]

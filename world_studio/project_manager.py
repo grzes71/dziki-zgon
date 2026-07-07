@@ -152,7 +152,7 @@ class ProjectManager:
         }
         
         for d, target_screen_id in exits.items():
-            if not target_screen_id:
+            if not target_screen_id or target_screen_id == "None":
                 continue
             if target_screen_id == screen_id:
                 return False, f"Screen cannot link to itself ({d})."
@@ -163,6 +163,66 @@ class ProjectManager:
                 existing_link = getattr(target_screen.exits, opp)
                 if existing_link and existing_link != screen_id:
                     return False, f"Cannot set {d} exit to {target_screen_id}. It already has a {opp} exit pointing to {existing_link}."
+                    
+        # Check layout constraints
+        region_def = self.regions.get(region_id)
+        if region_def:
+            graph = {}
+            for sid, sdef in self.screens[region_id].items():
+                if sid != screen_id:
+                    graph[sid] = {
+                        "north": sdef.exits.north,
+                        "south": sdef.exits.south,
+                        "east": sdef.exits.east,
+                        "west": sdef.exits.west
+                    }
+            
+            graph[screen_id] = {
+                "north": exits.get("north"),
+                "south": exits.get("south"),
+                "east": exits.get("east"),
+                "west": exits.get("west")
+            }
+            
+            for d, target in exits.items():
+                if target and target != "None" and target in graph:
+                    opp = opposites[d]
+                    graph[target][opp] = screen_id
+                    
+            positions = {screen_id: (0, 0)}
+            queue = [screen_id]
+            
+            while queue:
+                curr = queue.pop(0)
+                cx, cy = positions[curr]
+                
+                curr_exits = graph.get(curr, {})
+                directions = [
+                    (curr_exits.get("north"), cx, cy - 1),
+                    (curr_exits.get("south"), cx, cy + 1),
+                    (curr_exits.get("west"), cx - 1, cy),
+                    (curr_exits.get("east"), cx + 1, cy)
+                ]
+                
+                for nxt, nx, ny in directions:
+                    if nxt and nxt != "None" and nxt in graph:
+                        if nxt not in positions:
+                            positions[nxt] = (nx, ny)
+                            queue.append(nxt)
+                            
+            if positions:
+                min_x = min(x for x, y in positions.values())
+                max_x = max(x for x, y in positions.values())
+                min_y = min(y for x, y in positions.values())
+                max_y = max(y for x, y in positions.values())
+                
+                width = max_x - min_x + 1
+                height = max_y - min_y + 1
+                
+                if width > region_def.layout.columns:
+                    return False, f"Layout width exceeded. Connected width is {width}, max is {region_def.layout.columns}."
+                if height > region_def.layout.rows:
+                    return False, f"Layout height exceeded. Connected height is {height}, max is {region_def.layout.rows}."
                     
         return True, ""
 
