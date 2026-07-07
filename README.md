@@ -104,6 +104,20 @@ witcher-atari-game/
 | [html-to-markdown](https://github.com/grzes71/html-to-markdown#html-to-markdown) | — | Konwersja dokumentacji HTML do Markdown
 | [py65](https://github.com/mnaberez/py65) | — | Emulator 6502 w Pythonie do testów (`pip install -r requirements.txt`) |
 
+## Development (Windows)
+
+Poniżej znajduje się opis kroków potrzebnych, aby zacząć development gry na systemie Windows:
+
+1. Instalacja chocolatey (https://chocolatey.org/install#individual)
+2. Instalacja za pomocą `choco install`:
+   - `git`
+   - `python`
+   - `make`
+3. Instalacja rmt2atasm https://github.com/CycoPH/rmt2atasm (Relocatable RMT player for atasm assembler) - skopiowanie pliku exe do `C:\Apps\`
+4. Instalacja Mad-Assembler (https://github.com/tebe6502/Mad-Assembler/releases/tag/2.1.6) w lokalizacji `C:\Apps\Mad-Assembler-2.1.6`
+5. Instalacja asapconv.exe (https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download) - do lokalizacji `C:\Apps\ASAP\`
+6. Instalacja emulatora Altirra (do lokalizacji `C:\Apps\Altirra-4.40`)
+
 ## Kompilacja
 
 ```bash
