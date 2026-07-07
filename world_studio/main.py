@@ -48,8 +48,7 @@ class WorldStudioMainWindow(QMainWindow):
         self.region_tree.region_selected.connect(self._on_region_selected)
         self.region_tree.screen_double_clicked.connect(self._on_screen_double_clicked)
         self.region_tree.request_add_region.connect(self._on_add_region)
-        self.region_tree.request_add_screen.connect(self._on_add_screen)
-        self.region_tree.request_edit_screen.connect(self._on_edit_screen)
+        self.region_tree.request_add_region.connect(self._on_add_region)
         left_layout.addWidget(self.region_tree, 1)
         
         self.object_palette = ObjectPaletteWidget()
@@ -67,6 +66,9 @@ class WorldStudioMainWindow(QMainWindow):
         self.scroll_live.setWidgetResizable(True)
         self.live_view = LiveRegionViewWidget()
         self.live_view.screen_double_clicked.connect(self._on_screen_double_clicked)
+        self.live_view.empty_cell_add_requested.connect(self._on_empty_cell_add_requested)
+        self.live_view.screen_edit_requested.connect(self._on_screen_rename_requested)
+        self.live_view.screen_delete_requested.connect(self._on_screen_delete_requested)
         self.scroll_live.setWidget(self.live_view)
         self.tabs.addTab(self.scroll_live, "Live Region")
         
@@ -180,140 +182,49 @@ class WorldStudioMainWindow(QMainWindow):
             else:
                 QMessageBox.warning(self, "Error", f"Region {r_id} already exists.")
 
-    def _on_add_screen(self, region_id):
-        if not self.project.world_dir:
-            return
-            
-        region_def = self.project.regions.get(region_id)
-        if region_def:
-            current_screens = len(self.project.screens.get(region_id, {}))
-            max_screens = region_def.layout.rows * region_def.layout.columns
-            if current_screens >= max_screens:
-                QMessageBox.warning(self, "Error", f"Cannot add more screens.\nRegion {region_id} layout is {region_def.layout.rows}x{region_def.layout.columns} (max {max_screens} screens).")
+    def _on_empty_cell_add_requested(self, region_id, col, row):
+        text, ok = QInputDialog.getText(self, f"Add Screen at {col},{row}", "Screen ID (e.g. START):")
+        if ok and text:
+            s_id = text.strip().upper()
+            if not s_id:
+                QMessageBox.warning(self, "Error", "Screen ID cannot be empty.")
                 return
-            
-        dialog = QDialog(self)
-        dialog.setWindowTitle(f"Add Screen to {region_id}")
-        layout = QFormLayout(dialog)
-        
-        edit_id = QLineEdit()
-        layout.addRow("Screen ID (e.g. START):", edit_id)
-        
-        existing_screens = ["None"] + sorted(list(self.project.screens.get(region_id, {}).keys()))
-        
-        combo_north = QComboBox()
-        combo_north.addItems(existing_screens)
-        layout.addRow("North Exit:", combo_north)
-        
-        combo_south = QComboBox()
-        combo_south.addItems(existing_screens)
-        layout.addRow("South Exit:", combo_south)
-        
-        combo_east = QComboBox()
-        combo_east.addItems(existing_screens)
-        layout.addRow("East Exit:", combo_east)
-        
-        combo_west = QComboBox()
-        combo_west.addItems(existing_screens)
-        layout.addRow("West Exit:", combo_west)
-        
-        btns = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        btns.accepted.connect(dialog.accept)
-        btns.rejected.connect(dialog.reject)
-        layout.addRow(btns)
-        
-        while True:
-            if dialog.exec() == QDialog.Accepted:
-                s_id = edit_id.text().strip().upper()
-                if not s_id:
-                    QMessageBox.warning(self, "Error", "Screen ID cannot be empty.")
-                    continue
-                    
-                if s_id in self.project.screens.get(region_id, {}):
-                    QMessageBox.warning(self, "Error", f"Screen {s_id} already exists in {region_id}.")
-                    continue
-                    
-                exits = {}
-                if combo_north.currentText() != "None": exits["north"] = combo_north.currentText()
-                if combo_south.currentText() != "None": exits["south"] = combo_south.currentText()
-                if combo_east.currentText() != "None": exits["east"] = combo_east.currentText()
-                if combo_west.currentText() != "None": exits["west"] = combo_west.currentText()
-                
-                ok, msg = self.project.validate_screen_exits(region_id, s_id, exits)
-                if not ok:
-                    QMessageBox.warning(self, "Validation Error", msg)
-                    continue
-                
-                if self.project.add_screen(region_id, s_id, exits):
-                    self.region_tree.populate(self.project)
-                    break
-                else:
-                    QMessageBox.warning(self, "Error", f"Failed to add screen {s_id}.")
-                    continue
-            else:
-                break
-
-    def _on_edit_screen(self, region_id, screen_id):
-        if not self.project.world_dir:
-            return
-            
-        screen_def = self.project.screens.get(region_id, {}).get(screen_id)
-        if not screen_def:
-            return
-
-        dialog = QDialog(self)
-        dialog.setWindowTitle(f"Edit Screen {screen_id} ({region_id})")
-        layout = QFormLayout(dialog)
-        
-        existing_screens = ["None"] + sorted(list(self.project.screens.get(region_id, {}).keys()))
-        
-        combo_north = QComboBox()
-        combo_north.addItems(existing_screens)
-        if screen_def.exits.north: combo_north.setCurrentText(screen_def.exits.north)
-        layout.addRow("North Exit:", combo_north)
-        
-        combo_south = QComboBox()
-        combo_south.addItems(existing_screens)
-        if screen_def.exits.south: combo_south.setCurrentText(screen_def.exits.south)
-        layout.addRow("South Exit:", combo_south)
-        
-        combo_east = QComboBox()
-        combo_east.addItems(existing_screens)
-        if screen_def.exits.east: combo_east.setCurrentText(screen_def.exits.east)
-        layout.addRow("East Exit:", combo_east)
-        
-        combo_west = QComboBox()
-        combo_west.addItems(existing_screens)
-        if screen_def.exits.west: combo_west.setCurrentText(screen_def.exits.west)
-        layout.addRow("West Exit:", combo_west)
-        
-        btns = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        btns.accepted.connect(dialog.accept)
-        btns.rejected.connect(dialog.reject)
-        layout.addRow(btns)
-        
-        while True:
-            if dialog.exec() == QDialog.Accepted:
-                exits = {}
-                if combo_north.currentText() != "None": exits["north"] = combo_north.currentText()
-                if combo_south.currentText() != "None": exits["south"] = combo_south.currentText()
-                if combo_east.currentText() != "None": exits["east"] = combo_east.currentText()
-                if combo_west.currentText() != "None": exits["west"] = combo_west.currentText()
-                
-                ok, msg = self.project.validate_screen_exits(region_id, screen_id, exits)
-                if not ok:
-                    QMessageBox.warning(self, "Validation Error", msg)
-                    continue
-                
-                self.project.update_screen_exits(region_id, screen_id, exits)
-                
-                # Odśwież canvas jeśli ten ekran jest aktualnie otwarty
-                if self.current_region_id == region_id and self.current_screen_id == screen_id:
-                    self.canvas_view.set_data(screen_def, self.project, self.charset)
+            if s_id in self.project.screens.get(region_id, {}):
+                QMessageBox.warning(self, "Error", f"Screen {s_id} already exists.")
+                return
+            if self.project.add_screen(region_id, s_id, col, row):
+                self.region_tree.populate(self.project)
                 self.live_view.update()
-                break
             else:
-                break
+                QMessageBox.warning(self, "Error", f"Failed to add screen {s_id}.")
+
+    def _on_screen_delete_requested(self, region_id, screen_id):
+        reply = QMessageBox.question(self, 'Remove Screen', f"Are you sure you want to remove {screen_id}?", QMessageBox.Yes | QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            self.project.remove_screen(region_id, screen_id)
+            self.region_tree.populate(self.project)
+            self.live_view.update()
+            if self.current_screen_id == screen_id:
+                self.current_screen_id = None
+                self.canvas_view.set_data(None, None, None)
+
+    def _on_screen_rename_requested(self, region_id, screen_id):
+        text, ok = QInputDialog.getText(self, "Rename Screen", "New Screen ID:", text=screen_id)
+        if ok and text:
+            new_id = text.strip().upper()
+            if new_id and new_id != screen_id:
+                if new_id in self.project.screens.get(region_id, {}):
+                    QMessageBox.warning(self, "Error", f"Screen {new_id} already exists.")
+                    return
+                sdef = self.project.screens[region_id].pop(screen_id)
+                sdef.id = new_id
+                self.project.screens[region_id][new_id] = sdef
+                self.project.update_all_exits(region_id)
+                self.region_tree.populate(self.project)
+                self.live_view.update()
+                if self.current_screen_id == screen_id:
+                    self.current_screen_id = new_id
+                    self.canvas_view.set_data(sdef, self.project, self.charset)
 
     def _on_screen_changed(self):
         self.live_view.update() # Refresh live region

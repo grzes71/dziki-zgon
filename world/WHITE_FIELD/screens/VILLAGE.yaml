@@ -1,4 +1,6 @@
 id: VILLAGE
+grid_x: 0
+grid_y: 1
 exits:
   north: TAVERN
   south: null

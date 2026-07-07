@@ -65,6 +65,10 @@ class ProjectManager:
                             self.screens[item.name][screen_def.id] = screen_def
                 except Exception as e:
                     print(f"Error loading region {item.name}: {e}")
+            
+            # Zapewnienie, że wszystkie wczytane regiony mają grid_x i grid_y
+            for rid in self.regions.keys():
+                self._ensure_grid_coordinates(rid)
                     
         return True
 
@@ -120,133 +124,91 @@ class ProjectManager:
         self.screens[region_id] = {}
         return True
 
-    def add_screen(self, region_id: str, screen_id: str, exits: dict = None) -> bool:
+    def _ensure_grid_coordinates(self, region_id: str):
+        region = self.regions.get(region_id)
+        screens = self.screens.get(region_id, {})
+        if not region or not screens:
+            return
+            
+        missing = [s for s in screens.values() if s.grid_x is None or s.grid_y is None]
+        if not missing:
+            return
+            
+        start_id = region.start_screen
+        if start_id not in screens:
+            start_id = list(screens.keys())[0]
+            
+        positions = {start_id: (0, 0)}
+        queue = [start_id]
+        
+        while queue:
+            curr_id = queue.pop(0)
+            cx, cy = positions[curr_id]
+            s_def = screens.get(curr_id)
+            if not s_def:
+                continue
+                
+            directions = [
+                (s_def.exits.north, cx, cy - 1),
+                (s_def.exits.south, cx, cy + 1),
+                (s_def.exits.west, cx - 1, cy),
+                (s_def.exits.east, cx + 1, cy)
+            ]
+            
+            for next_id, nx, ny in directions:
+                if next_id and next_id in screens and next_id not in positions:
+                    positions[next_id] = (nx, ny)
+                    queue.append(next_id)
+                    
+        if positions:
+            min_x = min(x for x, y in positions.values())
+            min_y = min(y for x, y in positions.values())
+            for sid, (x, y) in positions.items():
+                s = screens[sid]
+                s.grid_x = x - min_x
+                s.grid_y = y - min_y
+                
+        for s in missing:
+            if s.grid_x is None:
+                s.grid_x = 0
+                s.grid_y = 0
+                
+    def update_all_exits(self, region_id: str):
+        screens = self.screens.get(region_id, {})
+        grid_map = {}
+        for sid, sdef in screens.items():
+            if sdef.grid_x is not None and sdef.grid_y is not None:
+                grid_map[(sdef.grid_x, sdef.grid_y)] = sid
+                
+        for sid, sdef in screens.items():
+            if sdef.grid_x is not None and sdef.grid_y is not None:
+                x, y = sdef.grid_x, sdef.grid_y
+                sdef.exits.north = grid_map.get((x, y - 1))
+                sdef.exits.south = grid_map.get((x, y + 1))
+                sdef.exits.west = grid_map.get((x - 1, y))
+                sdef.exits.east = grid_map.get((x + 1, y))
+
+    def add_screen(self, region_id: str, screen_id: str, grid_x: int, grid_y: int) -> bool:
         if region_id not in self.regions:
             return False
             
         if screen_id in self.screens[region_id]:
             return False
             
-        if exits is None:
-            exits = {}
-            
         screen_def = ScreenDef(
             id=screen_id,
+            grid_x=grid_x,
+            grid_y=grid_y,
             exits={},
             objects=[]
         )
         self.screens[region_id][screen_id] = screen_def
-        
-        self.update_screen_exits(region_id, screen_id, exits)
+        self.update_all_exits(region_id)
         return True
 
-    def validate_screen_exits(self, region_id: str, screen_id: str, exits: dict) -> tuple[bool, str]:
-        if region_id not in self.regions:
-            return False, "Region not found."
-            
-        opposites = {
-            "north": "south",
-            "south": "north",
-            "east": "west",
-            "west": "east"
-        }
-        
-        for d, target_screen_id in exits.items():
-            if not target_screen_id or target_screen_id == "None":
-                continue
-            if target_screen_id == screen_id:
-                return False, f"Screen cannot link to itself ({d})."
-            
-            target_screen = self.screens[region_id].get(target_screen_id)
-            if target_screen:
-                opp = opposites[d]
-                existing_link = getattr(target_screen.exits, opp)
-                if existing_link and existing_link != screen_id:
-                    return False, f"Cannot set {d} exit to {target_screen_id}. It already has a {opp} exit pointing to {existing_link}."
-                    
-        # Check layout constraints
-        region_def = self.regions.get(region_id)
-        if region_def:
-            graph = {}
-            for sid, sdef in self.screens[region_id].items():
-                if sid != screen_id:
-                    graph[sid] = {
-                        "north": sdef.exits.north,
-                        "south": sdef.exits.south,
-                        "east": sdef.exits.east,
-                        "west": sdef.exits.west
-                    }
-            
-            graph[screen_id] = {
-                "north": exits.get("north"),
-                "south": exits.get("south"),
-                "east": exits.get("east"),
-                "west": exits.get("west")
-            }
-            
-            for d, target in exits.items():
-                if target and target != "None" and target in graph:
-                    opp = opposites[d]
-                    graph[target][opp] = screen_id
-                    
-            positions = {screen_id: (0, 0)}
-            queue = [screen_id]
-            
-            while queue:
-                curr = queue.pop(0)
-                cx, cy = positions[curr]
-                
-                curr_exits = graph.get(curr, {})
-                directions = [
-                    (curr_exits.get("north"), cx, cy - 1),
-                    (curr_exits.get("south"), cx, cy + 1),
-                    (curr_exits.get("west"), cx - 1, cy),
-                    (curr_exits.get("east"), cx + 1, cy)
-                ]
-                
-                for nxt, nx, ny in directions:
-                    if nxt and nxt != "None" and nxt in graph:
-                        if nxt not in positions:
-                            positions[nxt] = (nx, ny)
-                            queue.append(nxt)
-                            
-            if positions:
-                min_x = min(x for x, y in positions.values())
-                max_x = max(x for x, y in positions.values())
-                min_y = min(y for x, y in positions.values())
-                max_y = max(y for x, y in positions.values())
-                
-                width = max_x - min_x + 1
-                height = max_y - min_y + 1
-                
-                if width > region_def.layout.columns:
-                    return False, f"Layout width exceeded. Connected width is {width}, max is {region_def.layout.columns}."
-                if height > region_def.layout.rows:
-                    return False, f"Layout height exceeded. Connected height is {height}, max is {region_def.layout.rows}."
-                    
-        return True, ""
-
-    def update_screen_exits(self, region_id: str, screen_id: str, exits: dict) -> bool:
+    def remove_screen(self, region_id: str, screen_id: str) -> bool:
         if region_id not in self.regions or screen_id not in self.screens[region_id]:
             return False
-            
-        screen_def = self.screens[region_id][screen_id]
-        screen_def.exits.north = exits.get("north")
-        screen_def.exits.south = exits.get("south")
-        screen_def.exits.east = exits.get("east")
-        screen_def.exits.west = exits.get("west")
-        
-        # Automatyczne ustawienie obustronnych przejść
-        opposites = {
-            "north": "south",
-            "south": "north",
-            "east": "west",
-            "west": "east"
-        }
-        
-        for d, opp in opposites.items():
-            linked_screen = exits.get(d)
-            if linked_screen and linked_screen in self.screens[region_id]:
-                setattr(self.screens[region_id][linked_screen].exits, opp, screen_id)
-                
+        del self.screens[region_id][screen_id]
+        self.update_all_exits(region_id)
         return True

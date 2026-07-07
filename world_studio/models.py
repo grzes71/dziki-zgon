@@ -33,6 +33,8 @@ class ScreenExits(BaseModel):
 
 class ScreenDef(BaseModel):
     id: str
+    grid_x: Optional[int] = None
+    grid_y: Optional[int] = None
     exits: ScreenExits = Field(default_factory=ScreenExits)
     objects: List[ObjectInstance] = Field(default_factory=list)
 

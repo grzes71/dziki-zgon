@@ -8,8 +8,6 @@ class RegionTreeWidget(QTreeWidget):
     screen_double_clicked = Signal(str, str) # region_id, screen_id
     region_selected = Signal(str) # region_id
     request_add_region = Signal()
-    request_add_screen = Signal(str) # region_id
-    request_edit_screen = Signal(str, str) # region_id, screen_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -69,15 +67,5 @@ class RegionTreeWidget(QTreeWidget):
             
             if item_type == "REGION":
                 menu.addAction(act_add_region)
-                if region_id:
-                    act_add_screen = QAction(f"Add Screen to {region_id}", self)
-                    act_add_screen.triggered.connect(lambda: self.request_add_screen.emit(region_id))
-                    menu.addAction(act_add_screen)
-            elif item_type == "SCREEN":
-                screen_id = item.data(0, 34)
-                if region_id and screen_id:
-                    act_edit_screen = QAction(f"Edit Screen {screen_id}", self)
-                    act_edit_screen.triggered.connect(lambda: self.request_edit_screen.emit(region_id, screen_id))
-                    menu.addAction(act_edit_screen)
 
         menu.exec_(self.viewport().mapToGlobal(pos))
