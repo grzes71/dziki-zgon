@@ -90,11 +90,22 @@
     lda #0
     sta Player_AnimTimer
     
-    ; Zmiana klatki (XOR 1)
+    ; Zmiana klatki z uwzględnieniem limitu dla danego kierunku
+    inc Player_AnimFrame
+    ldx Player_Dir
     lda Player_AnimFrame
-    eor #1
+    cmp GERWALT_ANIM_LIMITS,x
+    bcc @done
+    ; Przekroczono limit, wracamy do klatki 0
+    lda #0
     sta Player_AnimFrame
 
 @done
     rts
+
+GERWALT_ANIM_LIMITS
+    dta SPRITE_GERWALT_RIGHT_FRAMES
+    dta SPRITE_GERWALT_LEFT_FRAMES
+    dta SPRITE_GERWALT_UP_FRAMES
+    dta SPRITE_GERWALT_DOWN_FRAMES
 .endp

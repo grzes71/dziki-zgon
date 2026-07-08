@@ -7,21 +7,25 @@
     
     jsr pmg_clear_all
     
-    ; Pobranie właściwego wskaźnika
+    ; Pobranie bazowego wskaźnika do tablicy wskaźników kierunku
     lda Player_Dir
     asl
-    asl
-    sta SRC_TMP     ; Dir * 4
-    
-    lda Player_AnimFrame
-    asl             ; Frame * 2
-    clc
-    adc SRC_TMP
     tax
+    lda GERWALT_PTRS_TABLE,x
+    sta DST_PTR
+    lda GERWALT_PTRS_TABLE+1,x
+    sta DST_PTR+1
     
-    lda GERWALT_ALL_FRAMES,x
+    ; Obliczenie przesunięcia klatki wewnątrz tej tablicy
+    lda Player_AnimFrame
+    asl
+    tay
+    
+    ; Zapisanie ostatecznego wskaźnika na klatkę do SRC_PTR
+    lda (DST_PTR),y
     sta SRC_PTR
-    lda GERWALT_ALL_FRAMES+1,x
+    iny
+    lda (DST_PTR),y
     sta SRC_PTR+1
 
     ; Kopiowanie do bufora PMG gracza 0
@@ -46,17 +50,9 @@
     
     rts
 
-GERWALT_ALL_FRAMES
-    ; Right (0)
-    dta a(GERWALT_RIGHT_FRAME_0)
-    dta a(GERWALT_RIGHT_FRAME_1)
-    ; Left (1)
-    dta a(GERWALT_LEFT_FRAME_0)
-    dta a(GERWALT_LEFT_FRAME_1)
-    ; Up (2)
-    dta a(GERWALT_UP_FRAME_0)
-    dta a(GERWALT_UP_FRAME_1)
-    ; Down (3)
-    dta a(GERWALT_DOWN_FRAME_0)
-    dta a(GERWALT_DOWN_FRAME_1)
+GERWALT_PTRS_TABLE
+    dta a(GERWALT_RIGHT_PTRS)
+    dta a(GERWALT_LEFT_PTRS)
+    dta a(GERWALT_UP_PTRS)
+    dta a(GERWALT_DOWN_PTRS)
 .endp
