@@ -80,16 +80,16 @@ objects:
   x: 22
   y: 2
 - object: TREE_3
-  x: 39
+  x: 37
   y: 0
 - object: BARN_SMALL
   x: 37
   y: 5
 - object: LAKE
   x: 27
-  y: 8
+  y: 5
 - object: TREE_3
-  x: 38
+  x: 36
   y: 3
 - object: TREE_3
   x: 36

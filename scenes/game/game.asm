@@ -12,6 +12,10 @@ game_fire_released
     dta $00
 game_stage
     dta $00             ; Aktualny etap gry (0-4)
+hero_x
+    dta 100
+hero_y
+    dta 100
 
 ;==============================================================
 ; DANE STARTOWE (łatwe do edycji podczas testów mapy)
@@ -105,6 +109,8 @@ status_palette
     lda #$60
     sta HPOSP0
 
+    jsr draw_hero
+
     ; --- Przygotuj przerwania DLI ---
     lda #<game_dli_1
     sta VDSLST
@@ -139,8 +145,33 @@ status_palette
     rts
 .endp
 
-
-
+;==============================================================
+; draw_hero — Rysuje gracza w PMG
+;==============================================================
+.proc draw_hero
+    jsr pmg_clear_all
+    
+    ; Kopiowanie klatki GERWALT_RIGHT_FRAME_0 do bufora PMG gracza 0
+    ldx #SPRITE_GERWALT_RIGHT_HEIGHT - 1
+@loop
+    lda GERWALT_RIGHT_FRAME_0,x
+    pha
+    txa
+    clc
+    adc hero_y
+    tay
+    pla
+    sta PLAYER0,y
+    dex
+    bpl @loop
+    
+    ; Ustaw X i kolor
+    lda hero_x
+    sta HPOSP0
+    lda #$0F
+    sta PCOLR0
+    rts
+.endp
 
 ;==============================================================
 ; Przerwania DLI
@@ -231,32 +262,35 @@ status_palette
     ; --- Odczyt joysticka (PORT A, $D300) ---
     lda PORTA
     eor #$FF            ; neguj (0=neutral, 1=aktywny kierunek)
+    tax
 
     ; GÓRA
     and #$01
     beq @chk_down
-    dec HPOSP0
+    dec hero_y
 
 @chk_down
-    lda PORTA
-    eor #$FF
+    txa
     and #$02
     beq @chk_left
-    inc HPOSP0
+    inc hero_y
 
 @chk_left
-    lda PORTA
-    eor #$FF
+    txa
     and #$04
     beq @chk_right
-    dec HPOSP0
+    dec hero_x
 
 @chk_right
-    lda PORTA
-    eor #$FF
+    txa
     and #$08
+    beq @draw
+    inc hero_x
+
+@draw
+    txa
     beq @exit
-    inc HPOSP0
+    jsr draw_hero
 
 @exit
     rts

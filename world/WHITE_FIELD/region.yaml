@@ -17,22 +17,22 @@ colors:
     - 132
     - 59
     - 0
-    atari: 0
+    atari: 36
   PF1:
     rgb:
     - 193
     - 120
     - 29
-    atari: 0
+    atari: 46
   PF2:
     rgb:
     - 3
     - 80
     - 0
-    atari: 0
+    atari: 198
   PF3_INV:
     rgb:
     - 0
     - 48
     - 139
-    atari: 0
+    atari: 134

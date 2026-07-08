@@ -46,6 +46,10 @@ MOON_IMG    := img/moon.png
 TITLE_ASM   := $(GEN_DIR)/dziki-zgon.asm
 TITLE_IMG   := img/dziki-zgon.png
 
+SPRITES_JSON_DIR := sprites
+SPRITES_JSON := $(wildcard $(SPRITES_JSON_DIR)/*.sprite.json)
+SPRITES_ASM := $(patsubst $(SPRITES_JSON_DIR)/%.sprite.json, $(GEN_DIR)/%.sprite.asm, $(SPRITES_JSON))
+
 # Czcionki
 FONT_FNT    := fonts/font.fnt
 FONT_ASM    := $(GEN_DIR)/font.asm
@@ -108,7 +112,12 @@ $(BG_BIN): $(BG_IMG) scripts/img2asm.py
 	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(BG_IMG) 2 --all -o $(BG_PREFIX) --footer 0x5E10 --screen-base 0x4000 -c rle
 
 # Generowanie sprite'ów
-sprites: $(MOON_ASM) $(TITLE_ASM)
+sprites: $(MOON_ASM) $(TITLE_ASM) $(SPRITES_ASM)
+
+$(GEN_DIR)/%.sprite.asm: $(SPRITES_JSON_DIR)/%.sprite.json scripts/sprite2asm.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Generowanie asemblera z duszka: $< ==="
+	$(PYTHON) scripts/sprite2asm.py -i $< -o $@
 
 $(MOON_ASM): $(MOON_IMG) scripts/img2asm.py
 	-@mkdir $(GEN_DIR)
