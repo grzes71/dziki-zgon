@@ -26,3 +26,7 @@ InputState_Trig  equ $94    ; Zbuforowany stan TRIG0
 Player_Intent_X  equ $95    ; Intencja ruchu gracza X
 Player_Intent_Y  equ $96    ; Intencja ruchu gracza Y
 Engine_RequestStageAdvance equ $97 ; Flaga prośby o zmianę sceny (1 = proszę o zmianę)
+Player_Dir       equ $98    ; Kierunek (0=Prawa, 1=Lewa, 2=Góra, 3=Dół)
+Player_AnimFrame equ $99    ; Aktualna klatka animacji (0-1)
+Player_AnimTimer equ $9A    ; Odliczanie do następnej klatki
+Player_AnimSpeed equ $9B    ; Szybkość animacji (np. 6)

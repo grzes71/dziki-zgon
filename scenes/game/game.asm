@@ -66,6 +66,13 @@ status_palette
     sta DMACTL
     sta NMIEN
     sta game_fire_released  ; zresetuj stan przycisku FIRE
+    
+    ; Reset animacji
+    sta Player_Dir
+    sta Player_AnimFrame
+    sta Player_AnimTimer
+    lda #6
+    sta Player_AnimSpeed
 
     jsr pmg_clear_all
     
