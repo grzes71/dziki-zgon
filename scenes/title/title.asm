@@ -154,7 +154,7 @@ title_fire_released
 
     ; PRIOR — 5th player + players over playfield
     lda #PRIOR_5TH
-    sta PRIOR
+    sta GPRIOR
 
     ; --- Display List ---
     lda #<DLIST_TITLE
@@ -301,7 +301,7 @@ DLI_Handler
     ; --- Po tęczy: PRIOR=$01, PCOLR=$40, SIZEP=1x ---
     sta WSYNC
     lda #$01
-    sta PRIOR             ; wyłącz 5th-player
+    sta GPRIOR             ; wyłącz 5th-player
     lda #$40
     sta PCOLR0
     sta PCOLR1

@@ -96,7 +96,7 @@ GoRainbow
     sta DMACTL
     sta NMIEN
     sta GRACTL              ; wyłącz PMG DMA (GTIA)
-    sta PRIOR               ; reset priorytetów
+    sta GPRIOR               ; reset priorytetów
     sta gameover_fire_released ; zresetuj stan przycisku FIRE
 
     ; --- Rozpakuj grafikę GameOver (RLE) do VRAM_ARENA ---

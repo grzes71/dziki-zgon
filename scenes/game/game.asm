@@ -12,17 +12,10 @@ game_fire_released
     dta $00
 game_stage
     dta $00             ; Aktualny etap gry (0-4)
-hero_x
-    dta 100
-hero_y
-    dta 100
-
 ;==============================================================
 ; DANE STARTOWE (łatwe do edycji podczas testów mapy)
 ;==============================================================
 DEBUG_START_SCREEN  dta SCREEN_ID_TAVERN
-DEBUG_START_X       dta 5
-DEBUG_START_Y       dta 5
 
 ; Zmienne przechowujące aktywne kolory dla obu stref (nadpisywane co etap)
 ; Paleta kolorów sprzętowych dla planszy (ANTIC 5) od PCOLR0 ($D012) do COLBK ($D01A)
@@ -67,34 +60,87 @@ status_palette
     sta NMIEN
     sta game_fire_released  ; zresetuj stan przycisku FIRE
     
-    ; Reset animacji
-    sta Player_Dir
-    sta Player_AnimFrame
-    sta Player_AnimTimer
+    ; Wyzeruj wszystkich aktorów
+    ldx #MAX_ACTORS - 1
+    lda #0
+@clear_actors
+    sta ACTOR_ACTIVE,x
+    sta ACTOR_X,x
+    sta ACTOR_Y,x
+    sta ACTOR_Y_OLD,x
+    sta ACTOR_INTENT_X,x
+    sta ACTOR_INTENT_Y,x
+    sta ACTOR_DIR,x
+    sta ACTOR_ANIM_FRAME,x
+    sta ACTOR_ANIM_TIMER,x
+    sta ACTOR_ANIM_SPEED,x
+    sta ACTOR_COLOR,x
+    dex
+    bpl @clear_actors
+
+    ; Inicjalizacja głównego bohatera (Actor 0)
+    ldx #0
+    lda #1
+    sta ACTOR_ACTIVE,x
     lda #6
-    sta Player_AnimSpeed
+    sta ACTOR_ANIM_SPEED,x
+    lda #14
+    sta ACTOR_HEIGHT,x
+    lda #$0F
+    sta ACTOR_COLOR,x
+    
+    ; Wskaźniki na klatki animacji i limity
+    lda #<GERWALT_PTRS_TABLE
+    sta ACTOR_PTRS_TABLE_LO,x
+    lda #>GERWALT_PTRS_TABLE
+    sta ACTOR_PTRS_TABLE_HI,x
+    
+    lda #<GERWALT_ANIM_LIMITS
+    sta ACTOR_ANIM_LIMITS_LO,x
+    lda #>GERWALT_ANIM_LIMITS
+    sta ACTOR_ANIM_LIMITS_HI,x
 
     jsr pmg_clear_all
     
+    ; Ustaw pozycję startową z World Buildera dla Aktora 0
+    lda #START_POS_X
+    asl
+    asl
+    clc
+    adc #48
+    sta ACTOR_X,x
+    sta ACTOR_INTENT_X,x
+    
+    lda #START_POS_Y
+    asl
+    asl
+    asl
+    asl
+    clc
+    adc #32
+    sta ACTOR_Y,x
+    sta ACTOR_Y_OLD,x
+    sta ACTOR_INTENT_Y,x
+
     ; --- Inicjalizacja kolorów wybranego etapu ---
     jsr update_stage_colors
 
     ; --- Display List gry (ANTIC 4) ---
     lda #<DLIST_GAME
-    sta DLISTL
+    sta SDLSTL
     lda #>DLIST_GAME
-    sta DLISTH
+    sta SDLSTH
 
     ; --- Wczytanie początkowego charsetu (górny panel gry, game.fnt) ---
     lda #$64
-    sta CHBASE
+    sta CHBAS
 
     ; --- Kolory (początkowe, bezpieczne) ---
     lda #$00
-    sta COLBK
+    sta COLOR4
 
     ; --- Inicjalizacja pierwszej mapy ---
-    lda DEBUG_START_SCREEN
+    lda #START_SCREEN_ID
     sta GAME_SCREEN_ID
 
     ; --- Wypełnij mapę (ANTIC 5 i ANTIC 2) ---
@@ -108,7 +154,7 @@ status_palette
     sta SIZEP0
     sta SIZEM
     lda #PRIOR_5TH
-    sta PRIOR
+    sta GPRIOR
     lda #>PMBASE_ADDR
     sta PMBASE
     lda #GRACTL_PM
@@ -132,7 +178,7 @@ status_palette
 
     ; --- DMA ON ---
     lda #DMA_PMG_ON
-    sta DMACTL
+    sta SDMCTL
     lda #$C0             ; włącz DLI i VBLANK
     sta NMIEN
 

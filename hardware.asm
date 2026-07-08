@@ -28,6 +28,7 @@ COLPF2  = $D018     ; kolor playfield 2 (indeks 3)
 COLPF3  = $D019     ; kolor playfield 3 / 5. gracza (missiles) gdy PRIOR bit 4=1
 COLBK   = $D01A     ; kolor tła (COLBAK) — wspólny dla playfield i PMG
 PRIOR   = $D01B     ; priorytety: bit 4=5th player, bity 1-0=tryb priorytetu
+GPRIOR  = $026F     ; shadow dla PRIOR
 GRACTL  = $D01D     ; włączenie DMA PMG: bit 0=P/M, bit 1=missiles
 
 ; ---- PIA (Port Interface Adapter — PORTB, banki pamięci) ----
@@ -48,9 +49,19 @@ NMIEN   = $D40E     ; włączenie NMI: bit 7=DLI, bit 6=VBI
 IRQEN   = $D20E     ; włączenie przerwań IRQ z POKEY
 
 ; ---- OS shadows (cienie rejestrów w RAM) ----
-; UWAGA: shadow registers wymagają VBI — projekt ma VBI wyłączone!
-; Wszystkie zapisy idą bezpośrednio do hardware (GTIA/ANTIC $D0xx-$D4xx)
+; UWAGA: Jeśli NMIEN=$C0 (VBI włączone), OS przepisuje cienie do sprzętu w każdej klatce.
+; Dlatego inicjalizacje scen muszą pisać do cieni. Zapis bezpośredni do hardware ma sens 
+; tylko przy wyłączonym VBI (NMIEN=$00) lub wewnątrz DLI.
 VDSLST  = $0200     ; wektor DLI (2 bajty: lo, hi) — używany przez OS NMI handler
+SDMCTL  = $022F     ; cień DMACTL
+SDLSTL  = $0230     ; cień DLISTL
+SDLSTH  = $0231     ; cień DLISTH
+CHBAS   = $02F4     ; cień CHBASE
+COLOR0  = $02C4     ; cień COLPF0
+COLOR1  = $02C5     ; cień COLPF1
+COLOR2  = $02C6     ; cień COLPF2
+COLOR3  = $02C7     ; cień COLPF3
+COLOR4  = $02C8     ; cień COLBK
 
 ; ---- Joystick ----
 STRIG0  = $0284     ; cień przycisku FIRE (NIEAKTUALNY bez VBI — użyj TRIG0!)

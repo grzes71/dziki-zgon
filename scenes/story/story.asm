@@ -12,7 +12,7 @@ fire_released_flag
     sta DMACTL
     sta NMIEN
     sta GRACTL              ; wyłącz PMG DMA (GTIA)
-    sta PRIOR               ; reset priorytetów
+    sta GPRIOR               ; reset priorytetów
     sta fire_released_flag  ; zresetuj stan joysticka
 
     jsr pmg_clear_all
