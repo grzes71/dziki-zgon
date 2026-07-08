@@ -75,3 +75,14 @@ Konwencja używania najszybszej pamięci adresowej $00-$FF:
 - **Stan Globalny / Silnik**: Zakres `$92 - $97` przetrzymuje kluczowe zmienne współdzielone przez moduły (np. buforowany stan joysticka `InputState_Joy`, flagę zmiany ekranu `Engine_RequestStageAdvance`).
 - **Scratchpad (Tymczasowa)**: Zakres m.in. `$80`, `$90 - $91` to rejestry używane na bieżąco, np. w podwójnych pętlach for jako indeksy. Żaden moduł nie może oczekiwać, że dane zachowają się tam do następnej klatki. 
 - **Zmienne modułowe**: Przechowywane zazwyczaj poza Zero Page (np. instrukcje w pamięci RAM obok logiki).
+
+---
+
+## 7. Komunikacja Międzymodułowa (Wzorzec Mailbox)
+Systemy nie wywołują się nawzajem bezpośrednio (np. `Collision_Update` nie wywołuje `Start_Dialogue`).
+Zamiast tego stosowany jest wysoce zoptymalizowany dla architektury 6502 wzorzec **Mailbox** (Globalne Flagi Żądań).
+
+- Moduł zgłaszający zdarzenie (Producent) zapisuje żądanie w przypisanej globalnej zmiennej, tzw. skrzynce (np. `sta Request_Dialogue_Start`).
+- Moduł odpowiedzialny za obsługę (Konsument) w swojej kolejce działania w ramach `EngineScheduler` sprawdza tę flagę (`lda Request_Dialogue_Start`). Jeśli jest zapalona - wykonuje odpowiednią logikę i po jej przetworzeniu zeruje flagę.
+
+Podejście to jest w pełni deterministyczne, zużywa pojedyncze cykle procesora i gwarantuje stały narzut $O(1)$ wydajności, eliminując potrzebę iterowania po uniwersalnych tablicach i kolejkach zdarzeń.
