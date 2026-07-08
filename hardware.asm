@@ -40,6 +40,7 @@ DLISTH  = $D403     ; starszy bajt adresu Display List
 PMBASE  = $D407     ; adres bazowy pamięci PMG (musi być wyrównany do 1K)
 CHBASE  = $D409     ; adres bazowy fontu (znaków) — górny bajt, dolny zawsze $00
 WSYNC   = $D40A     ; Wait for Sync — zapis zatrzymuje CPU do początku następnej linii
+VCOUNT  = $D40B     ; Odczyt licznika linii (w dół od 0 do 155 na PAL)
 NMIST   = $D40F     ; rejestr statusu NMI: bit 7=DLI, bit 6=VBI (odczyt kasuje)
 NMIEN   = $D40E     ; włączenie NMI: bit 7=DLI, bit 6=VBI
 

@@ -238,9 +238,26 @@ status_palette
 .endp
 
 ;==============================================================
+; wait_frame — Czeka na początek sprzętowego VBLANK
+;==============================================================
+.proc wait_frame
+@wait1
+    lda VCOUNT
+    cmp #120
+    beq @wait1      ; Czekaj aż przestanie być VBLANK (jeśli już w nim jesteśmy)
+@wait2
+    lda VCOUNT
+    cmp #120
+    bne @wait2      ; Czekaj aż zacznie się nowy VBLANK
+    rts
+.endp
+
+;==============================================================
 ; game_run — Obsługa klatki (joystick + FIRE)
 ;==============================================================
 .proc game_run
+    jsr wait_frame      ; synchronizacja 50 FPS i redukcja migotania
+
     lda game_fire_released
     bne @check_press
 
