@@ -109,7 +109,7 @@ status_palette
     lda #$60
     sta HPOSP0
 
-    jsr draw_hero
+    jsr Render_Prepare
 
     ; --- Przygotuj przerwania DLI ---
     lda #<game_dli_1
@@ -117,10 +117,16 @@ status_palette
     lda #>game_dli_1
     sta VDSLST+1
 
+    ; --- VBLANK i DLI ON ---
+    lda #<Engine_FrameHandler
+    sta $0222
+    lda #>Engine_FrameHandler
+    sta $0223
+
     ; --- DMA ON ---
     lda #DMA_PMG_ON
     sta DMACTL
-    lda #$80             ; włącz DLI
+    lda #$C0             ; włącz DLI i VBLANK
     sta NMIEN
 
     rts
@@ -145,33 +151,7 @@ status_palette
     rts
 .endp
 
-;==============================================================
-; draw_hero — Rysuje gracza w PMG
-;==============================================================
-.proc draw_hero
-    jsr pmg_clear_all
-    
-    ; Kopiowanie klatki GERWALT_RIGHT_FRAME_0 do bufora PMG gracza 0
-    ldx #SPRITE_GERWALT_RIGHT_HEIGHT - 1
-@loop
-    lda GERWALT_RIGHT_FRAME_0,x
-    pha
-    txa
-    clc
-    adc hero_y
-    tay
-    pla
-    sta PLAYER0,y
-    dex
-    bpl @loop
-    
-    ; Ustaw X i kolor
-    lda hero_x
-    sta HPOSP0
-    lda #$0F
-    sta PCOLR0
-    rts
-.endp
+
 
 ;==============================================================
 ; Przerwania DLI
@@ -237,78 +217,3 @@ status_palette
     rti
 .endp
 
-;==============================================================
-; wait_frame — Czeka na początek sprzętowego VBLANK
-;==============================================================
-.proc wait_frame
-@wait1
-    lda VCOUNT
-    cmp #120
-    beq @wait1      ; Czekaj aż przestanie być VBLANK (jeśli już w nim jesteśmy)
-@wait2
-    lda VCOUNT
-    cmp #120
-    bne @wait2      ; Czekaj aż zacznie się nowy VBLANK
-    rts
-.endp
-
-;==============================================================
-; game_run — Obsługa klatki (joystick + FIRE)
-;==============================================================
-.proc game_run
-    jsr wait_frame      ; synchronizacja 50 FPS i redukcja migotania
-
-    lda game_fire_released
-    bne @check_press
-
-    ; Czekaj na puszczenie przycisku FIRE z poprzedniego ekranu
-    lda TRIG0
-    beq @move            ; wciąż trzyma — nie reaguj i idź do ruchu
-    lda #1
-    sta game_fire_released
-    jmp @move
-
-@check_press
-    ; --- TEST: FIRE → następny etap ---
-    lda TRIG0
-    bne @move
-    jsr advance_stage
-    rts
-
-@move
-    ; --- Odczyt joysticka (PORT A, $D300) ---
-    lda PORTA
-    eor #$FF            ; neguj (0=neutral, 1=aktywny kierunek)
-    tax
-
-    ; GÓRA
-    and #$01
-    beq @chk_down
-    dec hero_y
-
-@chk_down
-    txa
-    and #$02
-    beq @chk_left
-    inc hero_y
-
-@chk_left
-    txa
-    and #$04
-    beq @chk_right
-    dec hero_x
-
-@chk_right
-    txa
-    and #$08
-    beq @draw
-    inc hero_x
-
-@draw
-    txa
-    beq @exit
-    jsr draw_hero
-
-@exit
-    rts
-.endp

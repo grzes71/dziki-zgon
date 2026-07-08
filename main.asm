@@ -30,6 +30,9 @@ disable_basic_loader
     icl "lib/pmg.asm"
     icl "lib/rle.asm"
     icl "lib/world_renderer.asm"
+    
+    ; --- Silnik gry ---
+    icl "engine/engine.asm"
 
     ; --- Sceny (każda eksportuje _init i _run) ---
     icl "scenes/title/title.asm"
@@ -151,7 +154,18 @@ main_loop
     bne @chk_over
     jsr system_init
     jsr game_init
-@gm jsr game_run
+    lda #0
+    sta Engine_RequestStageAdvance
+@gm 
+    jsr Engine_WaitFrame
+    jsr EngineScheduler
+
+    ; Sprawdzenie, czy silnik poprosił o zmianę sceny
+    lda Engine_RequestStageAdvance
+    beq @skip_advance
+    jsr advance_stage
+@skip_advance
+
     lda GAME_STATE
     cmp #STATE_GAME
     beq @gm
