@@ -28,8 +28,11 @@ REGISTER_PATTERN = re.compile(
 FLAGS_PATTERN = re.compile(r"NV-BDIZC:\s*([01]{8})", re.IGNORECASE)
 INSTRUCTION_PATTERN = re.compile(r"\)\s*(?:[0-9A-F]{2}\s*)+\s+(.+)$", re.IGNORECASE)
 
-# Example: 4000: A9 FF 8D 00 D0 ...
-HEXDUMP_PATTERN = re.compile(r"^([0-9A-F]{4}):((?:\s[0-9A-F]{2})+)", re.MULTILINE | re.IGNORECASE)
+# Example: 4000: A9 FF 8D 00 D0 ...                              |....|
+HEXDUMP_PATTERN = re.compile(r"^([0-9A-F]{4}):((?:\s[0-9A-F]{2})+)\s+\|.*\|[\r\n]", re.MULTILINE | re.IGNORECASE)
+
+# Example: 4000: A9 FF       LDA #$FF
+DISASM_PATTERN = re.compile(r"^([0-9A-F]{4}):\s*([0-9A-F]{2}(?:\s+[0-9A-F]{2}){0,2})\s+(.+)$", re.IGNORECASE)
 
 # Example output from `k`: lines of hex addresses
 CALL_STACK_PATTERN = re.compile(r"^([0-9A-F]{4})", re.MULTILINE | re.IGNORECASE)
@@ -88,7 +91,12 @@ def parse_args():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--bp", help="Software breakpoint: hex address (e.g. $4000) or label name")
     group.add_argument("--bx", help="Hardware breakpoint: Altirra expression (e.g. write($D40E))")
+    group.add_argument("--trap-wsync", action="store_true", help="Hardware breakpoint on WSYNC ($D40A) write")
+    group.add_argument("--trap-dli", action="store_true", help="Hardware breakpoint on DLI (NMI read with DLI flag)")
+    group.add_argument("--trap-vbi", action="store_true", help="Hardware breakpoint on VBI (NMI read with VBI flag)")
     
+    parser.add_argument("--hw-regs", action="store_true", help="Dump hardware registers (GTIA, POKEY, PIA, ANTIC)")
+    parser.add_argument("--disasm", type=int, default=0, help="Disassemble N instructions at the breakpoint")
     parser.add_argument("--mem-dump", action="append", default=[], help="Memory dump range(s). Format: $ADDR:L$LEN")
     parser.add_argument("--altirra", help="Path to Altirra64.exe")
     parser.add_argument("--timeout", type=int, default=15, help="Wall-clock timeout in seconds (default: 15)")
@@ -154,15 +162,33 @@ def generate_atdbg(args, resolved_addr: str) -> tuple[str, str]:
         safe_lab_path = args.lab_file.replace("\\", "/")
         lines.append(f'.loadsym "{safe_lab_path}"')
         
+    # Map traps to bx
+    bx_expr = args.bx
+    if args.trap_wsync:
+        bx_expr = "write($D40A)"
+    elif args.trap_dli:
+        bx_expr = "read($FFFA) && (b($D40F) & $80)"
+    elif args.trap_vbi:
+        bx_expr = "read($FFFA) && (b($D40F) & $40)"
+
     # Command chain
-    chain = ["r", "k"] + parse_mem_dumps(args.mem_dump) + [".logclose", ".quit"]
+    chain = ["r", "k"] + parse_mem_dumps(args.mem_dump)
+    chain.append("d D014 L1")
+    
+    if args.hw_regs:
+        chain.extend(["d D000 L100", "d D200 L100", "d D300 L10", "d D400 L100"])
+        
+    if args.disasm > 0:
+        chain.append(f"u pc L{args.disasm}")
+        
+    chain.extend([".logclose", ".quit"])
     chain_str = " ".join(chain)
     
     if args.bp:
         addr = resolved_addr.replace('$', '')
         lines.append(f'bp {addr} "{chain_str}"')
-    elif args.bx:
-        lines.append(f'bx {args.bx} "{chain_str}"')
+    elif bx_expr:
+        lines.append(f'bx {bx_expr} "{chain_str}"')
         
     lines.append("g")
     
@@ -209,7 +235,12 @@ def parse_log(log_path: str, args, resolved_addr: str) -> dict:
             result["breakpoint"]["label"] = args.bp
     else:
         result["breakpoint"]["type"] = "hardware"
-        result["breakpoint"]["condition"] = args.bx
+        # Recover the effective bx expression
+        bx_expr = args.bx
+        if args.trap_wsync: bx_expr = "write($D40A)"
+        elif args.trap_dli: bx_expr = "read($FFFA) && (b($D40F) & $80)"
+        elif args.trap_vbi: bx_expr = "read($FFFA) && (b($D40F) & $40)"
+        result["breakpoint"]["condition"] = bx_expr
         
     # 1. Parse CPU Registers
     reg_match = REGISTER_PATTERN.search(log_content)
@@ -243,23 +274,41 @@ def parse_log(log_path: str, args, resolved_addr: str) -> dict:
     if inst_match:
         result["cpu"]["current_instruction"] = inst_match.group(1).strip()
         
-    # 4. Parse Call Stack
+    # 4. Parse Call Stack & Disassembly
     lines = log_content.splitlines()
     parsing_k = False
+    parsing_u = False
+    if args.disasm > 0:
+        result["cpu"]["disassembly"] = []
+        
     for line in lines:
         if line.startswith("Altirra>") and " k" in line:
             parsing_k = True
+            parsing_u = False
+            continue
+        elif line.startswith("Altirra>") and " u " in line:
+            parsing_u = True
+            parsing_k = False
             continue
         elif line.startswith("Altirra>"):
             parsing_k = False
+            parsing_u = False
             
         if parsing_k:
-            stack_match = re.match(r"^([0-9A-F]{4})", line, re.IGNORECASE)
+            stack_match = CALL_STACK_PATTERN.match(line)
             if stack_match:
                 result["call_stack"].append("$" + stack_match.group(1).upper())
+        elif parsing_u and args.disasm > 0:
+            d_match = DISASM_PATTERN.match(line)
+            if d_match:
+                result["cpu"]["disassembly"].append({
+                    "address": f"${d_match.group(1).upper()}",
+                    "bytes": d_match.group(2).strip(),
+                    "instruction": d_match.group(3).strip()
+                })
                 
     # 5. Parse Hexdumps
-    matches = list(HEXDUMP_PATTERN.finditer(log_content))
+    matches = list(HEXDUMP_PATTERN.finditer(log_content + "\n"))
     if matches:
         blocks = []
         current_block = {"start_addr": None, "bytes": bytearray()}
@@ -287,12 +336,24 @@ def parse_log(log_path: str, args, resolved_addr: str) -> dict:
             
         for b in blocks:
             hx = b["bytes"].hex(" ").upper()
-            result["memory_dumps"].append({
+            dump_obj = {
                 "address": f"${b['start_addr']:04X}",
                 "length": len(b["bytes"]),
                 "hex": hx,
                 "raw_base64": base64.b64encode(b["bytes"]).decode('ascii')
-            })
+            }
+            if b['start_addr'] == 0xD014 and len(b["bytes"]) == 1:
+                result["tv_system"] = "NTSC" if (b["bytes"][0] & 0x0E) == 0x0E else "PAL"
+            elif args.hw_regs and b['start_addr'] == 0xD000 and len(b["bytes"]) == 256:
+                result.setdefault("hardware_registers", {})["GTIA"] = dump_obj
+            elif args.hw_regs and b['start_addr'] == 0xD200 and len(b["bytes"]) == 256:
+                result.setdefault("hardware_registers", {})["POKEY"] = dump_obj
+            elif args.hw_regs and b['start_addr'] == 0xD300 and len(b["bytes"]) == 16:
+                result.setdefault("hardware_registers", {})["PIA"] = dump_obj
+            elif args.hw_regs and b['start_addr'] == 0xD400 and len(b["bytes"]) == 256:
+                result.setdefault("hardware_registers", {})["ANTIC"] = dump_obj
+            else:
+                result["memory_dumps"].append(dump_obj)
 
     return result
 

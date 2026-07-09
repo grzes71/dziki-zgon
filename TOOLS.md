@@ -137,6 +137,10 @@ python scripts/atdbg.py --rom dziki_zgon.xex --bp GAME_STATE --lab-file dziki_zg
 # Breakpoint sprzętowy (hardware) - np. na moment zapisu do rejestru NMIEN
 python scripts/atdbg.py --rom dziki_zgon.xex --bx 'write($D40E)'
 
+# Użycie predefiniowanych pułapek sprzętowych, zrzutów rejestrów HW i deasemblacji bloku
+# Dostępne pułapki: --trap-wsync, --trap-vbi, --trap-dli
+python scripts/atdbg.py --rom dziki_zgon.xex --trap-vbi --hw-regs --disasm 20
+
 # Tryb Warp (brak limitu FPS), zrzuty wybranych bloków pamięci i własny limit czasu (timeout)
 python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000' \
     --mem-dump '$0600:L$40' --mem-dump '$A000:L$100' \

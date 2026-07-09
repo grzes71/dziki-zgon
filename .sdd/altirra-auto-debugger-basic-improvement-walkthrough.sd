@@ -1,0 +1,29 @@
+# Walkthrough: Ulepszenia dla atdbg.py
+
+Zaimplementowałem i zintegrowałem ulepszenia dla automatycznego debuggera zgodnie z priorytetami zgłoszonymi na podstawie oficjalnej dokumentacji emulatora Altirra.
+
+## Co zostało zmienione
+
+### 1. Zrzuty rejestrów sprzętowych (`--hw-regs`)
+- Dodano opcjonalną flagę `--hw-regs`. Jeśli jest podana, skrypt w momencie aktywacji pułapki (breakpointu) po cichu wykona dodatkowe zapytania: `d D000 L100` (GTIA), `d D200 L100` (POKEY), `d D300 L10` (PIA) oraz `d D400 L100` (ANTIC).
+- W strukturze pliku JSON dane te lądują teraz w uporządkowanym bloku semantycznym `hardware_registers` z podziałem na układy (np. `GTIA`, `POKEY`), zamiast mieszać się z klasycznymi wynikami `--mem-dump`.
+
+### 2. Rozpoznawanie telewizji PAL / NTSC
+- Każdorazowo przy zatrzymaniu się pułapki zrzucana i parsowana jest wartość 1-bajtowego rejestru `$D014` (PAL z układu GTIA).
+- W wynikowym obiekcie JSON dostępna jest teraz stała, czytelna metadana:
+  `"tv_system": "PAL"` (albo `"NTSC"`).
+
+### 3. Wbudowane aliasy sprzętowe (Traps)
+- Zamiast pamiętać wyrafinowanych wyrażeń warunkowych do Altirry, pod opcją ręczną `--bx`, dodałem trzy nowe dedykowane parametry wzajemnie wykluczające:
+  - `--trap-wsync`: uruchomi pułapkę przy próbie zapisu pod adres `$D40A` (często niezbędne przy debugowaniu opóźnień wyświetlania).
+  - `--trap-dli`: zatrzyma wykonywanie przy zgłoszeniu NMI posiadającym flagę DLI (Display List Interrupt) w bitach rejestru NMIST.
+  - `--trap-vbi`: zatrzyma wykonywanie przy zgłoszeniu NMI posiadającym flagę VBI (Vertical Blank Interrupt) w bitach rejestru NMIST.
+
+### 4. Zdalna deasemblacja (`--disasm N`)
+- Dodano argument wywołania `--disasm N`, przyjmujący liczbę linii assembera do sparsowania.
+- Wewnątrz JSON-a pojawiła się nowa sekcja `cpu.disassembly`, która zwraca posortowaną listę instrukcji wraz z adresami oraz bajtami opkodu. Jest to rozwiązanie dalece przyjaźniejsze przy czytaniu kontekstu niż ręczna analiza surowego stanu CPU.
+
+> [!TIP]
+> Jeśli testujesz skrypt z nowymi flagami np. `vbi`, miej na uwadze podawanie ścieżki absolutnej do emulatora z użyciem argumentu `--altirra "C:\Apps\Altirra-4.40\Altirra64.exe"`, lub dodanie emulatora na sztywno do systemowej zmiennej środowiskowej PATH.
+
+Skrypt jest gotowy! Zaktualizuj, jeśli uznasz to za stosowne, własne notatki użycia `atdbg.py` o te potężne narzędzia śledzące i deasemblujące kod źródłowy na bieżąco!
