@@ -89,8 +89,10 @@ STAGE_COUNT = * - stage_order
     cld                     ; clear decimal mode (po resecie D może być nieznany!)
     sei                     ; blokada IRQ
     lda #0
+    sta $42                 ; Wyczyść flagę CRITIC, aby upewnić się, że OS VBLANK kopiuje cienie!
     sta IRQEN               ; wyłącz przerwania POKEY
     sta DMACTL              ; wyłącz DMA na czas konfiguracji
+    sta SDMCTL              ; zresetuj też cień DMACTL
     sta NMIEN               ; wyłącz NMI (DLI + VBI) — kluczowe przy DEV_START_STAGE>0
     sta GRACTL              ; wyłącz PMG DMA
 
@@ -157,6 +159,7 @@ main_loop
     lda #0
     sta Engine_RequestStageAdvance
 @gm 
+    inc $D016               ; PANIC FLASH: Miganie kolorem tekstu (COLPF0) - sygnalizuje że pętla główna działa
     jsr Engine_WaitFrame
     jsr EngineScheduler
 
@@ -234,15 +237,15 @@ DLIST_STORY
 
 ; --- DL gra ---
 DLIST_GAME
-    dta $70,$70,$70        ; 24 puste linie (margines górny)
-    dta $90                ; 1 pusta linia + DLI przed panelem gry
-    dta $45,a(GAME_SCREEN_A5) ; ANTIC 5, 10 linii
-    .rept 9
+    dta $70,$70,$70        ; 24 puste linie
+    dta $90                ; 2 puste linie + DLI (przed ANTIC 5)
+    dta $45,a(GAME_SCREEN_A5) ; ANTIC 5, 1 linia
+    .rept 9                ; Kolejne 9 linii ANTIC 5
     dta $05
     .endr
-    dta $90                ; 1 pusta linia + DLI
-    dta $42,a(GAME_SCREEN_A2) ; ANTIC 2, 4 linie
-    dta $02,$02,$02
+    dta $90                ; 2 puste linie + DLI (przed ANTIC 2)
+    dta $42,a(GAME_SCREEN_A2) ; ANTIC 2, 1 linia
+    dta $02,$02,$02        ; 3 linie ANTIC 2 (razem 4)
     dta $41,a(DLIST_GAME)  ; JVB
 
 ; --- DL game over (ANTIC D, narrow, 128×96, 4 kolory) ---

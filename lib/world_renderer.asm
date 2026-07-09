@@ -101,7 +101,6 @@ row_offsets_hi
     clc
     adc TMP_Y
     tay                         ; Y = Screen Row Index
-    
     lda row_offsets_lo,y
     clc
     adc OBJ_X

@@ -1,0 +1,21 @@
+# Walkthrough: Altirra Auto-Debugger Basic (`atdbg.py`)
+
+Zaimplementowałem narzędzie `atdbg.py` zgodnie z przygotowaną (i wzbogaconą) specyfikacją.
+
+## Zmiany
+1. **Utworzono plik skryptu:** Cała logika została zamknięta w pojedynczym pliku [scripts/atdbg.py](file:///c:/Users/grzes/Documents/Projects/witcher-atari-game/scripts/atdbg.py).
+2. **Obsługa argumentów CLI:** Użyto `argparse`, ze szczególnym uwzględnieniem obustronnie wykluczających się flag `--bp` oraz `--bx`. Zaimplementowano także nową flagę `--warp`.
+3. **Parsowanie plików `.lab`:** Funkcja `resolve_label` radzi sobie z formatami tabelarycznymi jak i wyrażeniami `LABEL = $ADDR`, włączając od razu obsługę znaku `$`.
+4. **Automatyczny generator skryptów Altirry:** Pliki tymczasowe (np. `.logopen`, `.atdbg`) są bezpiecznie generowane, zabezpieczone na systemie Windows podwójnymi slashami i bezpiecznie zamykane w razie błędów w sekcji `cleanup()`.
+5. **Wyodrębnianie wyrażeń (RegEx):** 
+   - Wyciąganie flag bitowych P z wiersza informacyjnego NV-BDIZC.
+   - Parsowanie klatek Call Stack dzięki dołożeniu komendy `k`.
+   - Zczytywanie deasemblacji dla bieżącej instrukcji bezpośrednio z wyjścia komendy `r`.
+   - Agregacja hexdumpów do zgrabnych formatów hex i raw (base64) po odczytaniu całych zrzutów pamięci.
+
+## Weryfikacja
+- Przeprowadzono test środowiskowy (`python scripts\atdbg.py --help`), który potwierdził wczytanie poprawnie skonstruowanego drzewa logiki parserów (w tym nowej obsługi `--warp`).
+- Narzędzie jest gotowe na otrzymanie `Altirra64.exe` jako zmiennej środowiskowej bądź przez flagę `--altirra`.
+
+> [!TIP]
+> Skrypt ten jest gotowy, aby móc zostać "wpiętym" w większe, automatyczne testy Continuous Integration lub zostać użyte przy dalszym analizowaniu pamięci, jak opisałeś w dokumentacji `debug_bridge.md`. Dodanie flagi `--warp` sprawi, że automatyczne debugowanie nie będzie miało narzutu czasowego wynikającego z rysowania klatek na ekranie.

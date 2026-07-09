@@ -2,6 +2,7 @@
 ; engine/engine.asm — Główny plik silnika
 ;----------------------------------------
 
+    icl "actor.asm"
     icl "engine_frame.asm"
     icl "engine_scheduler.asm"
     

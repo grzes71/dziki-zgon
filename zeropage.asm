@@ -2,8 +2,8 @@
 ; zeropage.asm — Zmienne page zero
 ;----------------------------------------
 
-SRC_TMP     equ $80         ; tymczasowa do obliczeń (transpozycja sprite'ów)
-GAME_STATE  equ $81         ; bieżący stan gry: 0=title, 1=story, 2=game, 3=gameover
+SRC_TMP     equ $80         ; wskaźnik tymczasowy (2 bajty, $80-$81)
+GAME_STATE  equ $9B         ; bieżący stan gry: 0=title, 1=story, 2=game, 3=gameover
 SRC_PTR     equ $82         ; wskaźnik źródłowy dla depackera RLE (2 bajty)
 DST_PTR     equ $84         ; wskaźnik docelowy dla depackera RLE (2 bajty)
 
@@ -23,10 +23,10 @@ TMP_Y       equ $91         ; wewnętrzny iterator y pętli rysującej
 FrameCounter     equ $92    ; Zwiększany co klatkę przez VBLANK
 InputState_Joy   equ $93    ; Zbuforowany stan PORTA (po eor #$FF)
 InputState_Trig  equ $94    ; Zbuforowany stan TRIG0
-Player_Intent_X  equ $95    ; Intencja ruchu gracza X
-Player_Intent_Y  equ $96    ; Intencja ruchu gracza Y
-Engine_RequestStageAdvance equ $97 ; Flaga prośby o zmianę sceny (1 = proszę o zmianę)
-Player_Dir       equ $98    ; Kierunek (0=Prawa, 1=Lewa, 2=Góra, 3=Dół)
-Player_AnimFrame equ $99    ; Aktualna klatka animacji (0-1)
-Player_AnimTimer equ $9A    ; Odliczanie do następnej klatki
-Player_AnimSpeed equ $9B    ; Szybkość animacji (np. 6)
+Engine_RequestStageAdvance equ $95 ; Flaga prośby o zmianę sceny (1 = proszę o zmianę)
+
+;--- Actor System Zero Page Variables ---
+PMG_PTR             equ $96 ; (2 bajty) Wskaźnik do pamięci PMG aktualnie renderowanego aktora
+ACTOR_TMP_X         equ $98 ; Tymczasowa intencja X aktora (do kolizji)
+ACTOR_TMP_Y         equ $99 ; Tymczasowa intencja Y aktora (do kolizji)
+ACTOR_TMP_HEIGHT    equ $9A ; Tymczasowa wysokość aktora (do kolizji)

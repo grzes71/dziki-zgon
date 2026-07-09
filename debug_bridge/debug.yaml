@@ -1,0 +1,17 @@
+emulator:
+  executable: "C:/Apps/Altirra-4.40/Altirra64.exe"
+game:
+  executable: "dziki_zgon.xex"
+output:
+  directory: "out"
+capture:
+  screenshot: true
+  state: true
+wait:
+  mode: "frame"
+  frame: 5
+symbols:
+  file: "gen/game.lab"
+  include:
+    - "GAME_STATE"
+    - "HPOSP0"

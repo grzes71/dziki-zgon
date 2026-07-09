@@ -1,0 +1,310 @@
+
+# Specification: Altirra Auto-Debugger Basic (v3 — Complete)
+
+**Version:** 3.0  
+**Status:** Ready for implementation  
+**Related:** [`debug-bridge.md`](debug-bridge.md) — pełny Debug Bridge (YAML, scenariusze, screenshoty, JSON/Markdown export)  
+**Relation to `debug_bridge/`:** Niniejsza specyfikacja opisuje **proste, jednoplikowe narzędzie CLI** (stdlib-only), które może być użyte samodzielnie LUB jako warstwa `subprocess` wywoływana przez `debug_bridge`. Nie zastępuje `debug_bridge` — uzupełnia go o szybkie, bezpośrednie stawianie breakpointów z linii poleceń.
+
+---
+
+## 1. Context and Project Goal
+
+A Python-based tool designed for automated debugging of 6502 code (project "Dziki Zgon") within the Altirra emulator. The application acts as an **unattended CLI**: it accepts an Atari executable (`.xex`/`.atr`), a stop condition (software breakpoint or hardware trap on ANTIC/GTIA/POKEY registers), runs the emulator in the background using a dynamically generated debugger script (`.atdbg`), captures machine state upon hitting the trap, and outputs a **deterministic JSON report** to stdout. Temporary files are always cleaned up.
+
+**Platform constraint:** Altirra runs only on Windows. The tool must gracefully exit with code `9` on non-Windows systems.
+
+---
+
+## 2. Functional Requirements
+
+### 2.1. Command Line Interface (CLI)
+
+Uses `argparse`. The user MUST provide exactly one stop condition via `--bp` OR `--bx`.
+
+| Argument | Required | Description |
+|---|---|---|
+| `--rom` | **Yes** | Path to compiled `.xex` or `.atr` file |
+| `--bp` | *mutex* | Software breakpoint: hex address (`$4000`) or label name (requires `--lab-file`) |
+| `--bx` | *mutex* | Hardware breakpoint: Altirra expression, e.g. `write($D40E)`, `read($D40B)`, `pc>$5000` |
+| `--mem-dump` | No | Memory dump range(s). Repeatable. Format: `$ADDR:L$LEN` (e.g. `--mem-dump '$0600:L$40' --mem-dump '$A000:L$100'`). Parsed as: strip leading `$` from address and length, then emit `d <ADDR> L<LEN>` in the `.atdbg` command chain (e.g. `$0600:L$40` → `d 0600 L40`). |
+| `--altirra` | No | Path to `Altirra64.exe`. Falls back to `ALTIRRA_PATH` env var, then `./Altirra64.exe` |
+| `--timeout` | No | Wall-clock timeout in seconds (default: `15`). Kill & exit code `1` if exceeded |
+| `--lab-file` | No | Path to MADS `.lab` labels file. Required if `--bp` uses a label name |
+| `--output-json` | No | Write JSON result to file in addition to stdout |
+| `--verbose` | No | Print progress messages to stderr (script generation, emulator launch, parsing) |
+| `--warp` | No | Uruchamia emulator bez limitu prędkości (`/warp`), aby natychmiast dotrzeć do breakpointa |
+
+**Mutual exclusion:** `--bp` and `--bx` are mutually exclusive via `argparse.add_mutually_exclusive_group(required=True)`.
+
+### 2.2. Label Resolution Strategy
+
+When `--bp` receives a label name (not starting with `$`):
+
+1. The tool parses the `.lab` file **in Python** (format: `LABEL = $ADDR` or MADS table format with tab-separated columns).
+2. Resolves the label to a hex address.
+3. Passes the **resolved address** (not the label) to the `.atdbg` script as `bp $ADDR`.
+4. If the label is not found in the `.lab` file, exit with code `3`.
+
+Both MADS label formats are supported:
+- **Assignment format:** `LABEL = $ADDR` (from `mads -l` output)
+- **Table format:** columns with address and label name (from `.lab` binary listing)
+
+Additionally, `.loadsym "file.lab"` is included in the script so Altirra can display symbol names in its own UI.
+
+### 2.3. Debugger Script Generation
+
+The Python script generates a **unique** temporary `.atdbg` file using `tempfile.NamedTemporaryFile` (suffix `.atdbg`, `delete=False`). The temporary log file also uses `tempfile.NamedTemporaryFile`.
+
+Script logic (in order):
+
+> **Path note (Windows):** Backslashes in `<temp_log_path>` and `<lab_file_path>` must be replaced with forward slashes (`/`) or doubled (`\\`) before embedding in the `.atdbg` script, since Altirra's script parser does not handle single backslashes.
+
+```
+.logopen "<temp_log_path>"
+.loadsym "<lab_file_path>"        ; only if --lab-file provided
+bp <address> "<command_chain>"    ; if --bp used
+bx <condition> "<command_chain>"  ; if --bx used
+g
+```
+
+**Command chain** (executed when breakpoint triggers):
+```
+r
+k                     ; call stack dump
+d <addr1> L<len1>     ; for each --mem-dump range
+d <addr2> L<len2>
+...
+.logclose
+.quit
+```
+
+The `r` command outputs registers and current instruction. The `k` command outputs the call stack. Each `d` outputs a hexdump block to the same log.
+
+### 2.4. Process Execution
+
+```python
+cmd = [altirra_path, "/debug", "/debugcmd", f".source {atdbg_path}"]
+if warp_mode:
+    cmd.append("/warp")
+cmd.append(rom_path)
+
+subprocess.run(
+    cmd,
+    timeout=timeout,
+    capture_output=True,
+    text=True
+)
+```
+
+- On `TimeoutExpired`: kill process, print `{"error": "Timeout - breakpoint not reached", "exit_code": 1}` to stdout, exit `1`.
+- On non-zero return code from Altirra: exit with code `4`.
+- On file-not-found for ROM or emulator: exit with code `3`.
+
+### 2.5. Output Format (JSON)
+
+The tool ALWAYS outputs a single JSON object to stdout. This is the **contract** — consumers parse stdout as JSON.
+
+```json
+{
+    "tool": "altirra-auto-debugger-basic",
+    "version": "3.0",
+    "status": "ok",
+    "breakpoint": {
+        "type": "software",
+        "address": "$4000",
+        "label": "GAME_STATE"
+    },
+    "cpu": {
+        "A": 0,
+        "X": 255,
+        "Y": 16,
+        "PC": 16384,
+        "S": 253,
+        "flags": {
+            "N": false, "V": false, "B": true, "D": false,
+            "I": true, "Z": false, "C": false
+        },
+        "current_instruction": "LDA #$FF"
+    },
+    "call_stack": [
+        "$2150",
+        "$2012"
+    ],
+    "memory_dumps": [
+        {
+            "address": "$0600",
+            "length": 64,
+            "hex": "A9 FF 8D 00 D0 ...",
+            "raw_base64": "qf+NA..."
+        }
+    ],
+    "timestamp": "2026-07-09T12:00:00",
+    "duration_seconds": 3.2
+}
+```
+
+**Error output:**
+```json
+{
+    "tool": "altirra-auto-debugger-basic",
+    "version": "3.0",
+    "status": "error",
+    "error": "Timeout - breakpoint not reached",
+    "exit_code": 1,
+    "timestamp": "2026-07-09T12:00:00"
+}
+```
+
+### 2.6. Altirra Log Parsing (Regex Patterns)
+
+After `r`, Altirra outputs registers and current instruction in this format:
+```
+(6502) PC=4000 A=00 X=FF Y=10 S=FD P=34 (NV-BDIZC: 00110100)  A9 FF       LDA #$FF
+```
+
+Regex patterns (case-insensitive, whitespace-flexible):
+```python
+REGISTER_PATTERN = re.compile(
+    r"PC=([0-9A-F]+)\s+A=([0-9A-F]+)\s+X=([0-9A-F]+)\s+Y=([0-9A-F]+)\s+S=([0-9A-F]+)\s+P=([0-9A-F]+)",
+    re.IGNORECASE
+)
+FLAGS_PATTERN = re.compile(r"NV-BDIZC:\s*([01]{8})", re.IGNORECASE)
+INSTRUCTION_PATTERN = re.compile(r"\)\s*(?:[0-9A-F]{2}\s*)+\s+(.+)$", re.IGNORECASE)
+```
+
+After `k`, Altirra outputs the call stack. Regex pattern for parsing frames:
+```python
+CALL_STACK_PATTERN = re.compile(r"^([0-9A-F]{4})", re.MULTILINE)
+```
+
+After `d <addr> L<len>`, Altirra outputs a hexdump block:
+```
+4000: A9 FF 8D 00 D0 A9 10 8D  01 D0 A9 20 8D 02 D0 A9
+4010: 30 8D 03 D0 A9 40 8D 04  D0 A9 50 8D 05 D0 A9 60
+```
+
+Regex pattern:
+```python
+HEXDUMP_PATTERN = re.compile(r"^([0-9A-F]{4}):((?:\s[0-9A-F]{2})+)", re.MULTILINE)
+```
+
+### 2.7. Cleanup
+
+In a `finally` block (or `atexit` handler):
+- Delete the temporary `.atdbg` file
+- Delete the temporary log file
+- On Windows, ensure no zombie `Altirra64.exe` process remains
+
+---
+
+## 3. Exit Codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Success — breakpoint reached, state captured |
+| `1` | Timeout — breakpoint not reached within time limit |
+| `2` | Invalid arguments (missing `--bp`/`--bx`, invalid address format) |
+| `3` | File not found (ROM, emulator, or `.lab` file), or label not found |
+| `4` | Emulator execution error (non-zero return, crash) |
+| `5` | Log parsing error (unexpected format, corrupted log) |
+| `9` | Unsupported platform (not Windows) |
+
+---
+
+## 4. Non-Functional Requirements
+
+| Requirement | Detail |
+|---|---|
+| **Language** | Python 3.8+ |
+| **Dependencies** | Standard library ONLY: `argparse`, `os`, `subprocess`, `re`, `sys`, `json`, `tempfile`, `pathlib`, `datetime`, `atexit`, `platform`, `base64`, `time` |
+| **Code style** | PEP-8, type hints on all public functions, Google-style docstrings |
+| **Entry point** | `if __name__ == '__main__':` |
+| **Single-file** | Entire tool in ONE `.py` file for easy distribution |
+| **Deterministic** | Same inputs → same JSON structure (timestamps and durations excluded) |
+| **Encoding** | UTF-8 everywhere |
+
+---
+
+## 5. Module Structure (single file: `atdbg.py`)
+
+```
+atdbg.py
+├── CLI (argparse)              — parse_args()
+├── Label resolver              — resolve_label(lab_path, label) -> int
+├── Script generator            — generate_atdbg(bp/bx, mem_dumps, lab_path) -> Path
+├── Emulator runner             — run_altirra(altirra, rom, atdbg, timeout) -> str (log)
+├── Log parser                  — parse_registers(log) -> dict
+│                              — parse_hexdumps(log, ranges) -> list[dict]
+├── Output formatter            — format_json(...) -> str
+├── Cleanup                     — cleanup(temp_files)
+└── main()                      — orchestrator
+```
+
+---
+
+## 6. Test Strategy
+
+| Test type | What to test | How |
+|---|---|---|
+| **Unit: label resolver** | Parse `.lab` files (both formats), missing label, hex addresses | `pytest` with fixture `.lab` files (no Altirra needed) |
+| **Unit: log parser** | Parse real Altirra `r` output and `d` output from sample logs | `pytest` with sample log strings |
+| **Unit: script generator** | Verify generated `.atdbg` content for `--bp`, `--bx`, multiple `--mem-dump` | `pytest`, compare strings |
+| **Unit: JSON output** | Verify JSON schema, error cases | `pytest` with `jsonschema` |
+| **Integration** | Full run with real Altirra and a test `.xex` | Manual or CI with Altirra installed |
+| **Edge cases** | Timeout, missing ROM, invalid address, parallel instances (unique temp files) | `pytest` |
+
+---
+
+## 7. Example Usage
+
+```bash
+# Software breakpoint at address
+python atdbg.py --rom dziki_zgon.xex --bp '$4000'
+
+# Software breakpoint using label
+python atdbg.py --rom dziki_zgon.xex --bp GAME_STATE --lab-file gen/game.lab
+
+# Hardware breakpoint on write to NMIEN register
+python atdbg.py --rom dziki_zgon.xex --bx 'write($D40E)'
+
+# With memory dumps and custom timeout
+python atdbg.py --rom dziki_zgon.xex --bp '$4000' \
+    --mem-dump '$0600:L$40' --mem-dump '$A000:L$100' \
+    --timeout 30 --verbose
+
+# Save JSON to file as well
+python atdbg.py --rom dziki_zgon.xex --bp '$4000' --output-json result.json
+
+# Using custom Altirra path
+python atdbg.py --rom dziki_zgon.xex --bp '$4000' --altirra 'C:\Tools\Altirra64.exe'
+```
+
+---
+
+## 8. Acceptance Criteria
+
+- [ ] Launches Altirra with `/debug` flag and sources `.atdbg` script
+- [ ] `--bp $ADDR` sets software breakpoint, dumps CPU state on hit
+- [ ] `--bx write($REG)` sets hardware breakpoint, dumps CPU state on hit
+- [ ] `--bp LABEL --lab-file file.lab` resolves label to address correctly
+- [ ] `--mem-dump` (single and multiple) captures hexdumps
+- [ ] Timeout kills Altirra and returns error JSON
+- [ ] Missing ROM/Altirra exits with clear error and code 3
+- [ ] Output is valid JSON on stdout in ALL cases
+- [ ] Temporary files are always cleaned up (success, error, timeout)
+- [ ] Two parallel instances do not interfere (unique temp file names)
+- [ ] `--verbose` prints progress to stderr without corrupting stdout JSON
+- [ ] All unit tests pass with `pytest`
+- [ ] No external pip dependencies required
+
+---
+
+## 9. Future Extensions (out of scope for v3)
+
+- Multiple breakpoints in one session
+- Conditional breakpoints (`bp $4000 "A==$FF"`)
+- Read watched symbols from memory and include in JSON
+- Screenshot capture via `.screenshot` command
+- `--scenario` mode: scripted joystick input before breakpoint
+- Integration as a `debug_bridge` backend adapter

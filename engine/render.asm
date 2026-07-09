@@ -3,56 +3,117 @@
 ;----------------------------------------
 
 .proc Render_Prepare
-    ; Przygotowanie danych rysowania i sprzętu przed VBLANK
+    ldx #0
+@actor_loop
+    lda ACTOR_ACTIVE,x
+    bne @process_actor
+    jmp @next_actor
+
+@process_actor
+    ; PMG_PTR = PMBASE_ADDR + $0400 + (X * $100)
+    lda #0
+    sta PMG_PTR
+    txa
+    clc
+    adc #>(PMBASE_ADDR + $0400)
+    sta PMG_PTR+1
+
+    ; Czyścimy starą pozycję aktora w buforze PMG
+    ldy ACTOR_HEIGHT,x
+    dey
+@clear_old
+    tya
+    clc
+    adc ACTOR_Y_OLD,x
+    tay
     
-    jsr pmg_clear_all
+    lda #0
+    sta (PMG_PTR),y
     
-    ; Pobranie bazowego wskaźnika do tablicy wskaźników kierunku
-    lda Player_Dir
-    asl
-    tax
-    lda GERWALT_PTRS_TABLE,x
+    tya
+    sec
+    sbc ACTOR_Y_OLD,x
+    tay
+    
+    dey
+    bpl @clear_old
+    
+    ; Pobranie bazowego wskaźnika do tablicy wskaźników kierunku dla tego aktora
+    lda ACTOR_PTRS_TABLE_LO,x
     sta DST_PTR
-    lda GERWALT_PTRS_TABLE+1,x
+    lda ACTOR_PTRS_TABLE_HI,x
     sta DST_PTR+1
     
+    ; Obliczenie przesunięcia dla kierunku
+    lda ACTOR_DIR,x
+    asl
+    tay
+    
+    ; Pobranie wskaźnika na tablicę klatek dla tego kierunku
+    lda (DST_PTR),y
+    sta SRC_TMP
+    iny
+    lda (DST_PTR),y
+    sta SRC_TMP+1
+    
     ; Obliczenie przesunięcia klatki wewnątrz tej tablicy
-    lda Player_AnimFrame
+    lda ACTOR_ANIM_FRAME,x
     asl
     tay
     
     ; Zapisanie ostatecznego wskaźnika na klatkę do SRC_PTR
-    lda (DST_PTR),y
+    lda (SRC_TMP),y
     sta SRC_PTR
     iny
-    lda (DST_PTR),y
+    lda (SRC_TMP),y
     sta SRC_PTR+1
 
-    ; Kopiowanie do bufora PMG gracza 0
-    ldy #SPRITE_GERWALT_RIGHT_HEIGHT - 1
+    ; Kopiowanie nowej klatki do bufora PMG (wskazywanego przez PMG_PTR)
+    ldy ACTOR_HEIGHT,x
+    dey
 @loop
     lda (SRC_PTR),y
-    pha
+    pha          ; PUSH pixel data
+    
     tya
     clc
-    adc hero_y
-    tax
-    pla
-    sta PLAYER0,x
+    adc ACTOR_Y,x
+    tay          ; Y = absolute target Y
+    
+    pla          ; PULL pixel data
+    sta (PMG_PTR),y
+    
+    tya
+    sec
+    sbc ACTOR_Y,x
+    tay          ; RESTORE original Y
+    
     dey
     bpl @loop
-    
-    ; Ustaw X i kolor
-    lda hero_x
-    sta HPOSP0
-    lda #$0F
-    sta PCOLR0
-    
-    rts
 
+    ; Zapamiętaj nową pozycję jako starą
+    lda ACTOR_Y,x
+    sta ACTOR_Y_OLD,x
+    
+    ; Ustaw X i kolor (rejestry sprzętowe leżą obok siebie: HPOSP0..HPOSP3, PCOLR0..PCOLR3)
+    lda ACTOR_X,x
+    sta HPOSP0,x
+    lda ACTOR_COLOR,x
+    sta PCOLR0,x
+
+@next_actor
+    inx
+    cpx #MAX_ACTORS
+    beq @done
+    jmp @actor_loop
+    
+@done
+    rts
+.endp
+
+; Tabele pozostają tutaj (są przypinane w game_init do ACTOR_PTRS_TABLE)
 GERWALT_PTRS_TABLE
     dta a(GERWALT_RIGHT_PTRS)
     dta a(GERWALT_LEFT_PTRS)
     dta a(GERWALT_UP_PTRS)
     dta a(GERWALT_DOWN_PTRS)
-.endp

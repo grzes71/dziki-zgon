@@ -231,6 +231,8 @@ DLI_Handler
     pha
     txa
     pha
+    tya
+    pha
 
     ; --- Ustaw kolory obrazka tytułowego (z title_colors.asm) ---
     lda #TITLE_COLBK
@@ -349,6 +351,8 @@ DLI_Handler
     sta VDSLST+1
 
     pla
+    tay
+    pla
     tax
     pla
     rti
@@ -372,6 +376,8 @@ RainbowColors
 TEXT_DLI
     pha
     txa
+    pha
+    tya
     pha
 
     lda #$00
@@ -415,6 +421,8 @@ TEXT_DLI
     lda #>DLI_Handler
     sta VDSLST+1
 
+    pla
+    tay
     pla
     tax
     pla

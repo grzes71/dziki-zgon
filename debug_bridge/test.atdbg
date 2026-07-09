@@ -1,0 +1,4 @@
+bx "_f >= 100"
+g
+.writemem "mem.bin" 0 L10000
+.quit

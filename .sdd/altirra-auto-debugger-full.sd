@@ -1,0 +1,2767 @@
+# Altirra Auto Debugger Full - Specification (Spec-Driven Development)
+
+Version: 1.0
+
+## Purpose
+Altirra Debug Bridge is a command-line tool providing an AI-friendly interface to the Altirra debugger.
+
+It shall:
+- launch Altirra
+- generate .atdbg scripts
+- resolve MADS symbols
+- execute scenarios
+- capture screenshots
+- read watched symbols
+- export JSON
+- generate Markdown reports
+
+## Inputs
+- .xex / .atr
+- .lab
+- debug.yaml
+- watch.yaml
+- scenario.yaml
+
+## CLI
+Commands:
+- run
+- report
+- diff
+- symbols
+- scenario
+
+Example:
+adb run --rom build/game.xex --lab build/game.lab --watch watch.yaml --scenario intro.yaml
+
+## Configuration
+Support:
+- emulator path
+- timeout
+- output directory
+- screenshot capture
+- JSON export
+
+## Watch Lists
+Example:
+watch:
+  - PlayerX
+  - PlayerY
+  - CurrentScreen
+  - CurrentRegion
+  - FrameCounter
+
+Addresses shall be resolved from the MADS .lab file.
+
+## Scenarios
+Support scripted input:
+- wait_frames
+- joystick
+- fire
+- capture
+
+## Breakpoints
+Support:
+- software breakpoints
+- hardware breakpoints
+- multiple breakpoints
+
+## Outputs
+Generate:
+- debug_state.json
+- debug_report.md
+- screenshots
+- logs
+- symbols.cache
+
+## JSON
+Export watched variables in AI-friendly form.
+
+## Reports
+Markdown report containing:
+- execution summary
+- breakpoint
+- watched variables
+- screenshots
+- warnings
+
+## Diff Mode
+Compare two debug_state.json files and report differences.
+
+## Modules
+- cli.py
+- launcher.py
+- debugger_script.py
+- symbols.py
+- watches.py
+- scenarios.py
+- screenshots.py
+- parser.py
+- reports.py
+- diff.py
+- main.py
+
+## Error Handling
+Handle:
+- timeout
+- missing ROM
+- missing emulator
+- invalid breakpoint
+- invalid symbol
+- corrupted log
+
+## Future Extensions
+- CPU trace
+- GIF generation
+- CI integration
+- profiling
+- watchpoints
+
+## Acceptance Criteria
+- Launches Altirra
+- Generates .atdbg
+- Supports software and hardware breakpoints
+- Resolves symbols
+- Supports watch lists
+- Supports scenarios
+- Captures screenshots
+- Generates JSON
+- Generates Markdown reports
+- Supports diff mode
+- Passes Ruff, Black, mypy and pytest
+
+## Structure
+
+Altirra Debug Bridge
+
+├── Emulator Launcher
+├── Script Generator (.atdbg)
+├── Symbol Resolver
+├── Memory Reader
+├── Watch Manager
+├── Screenshot Capture
+├── Scenario Runner
+├── Report Generator
+├── JSON Exporter
+└── Diff Engine
+
+
+# Emulator Launcher Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+## Purpose
+
+Emulator Launcher is a reusable Python library responsible for starting, monitoring and stopping Atari emulators.
+
+It provides a stable abstraction layer so higher-level tools (Debug Bridge, automated tests, AI agents) never communicate with the emulator directly.
+
+The first supported emulator is **Altirra**.
+
+---
+
+# Design Principles
+
+- Single Responsibility Principle
+- Deterministic behaviour
+- Read-only interaction with the emulator
+- No game-specific logic
+- Extensible to additional emulators
+
+---
+
+# Responsibilities
+
+The module SHALL:
+
+- Validate emulator executable.
+- Validate ROM/XEX/ATR paths.
+- Launch Altirra.
+- Pass debugger parameters.
+- Wait for completion.
+- Detect timeouts.
+- Force termination when necessary.
+- Capture stdout/stderr.
+- Return structured results.
+
+The module SHALL NOT:
+
+- Parse debugger logs.
+- Read symbols.
+- Generate reports.
+- Interpret game state.
+
+---
+
+# Public API
+
+```python
+launcher = EmulatorLauncher(config)
+
+result = launcher.run(
+    rom="build/game.xex",
+    debugger_script="temp.atdbg",
+    timeout=15
+)
+```
+
+Result object:
+
+```python
+LauncherResult
+    success: bool
+    exit_code: int
+    duration_ms: int
+    timed_out: bool
+    stdout: str
+    stderr: str
+```
+
+---
+
+# Configuration
+
+Example:
+
+```yaml
+emulator:
+  executable: C:/Apps/Altirra-4.40/Altirra64.exe
+
+launcher:
+  timeout: 15
+  working_directory: build/
+```
+
+---
+
+# Launch Command
+
+The launcher shall support:
+
+```text
+Altirra64.exe
+    /debug
+    /debugcmd:.source temp.atdbg
+    game.xex
+```
+
+Command-line arguments must be assembled programmatically.
+
+---
+
+# Execution States
+
+State machine:
+
+```text
+Idle
+  ↓
+Validating
+  ↓
+Launching
+  ↓
+Running
+  ↓
+Completed
+   ├── Success
+   ├── Timeout
+   ├── Emulator Error
+   └── Launch Failure
+```
+
+---
+
+# Timeout Handling
+
+If execution exceeds the configured timeout:
+
+- terminate emulator process,
+- clean child processes,
+- return deterministic error,
+- preserve generated logs.
+
+---
+
+# Error Handling
+
+Detect and report:
+
+- emulator not found
+- ROM not found
+- invalid debugger script
+- timeout
+- process launch failure
+- unexpected exit code
+
+Errors must include clear diagnostic messages.
+
+---
+
+# Logging
+
+Optional launcher log:
+
+```text
+launcher.log
+```
+
+Contents:
+
+- timestamp
+- executable
+- arguments
+- duration
+- exit code
+
+---
+
+# Suggested Project Structure
+
+```text
+emulator_launcher/
+
+    launcher.py
+    config.py
+    models.py
+    process.py
+    validation.py
+    logging.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# Unit Tests
+
+Provide tests for:
+
+- valid launch
+- missing emulator
+- missing ROM
+- timeout
+- invalid configuration
+- command-line generation
+
+Use mocks for process execution.
+
+---
+
+# Future Extensions
+
+Architecture should allow:
+
+- Atari800 emulator
+- Multiple emulator profiles
+- Headless mode
+- Process reuse
+- Performance metrics
+- Remote launcher
+
+Do not implement these features yet.
+
+---
+
+# Acceptance Criteria
+
+Implementation is complete only if:
+
+- Emulator executable is validated.
+- ROM path is validated.
+- Altirra launches successfully.
+- Timeout is enforced.
+- Structured results are returned.
+- Errors are deterministic.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Script Generator (.atdbg) Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# Purpose
+
+Script Generator is a reusable library responsible for generating Altirra debugger
+scripts (`.atdbg`).
+
+It converts a high-level debugging configuration into a valid Altirra debugger
+script.
+
+It SHALL NOT execute Altirra.
+
+Execution is the responsibility of Emulator Launcher.
+
+---
+
+# Responsibilities
+
+The module SHALL:
+
+- Generate valid `.atdbg` scripts.
+- Support software breakpoints.
+- Support hardware breakpoints.
+- Load MADS symbol files.
+- Enable logging.
+- Generate memory dumps.
+- Generate register dumps.
+- Quit Altirra automatically after a trigger.
+- Produce deterministic output.
+
+The module SHALL NOT:
+
+- Launch Altirra.
+- Parse logs.
+- Read memory.
+- Interpret debugger output.
+
+---
+
+# Design Principles
+
+- Single Responsibility Principle
+- Deterministic output
+- No emulator state
+- No game-specific knowledge
+- Extensible architecture
+
+---
+
+# Public API
+
+```python
+generator = ScriptGenerator()
+
+script = generator.generate(configuration)
+```
+
+Output:
+
+```text
+temp_debug.atdbg
+```
+
+---
+
+# Input Model
+
+Example:
+
+```yaml
+script:
+
+  log: true
+
+  symbols: build/game.lab
+
+  breakpoints:
+
+    - Player_Update
+
+    - Collision_Update
+
+  hardware:
+
+    - write($D40E)
+
+  memory:
+
+    - "$0600:L$40"
+
+  registers: true
+
+  auto_quit: true
+```
+
+---
+
+# Script Structure
+
+Generated script shall follow:
+
+```text
+.logopen "temp_log.txt"
+
+.loadsym "game.lab"
+
+<breakpoints>
+
+g
+```
+
+---
+
+# Breakpoints
+
+Support:
+
+Software:
+
+```text
+bp Player_Update
+```
+
+or
+
+```text
+bp $4000
+```
+
+Hardware:
+
+```text
+bx write($D40E)
+```
+
+Support multiple breakpoints.
+
+---
+
+# Breakpoint Actions
+
+Every breakpoint shall execute a command chain.
+
+Example:
+
+```text
+r
+
+d $0600 L$40
+
+.logclose
+
+.quit
+```
+
+The command chain is configurable.
+
+---
+
+# Logging
+
+Support:
+
+```text
+.logopen
+
+.logclose
+```
+
+Log file name is configurable.
+
+---
+
+# Symbol Loading
+
+If symbols are configured:
+
+Generate:
+
+```text
+.loadsym "game.lab"
+```
+
+If no symbol file exists, omit the command.
+
+---
+
+# Register Dump
+
+When enabled:
+
+```text
+r
+```
+
+must be emitted.
+
+---
+
+# Memory Dumps
+
+Support multiple dump ranges.
+
+Example:
+
+```text
+d $0600 L$40
+
+d $A000 L$20
+```
+
+---
+
+# Auto Quit
+
+Support:
+
+```text
+.quit
+```
+
+Optionally disabled for interactive debugging.
+
+---
+
+# Script Validation
+
+Validate:
+
+- valid breakpoint syntax
+- valid hardware syntax
+- valid memory ranges
+- existing symbol file
+- duplicate breakpoints
+
+Generation fails on invalid configuration.
+
+---
+
+# File Output
+
+Generate deterministic UTF-8 text.
+
+Platform-independent line endings shall be configurable.
+
+---
+
+# Suggested Architecture
+
+```text
+script_generator/
+
+    generator.py
+
+    builder.py
+
+    validator.py
+
+    models.py
+
+    writer.py
+
+    parser.py
+
+    exceptions.py
+```
+
+---
+
+# Internal Model
+
+```text
+DebugScript
+
+    LogCommand
+
+    SymbolCommand
+
+    BreakpointCommands
+
+    MemoryCommands
+
+    RegisterCommand
+
+    QuitCommand
+```
+
+---
+
+# Unit Tests
+
+Provide tests for:
+
+- software breakpoint generation
+- hardware breakpoint generation
+- symbol loading
+- register dump
+- memory dump
+- multiple breakpoints
+- auto quit
+- invalid configuration
+
+---
+
+# Future Extensions
+
+Architecture should support:
+
+- conditional breakpoints
+- breakpoint groups
+- reusable command chains
+- macros
+- debugger variables
+- script templates
+
+Do not implement these features yet.
+
+---
+
+# Acceptance Criteria
+
+Implementation is complete only if:
+
+- Valid `.atdbg` files are generated.
+- Software breakpoints are supported.
+- Hardware breakpoints are supported.
+- Symbol loading works.
+- Register dumps work.
+- Memory dumps work.
+- Auto quit is configurable.
+- Output is deterministic.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Symbol Resolver Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+## Purpose
+
+Symbol Resolver is a reusable Python library responsible for loading, parsing and
+querying MADS symbol files (`.lab`).
+
+It provides a high-level API that allows tools to resolve symbol names into
+memory addresses without knowing the file format.
+
+It is used by:
+
+- Script Generator
+- Altirra Debug Bridge
+- Watch Manager
+- Scenario Runner
+- Future debugging and testing tools
+
+The library SHALL NOT launch the emulator or read emulator memory.
+
+---
+
+# Design Principles
+
+- Single Responsibility Principle
+- Deterministic output
+- Read-only operation
+- Immutable symbol database after loading
+- Emulator-independent
+
+---
+
+# Responsibilities
+
+The library SHALL:
+
+- Parse MADS `.lab` files.
+- Resolve symbol → address.
+- Resolve address → symbol.
+- Detect duplicate symbols.
+- Validate file format.
+- Cache parsed symbols.
+- Expose a simple public API.
+
+The library SHALL NOT:
+
+- Parse assembler source.
+- Modify symbol files.
+- Interpret game logic.
+
+---
+
+# Supported Input
+
+Input file:
+
+```text
+game.lab
+```
+
+Generated by MADS.
+
+---
+
+# Public API
+
+```python
+resolver = SymbolResolver()
+
+resolver.load("build/game.lab")
+
+address = resolver.resolve("PlayerX")
+
+symbol = resolver.reverse_lookup(0x0082)
+
+exists = resolver.exists("CurrentScreen")
+
+symbols = resolver.list_symbols()
+```
+
+---
+
+# Internal Model
+
+```text
+Symbol
+
+    name
+    address
+
+SymbolTable
+
+    by_name
+    by_address
+```
+
+Both indexes shall be created during loading.
+
+---
+
+# File Validation
+
+Validate:
+
+- file exists
+- readable
+- supported format
+- valid hexadecimal addresses
+- duplicate symbol names
+- malformed lines
+
+Loading fails with descriptive exceptions.
+
+---
+
+# Caching
+
+After successful parsing create:
+
+```text
+symbols.cache
+```
+
+Cache shall contain:
+
+- source file timestamp
+- parsed symbols
+- checksum/version
+
+If unchanged, load from cache instead of reparsing.
+
+---
+
+# Search
+
+Support:
+
+- exact lookup
+- reverse lookup
+- prefix search
+
+Example:
+
+```python
+resolver.search("Player")
+```
+
+Returns all symbols beginning with "Player".
+
+---
+
+# Error Handling
+
+Raise dedicated exceptions:
+
+- SymbolFileNotFound
+- InvalidSymbolFile
+- DuplicateSymbol
+- SymbolNotFound
+
+---
+
+# Performance
+
+Loading should occur once.
+
+Subsequent lookups should be O(1).
+
+---
+
+# Suggested Project Structure
+
+```text
+symbol_resolver/
+
+    resolver.py
+    parser.py
+    cache.py
+    models.py
+    validation.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# Unit Tests
+
+Provide tests for:
+
+- valid file
+- invalid file
+- duplicate symbols
+- reverse lookup
+- cache loading
+- prefix search
+- missing symbol
+
+---
+
+# Future Extensions
+
+Architecture should support:
+
+- CA65 symbol files
+- Atari800 symbol formats
+- multiple symbol tables
+- merging symbol files
+- exporting JSON
+
+Do not implement these features yet.
+
+---
+
+# Acceptance Criteria
+
+Implementation is complete only if:
+
+- MADS `.lab` files load correctly.
+- Symbol lookup works.
+- Reverse lookup works.
+- Prefix search works.
+- Cache is supported.
+- Errors are deterministic.
+- API is documented.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Memory Reader Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# Purpose
+
+Memory Reader is a reusable Python library responsible for reading Atari memory
+through the Altirra debugger.
+
+It converts low-level memory dumps into structured data that can be consumed by
+higher-level modules such as Watch Manager and Debug Bridge.
+
+Memory Reader SHALL NOT interpret game logic.
+
+---
+
+# Design Principles
+
+- Single Responsibility Principle
+- Deterministic output
+- Read-only access
+- Emulator-independent API
+- High cohesion / low coupling
+
+---
+
+# Responsibilities
+
+The module SHALL:
+
+- Read memory dump output generated by Altirra.
+- Parse hexadecimal dump format.
+- Expose byte-level access.
+- Expose word (16-bit) access.
+- Read arbitrary memory ranges.
+- Validate requested addresses.
+- Return deterministic results.
+
+The module SHALL NOT:
+
+- Launch the emulator.
+- Parse symbol files.
+- Interpret game structures.
+- Generate reports.
+
+---
+
+# Inputs
+
+Supported sources:
+
+- Altirra debugger log
+- Raw binary memory dump (future)
+
+---
+
+# Public API
+
+```python
+reader = MemoryReader()
+
+reader.load("temp_log.txt")
+
+value = reader.read_byte(0x0082)
+
+word = reader.read_word(0x02E0)
+
+block = reader.read_range(0x0600, 64)
+```
+
+---
+
+# Internal Model
+
+```text
+MemoryImage
+
+    bytes[65536]
+
+MemoryReader
+```
+
+Memory shall be stored as a contiguous byte array.
+
+---
+
+# Addressing
+
+Support:
+
+- byte reads
+- word reads (little-endian)
+- block reads
+
+Validate:
+
+- negative addresses
+- addresses > 0xFFFF
+- invalid ranges
+
+Raise descriptive exceptions.
+
+---
+
+# Parsing
+
+Support Altirra hexdump format.
+
+Ignore:
+
+- blank lines
+- comments
+- unrelated debugger output
+
+Detect malformed dumps.
+
+---
+
+# Error Handling
+
+Provide dedicated exceptions:
+
+- MemoryReadError
+- InvalidAddress
+- InvalidRange
+- InvalidDumpFormat
+- MemoryNotLoaded
+
+---
+
+# Performance
+
+Loading shall occur once.
+
+Memory access should be O(1).
+
+---
+
+# Suggested Project Structure
+
+```text
+memory_reader/
+
+    reader.py
+    parser.py
+    models.py
+    validation.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# Unit Tests
+
+Provide tests for:
+
+- byte reads
+- word reads
+- range reads
+- invalid address
+- invalid dump
+- unloaded memory
+
+---
+
+# Future Extensions
+
+Architecture should support:
+
+- binary RAM dumps
+- write simulation (offline only)
+- memory diff
+- search for byte patterns
+- export to JSON
+
+Do not implement these features yet.
+
+---
+
+# Acceptance Criteria
+
+Implementation is complete only if:
+
+- Altirra memory dumps are parsed correctly.
+- Byte, word and range reads work.
+- Address validation is implemented.
+- Deterministic exceptions are returned.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Watch Manager Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# Purpose
+
+Watch Manager is a reusable Python library responsible for resolving and reading
+selected game variables ("watches") from Atari memory.
+
+It combines:
+
+- Symbol Resolver
+- Memory Reader
+
+into a simple, high-level API suitable for AI agents and debugging tools.
+
+Watch Manager SHALL NOT interpret gameplay logic.
+
+---
+
+# Design Principles
+
+- Single Responsibility Principle
+- Deterministic output
+- Read-only access
+- Emulator-independent interface
+- High cohesion / low coupling
+
+---
+
+# Responsibilities
+
+The module SHALL:
+
+- Load watch definitions from YAML.
+- Resolve symbol names into addresses.
+- Read values from Memory Reader.
+- Return structured watch values.
+- Validate watch definitions.
+- Report missing symbols.
+
+The module SHALL NOT:
+
+- Parse .lab files directly.
+- Read debugger logs directly.
+- Launch the emulator.
+- Generate reports.
+
+---
+
+# Dependencies
+
+Uses:
+
+- Symbol Resolver
+- Memory Reader
+
+---
+
+# Watch Definition
+
+Example:
+
+```yaml
+watch:
+
+  - name: PlayerX
+    type: byte
+
+  - name: PlayerY
+    type: byte
+
+  - name: CurrentScreen
+    type: byte
+
+  - name: PlayerPosition
+    type: word
+
+  - name: Inventory
+    type: bytes
+    length: 16
+```
+
+Supported types:
+
+- byte
+- word
+- bytes
+
+---
+
+# Public API
+
+```python
+resolver = SymbolResolver(...)
+memory = MemoryReader(...)
+
+manager = WatchManager(resolver, memory)
+
+manager.load("watch.yaml")
+
+values = manager.read_all()
+```
+
+Returned model:
+
+```python
+WatchValue
+
+    name
+    address
+    type
+    value
+```
+
+---
+
+# Processing Pipeline
+
+```
+watch.yaml
+      │
+      ▼
+Watch Parser
+      │
+      ▼
+Symbol Resolver
+      │
+      ▼
+Memory Reader
+      │
+      ▼
+Watch Values
+```
+
+---
+
+# Validation
+
+Validate:
+
+- duplicate watch names
+- unsupported types
+- missing symbols
+- invalid lengths
+- malformed YAML
+
+Loading fails on validation errors.
+
+---
+
+# Returned Data
+
+Example:
+
+```json
+{
+  "PlayerX": 15,
+  "PlayerY": 8,
+  "CurrentScreen": 4,
+  "Inventory": [1,5,0,0,3]
+}
+```
+
+Output must be deterministic.
+
+---
+
+# Suggested Project Structure
+
+```text
+watch_manager/
+
+    manager.py
+    parser.py
+    models.py
+    validation.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# Exceptions
+
+Provide:
+
+- WatchFileNotFound
+- InvalidWatchFile
+- DuplicateWatch
+- UnsupportedType
+- MissingSymbol
+
+---
+
+# Unit Tests
+
+Provide tests for:
+
+- valid watch file
+- duplicate watches
+- missing symbol
+- byte read
+- word read
+- byte array read
+- invalid type
+
+---
+
+# Future Extensions
+
+Architecture should support:
+
+- bit fields
+- signed integers
+- strings
+- enums
+- custom decoders
+- computed watches
+
+Do not implement these features yet.
+
+---
+
+# Acceptance Criteria
+
+Implementation is complete only if:
+
+- YAML watch files load correctly.
+- Symbols are resolved.
+- Memory values are read correctly.
+- Byte, word and byte-array watches are supported.
+- Validation detects configuration errors.
+- Output is deterministic.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Screenshot Capture Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# 1. Purpose
+
+Screenshot Capture is a reusable Python library responsible for capturing,
+organizing and exporting screenshots from the Altirra emulator.
+
+It provides deterministic screenshots that can be consumed by:
+
+- Debug Bridge
+- AI agents
+- Regression tests
+- Markdown reports
+- Future visual comparison tools
+
+The module SHALL NOT launch the emulator or interpret gameplay logic.
+
+---
+
+# 2. Design Principles
+
+- Single Responsibility Principle
+- Deterministic output
+- Read-only interaction
+- Emulator-independent API
+- High cohesion / Low coupling
+
+---
+
+# 3. Responsibilities
+
+The module SHALL:
+
+- Capture emulator screenshots.
+- Save PNG images.
+- Generate deterministic filenames.
+- Organize screenshots by session.
+- Validate output paths.
+- Return metadata describing captured images.
+
+The module SHALL NOT:
+
+- Read memory.
+- Parse symbols.
+- Generate reports.
+- Compare screenshots.
+
+---
+
+# 4. Dependencies
+
+Uses:
+
+- Emulator Launcher
+- Altirra Debug Bridge
+
+May optionally use Pillow for image validation.
+
+---
+
+# 5. Public API
+
+```python
+capture = ScreenshotCapture(config)
+
+result = capture.capture(
+    frame=500,
+    name="player_spawn"
+)
+```
+
+Returns:
+
+```python
+ScreenshotResult(
+    filename="frame_000500.png",
+    width=384,
+    height=240,
+    timestamp="...",
+    success=True
+)
+```
+
+---
+
+# 6. Configuration
+
+Example:
+
+```yaml
+screenshots:
+
+  directory: debug_output/screenshots
+
+  format: png
+
+  overwrite: false
+
+  filename_pattern: frame_{frame:06d}
+```
+
+---
+
+# 7. Naming Convention
+
+Supported patterns:
+
+- frame_000500.png
+- player_spawn.png
+- collision_test.png
+- quest_001.png
+
+Names must be deterministic.
+
+---
+
+# 8. Directory Layout
+
+```
+debug_output/
+
+    screenshots/
+
+        frame_000100.png
+
+        frame_000500.png
+
+        player_spawn.png
+```
+
+---
+
+# 9. Metadata
+
+Generate:
+
+```json
+{
+  "frame":500,
+  "file":"frame_000500.png",
+  "width":384,
+  "height":240
+}
+```
+
+Optionally store all metadata in:
+
+```
+screenshots.json
+```
+
+---
+
+# 10. Validation
+
+Validate:
+
+- output directory exists (or create it)
+- PNG successfully written
+- file size > 0
+- image dimensions are valid
+
+---
+
+# 11. Error Handling
+
+Provide exceptions:
+
+- ScreenshotError
+- OutputDirectoryError
+- CaptureFailed
+- InvalidImage
+
+Errors must be deterministic.
+
+---
+
+# 12. Suggested Project Structure
+
+```
+screenshot_capture/
+
+    capture.py
+    config.py
+    models.py
+    validation.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# 13. Unit Tests
+
+Provide tests for:
+
+- successful capture
+- filename generation
+- directory creation
+- overwrite protection
+- invalid output path
+- metadata generation
+
+---
+
+# 14. Future Extensions
+
+Architecture should support:
+
+- multiple screenshots per run
+- animated GIF generation
+- video recording
+- visual regression testing
+- image cropping
+- image annotations
+- heatmap overlays
+
+Do not implement these features yet.
+
+---
+
+# 15. Acceptance Criteria
+
+Implementation is complete only if:
+
+- Screenshots are captured successfully.
+- PNG output is supported.
+- Deterministic filenames are generated.
+- Metadata is exported.
+- Output directories are handled automatically.
+- Errors are deterministic.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Scenario Runner Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# 1. Purpose
+
+Scenario Runner is a reusable Python library responsible for executing deterministic
+debug and regression scenarios against an Atari game running inside the Altirra emulator.
+
+A scenario describes **what inputs are applied**, **when they are applied**,
+and **what information should be captured**.
+
+Scenario Runner coordinates existing modules but SHALL NOT communicate with
+the emulator directly.
+
+It uses:
+
+- Emulator Launcher
+- Script Generator
+- Symbol Resolver
+- Memory Reader
+- Watch Manager
+- Screenshot Capture
+
+---
+
+# 2. Design Goals
+
+The module SHALL:
+
+- Execute deterministic scenarios.
+- Simulate player input.
+- Wait for frame counts.
+- Trigger screenshots.
+- Capture watched variables.
+- Produce repeatable results.
+- Support automated regression testing.
+
+---
+
+# 3. Responsibilities
+
+Scenario Runner SHALL:
+
+- Load YAML scenarios.
+- Validate scenario syntax.
+- Execute actions in order.
+- Coordinate dependent modules.
+- Collect execution results.
+- Export a scenario report.
+
+Scenario Runner SHALL NOT:
+
+- Parse .lab files.
+- Read debugger logs directly.
+- Launch Altirra directly.
+- Generate .atdbg scripts.
+
+---
+
+# 4. Scenario Format
+
+Example:
+
+```yaml
+name: Tavern Entrance Test
+
+startup:
+  rom: build/game.xex
+
+steps:
+
+  - wait_frames: 50
+
+  - joystick:
+      direction: RIGHT
+      frames: 40
+
+  - joystick:
+      direction: DOWN
+      frames: 15
+
+  - fire: true
+
+  - capture:
+      screenshot: true
+      watches: true
+
+  - assert:
+      watch: CurrentScreen
+      equals: TAVERN
+```
+
+---
+
+# 5. Supported Actions
+
+- wait_frames
+- joystick
+- fire
+- capture
+- assert
+- breakpoint (future)
+- comment
+
+Actions execute sequentially.
+
+---
+
+# 6. Assertions
+
+Supported:
+
+```yaml
+assert:
+  watch: PlayerX
+  equals: 15
+```
+
+```yaml
+assert:
+  watch: InventoryCount
+  greater_than: 0
+```
+
+Future:
+
+- less_than
+- not_equals
+- between
+
+---
+
+# 7. Public API
+
+```python
+runner = ScenarioRunner(config)
+
+result = runner.run("intro.yaml")
+```
+
+Result:
+
+```python
+ScenarioResult(
+    success=True,
+    executed_steps=12,
+    failed_assertions=[],
+    screenshots=[],
+    watches={}
+)
+```
+
+---
+
+# 8. Execution Pipeline
+
+```
+Load YAML
+      │
+Validate
+      │
+Launch Emulator
+      │
+Execute Steps
+      │
+Capture Results
+      │
+Evaluate Assertions
+      │
+Generate Report
+```
+
+---
+
+# 9. Reports
+
+Generate:
+
+- scenario_report.md
+- scenario_state.json
+
+Include:
+
+- execution summary
+- elapsed time
+- screenshots
+- watched values
+- assertion results
+
+---
+
+# 10. Error Handling
+
+Detect:
+
+- invalid YAML
+- unknown action
+- missing watch
+- failed assertion
+- timeout
+- emulator failure
+
+Return deterministic errors.
+
+---
+
+# 11. Suggested Project Structure
+
+```text
+scenario_runner/
+
+    runner.py
+    parser.py
+    executor.py
+    assertions.py
+    models.py
+    validation.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# 12. Unit Tests
+
+Provide tests for:
+
+- valid scenario
+- invalid YAML
+- unknown action
+- failed assertion
+- screenshot capture request
+- watch capture request
+- deterministic execution
+
+---
+
+# 13. Future Extensions
+
+Architecture should support:
+
+- scenario variables
+- reusable scenario fragments
+- loops
+- conditional execution
+- random seed injection
+- batch execution
+- parallel reporting
+
+Do not implement these features yet.
+
+---
+
+# 14. Acceptance Criteria
+
+Implementation is complete only if:
+
+- YAML scenarios load correctly.
+- All supported actions execute in order.
+- Assertions are evaluated.
+- Reports are generated.
+- JSON export is supported.
+- Execution is deterministic.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Report Generator Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# 1. Purpose
+
+Report Generator is a reusable Python library responsible for producing
+human-readable and AI-friendly reports from debugging sessions.
+
+It aggregates information produced by other modules and exports it in
+multiple formats.
+
+Report Generator SHALL NOT communicate directly with the emulator.
+
+---
+
+# 2. Responsibilities
+
+The module SHALL:
+
+- Generate Markdown reports.
+- Generate HTML reports (future).
+- Generate JSON summaries.
+- Embed screenshots.
+- Include watched variables.
+- Include execution statistics.
+- Include assertion results.
+- Generate deterministic output.
+
+The module SHALL NOT:
+
+- Launch Altirra.
+- Parse debugger logs.
+- Read memory.
+- Resolve symbols.
+
+---
+
+# 3. Dependencies
+
+Uses:
+
+- Scenario Runner
+- Watch Manager
+- Screenshot Capture
+- Symbol Resolver (optional metadata)
+
+---
+
+# 4. Inputs
+
+The module accepts a Debug Session model.
+
+Example:
+
+```python
+DebugSession(
+    launcher_result=...,
+    watches=...,
+    screenshots=...,
+    assertions=...,
+    metadata=...
+)
+```
+
+---
+
+# 5. Outputs
+
+Supported formats:
+
+- Markdown (.md)
+- JSON (.json)
+
+Future:
+
+- HTML
+- PDF
+
+---
+
+# 6. Markdown Report
+
+Generate:
+
+```
+debug_report.md
+```
+
+Suggested sections:
+
+# Summary
+
+- ROM
+- Emulator
+- Duration
+- Result
+
+# Breakpoints
+
+# Watched Variables
+
+# Assertions
+
+# Screenshots
+
+# Errors
+
+# Environment
+
+---
+
+# 7. JSON Report
+
+Generate:
+
+```
+debug_report.json
+```
+
+Example:
+
+```json
+{
+  "success": true,
+  "duration_ms": 1523,
+  "assertions": {
+    "passed": 12,
+    "failed": 0
+  },
+  "screenshots": [
+    "frame_000500.png"
+  ]
+}
+```
+
+---
+
+# 8. Screenshot Integration
+
+Markdown reports shall reference images using relative paths.
+
+Example:
+
+```markdown
+![Frame 500](screenshots/frame_000500.png)
+```
+
+---
+
+# 9. Watch Tables
+
+Render watched values as Markdown tables.
+
+Example:
+
+| Symbol | Address | Type | Value |
+|--------|--------:|------|------:|
+| PlayerX | $0082 | byte | 15 |
+| PlayerY | $0083 | byte | 8 |
+
+---
+
+# 10. Assertions
+
+Include:
+
+- passed
+- failed
+- skipped (future)
+
+Failed assertions shall include expected and actual values.
+
+---
+
+# 11. Execution Summary
+
+Include:
+
+- execution start
+- execution end
+- elapsed time
+- timeout status
+- exit code
+
+---
+
+# 12. Directory Layout
+
+```
+debug_output/
+
+    debug_report.md
+    debug_report.json
+    screenshots/
+```
+
+---
+
+# 13. Suggested Project Structure
+
+```
+report_generator/
+
+    generator.py
+    markdown.py
+    json_export.py
+    models.py
+    templates.py
+    validation.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# 14. Public API
+
+```python
+generator = ReportGenerator(config)
+
+generator.generate_markdown(session)
+
+generator.generate_json(session)
+```
+
+---
+
+# 15. Validation
+
+Validate:
+
+- output directory
+- screenshot references
+- required session data
+- writable files
+
+---
+
+# 16. Error Handling
+
+Provide deterministic exceptions:
+
+- ReportGenerationError
+- InvalidSession
+- OutputWriteError
+- MissingScreenshot
+
+---
+
+# 17. Unit Tests
+
+Provide tests for:
+
+- Markdown generation
+- JSON generation
+- screenshot embedding
+- watch table rendering
+- assertion rendering
+- invalid output directory
+
+---
+
+# 18. Future Extensions
+
+Architecture should support:
+
+- HTML reports
+- PDF reports
+- collapsible sections
+- performance charts
+- memory usage graphs
+- historical comparisons
+- report templates
+
+Do not implement these features yet.
+
+---
+
+# 19. Acceptance Criteria
+
+Implementation is complete only if:
+
+- Markdown reports are generated.
+- JSON reports are generated.
+- Screenshot references work.
+- Watch tables are rendered correctly.
+- Assertions are included.
+- Output is deterministic.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# JSON Exporter Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# 1. Purpose
+
+JSON Exporter is a reusable Python library responsible for exporting the complete
+debug session into deterministic, AI-friendly JSON documents.
+
+It is the primary machine-readable output of the Debug Bridge ecosystem.
+
+The module SHALL NOT communicate directly with the emulator.
+
+---
+
+# 2. Design Principles
+
+- Single Responsibility Principle
+- Deterministic output
+- Stable schema
+- Human-independent format
+- Pretty-printed JSON
+- UTF-8 encoding
+
+---
+
+# 3. Responsibilities
+
+The module SHALL:
+
+- Export complete debug sessions.
+- Export watched variables.
+- Export execution metadata.
+- Export screenshots.
+- Export assertions.
+- Export launcher information.
+- Export errors.
+- Validate generated JSON.
+
+The module SHALL NOT:
+
+- Read memory.
+- Parse debugger logs.
+- Resolve symbols.
+- Generate Markdown reports.
+
+---
+
+# 4. Dependencies
+
+Uses:
+
+- Report Generator models
+- Watch Manager
+- Screenshot Capture
+- Scenario Runner
+- Emulator Launcher
+
+---
+
+# 5. Input Model
+
+The exporter accepts a DebugSession object.
+
+Example:
+
+```python
+exporter = JsonExporter()
+
+exporter.export(session, "debug_state.json")
+```
+
+---
+
+# 6. Output
+
+Generate:
+
+```
+debug_state.json
+```
+
+Default formatting:
+
+- UTF-8
+- 2-space indentation
+- Stable key ordering
+
+---
+
+# 7. JSON Schema
+
+Top-level structure:
+
+```json
+{
+  "metadata": {},
+  "execution": {},
+  "launcher": {},
+  "watches": {},
+  "assertions": [],
+  "screenshots": [],
+  "errors": []
+}
+```
+
+---
+
+# 8. Metadata
+
+Include:
+
+- tool version
+- timestamp
+- emulator
+- ROM
+- scenario name
+- platform
+
+---
+
+# 9. Execution
+
+Include:
+
+- success
+- duration_ms
+- timeout
+- exit_code
+- frame_count (if available)
+
+---
+
+# 10. Watches
+
+Example:
+
+```json
+{
+  "PlayerX": 15,
+  "PlayerY": 8,
+  "CurrentScreen": "TAVERN"
+}
+```
+
+Support:
+
+- byte
+- word
+- byte arrays
+
+Future:
+
+- enums
+- bitfields
+- structures
+
+---
+
+# 11. Assertions
+
+Example:
+
+```json
+[
+  {
+    "watch":"PlayerX",
+    "expected":15,
+    "actual":15,
+    "result":"PASS"
+  }
+]
+```
+
+---
+
+# 12. Screenshots
+
+Example:
+
+```json
+[
+  {
+    "frame":500,
+    "file":"screenshots/frame_000500.png"
+  }
+]
+```
+
+Use relative paths.
+
+---
+
+# 13. Errors
+
+Store deterministic error objects.
+
+Example:
+
+```json
+[
+  {
+    "code":"TIMEOUT",
+    "message":"Breakpoint not reached."
+  }
+]
+```
+
+---
+
+# 14. Validation
+
+Validate:
+
+- schema completeness
+- serializable values
+- duplicate keys
+- valid file paths
+
+Raise descriptive exceptions.
+
+---
+
+# 15. Suggested Project Structure
+
+```text
+json_exporter/
+
+    exporter.py
+    encoder.py
+    schema.py
+    validation.py
+    models.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# 16. Public API
+
+```python
+exporter = JsonExporter(config)
+
+exporter.export(session)
+
+exporter.validate(path)
+```
+
+---
+
+# 17. Unit Tests
+
+Provide tests for:
+
+- full session export
+- empty session
+- watches export
+- assertions export
+- screenshots export
+- schema validation
+- invalid output path
+
+---
+
+# 18. Future Extensions
+
+Architecture should support:
+
+- JSON Schema publication
+- compressed JSON
+- incremental exports
+- diff-friendly exports
+- streaming mode
+
+Do not implement these features yet.
+
+---
+
+# 19. Acceptance Criteria
+
+Implementation is complete only if:
+
+- Debug sessions export successfully.
+- Output follows a stable schema.
+- Watches are exported.
+- Assertions are exported.
+- Screenshots are exported.
+- Validation succeeds.
+- Output is deterministic.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.
+
+# Diff Engine Specification (Spec-Driven Development)
+
+**Version:** 1.0
+
+---
+
+# 1. Purpose
+
+Diff Engine is a reusable Python library responsible for comparing two debug
+sessions and producing deterministic difference reports.
+
+It enables regression detection for Atari games developed with the Debug Bridge
+toolchain.
+
+The module SHALL compare structured data only and SHALL NOT communicate directly
+with the emulator.
+
+---
+
+# 2. Design Principles
+
+- Single Responsibility Principle
+- Deterministic output
+- Schema-aware comparison
+- AI-friendly results
+- Stable ordering
+- Read-only operation
+
+---
+
+# 3. Responsibilities
+
+The module SHALL:
+
+- Compare two Debug Session models.
+- Compare exported JSON files.
+- Detect added, removed and modified values.
+- Ignore configurable fields.
+- Generate machine-readable and human-readable reports.
+
+The module SHALL NOT:
+
+- Launch Altirra.
+- Parse debugger logs.
+- Read emulator memory.
+- Resolve symbols.
+
+---
+
+# 4. Inputs
+
+Supported inputs:
+
+- debug_state.json
+- DebugSession objects
+
+Example:
+
+```python
+engine = DiffEngine()
+
+result = engine.compare(
+    "baseline/debug_state.json",
+    "candidate/debug_state.json"
+)
+```
+
+---
+
+# 5. Comparison Categories
+
+Compare:
+
+- metadata
+- execution
+- watched variables
+- assertions
+- screenshots
+- errors
+
+Each category may be enabled or disabled.
+
+---
+
+# 6. Configuration
+
+Example:
+
+```yaml
+diff:
+
+  ignore:
+    - metadata.timestamp
+    - execution.duration_ms
+
+  fail_on:
+    - watches
+    - assertions
+
+  report:
+    markdown: true
+    json: true
+```
+
+---
+
+# 7. Difference Types
+
+Supported:
+
+- ADDED
+- REMOVED
+- MODIFIED
+- UNCHANGED
+
+Each difference includes:
+
+- path
+- previous value
+- current value
+- type
+
+---
+
+# 8. Public API
+
+```python
+engine = DiffEngine(config)
+
+result = engine.compare(old_session, new_session)
+
+engine.write_json(result)
+
+engine.write_markdown(result)
+```
+
+---
+
+# 9. Result Model
+
+```text
+DiffResult
+
+    identical
+    added
+    removed
+    modified
+    ignored
+    summary
+```
+
+---
+
+# 10. JSON Output
+
+Generate:
+
+```
+diff_report.json
+```
+
+Example:
+
+```json
+{
+  "identical": false,
+  "modified": [
+    {
+      "path": "watches.PlayerX",
+      "before": 15,
+      "after": 16
+    }
+  ]
+}
+```
+
+---
+
+# 11. Markdown Output
+
+Generate:
+
+```
+diff_report.md
+```
+
+Include:
+
+- summary
+- modified watches
+- assertion changes
+- screenshot changes
+- ignored fields
+
+---
+
+# 12. Regression Mode
+
+Support:
+
+```
+baseline/
+    debug_state.json
+
+candidate/
+    debug_state.json
+```
+
+Return PASS only if all configured checks succeed.
+
+---
+
+# 13. Ignore Rules
+
+Support exact paths.
+
+Future support:
+
+- wildcards
+- regular expressions
+
+Do not implement future features yet.
+
+---
+
+# 14. Suggested Project Structure
+
+```text
+diff_engine/
+
+    engine.py
+    comparator.py
+    models.py
+    json_writer.py
+    markdown_writer.py
+    validation.py
+    exceptions.py
+    main.py
+```
+
+---
+
+# 15. Error Handling
+
+Provide deterministic exceptions:
+
+- InvalidDebugState
+- SchemaMismatch
+- MissingInputFile
+- UnsupportedVersion
+
+---
+
+# 16. Unit Tests
+
+Provide tests for:
+
+- identical sessions
+- modified watches
+- added fields
+- removed fields
+- ignored fields
+- markdown generation
+- json generation
+- schema mismatch
+
+---
+
+# 17. Future Extensions
+
+Architecture should support:
+
+- visual screenshot diff
+- binary memory diff
+- historical trends
+- regression dashboard
+- CI integration
+- GitHub Actions annotations
+
+Do not implement these features yet.
+
+---
+
+# 18. Acceptance Criteria
+
+Implementation is complete only if:
+
+- JSON sessions are compared correctly.
+- Differences are deterministic.
+- Ignore rules work.
+- JSON report is generated.
+- Markdown report is generated.
+- Regression mode is supported.
+- Code passes Ruff, Black and mypy.
+- Unit tests pass.

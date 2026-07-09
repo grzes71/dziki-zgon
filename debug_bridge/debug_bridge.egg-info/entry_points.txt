@@ -1,0 +1,2 @@
+[console_scripts]
+debug-bridge = debug_bridge.cli:main_cli

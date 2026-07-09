@@ -3,6 +3,8 @@
 ;----------------------------------------
 
 .proc Engine_FrameHandler
+    inc $D01A               ; PANIC FLASH: Miganie kolorem tła (COLBK) - sygnalizuje że VBLANK działa
+    
     ; 1. Odtwarzacz muzyki/dźwięku
     jsr Audio_Update
     

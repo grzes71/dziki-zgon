@@ -125,11 +125,13 @@ status_palette
     ; --- Inicjalizacja kolorów wybranego etapu ---
     jsr update_stage_colors
 
-    ; --- Display List gry (ANTIC 4) ---
+    ; --- Display List gry (ANTIC 4/5) ---
     lda #<DLIST_GAME
     sta SDLSTL
+    sta DLISTL          ; Bezpośredni zapis do rejestru sprzętowego!
     lda #>DLIST_GAME
     sta SDLSTH
+    sta DLISTH          ; Bezpośredni zapis do rejestru sprzętowego!
 
     ; --- Wczytanie początkowego charsetu (górny panel gry, game.fnt) ---
     lda #$64
@@ -155,6 +157,7 @@ status_palette
     sta SIZEM
     lda #PRIOR_5TH
     sta GPRIOR
+    sta PRIOR
     lda #>PMBASE_ADDR
     sta PMBASE
     lda #GRACTL_PM
@@ -179,6 +182,7 @@ status_palette
     ; --- DMA ON ---
     lda #DMA_PMG_ON
     sta SDMCTL
+    sta DMACTL
     lda #$C0             ; włącz DLI i VBLANK
     sta NMIEN
 
@@ -220,13 +224,25 @@ status_palette
     lda #$64
     sta CHBASE
 
-    ; Ustawienie całej palety ze zdefiniowanej tablicy
-    ldx #8
-@set_colors
-    lda game_palette,x
-    sta PCOLR0,x         ; PCOLR0 to $D012, aż do COLBK $D01A
-    dex
-    bpl @set_colors
+    ; Ustawienie całej palety ze zdefiniowanej tablicy (rozwinięte)
+    lda game_palette+0
+    sta PCOLR0
+    lda game_palette+1
+    sta PCOLR1
+    lda game_palette+2
+    sta PCOLR2
+    lda game_palette+3
+    sta PCOLR3
+    lda game_palette+4
+    sta COLPF0
+    lda game_palette+5
+    sta COLPF1
+    lda game_palette+6
+    sta COLPF2
+    lda game_palette+7
+    sta COLPF3
+    lda game_palette+8
+    sta COLBK
 
     ; Przygotuj wektor na drugie DLI
     lda #<game_dli_2
@@ -250,13 +266,25 @@ status_palette
     lda #$60
     sta CHBASE
 
-    ; Ustawienie całej palety ze zdefiniowanej tablicy (status area)
-    ldx #8
-@set_status_colors
-    lda game_status_palette,x
-    sta PCOLR0,x         ; PCOLR0 to $D012, aż do COLBK $D01A
-    dex
-    bpl @set_status_colors
+    ; Ustawienie całej palety (rozwinięte)
+    lda game_status_palette+0
+    sta PCOLR0
+    lda game_status_palette+1
+    sta PCOLR1
+    lda game_status_palette+2
+    sta PCOLR2
+    lda game_status_palette+3
+    sta PCOLR3
+    lda game_status_palette+4
+    sta COLPF0
+    lda game_status_palette+5
+    sta COLPF1
+    lda game_status_palette+6
+    sta COLPF2
+    lda game_status_palette+7
+    sta COLPF3
+    lda game_status_palette+8
+    sta COLBK
 
     ; Przywróć wektor na pierwsze DLI (na następną klatkę)
     lda #<game_dli_1

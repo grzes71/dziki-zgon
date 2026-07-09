@@ -90,3 +90,58 @@ Służą do konwersji i wymiany krojów pisma pomiędzy Atari Font Maker a proje
 - **`scripts/fnt2asm.py`**: Zamienia binarny blok czcionki `1024b` (.fnt) na dyrektywy wektorowe asemblera (dta).
 - **`scripts/png2fnt.py`**: Tłumaczy kafelki z narysowanego w programie graficznym obrazka (np. 128x64px) na format `.fnt`.
 - **`scripts/fnt2png.py`**: Rewers, wypluwa `.fnt` do ułożonego w rzędy pliku `.png`.
+
+---
+
+## 7. Debug Bridge (`debug_bridge/`)
+
+Narzędzie konsolowe do automatyzacji emulatora Altirra na potrzeby procesów Spec-Driven Development (SDD) oraz analizy stanów za pomocą AI. Pozwala na automatyczne uruchomienie gry, zatrzymanie w określonej klatce (lub czasie), zrzut pamięci i zrzut ekranu do weryfikacji testowej. Narzędzie zostało wyodrębnione jako własny moduł pip.
+
+### Instalacja (jednorazowa w venv projektu):
+```bash
+cd debug_bridge
+..\.venv\Scripts\python.exe -m pip install -e .
+cd ..
+```
+
+### Wywołanie:
+Konfiguracja odbywa się przez plik YAML (domyślnie `debug_bridge/debug.yaml`).
+
+```bash
+.\.venv\Scripts\debug-bridge.exe run --config debug_bridge/debug.yaml
+```
+
+Wyniki, w tym `debug_state.json`, `debug_report.md` oraz zrzuty ekranu (`screenshot.png`), lądują w katalogu zdefiniowanym w sekcji `output` (domyślnie `out/`).
+
+---
+
+## 8. Altirra Auto-Debugger Basic (`scripts/atdbg.py`)
+
+Proste, jednoplikowe narzędzie konsolowe (CLI) dla systemu Windows, pozwalające na automatyczne, deterministyczne debugowanie kodu na emulatorze Altirra. Skrypt stawia wskazany breakpoint (programowy lub sprzętowy), wykonuje zrzuty pamięci i wypuszcza ustrukturyzowany wynik w formacie JSON (zawierający rejestry, zdeasemblowaną instrukcję, call stack i zrzuty pamięci).
+
+Narzędzie przydaje się zarówno do szybkiego testowania, jak i jako warstwa spodnia (subprocess) dla większego `debug_bridge`. Zawsze bezpiecznie sprząta pliki tymczasowe i sprawnie zarządza opóźnieniami (timeout).
+
+### Zależności:
+- Python 3.8+ (wyłącznie biblioteki standardowe, zero zewnętrznych zależności)
+- Windows (Altirra)
+
+### Przykłady użycia:
+
+```bash
+# Breakpoint programowy (software) pod danym adresem
+python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000'
+
+# Breakpoint z wykorzystaniem nazwy etykiety (automatycznie odczytanej z pliku .lab)
+python scripts/atdbg.py --rom dziki_zgon.xex --bp GAME_STATE --lab-file dziki_zgon.lab
+
+# Breakpoint sprzętowy (hardware) - np. na moment zapisu do rejestru NMIEN
+python scripts/atdbg.py --rom dziki_zgon.xex --bx 'write($D40E)'
+
+# Tryb Warp (brak limitu FPS), zrzuty wybranych bloków pamięci i własny limit czasu (timeout)
+python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000' \
+    --mem-dump '$0600:L$40' --mem-dump '$A000:L$100' \
+    --timeout 30 --warp --verbose
+
+# Zapisanie wyniku JSON do dodatkowego pliku (np. na potrzeby AI lub CI)
+python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000' --output-json result.json
+```

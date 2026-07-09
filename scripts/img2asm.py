@@ -399,22 +399,22 @@ def generate_asm_colors(palette_rgb, output_path, label_prefix, bits_per_pixel):
 
     # Mapowanie: indeks piksela → (nazwa_hw, adres_hw, opis)
     reg_map = {
-        0: ("COLBK",  "$D01A", "tło"),
-        1: ("COLPF0", "$D016", "playfield 0"),
-        2: ("COLPF1", "$D017", "playfield 1"),
-        3: ("COLPF2", "$D018", "playfield 2"),
+        0: ("COLBK",  "COLOR4", "tło"),
+        1: ("COLPF0", "COLOR0", "playfield 0"),
+        2: ("COLPF1", "COLOR1", "playfield 1"),
+        3: ("COLPF2", "COLOR2", "playfield 2"),
     }
 
     lines = []
     lines.append(f"; Kolory dla: {label_prefix}")
     lines.append(f"; Automatycznie dopasowane do palety Atari (PAL)")
     lines.append(";")
-    lines.append("; Zapis BEZPOŚREDNIO do rejestrów GTIA (VBI wyłączony).")
+    lines.append("; Zapis do rejestrów cieni OS (shadow registers) z uwzględnieniem VBI.")
     lines.append(";")
-    lines.append(";   COLBK  ($D01A)")
-    lines.append(";   COLPF0 ($D016)")
-    lines.append(";   COLPF1 ($D017)")
-    lines.append(";   COLPF2 ($D018)")
+    lines.append(";   COLBK  (COLOR4)")
+    lines.append(";   COLPF0 (COLOR0)")
+    lines.append(";   COLPF1 (COLOR1)")
+    lines.append(";   COLPF2 (COLOR2)")
     lines.append(";")
 
     # Wypisz mapowanie jako komentarze
