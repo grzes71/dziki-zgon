@@ -1,9 +1,18 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 
 class ObjectSize(BaseModel):
     width: int = Field(ge=1, le=16)
     height: int = Field(ge=1, le=16)
+
+class EnemyDef(BaseModel):
+    id: str
+    name: str
+
+class EnemyInstance(BaseModel):
+    enemy: str
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=9)
 
 class ObjectFlags(BaseModel):
     blocking: bool = False
@@ -28,9 +37,11 @@ class ScreenExits(BaseModel):
     west: Optional[str]
 
 class ScreenDef(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     id: str
     exits: ScreenExits
     objects: List[ObjectInstance] = Field(default_factory=list)
+    enemies: List[EnemyInstance] = Field(default_factory=list)
 
 class RegionLayout(BaseModel):
     rows: int
@@ -57,6 +68,8 @@ class WorldConfig(BaseModel):
     start_position: StartPosition
 
 class GameWorld(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     world: WorldConfig
     objects: List[ObjectDefinition] = Field(default_factory=list)
+    enemies: List[EnemyDef] = Field(default_factory=list)
     regions: List[RegionDef] = Field(default_factory=list)

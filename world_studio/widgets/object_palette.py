@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QListWidget, QListWidgetItem, QWidget, QVBoxLayout, QRadioButton
+from PySide6.QtWidgets import QListWidget, QListWidgetItem, QWidget, QVBoxLayout, QRadioButton, QComboBox
 from PySide6.QtGui import QPixmap, QImage, QColor
 from PySide6.QtCore import Qt, Signal, QSize
 from world_studio.project_manager import ProjectManager
@@ -41,7 +41,7 @@ def render_object_pixmap(obj_def, charset: Charset, colors_dict: dict, zoom=2) -
     return QPixmap.fromImage(img).scaled(px_w * zoom, px_h * zoom, Qt.KeepAspectRatio, Qt.FastTransformation)
 
 class ObjectPaletteWidget(QWidget):
-    object_selected = Signal(str) # object_id or "PLAYER_START"
+    object_selected = Signal(str) # object_id, "PLAYER_START", or "ENEMY:id"
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -51,6 +51,14 @@ class ObjectPaletteWidget(QWidget):
         self.btn_player_start = QRadioButton("Set Player Start")
         self.btn_player_start.toggled.connect(self._on_player_start_toggled)
         layout.addWidget(self.btn_player_start)
+
+        self.btn_enemy_start = QRadioButton("Add Enemy")
+        self.btn_enemy_start.toggled.connect(self._on_enemy_start_toggled)
+        layout.addWidget(self.btn_enemy_start)
+
+        self.enemy_combo = QComboBox()
+        self.enemy_combo.currentIndexChanged.connect(self._on_enemy_combo_changed)
+        layout.addWidget(self.enemy_combo)
         
         self.list_widget = QListWidget()
         self.list_widget.setIconSize(QSize(64, 64))
@@ -60,6 +68,7 @@ class ObjectPaletteWidget(QWidget):
 
     def populate(self, project: ProjectManager, charset: Charset, region_id: str = None):
         self.list_widget.clear()
+        self.enemy_combo.clear()
         if not project:
             return
             
@@ -74,14 +83,33 @@ class ObjectPaletteWidget(QWidget):
             item.setData(Qt.UserRole, obj.id)
             self.list_widget.addItem(item)
             
+        for edef in project.enemy_defs:
+            self.enemy_combo.addItem(edef.name, edef.id)
+            
     def _on_player_start_toggled(self, checked):
         if checked:
             self.list_widget.clearSelection()
+            self.btn_enemy_start.setChecked(False)
             self.object_selected.emit("PLAYER_START")
+            
+    def _on_enemy_start_toggled(self, checked):
+        if checked:
+            self.list_widget.clearSelection()
+            self.btn_player_start.setChecked(False)
+            enemy_id = self.enemy_combo.currentData()
+            if enemy_id:
+                self.object_selected.emit(f"ENEMY:{enemy_id}")
+                
+    def _on_enemy_combo_changed(self):
+        if self.btn_enemy_start.isChecked():
+            enemy_id = self.enemy_combo.currentData()
+            if enemy_id:
+                self.object_selected.emit(f"ENEMY:{enemy_id}")
             
     def _on_selection_changed(self):
         items = self.list_widget.selectedItems()
         if items:
             self.btn_player_start.setChecked(False)
+            self.btn_enemy_start.setChecked(False)
             obj_id = items[0].data(Qt.UserRole)
             self.object_selected.emit(obj_id)

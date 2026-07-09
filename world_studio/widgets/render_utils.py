@@ -79,4 +79,12 @@ def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Chars
         p.drawRect(sx * 4, sy * 8, 4, 8)
         p.end()
         
+    if screen_def.enemies:
+        p = QPainter(img)
+        p.setPen(Qt.magenta)
+        p.setBrush(QColor(255, 0, 255, 128))
+        for enemy in screen_def.enemies:
+            p.drawRect(enemy.x * 4, enemy.y * 8, 4, 8)
+        p.end()
+        
     return img

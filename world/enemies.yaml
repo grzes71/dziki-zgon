@@ -1,0 +1,7 @@
+enemies:
+  - id: "kimikora"
+    name: "Kimikora"
+  - id: "strzyga"
+    name: "Strzyga"
+  - id: "bazyliszek"
+    name: "Bazyliszek"

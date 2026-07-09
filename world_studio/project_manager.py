@@ -1,7 +1,7 @@
 import yaml
 from pathlib import Path
 from typing import Dict, List, Any, Optional
-from world_studio.models import WorldConfig, ObjectDefinition, RegionDef, ScreenDef
+from world_studio.models import WorldConfig, ObjectDefinition, RegionDef, ScreenDef, EnemyDef
 
 class ProjectManager:
     def __init__(self):
@@ -10,6 +10,7 @@ class ProjectManager:
         self.colors: Dict[str, tuple] = {} # Deprecated global colors
         self.region_colors: Dict[str, Dict[str, tuple]] = {}
         self.objects: List[ObjectDefinition] = []
+        self.enemy_defs: List[EnemyDef] = []
         self.regions: Dict[str, RegionDef] = {}
         self.screens: Dict[str, Dict[str, ScreenDef]] = {}
         
@@ -47,6 +48,10 @@ class ProjectManager:
         # objects.yaml
         o_data = self._load_yaml(world_dir / "objects.yaml")
         self.objects = [ObjectDefinition.model_validate(obj) for obj in o_data.get("objects", [])]
+        
+        # enemies.yaml
+        e_data = self._load_yaml(world_dir / "enemies.yaml")
+        self.enemy_defs = [EnemyDef.model_validate(e) for e in e_data.get("enemies", [])]
         
         # regions
         self.regions.clear()

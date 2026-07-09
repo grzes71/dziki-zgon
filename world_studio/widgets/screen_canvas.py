@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget
 from PySide6.QtGui import QPainter, QPen, QColor, QMouseEvent
 from PySide6.QtCore import Qt, Signal
-from world_studio.models import ScreenDef, ObjectInstance
+from world_studio.models import ScreenDef, ObjectInstance, EnemyInstance
 from world_studio.project_manager import ProjectManager
 from world_studio.charset import Charset
 from world_studio.widgets.render_utils import render_screen
@@ -70,6 +70,12 @@ class ScreenCanvasWidget(QWidget):
                     self.project.world_config.start_position.x = int(x)
                     self.project.world_config.start_position.y = int(y)
                     self.screen_changed.emit()
+            elif self.active_tool and self.active_tool.startswith("ENEMY:"):
+                enemy_id = self.active_tool.split(":")[1]
+                if len(self.screen_def.enemies) < 3:
+                    new_enemy = EnemyInstance(enemy=enemy_id, x=int(x), y=int(y))
+                    self.screen_def.enemies.append(new_enemy)
+                    self.screen_changed.emit()
             elif self.active_tool:
                 active_obj_def = next((o for o in self.project.objects if o.id == self.active_tool), None)
                 if not active_obj_def:
@@ -98,6 +104,19 @@ class ScreenCanvasWidget(QWidget):
                     self.screen_changed.emit()
                 
         elif event.button() == Qt.RightButton:
+            # Delete enemy at this pos
+            enemy_to_remove = None
+            for i, e in enumerate(self.screen_def.enemies):
+                if e.x == x and e.y == y:
+                    enemy_to_remove = i
+                    break
+                    
+            if enemy_to_remove is not None:
+                self.screen_def.enemies.pop(enemy_to_remove)
+                self.screen_changed.emit()
+                self.update()
+                return
+
             # Delete object at this pos
             # Simple heuristic: delete object if (x,y) is inside its bounds.
             obj_dict = {o.id: o for o in self.project.objects}

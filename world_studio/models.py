@@ -5,6 +5,15 @@ class ObjectSize(BaseModel):
     width: int = Field(ge=1, le=16)
     height: int = Field(ge=1, le=16)
 
+class EnemyDef(BaseModel):
+    id: str
+    name: str
+
+class EnemyInstance(BaseModel):
+    enemy: str
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=9)
+
 class ObjectFlags(BaseModel):
     blocking: bool = False
     interactive: bool = False
@@ -37,6 +46,7 @@ class ScreenDef(BaseModel):
     grid_y: Optional[int] = None
     exits: ScreenExits = Field(default_factory=ScreenExits)
     objects: List[ObjectInstance] = Field(default_factory=list)
+    enemies: List[EnemyInstance] = Field(default_factory=list)
 
 class RegionLayout(BaseModel):
     rows: int
