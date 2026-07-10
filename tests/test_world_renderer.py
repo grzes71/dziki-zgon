@@ -75,8 +75,8 @@ def test_build_screen_single_tile(harness):
     SCREEN_DATA = labels["SCREEN_DATA"]
     TILES_DATA = labels["TILES_DATA"]
     
-    # Wyczyść VRAM (400 bajtów dla ANTIC 5)
-    for i in range(400):
+    # Wyczyść VRAM (480 bajtów dla ANTIC 5)
+    for i in range(480):
         cpu.memory[GAME_SCREEN_A5 + i] = 0
         
     # GAME_SCREEN_ID = 0

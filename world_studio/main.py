@@ -14,6 +14,7 @@ from world_studio.widgets.object_palette import ObjectPaletteWidget
 from world_studio.widgets.live_region_view import LiveRegionViewWidget
 from world_studio.widgets.screen_canvas import ScreenCanvasWidget
 from world_studio.widgets.preview_dialog import PreviewDialog
+from world_studio.widgets.exits_dialog import SetExitsDialog
 
 class WorldStudioMainWindow(QMainWindow):
     def __init__(self):
@@ -71,6 +72,7 @@ class WorldStudioMainWindow(QMainWindow):
         self.live_view.screen_edit_requested.connect(self._on_screen_rename_requested)
         self.live_view.screen_delete_requested.connect(self._on_screen_delete_requested)
         self.live_view.screen_preview_requested.connect(self._on_screen_preview_requested)
+        self.live_view.screen_exits_requested.connect(self._on_screen_exits_requested)
         self.scroll_live.setWidget(self.live_view)
         self.tabs.addTab(self.scroll_live, "Live Region")
         
@@ -222,7 +224,7 @@ class WorldStudioMainWindow(QMainWindow):
                 sdef = self.project.screens[region_id].pop(screen_id)
                 sdef.id = new_id
                 self.project.screens[region_id][new_id] = sdef
-                self.project.update_all_exits(region_id)
+                self.project.update_all_exits(region_id, old_id=screen_id, new_id=new_id)
                 self.region_tree.populate(self.project)
                 self.live_view.update()
                 if self.current_screen_id == screen_id:
@@ -233,6 +235,15 @@ class WorldStudioMainWindow(QMainWindow):
         dialog = PreviewDialog(region_id, screen_id, self.project, self.charset, self)
         dialog.showFullScreen()
         dialog.exec()
+
+    def _on_screen_exits_requested(self, region_id, screen_id):
+        dialog = SetExitsDialog(region_id, screen_id, self.project, self)
+        if dialog.exec() == QDialog.Accepted:
+            self.project.save_project()
+            self.live_view.update()
+            if self.current_screen_id == screen_id:
+                # Optionally refresh canvas if exits are visualized, but they are not.
+                pass
 
     def _on_screen_changed(self):
         self.live_view.update() # Refresh live region

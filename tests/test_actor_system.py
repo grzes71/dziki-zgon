@@ -94,8 +94,8 @@ def test_collision_update(harness):
     load_xex(xex_file, cpu.memory)
     
     cpu.memory[labels["ACTOR_ACTIVE"]] = 1
-    cpu.memory[labels["ACTOR_INTENT_X"]] = 50
-    cpu.memory[labels["ACTOR_INTENT_Y"]] = 50
+    cpu.memory[labels["ACTOR_INTENT_X"]] = 100
+    cpu.memory[labels["ACTOR_INTENT_Y"]] = 100
     
     cpu.sp = 0xFF
     cpu.pc = labels["START_TEST_COLLISION"]
@@ -111,8 +111,8 @@ def test_collision_update(harness):
     assert steps < max_steps, "Infinite loop in Collision_Update!"
     
     # Since there are no colliders mapped, it should accept the move
-    assert cpu.memory[labels["ACTOR_X"]] == 50
-    assert cpu.memory[labels["ACTOR_Y"]] == 50
+    assert cpu.memory[labels["ACTOR_X"]] == 100
+    assert cpu.memory[labels["ACTOR_Y"]] == 100
 
 def test_render_prepare(harness):
     xex_file, labels = harness

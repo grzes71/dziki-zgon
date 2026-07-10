@@ -20,6 +20,14 @@
     sta DMACTL
     lda CHBAS
     sta CHBASE
+    lda $02C0
+    sta PCOLR0
+    lda $02C1
+    sta PCOLR1
+    lda $02C2
+    sta PCOLR2
+    lda $02C3
+    sta PCOLR3
     lda COLOR0
     sta COLPF0
     lda COLOR1

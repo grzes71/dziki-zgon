@@ -5,7 +5,7 @@ exits:
   north: null
   south: WASTELAND
   east: null
-  west: WOOD
+  west: CROSSROADS
 objects:
 - object: TREE_3
   x: 15

@@ -127,6 +127,10 @@ class ProjectManager:
             screens_dict = self.screens.get(region_id, {})
             for screen_id, screen_def in screens_dict.items():
                 s_path = r_dir / "screens" / f"{screen_id}.yaml"
+                
+                # Optimize objects list (merge adjacent tiles using repeat-x and repeat-y)
+                screen_def.objects = self.optimize_screen_objects(screen_def.objects)
+                
                 s_data = screen_def.model_dump(by_alias=True)
                 
                 # Manual cleanup to match World Builder expectations
@@ -142,6 +146,84 @@ class ProjectManager:
                 self._save_yaml(s_path, s_data)
                 
         return True
+
+    def optimize_screen_objects(self, objects: List[Any]) -> List[Any]:
+        from world_studio.models import ObjectInstance
+        
+        obj_dict = {o.id: o for o in self.objects}
+        
+        # Make a working copy of ObjectInstance objects
+        current_list = [
+            ObjectInstance(
+                object=o.object,
+                x=o.x,
+                y=o.y,
+                repeat_x=o.repeat_x if getattr(o, 'repeat_x', 1) is not None else 1,
+                repeat_y=o.repeat_y if getattr(o, 'repeat_y', 1) is not None else 1
+            )
+            for o in objects
+        ]
+        
+        changed = True
+        while changed:
+            changed = False
+            
+            # Try to find a horizontal merge
+            for i in range(len(current_list)):
+                inst1 = current_list[i]
+                odef = obj_dict.get(inst1.object)
+                if not odef:
+                    continue
+                w = odef.size.width
+                
+                for j in range(len(current_list)):
+                    if i == j:
+                        continue
+                    inst2 = current_list[j]
+                    if inst1.object != inst2.object:
+                        continue
+                    if inst1.y != inst2.y or inst1.repeat_y != inst2.repeat_y:
+                        continue
+                    
+                    # Check if inst2 is immediately to the right of inst1
+                    if inst1.x + w * inst1.repeat_x == inst2.x:
+                        inst1.repeat_x += inst2.repeat_x
+                        current_list.pop(j)
+                        changed = True
+                        break
+                if changed:
+                    break
+                    
+            if changed:
+                continue
+                
+            # Try to find a vertical merge
+            for i in range(len(current_list)):
+                inst1 = current_list[i]
+                odef = obj_dict.get(inst1.object)
+                if not odef:
+                    continue
+                h = odef.size.height
+                
+                for j in range(len(current_list)):
+                    if i == j:
+                        continue
+                    inst2 = current_list[j]
+                    if inst1.object != inst2.object:
+                        continue
+                    if inst1.x != inst2.x or inst1.repeat_x != inst2.repeat_x:
+                        continue
+                    
+                    # Check if inst2 is immediately below inst1
+                    if inst1.y + h * inst1.repeat_y == inst2.y:
+                        inst1.repeat_y += inst2.repeat_y
+                        current_list.pop(j)
+                        changed = True
+                        break
+                if changed:
+                    break
+                    
+        return current_list
 
     def add_region(self, region_id: str, name: str, rows: int, columns: int) -> bool:
         if region_id in self.regions:
@@ -207,20 +289,14 @@ class ProjectManager:
                 s.grid_x = 0
                 s.grid_y = 0
                 
-    def update_all_exits(self, region_id: str):
+    def update_all_exits(self, region_id: str, old_id: str = None, new_id: str = None):
         screens = self.screens.get(region_id, {})
-        grid_map = {}
         for sid, sdef in screens.items():
-            if sdef.grid_x is not None and sdef.grid_y is not None:
-                grid_map[(sdef.grid_x, sdef.grid_y)] = sid
-                
-        for sid, sdef in screens.items():
-            if sdef.grid_x is not None and sdef.grid_y is not None:
-                x, y = sdef.grid_x, sdef.grid_y
-                sdef.exits.north = grid_map.get((x, y - 1))
-                sdef.exits.south = grid_map.get((x, y + 1))
-                sdef.exits.west = grid_map.get((x - 1, y))
-                sdef.exits.east = grid_map.get((x + 1, y))
+            if old_id:
+                if sdef.exits.north == old_id: sdef.exits.north = new_id
+                if sdef.exits.south == old_id: sdef.exits.south = new_id
+                if sdef.exits.west == old_id: sdef.exits.west = new_id
+                if sdef.exits.east == old_id: sdef.exits.east = new_id
 
     def add_screen(self, region_id: str, screen_id: str, grid_x: int, grid_y: int) -> bool:
         if region_id not in self.regions:
@@ -244,5 +320,5 @@ class ProjectManager:
         if region_id not in self.regions or screen_id not in self.screens[region_id]:
             return False
         del self.screens[region_id][screen_id]
-        self.update_all_exits(region_id)
+        self.update_all_exits(region_id, old_id=screen_id, new_id=None)
         return True

@@ -37,7 +37,7 @@ OBJ_TILES_HI       .ds 256
 
 ; --- Wirtualny VRAM (ANTIC 5 to 40x10) ---
     org $4000
-GAME_SCREEN_A5     .ds 400
+GAME_SCREEN_A5     .ds 480
 
 ; --- Zrzut danych mapy zdefiniowany przez Pythona ---
     org $5000

@@ -3,8 +3,8 @@ grid_x: 1
 grid_y: 0
 exits:
   north: null
-  south: null
-  east: null
+  south: VILLAGE2
+  east: SWAMP
   west: TAVERN
 objects:
 - object: SIGNPOINT_LEFT
@@ -62,18 +62,72 @@ objects:
   x: 16
   y: 6
 - object: BUSH_2
-  x: 22
-  y: 2
-- object: BUSH_2
   x: 33
   y: 5
-- object: BUSH_2
-  x: 7
-  y: 9
 - object: ROCK_GREEN
   x: 4
   y: 6
+- object: HOUSE_SMALL_BLUE
+  x: 20
+  y: 4
+- object: BUSH
+  x: 25
+  y: 5
+- object: BUSH
+  x: 17
+  y: 9
+- object: BUSH
+  x: 11
+  y: 6
+- object: BUSH
+  x: 36
+  y: 1
 - object: ROCK_GREEN
+  x: 6
+  y: 7
+- object: SIGNPOINT_RIGHT
+  x: 30
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 7
+  y: 6
+- object: GROUND_BROWN_UP
+  x: 3
+  y: 6
+- object: ROCK_2
+  x: 16
+  y: 2
+- object: MUSHROOM
+  x: 12
+  y: 2
+- object: WAVES
+  x: 39
+  y: 6
+- object: WAVES
   x: 37
-  y: 3
+  y: 6
+- object: WAVES
+  x: 38
+  y: 6
+- object: WAVES
+  x: 39
+  y: 1
+- object: ROCK_1
+  x: 29
+  y: 1
+- object: TREE_2
+  x: 4
+  y: 7
+- object: TREE_2
+  x: 21
+  y: 1
+- object: TREE_2
+  x: 24
+  y: 1
+- object: BUSH_2
+  x: 29
+  y: 6
+- object: BUSH_2
+  x: 32
+  y: 4
 enemies: []

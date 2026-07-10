@@ -12,7 +12,7 @@ class EnemyDef(BaseModel):
 class EnemyInstance(BaseModel):
     enemy: str
     x: int = Field(ge=0, le=39)
-    y: int = Field(ge=0, le=9)
+    y: int = Field(ge=0, le=11)
 
 class ObjectFlags(BaseModel):
     blocking: bool = False

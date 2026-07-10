@@ -18,6 +18,10 @@ GAME_SCREEN_ID  .ds 1
 OBJ_CODE        .ds 1
 OBJ_X           .ds 1
 OBJ_Y           .ds 1
+REQ_SCREEN_TRANSITION .ds 1
+NEW_SCREEN_ID         .ds 1
+NEW_ACTOR_X           .ds 1
+NEW_ACTOR_Y           .ds 1
 
 FrameCounter    .ds 1
 InputState_Joy  .ds 1
@@ -50,11 +54,12 @@ SCREEN_POINTERS_LO .ds 256
 SCREEN_POINTERS_HI .ds 256
 OBJ_SIZE           .ds 256
 OBJ_FLAGS          .ds 256
+EXITS_TABLE        .ds 1024
 
 ; --- Mockowanie PMG i Ekranu ---
     org $4000
 PMBASE_ADDR    .ds 2048 ; 2KB bufor PMG
-GAME_SCREEN_A5 .ds 400
+GAME_SCREEN_A5 .ds 480
 
 ; --- Zmienne globalne i Actor System ---
     org $5000

@@ -6,7 +6,9 @@
     ldx #0
 @actor_loop
     lda ACTOR_ACTIVE,x
-    beq @next_actor
+    bne @do_actor
+    jmp @next_actor
+@do_actor
 
     ; Copy current actor's intent and height to ZP temp variables
     lda ACTOR_INTENT_X,x
@@ -19,29 +21,120 @@
     ; Limity dla osi X (48 - 200)
     lda ACTOR_TMP_X
     cmp #48
-    bcs @check_right
+    bcc @hit_left
+    cmp #200
+    bcs @hit_right
+    jmp @check_y
+
+@hit_left
+    cpx #0
+    bne @clamp_left
+    ; Player hit West edge
+    lda GAME_SCREEN_ID
+    asl
+    asl
+    tay
+    lda EXITS_TABLE+2,y ; West exit
+    cmp #$FF
+    beq @clamp_left
+    ; Valid exit
+    sta NEW_SCREEN_ID
+    lda #1
+    sta REQ_SCREEN_TRANSITION
+    lda #196
+    sta NEW_ACTOR_X
+    lda ACTOR_TMP_Y
+    sta NEW_ACTOR_Y
+    jmp @next_actor
+
+@clamp_left
     lda #48
     sta ACTOR_TMP_X
     jmp @check_y
 
-@check_right
-    cmp #200
-    bcc @check_y
+@hit_right
+    cpx #0
+    bne @clamp_right
+    ; Player hit East edge
+    lda GAME_SCREEN_ID
+    asl
+    asl
+    tay
+    lda EXITS_TABLE+3,y ; East exit
+    cmp #$FF
+    beq @clamp_right
+    ; Valid exit
+    sta NEW_SCREEN_ID
+    lda #1
+    sta REQ_SCREEN_TRANSITION
+    lda #48
+    sta NEW_ACTOR_X
+    lda ACTOR_TMP_Y
+    sta NEW_ACTOR_Y
+    jmp @next_actor
+
+@clamp_right
     lda #200
     sta ACTOR_TMP_X
 
 @check_y
     ; Limity dla osi Y (32 - 210) 
+@apply_y
     lda ACTOR_TMP_Y
     cmp #32
-    bcs @check_bot
+    bcc @hit_top
+    cmp #210
+    bcs @hit_bottom
+    jmp @screen_ok
+
+@hit_top
+    cpx #0
+    bne @clamp_top
+    ; Player hit North edge
+    lda GAME_SCREEN_ID
+    asl
+    asl
+    tay
+    lda EXITS_TABLE+0,y ; North exit
+    cmp #$FF
+    beq @clamp_top
+    ; Valid exit
+    sta NEW_SCREEN_ID
+    lda #1
+    sta REQ_SCREEN_TRANSITION
+    lda ACTOR_TMP_X
+    sta NEW_ACTOR_X
+    lda #206
+    sta NEW_ACTOR_Y
+    jmp @next_actor
+
+@clamp_top
     lda #32
     sta ACTOR_TMP_Y
     jmp @screen_ok
 
-@check_bot
-    cmp #210
-    bcc @screen_ok
+@hit_bottom
+    cpx #0
+    bne @clamp_bottom
+    ; Player hit South edge
+    lda GAME_SCREEN_ID
+    asl
+    asl
+    tay
+    lda EXITS_TABLE+1,y ; South exit
+    cmp #$FF
+    beq @clamp_bottom
+    ; Valid exit
+    sta NEW_SCREEN_ID
+    lda #1
+    sta REQ_SCREEN_TRANSITION
+    lda ACTOR_TMP_X
+    sta NEW_ACTOR_X
+    lda #36
+    sta NEW_ACTOR_Y
+    jmp @next_actor
+
+@clamp_bottom
     lda #210
     sta ACTOR_TMP_Y
 
@@ -74,7 +167,9 @@
 @next_actor
     inx
     cpx #MAX_ACTORS
-    bne @actor_loop
+    beq @done_loop
+    jmp @actor_loop
+@done_loop
     rts
 .endp
 
@@ -150,7 +245,7 @@
     adc #48
     sta col_ox1
     
-    ; Oblicz O_Y1 = 32 + OBJ_Y * 16
+    ; Oblicz O_Y1 = 56 + OBJ_Y * 8
     lda OBJ_Y
     asl
     asl
@@ -177,7 +272,7 @@
     adc col_ox1
     sta col_ox2
     
-    ; Wypakuj z OBJ_SIZE i oblicz O_Y2 (O_Y1 + Wysokość * 16 - 1)
+    ; Wypakuj z OBJ_SIZE i oblicz O_Y2 (O_Y1 + Wysokość * 8 - 1)
     pla
     and #$0F
     clc

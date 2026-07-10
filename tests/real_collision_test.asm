@@ -16,6 +16,10 @@ GAME_SCREEN_ID  .ds 1
 OBJ_CODE        .ds 1
 OBJ_X           .ds 1
 OBJ_Y           .ds 1
+REQ_SCREEN_TRANSITION .ds 1
+NEW_SCREEN_ID         .ds 1
+NEW_ACTOR_X           .ds 1
+NEW_ACTOR_Y           .ds 1
 
 FrameCounter    .ds 1
 InputState_Joy  .ds 1
@@ -38,7 +42,7 @@ start_test_collision
 
     org $4000
 PMBASE_ADDR    .ds 2048
-GAME_SCREEN_A5 .ds 400
+GAME_SCREEN_A5 .ds 480
 
 SPRITE_GERWALT_RIGHT_FRAMES = 4
 SPRITE_GERWALT_LEFT_FRAMES = 4

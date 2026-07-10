@@ -6,7 +6,7 @@ from world_studio.models import ScreenDef
 
 def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Charset, mark_start_pos=False, region_id: str=None) -> QImage:
     w_tiles = 40
-    h_tiles = 10
+    h_tiles = 12
     
     px_w = w_tiles * 4
     px_h = h_tiles * 8

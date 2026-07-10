@@ -27,6 +27,10 @@ game_palette
 status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
+default_status_bar
+    dta d' HP: 20/20      XP: 0/100      LVL: 1    '
+    dta d'                                        '
+
 ;==============================================================
 ; update_stage_colors — kopiuje odpowiednie kolory w oparciu o game_stage
 ;==============================================================
@@ -82,8 +86,6 @@ status_palette
     sta ACTOR_ANIM_SPEED,x
     lda #14
     sta ACTOR_HEIGHT,x
-    lda #$0F
-    sta ACTOR_COLOR,x
     
     ; Wskaźniki na klatki animacji i limity
     lda #<GERWALT_PTRS_TABLE
@@ -113,13 +115,17 @@ status_palette
     asl
     asl
     clc
-    adc #32
+    adc #56
     sta ACTOR_Y,x
     sta ACTOR_Y_OLD,x
     sta ACTOR_INTENT_Y,x
 
     ; --- Inicjalizacja kolorów wybranego etapu ---
     jsr update_stage_colors
+
+    ; Zainicjuj kolor gracza z wczytanej palety regionu
+    lda game_palette
+    sta ACTOR_COLOR
 
     ; --- Display List gry (ANTIC 4/5) ---
     lda #<DLIST_GAME
@@ -145,10 +151,10 @@ status_palette
     ; --- Zbuduj ekran gry bazując na World Builderze ---
     jsr build_screen
 
-    ; --- Wypełnij pasek statusu testowymi znakami (0-79) ---
+    ; --- Wypełnij pasek statusu domyślnym tekstem ---
     ldx #0
 @fill_status
-    txa
+    lda default_status_bar,x
     sta GAME_SCREEN_A2,x
     inx
     cpx #80
@@ -197,14 +203,14 @@ status_palette
 ; Łącznie do wyzerowania 560 bajtów (400 + 160).
 ;==============================================================
 .proc clear_game_screens
+    ; Czyści tylko mapę (480 bajtów), zostawiając status bar nienaruszony
     lda #0
     tax
 @loop
     sta GAME_SCREEN_A5,x
-    sta GAME_SCREEN_A5+$0100,x
-    cpx #$30                ; 512 + 48 = 560 bajtów
+    cpx #224                ; 480 = 256 + 224
     bcs @skip
-    sta GAME_SCREEN_A5+$0200,x
+    sta GAME_SCREEN_A5+$0100,x
 @skip
     inx
     bne @loop

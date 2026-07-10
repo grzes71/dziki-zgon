@@ -64,7 +64,7 @@ def load_labels(lab_file):
 
 def compute_expected_vram(world_dir: Path, region_id: str, screen_id: str):
     world = parse_world_dir(world_dir)
-    vram = [0] * 400
+    vram = [0] * 480
     
     # Przygotuj słownik obiektów do szybkiego dostępu (uwaga: szukamy w oryginalnym yaml lub modelu Pydantic)
     # world.objects to lista obiektów GameObject z pydantic.
@@ -104,7 +104,7 @@ def compute_expected_vram(world_dir: Path, region_id: str, screen_id: str):
                     screen_x = base_x + tx
                     screen_y = base_y + ty
                     
-                    if screen_x < 40 and screen_y < 10:
+                    if screen_x < 40 and screen_y < 12:
                         vram[screen_y * 40 + screen_x] = tile
                         
     return vram
@@ -129,7 +129,7 @@ def test_full_screen_rendering(integration_harness):
     GAME_SCREEN_ID_Z = labels["GAME_SCREEN_ID"]
     
     # Wyczyść wirtualny VRAM przed testem (upewnij się że zaczynamy z czystą kartą)
-    for i in range(400):
+    for i in range(480):
         cpu.memory[GAME_SCREEN_A5 + i] = 0
         
     # Ustaw ekran (MADS exportuje labele globalne)
@@ -151,11 +151,11 @@ def test_full_screen_rendering(integration_harness):
         
     assert steps < max_steps, "Przekroczono limit kroków procesora (nieskończona pętla?)"
     
-    # 3. Weryfikacja wynikowa 400 bajtów
-    actual_vram = [cpu.memory[GAME_SCREEN_A5 + i] for i in range(400)]
+    # 3. Weryfikacja wynikowa 480 bajtów
+    actual_vram = [cpu.memory[GAME_SCREEN_A5 + i] for i in range(480)]
     
     errors = []
-    for i in range(400):
+    for i in range(480):
         if actual_vram[i] != expected_vram[i]:
             x = i % 40
             y = i // 40

@@ -320,3 +320,13 @@ step                             # wykonaj krok
 ```
 
 Pełna dokumentacja: [`docs/py65.md`](docs/py65.md)
+
+## Lessons Learned (Zbadane problemy i rozwiązania)
+
+### 1. Synchronizacja pozycji pionowej (Y) Duszków (PMG) i Fizyki
+* **Problem**: Postać startowała i poruszała się na innej wysokości wizualnej niż rejestrowały to systemy kolizji i zmian ekranów. Często "wklinowywała się" w obiekty blokujące w miejscach, w których wizualnie ich nie było.
+* **Rozwiązanie**: Należy pamiętać, że PMG hardware na Atari zaczyna rysowanie od linii skanującej 32 (co odpowiada górnej krawędzi ekranu w trybie normalnym). Wszystkie operacje (renderowanie, kolizje z krawędziami ekranu, spawnowanie) muszą być zsynchronizowane z offsetem sprzętowym `32` (poprzednio błędnie stosowano przesunięcia typu 56 dla renderingu i 32 dla fizyki, co prowadziło do rozbieżności). Granice w `engine/collision.asm` to teraz `32` (góra) do `210` (dół).
+
+### 2. Autorski VBLANK (Engine_FrameHandler) i "Wyciekanie" Kolorów DLI
+* **Problem**: Ustawione w kreatorze (YAML) kolory postaci (np. zielony dla Geralta) były ignorowane - postać była rysowana na biało.
+* **Rozwiązanie**: Gra używa własnego procedury podpiętej do VBLANK (`Engine_FrameHandler`), by płynnie uruchamiać odtwarzacz muzyki RMT, omijając przy tym OS-owy Immediate VBLANK (`SYSVBV`). Wymaga to jednak **ręcznego** przepisywania wartości ze wszystkich tzw. "rejestrów cieni" z pamięci RAM do układu sprzętowego. Menedżer zapomniał kopiować rejestry kolorów graczy (`$02C0-$02C3` do `PCOLR0-3`), przez co modyfikacje koloru dokonywane przez DLI paska statusu (na samym dole ekranu) utrzymywały się w rejestrach sprzętowych w kolejnej klatce (podczas rysowania gry), całkowicie nadpisując intencje logiki. Należy mieć to na uwadze przy pisaniu autorskich handlerów VBLANK!

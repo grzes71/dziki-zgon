@@ -300,6 +300,11 @@ GameOverScreen_Data
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR
 
+; ===================================================================
+; 13. Dane świata i odtwarzacz muzyki (w bezpiecznym darmowym RAM-ie)
+; ===================================================================
+    org $6800
+
 ; --- Dane Świata (World Builder) ---
     icl "gen/world/world.inc"
     icl "gen/world/objects.asm"

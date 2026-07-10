@@ -30,3 +30,9 @@ PMG_PTR             equ $96 ; (2 bajty) Wskaźnik do pamięci PMG aktualnie rend
 ACTOR_TMP_X         equ $98 ; Tymczasowa intencja X aktora (do kolizji)
 ACTOR_TMP_Y         equ $99 ; Tymczasowa intencja Y aktora (do kolizji)
 ACTOR_TMP_HEIGHT    equ $9A ; Tymczasowa wysokość aktora (do kolizji)
+
+;--- Screen Transition Variables ---
+REQ_SCREEN_TRANSITION equ $9C ; Flaga żądania zmiany ekranu (1 = tak)
+NEW_SCREEN_ID         equ $9D ; ID nowego ekranu do wczytania
+NEW_ACTOR_X           equ $9E ; Nowa pozycja gracza na nowym ekranie
+NEW_ACTOR_Y           equ $9F ; Nowa pozycja gracza na nowym ekranie

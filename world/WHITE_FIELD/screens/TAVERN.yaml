@@ -4,7 +4,7 @@ grid_y: 0
 exits:
   north: null
   south: VILLAGE
-  east: WOOD
+  east: CROSSROADS
   west: null
 objects:
 - object: TREE_SMALL
@@ -19,9 +19,6 @@ objects:
 - object: TREE_SMALL
   x: 32
   y: 5
-- object: TREE_2
-  x: 34
-  y: 2
 - object: FENCE_1
   x: 5
   y: 6
@@ -40,21 +37,9 @@ objects:
 - object: HOUSE_SMALL
   x: 8
   y: 0
-- object: ROCK_2
-  x: 2
-  y: 8
-- object: ROCK_2
-  x: 0
-  y: 9
-- object: ROCK_2
-  x: 4
-  y: 9
 - object: TREE_3
   x: 26
   y: 0
-- object: TREE_SMALL
-  x: 38
-  y: 8
 - object: TREE_2
   x: 2
   y: 1
@@ -73,20 +58,8 @@ objects:
 - object: TREE_3
   x: 18
   y: 5
-- object: TREE_3
-  x: 35
-  y: 0
-- object: TREE_3
-  x: 38
-  y: 3
-- object: TREE_3
-  x: 37
-  y: 6
 - object: BARN_SMALL
   x: 4
-  y: 0
-- object: SIGNPOINT_RIGHT
-  x: 38
   y: 0
 - object: CROSS_2
   x: 0
@@ -100,13 +73,25 @@ objects:
 - object: TREE_2
   x: 24
   y: 0
-- object: ROCK_2
-  x: 29
-  y: 0
-- object: ROCK_2
-  x: 31
-  y: 1
-- object: ROCK_1
+- object: BUSH_2
   x: 28
   y: 1
+- object: MUSHROOM
+  x: 35
+  y: 6
+- object: SIGNPOINT_RIGHT
+  x: 36
+  y: 3
+- object: TREE_3
+  x: 33
+  y: 2
+- object: TREE_3
+  x: 0
+  y: 8
+- object: BUSH
+  x: 14
+  y: 6
+- object: BUSH
+  x: 17
+  y: 7
 enemies: []

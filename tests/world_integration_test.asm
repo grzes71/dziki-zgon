@@ -18,7 +18,7 @@ DST_PTR     equ $84
 
 ; --- Wirtualny VRAM ---
     org $4000
-GAME_SCREEN_A5     .ds 400
+GAME_SCREEN_A5     .ds 480
 
 ; --- Zmienne wygenerowane z World Builder ---
     org $5000

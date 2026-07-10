@@ -11,6 +11,7 @@ class LiveRegionViewWidget(QWidget):
     screen_edit_requested = Signal(str, str) # region_id, screen_id
     screen_delete_requested = Signal(str, str) # region_id, screen_id
     screen_preview_requested = Signal(str, str) # region_id, screen_id
+    screen_exits_requested = Signal(str, str) # region_id, screen_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -20,7 +21,7 @@ class LiveRegionViewWidget(QWidget):
         
         self.zoom = 2
         self.screen_w = 40 * 4
-        self.screen_h = 10 * 8
+        self.screen_h = 12 * 8
         self.spacing = 20
         
         self.hovered_cell = None
@@ -150,12 +151,15 @@ class LiveRegionViewWidget(QWidget):
         if screen_id:
             preview_action = menu.addAction("Preview Screen")
             edit_action = menu.addAction("Rename Screen...")
+            exits_action = menu.addAction("Set Exits...")
             del_action = menu.addAction("Remove Screen")
             action = menu.exec(event.globalPos())
             if action == preview_action:
                 self.screen_preview_requested.emit(self.region_id, screen_id)
             elif action == edit_action:
                 self.screen_edit_requested.emit(self.region_id, screen_id)
+            elif action == exits_action:
+                self.screen_exits_requested.emit(self.region_id, screen_id)
             elif action == del_action:
                 self.screen_delete_requested.emit(self.region_id, screen_id)
         else:

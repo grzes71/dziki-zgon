@@ -61,12 +61,12 @@ def test_swamp_left_movement():
     
     # 20 * 4 + 48 = 128
     # 10 * 16 + 32 = 192
-    
+
     cpu.memory[labels["ACTOR_ACTIVE"]] = 1
     cpu.memory[labels["ACTOR_X"]] = 128
     cpu.memory[labels["ACTOR_Y"]] = 192
     cpu.memory[labels["ACTOR_HEIGHT"]] = 14
-    
+
     # Intend to move LEFT
     cpu.memory[labels["ACTOR_INTENT_X"]] = 127
     cpu.memory[labels["ACTOR_INTENT_Y"]] = 192

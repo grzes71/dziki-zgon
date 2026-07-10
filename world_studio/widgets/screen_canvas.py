@@ -18,7 +18,7 @@ class ScreenCanvasWidget(QWidget):
         
         self.zoom = 4
         self.grid_width = 40
-        self.grid_height = 10
+        self.grid_height = 12
         self.tile_w_px = 4
         self.tile_h_px = 8
         

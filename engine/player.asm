@@ -10,9 +10,7 @@
     rts
 
 @process
-    ; Ustaw kolor gracza na pomarańczowy (żeby go widzieć)
-    lda #$24
-    sta ACTOR_COLOR,x
+    ; Usunięto nadpisywanie koloru gracza - ładujemy go z palety w YAML
 
     ; Resetuj intencję do aktualnej pozycji (brak ruchu = stoisz)
     lda ACTOR_X,x
