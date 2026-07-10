@@ -32,6 +32,8 @@ start_test
 SCREEN_POINTERS_LO .ds 256
 SCREEN_POINTERS_HI .ds 256
 OBJ_SIZE           .ds 256
+OBJ_FLAGS          .ds 256
+COLLISION_GRID     .ds 60
 OBJ_TILES_LO       .ds 256
 OBJ_TILES_HI       .ds 256
 

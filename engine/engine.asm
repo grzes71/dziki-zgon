@@ -17,3 +17,5 @@
     icl "world.asm"
     icl "audio.asm"
     icl "render.asm"
+    icl "charset_anim.asm"
+

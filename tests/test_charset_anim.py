@@ -1,0 +1,159 @@
+import pytest
+from pathlib import Path
+import subprocess
+from py65.devices.mpu6502 import MPU
+
+def compile_harness():
+    tests_dir = Path(__file__).parent
+    asm_file = tests_dir / "charset_anim_test.asm"
+    out_xex = tests_dir / "charset_anim_test.xex"
+    out_lab = tests_dir / "charset_anim_test.lab"
+    
+    mads_exe = "c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe"
+    subprocess.run([mads_exe, str(asm_file), f"-o:{out_xex}", f"-t:{out_lab}"], check=True)
+    return out_xex, out_lab
+
+def load_xex(filename, memory):
+    with open(filename, "rb") as f:
+        data = f.read()
+    
+    i = 0
+    while i < len(data):
+        if data[i] == 0xFF and data[i+1] == 0xFF:
+            i += 2
+            if i >= len(data): break
+        
+        if i + 3 >= len(data): break
+        start = data[i] | (data[i+1] << 8)
+        i += 2
+        end = data[i] | (data[i+1] << 8)
+        i += 2
+        
+        length = end - start + 1
+        if i + length > len(data): break
+        chunk = data[i:i+length]
+        
+        for j, byte in enumerate(chunk):
+            memory[start + j] = byte
+            
+        i += length
+
+def load_labels(lab_file):
+    labels = {}
+    with open(lab_file, "r") as f:
+        for line in f:
+            parts = line.split()
+            if len(parts) >= 3:
+                try:
+                    addr = int(parts[1], 16)
+                    name = parts[2]
+                    labels[name.upper()] = addr
+                except ValueError:
+                    pass
+    return labels
+
+@pytest.fixture(scope="module")
+def harness():
+    xex, lab = compile_harness()
+    labels = load_labels(lab)
+    return xex, labels
+
+def run_cpu_until_brk(cpu, start_pc, max_steps=1000):
+    cpu.sp = 0xFF
+    cpu.pc = start_pc
+    steps = 0
+    while steps < max_steps:
+        if cpu.memory[cpu.pc] == 0x00:  # BRK
+            break
+        cpu.step()
+        steps += 1
+    assert steps < max_steps, "Infinite loop detected!"
+
+def test_charset_anim_counters_decrement(harness):
+    xex_file, labels = harness
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    
+    # Adresy z etykietami
+    ids_addr = labels["ANIMATE_CHARSET.ANIM_CHAR_IDS"]
+    speeds_addr = labels["ANIMATE_CHARSET.ANIM_CHAR_SPEEDS"]
+    counters_addr = labels["ANIMATE_CHARSET.ANIM_CHAR_COUNTERS"]
+    game_charset = labels["GAME_CHARSET"]
+    start_test = labels["START_TEST"]
+    src_ptr_z = labels["SRC_PTR"]
+    
+    # 1. Setup mock data
+    # Ustaw początkowe liczniki na 5 dla wszystkich 5 animowanych znaków
+    for i in range(5):
+        cpu.memory[counters_addr + i] = 5
+        cpu.memory[speeds_addr + i] = 10
+        
+    # Ustaw dane znaku $05 na znane wartości (np. 0xAA)
+    char_05_addr = game_charset + 0x05 * 8
+    for i in range(8):
+        cpu.memory[char_05_addr + i] = 0xAA  # %10101010
+        
+    # Mock ZP src_ptr
+    cpu.memory[src_ptr_z] = 0x12
+    cpu.memory[src_ptr_z + 1] = 0x34
+    
+    # 2. Uruchom kod
+    run_cpu_until_brk(cpu, start_test)
+    
+    # 3. Weryfikacja: liczniki powinny zmaleć o 1 (do 4), a dane znaków nie powinny ulec zmianie
+    for i in range(5):
+        assert cpu.memory[counters_addr + i] == 4
+        
+    for i in range(8):
+        assert cpu.memory[char_05_addr + i] == 0xAA
+        
+    # Wskaźnik ZP powinien pozostać nietknięty
+    assert cpu.memory[src_ptr_z] == 0x12
+    assert cpu.memory[src_ptr_z + 1] == 0x34
+
+def test_charset_anim_rotate_and_reset(harness):
+    xex_file, labels = harness
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    
+    ids_addr = labels["ANIMATE_CHARSET.ANIM_CHAR_IDS"]
+    speeds_addr = labels["ANIMATE_CHARSET.ANIM_CHAR_SPEEDS"]
+    counters_addr = labels["ANIMATE_CHARSET.ANIM_CHAR_COUNTERS"]
+    game_charset = labels["GAME_CHARSET"]
+    start_test = labels["START_TEST"]
+    src_ptr_z = labels["SRC_PTR"]
+    
+    # 1. Setup mock data
+    # Ustaw licznik znaku $05 (indeks 0) na 1 (powinien się zrolować), a resztę na 5
+    cpu.memory[counters_addr + 0] = 1
+    cpu.memory[speeds_addr + 0] = 12
+    for i in range(1, 5):
+        cpu.memory[counters_addr + i] = 5
+        cpu.memory[speeds_addr + i] = 10
+        
+    # Ustaw dane znaku $05 na %10100101 ($A5)
+    char_05_addr = game_charset + 0x05 * 8
+    for i in range(8):
+        cpu.memory[char_05_addr + i] = 0xA5
+        
+    # Mock ZP src_ptr
+    cpu.memory[src_ptr_z] = 0x55
+    cpu.memory[src_ptr_z + 1] = 0xAA
+    
+    # 2. Uruchom kod
+    run_cpu_until_brk(cpu, start_test)
+    
+    # 3. Weryfikacja:
+    # - Licznik znaku $05 zresetowany do 12
+    assert cpu.memory[counters_addr + 0] == 12
+    # - Inne liczniki zmalały do 4
+    for i in range(1, 5):
+        assert cpu.memory[counters_addr + i] == 4
+        
+    # - Dane znaku $05 zrolowane w lewo o 2 bity (circular shift): %10100101 -> %10010110 ($96)
+    for i in range(8):
+        assert cpu.memory[char_05_addr + i] == 0x96
+        
+    # - Wskaźnik ZP nienaruszony
+    assert cpu.memory[src_ptr_z] == 0x55
+    assert cpu.memory[src_ptr_z + 1] == 0xAA

@@ -174,167 +174,145 @@
 .endp
 
 .proc Check_Objects_Collision
-    ; Wyliczamy przeciwległy róg aktora (ActorX2, ActorY2)
-    lda ACTOR_TMP_X
-    clc
-    adc #7          ; Szerokość sprite'a PMG to zawsze 8 px w trybie pojedynczym
-    sta col_px2
+    ; Zwraca: A = 1 (kolizja), A = 0 (brak kolizji)
     
+    ; 1. Oblicz Y2 = Pixel_Y + Height - 1
     lda ACTOR_TMP_Y
     clc
     adc ACTOR_TMP_HEIGHT
     sec
     sbc #1
-    sta col_py2
-
-    ; Przygotuj wskaźnik na dane obiektów aktualnego ekranu
-    ldx GAME_SCREEN_ID
-    lda SCREEN_POINTERS_LO,x
-    sta SCREEN_PTR
-    lda SCREEN_POINTERS_HI,x
-    sta SCREEN_PTR+1
-
-    ldy #0
-    lda (SCREEN_PTR),y          ; Liczba obiektów na ekranie
-    bne @start_objects
-    jmp @no_col
-@start_objects
-    tax                         ; X = licznik obiektów do przetworzenia
-
-@object_loop
-    ; Czytaj OBJ_CODE
-    inc SCREEN_PTR
-    bne @read_code
-    inc SCREEN_PTR+1
-@read_code
-    ldy #0
-    lda (SCREEN_PTR),y
-    sta OBJ_CODE
+    sta col_tmp_y2
     
-    ; Czytaj OBJ_X
-    inc SCREEN_PTR
-    bne @read_x
-    inc SCREEN_PTR+1
-@read_x
-    lda (SCREEN_PTR),y
-    sta OBJ_X
-
-    ; Czytaj OBJ_Y
-    inc SCREEN_PTR
-    bne @read_y
-    inc SCREEN_PTR+1
-@read_y
-    lda (SCREEN_PTR),y
-    sta OBJ_Y
-
-    ; Zapisz licznik (X) na stosie, bo zaraz będziemy go używać do odczytu danych obiektu
-    txa
-    pha
-
-    ; Czy obiekt jest blokujący?
-    ldx OBJ_CODE
-    lda OBJ_FLAGS,x
-    and #$80        ; Maska flagi blocking (Bit 7)
-    beq @next_obj   ; Brak flagi -> obiekt przenikalny
-
-    ; Oblicz O_X1 = 48 + OBJ_X * 4
-    lda OBJ_X
-    asl
-    asl
-    clc
-    adc #48
-    sta col_ox1
-    
-    ; Oblicz O_Y1 = 56 + OBJ_Y * 8
-    lda OBJ_Y
-    asl
-    asl
-    asl
-    asl
-    clc
-    adc #32
-    sta col_oy1
-    
-    ; Wypakuj z OBJ_SIZE i oblicz O_X2 (O_X1 + Szerokość * 4 - 1)
-    lda OBJ_SIZE,x
-    pha
-    lsr
-    lsr
-    lsr
-    lsr
-    clc
-    adc #1          ; W (w kafelkach)
-    asl
-    asl             ; W * 4 (w pikselach PMG)
+    ; Jeśli Y2 < 32 -> brak kolizji (gracz nad mapą)
+    cmp #32
+    bcs @y2_ok
+    lda #0
+    rts
+@y2_ok
+    ; Grid_Y2 = (Y2 - 32) / 16
     sec
-    sbc #1
-    clc
-    adc col_ox1
-    sta col_ox2
+    sbc #32
+    lsr
+    lsr
+    lsr
+    lsr
+    sta col_grid_y2
     
-    ; Wypakuj z OBJ_SIZE i oblicz O_Y2 (O_Y1 + Wysokość * 8 - 1)
-    pla
-    and #$0F
-    clc
-    adc #1          ; H (w kafelkach)
-    asl
-    asl
-    asl
-    asl             ; H * 16 (w pikselach)
-    sec
-    sbc #1
-    clc
-    adc col_oy1
-    sta col_oy2
-    
-    ; --- TEST KOLIZJI (AABB) ---
-    
-    ; 1. P_X1 > O_X2 -> brak kolizji
-    lda ACTOR_TMP_X
-    cmp col_ox2
-    beq @chk2       ; Jeśli równe, krawędzie się stykają (zatem kolizja)
-    bcs @next_obj   ; Jeśli > (Z=0, C=1), brak kolizji
-
-@chk2
-    ; 2. P_X2 < O_X1 -> brak kolizji
-    lda col_px2
-    cmp col_ox1
-    bcc @next_obj   ; Jeśli < (C=0), brak kolizji
-    
-    ; 3. P_Y1 > O_Y2 -> brak kolizji
+    ; Oblicz Grid_Y1 = (Pixel_Y - 32) / 16
     lda ACTOR_TMP_Y
-    cmp col_oy2
-    beq @chk4       ; Jeśli równe, kolizja
-    bcs @next_obj
+    cmp #32
+    bcs @y1_ok
+    lda #0
+    sta col_grid_y1
+    jmp @x_coords
+@y1_ok
+    sec
+    sbc #32
+    lsr
+    lsr
+    lsr
+    lsr
+    sta col_grid_y1
+    
+@x_coords
+    ; Oblicz Grid_X1 = (Pixel_X - 48) / 4
+    lda ACTOR_TMP_X
+    sec
+    sbc #48
+    lsr
+    lsr
+    sta col_grid_x1
+    
+    ; Oblicz Grid_X2 = (Pixel_X - 48 + 7) / 4
+    lda ACTOR_TMP_X
+    sec
+    sbc #48
+    clc
+    adc #7
+    lsr
+    lsr
+    sta col_grid_x2
+    
+    ; Ogranicz współrzędne siatki (clamp)
+    lda col_grid_y2
+    cmp #12
+    bcc @y2_clamp_ok
+    lda #11
+    sta col_grid_y2
+@y2_clamp_ok
 
-@chk4
-    ; 4. P_Y2 < O_Y1 -> brak kolizji
-    lda col_py2
-    cmp col_oy1
-    bcc @next_obj
+    lda col_grid_x2
+    cmp #40
+    bcc @x2_clamp_ok
+    lda #39
+    sta col_grid_x2
+@x2_clamp_ok
 
-    ; Jeśli żaden z powyższych warunków separacji nie zaszedł, MAMY KOLIZJĘ!
-    pla             ; Zdejmij zapisany licznik ze stosu
-    lda #1          ; Zwróć 1 (wykryto kolizję)
+    ; Szybka pętla po wierszach od Grid_Y1 do Grid_Y2
+    ; i kolumnach od Grid_X1 do Grid_X2
+    
+    lda col_grid_y1
+    sta col_curr_y
+@row_loop
+    lda col_grid_x1
+    sta col_curr_x
+@col_loop
+    ; Sprawdź bit na (col_curr_x, col_curr_y)
+    
+    ; Index = col_curr_y * 5 + col_curr_x / 8
+    lda col_curr_y
+    asl
+    asl
+    clc
+    adc col_curr_y ; Y * 5
+    
+    sta col_curr_idx
+    lda col_curr_x
+    lsr
+    lsr
+    lsr            ; X / 8
+    clc
+    adc col_curr_idx
+    tay            ; index w COLLISION_GRID
+    
+    lda col_curr_x
+    and #$07
+    tax
+    lda bit_masks,x ; maska bitu
+    
+    and COLLISION_GRID,y
+    beq @no_col_cell
+    
+    ; Wykryto kolizję!
+    lda #1
     rts
+    
+@no_col_cell
+    inc col_curr_x
+    lda col_curr_x
+    cmp col_grid_x2
+    beq @col_loop
+    bcc @col_loop
 
-@next_obj
-    pla
-    tax             ; Przywróć licznik obiektów
-    dex
-    beq @no_col
-    jmp @object_loop
+    inc col_curr_y
+    lda col_curr_y
+    cmp col_grid_y2
+    beq @row_loop
+    bcc @row_loop
 
-@no_col
-    lda #0          ; Zwróć 0 (brak kolizji)
+    lda #0
     rts
+    
+bit_masks
+    dta $80, $40, $20, $10, $08, $04, $02, $01
 
-; Zmienne lokalne do obliczeń (aby nie zaśmiecać i tak zapchanego Zero Page)
-col_px2 dta $00
-col_py2 dta $00
-col_ox1 dta $00
-col_oy1 dta $00
-col_ox2 dta $00
-col_oy2 dta $00
-
+col_tmp_y2     dta $00
+col_grid_y1    dta $00
+col_grid_y2    dta $00
+col_grid_x1    dta $00
+col_grid_x2    dta $00
+col_curr_x     dta $00
+col_curr_y     dta $00
+col_curr_idx   dta $00
 .endp

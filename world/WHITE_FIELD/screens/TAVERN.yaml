@@ -22,18 +22,12 @@ objects:
 - object: HOUSE_TALL
   x: 1
   y: 4
-- object: TREE_2
-  x: 0
-  y: 0
 - object: HOUSE_SMALL
   x: 8
   y: 0
 - object: TREE_3
   x: 26
   y: 0
-- object: TREE_2
-  x: 2
-  y: 1
 - object: FENCE_1
   x: 12
   y: 1
@@ -44,12 +38,6 @@ objects:
 - object: TREE_3
   x: 18
   y: 5
-- object: BARN_SMALL
-  x: 4
-  y: 0
-- object: CROSS_2
-  x: 0
-  y: 3
 - object: WELL
   x: 18
   y: 0
@@ -89,12 +77,6 @@ objects:
 - object: BUSH_2
   x: 15
   y: 10
-- object: ROCK_2
-  x: 34
-  y: 9
-- object: ROCK_1
-  x: 32
-  y: 9
 - object: MUSHROOM
   x: 36
   y: 6
@@ -150,4 +132,16 @@ objects:
 - object: MUSHROOM
   x: 21
   y: 10
+- object: WAVES_UP
+  x: 32
+  y: 9
+  repeat-x: 4
+- object: WAVES_DOWN
+  x: 32
+  y: 11
+  repeat-x: 4
+- object: WAVES
+  x: 32
+  y: 10
+  repeat-x: 4
 enemies: []

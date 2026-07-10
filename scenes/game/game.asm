@@ -115,7 +115,7 @@ default_status_bar
     asl
     asl
     clc
-    adc #56
+    adc #32
     sta ACTOR_Y,x
     sta ACTOR_Y_OLD,x
     sta ACTOR_INTENT_Y,x

@@ -8,6 +8,13 @@
     ; 1. Odtwarzacz muzyki/dźwięku
     jsr Audio_Update
 
+    ; Animowanie wybranych znaków charsetu podczas gry
+    lda GAME_STATE
+    cmp #STATE_GAME
+    bne @skip_anim
+    jsr animate_charset
+@skip_anim
+
     ; 2. Sygnał dla pętli głównej
     inc FrameCounter
 

@@ -20,6 +20,14 @@ row_offsets_hi
 ; build_screen — buduje ekran z danych mapy dla GAME_SCREEN_ID
 ;==============================================================
 .proc build_screen
+    ; 1. Wyczyść COLLISION_GRID (60 bajtów)
+    ldy #59
+    lda #0
+@clear_grid
+    sta COLLISION_GRID,y
+    dey
+    bpl @clear_grid
+
     ldx GAME_SCREEN_ID
     lda SCREEN_POINTERS_LO,x
     sta SCREEN_PTR
@@ -80,6 +88,15 @@ row_offsets_hi
     clc
     adc #1
     sta OBJ_H
+
+    ; --- Oznacz w siatce kolizji, jeśli obiekt jest blokujący ---
+    ldx OBJ_CODE
+    lda OBJ_FLAGS,x
+    and #$80
+    beq @skip_col_mark
+    jsr mark_object_blocking
+    ldx OBJ_CODE
+@skip_col_mark
 
     ; Pobierz wskaźnik kafelków
     lda OBJ_TILES_LO,x
@@ -142,3 +159,68 @@ row_offsets_hi
 @end
     rts
 .endp
+
+;==============================================================
+; mark_object_blocking — oznacza obiekt w siatce COLLISION_GRID
+; Wejście: OBJ_X, OBJ_Y, OBJ_W, OBJ_H
+;==============================================================
+.proc mark_object_blocking
+    lda OBJ_Y
+    sta TMP_Y_GRID
+@row_loop
+    lda OBJ_X
+    sta TMP_X_GRID
+@col_loop
+    ; Oblicz Row * 5
+    lda TMP_Y_GRID
+    asl
+    asl            ; Row * 4
+    clc
+    adc TMP_Y_GRID ; Row * 5
+    sta TMP_GRID_INDEX
+
+    ; Dodaj Col / 8
+    lda TMP_X_GRID
+    lsr
+    lsr
+    lsr            ; Col / 8
+    clc
+    adc TMP_GRID_INDEX
+    tay            ; Y = index w COLLISION_GRID
+
+    ; Oblicz bit mask (Col & 7)
+    lda TMP_X_GRID
+    and #$07
+    tax            ; X = bit index (0..7)
+    lda bit_masks,x
+
+    ; Ustaw bit
+    ora COLLISION_GRID,y
+    sta COLLISION_GRID,y
+
+    ; Kolumny loop
+    inc TMP_X_GRID
+    lda TMP_X_GRID
+    sec
+    sbc OBJ_X
+    cmp OBJ_W
+    bcc @col_loop
+
+    ; Wiersze loop
+    inc TMP_Y_GRID
+    lda TMP_Y_GRID
+    sec
+    sbc OBJ_Y
+    cmp OBJ_H
+    bcc @row_loop
+
+    rts
+
+bit_masks
+    dta $80, $40, $20, $10, $08, $04, $02, $01
+
+TMP_X_GRID     dta $00
+TMP_Y_GRID     dta $00
+TMP_GRID_INDEX dta $00
+.endp
+
