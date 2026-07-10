@@ -3,11 +3,80 @@ grid_x: 0
 grid_y: 1
 exits:
   north: TAVERN
-  south: null
-  east: null
+  south: CHURCH
+  east: VILLAGE2
   west: null
 objects:
 - object: WELL
   x: 15
   y: 4
+- object: HOUSE_TALL
+  x: 18
+  y: 3
+- object: HOUSE_SMALL
+  x: 2
+  y: 4
+- object: FENCE_1
+  x: 0
+  y: 5
+- object: FENCE_1
+  x: 6
+  y: 5
+- object: TREE_2
+  x: 8
+  y: 4
+- object: BRICK_WALL
+  x: 22
+  y: 5
+- object: BRICK_WALL
+  x: 23
+  y: 5
+- object: BARN_MEDIUM
+  x: 24
+  y: 4
+- object: TREE_SMALL
+  x: 28
+  y: 7
+- object: TREE_SMALL
+  x: 34
+  y: 7
+- object: TREE_SMALL
+  x: 31
+  y: 1
+- object: TREE_SMALL
+  x: 7
+  y: 7
+- object: ROCK_2
+  x: 37
+  y: 8
+- object: ROCK_GREEN
+  x: 30
+  y: 4
+- object: ROCK_GREEN
+  x: 34
+  y: 5
+- object: ROCK_GREEN
+  x: 0
+  y: 8
+- object: BUSH_2
+  x: 33
+  y: 2
+- object: BUSH_2
+  x: 30
+  y: 8
+- object: BUSH_2
+  x: 5
+  y: 8
+- object: LAKE
+  x: 12
+  y: 7
+- object: TREE_3
+  x: 7
+  y: 1
+- object: TREE_3
+  x: 37
+  y: 1
+- object: SIGNPOINT_RIGHT
+  x: 38
+  y: 5
 enemies: []

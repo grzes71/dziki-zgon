@@ -238,6 +238,22 @@ def update_memory_usage(lab_file, md_file):
             lines[line_idx] = new_line
             changed.append(strip_md(row["name_col"]))
 
+    # 4) Zaktualizuj tekst z sumą wolnej pamięci
+    total_free = 0
+    for row in rows:
+        if "wolny ram" in row["type_norm"]:
+            total_free += (row["end"] - row["start"] + 1)
+            
+    summary_prefix = "Łącznie wolny RAM z tych bloków to"
+    for i, line in enumerate(lines):
+        if line.startswith(summary_prefix):
+            formatted_total = f"{total_free:,}".replace(",", " ")
+            new_summary = f"{summary_prefix} **{formatted_total} B**.\n"
+            if lines[i] != new_summary:
+                lines[i] = new_summary
+                changed.append("Suma wolnej pamięci")
+            break
+
     if changed:
         with open(md_file, "w", encoding="utf-8") as f:
             f.writelines(lines)

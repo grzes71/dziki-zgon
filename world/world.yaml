@@ -2,5 +2,5 @@ world:
   start_region: WHITE_FIELD
   start_screen: TAVERN
   start_position:
-    x: 23
+    x: 22
     y: 8

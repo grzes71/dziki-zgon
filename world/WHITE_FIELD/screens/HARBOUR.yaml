@@ -1,0 +1,10 @@
+id: HARBOUR
+grid_x: 2
+grid_y: 2
+exits:
+  north: WASTELAND
+  south: null
+  east: null
+  west: VILLAGE_3
+objects: []
+enemies: []

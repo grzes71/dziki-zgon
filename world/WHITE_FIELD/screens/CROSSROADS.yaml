@@ -6,5 +6,74 @@ exits:
   south: null
   east: null
   west: TAVERN
-objects: []
+objects:
+- object: SIGNPOINT_LEFT
+  x: 2
+  y: 3
+- object: ROCK_BIG
+  x: 33
+  y: 7
+- object: WAVES_UP
+  x: 32
+  y: 9
+- object: WAVES_UP
+  x: 30
+  y: 9
+- object: WAVES_UP
+  x: 29
+  y: 9
+- object: WAVES_UP
+  x: 28
+  y: 9
+- object: WAVES_UP
+  x: 27
+  y: 9
+- object: WAVES_UP
+  x: 26
+  y: 9
+- object: WAVES_UP
+  x: 31
+  y: 9
+- object: TREE_3
+  x: 12
+  y: 5
+- object: TREE_3
+  x: 33
+  y: 0
+- object: TREE_3
+  x: 27
+  y: 4
+- object: TREE_3
+  x: 14
+  y: 1
+- object: TREE_3
+  x: 4
+  y: 2
+- object: TREE_3
+  x: 19
+  y: 8
+- object: BRIDGE
+  x: 22
+  y: 9
+- object: WAVES
+  x: 21
+  y: 9
+- object: BUSH_2
+  x: 16
+  y: 6
+- object: BUSH_2
+  x: 22
+  y: 2
+- object: BUSH_2
+  x: 33
+  y: 5
+- object: BUSH_2
+  x: 7
+  y: 9
+- object: ROCK_GREEN
+  x: 4
+  y: 6
+- object: ROCK_GREEN
+  x: 37
+  y: 3
 enemies: []

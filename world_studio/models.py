@@ -30,7 +30,7 @@ class ObjectInstance(BaseModel):
     
     object: str
     x: int = Field(ge=0, le=39)
-    y: int = Field(ge=0, le=9)
+    y: int = Field(ge=0, le=11)
     repeat_x: int = Field(default=1, alias="repeat-x")
     repeat_y: int = Field(default=1, alias="repeat-y")
 
@@ -61,7 +61,7 @@ class RegionDef(BaseModel):
 
 class StartPosition(BaseModel):
     x: int = Field(ge=0, le=39)
-    y: int = Field(ge=0, le=9)
+    y: int = Field(ge=0, le=11)
 
 class WorldConfig(BaseModel):
     start_region: str

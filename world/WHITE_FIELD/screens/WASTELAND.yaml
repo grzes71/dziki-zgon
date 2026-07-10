@@ -1,0 +1,10 @@
+id: WASTELAND
+grid_x: 2
+grid_y: 1
+exits:
+  north: SWAMP
+  south: HARBOUR
+  east: null
+  west: VILLAGE2
+objects: []
+enemies: []

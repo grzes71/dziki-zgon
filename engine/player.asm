@@ -60,10 +60,12 @@
     beq @chk_right
     lda #1
     sta ACTOR_DIR,x
-    ; Zmniejszenie prędkości poziomej o połowę (ruch co drugą klatkę)
-    lda FrameCounter
-    and #$01
-    bne @chk_right
+    
+    ; Zmniejszenie prędkości poziomej o połowę (ruch co drugie wejście do funkcji)
+    lda player_move_toggle
+    eor #$01
+    sta player_move_toggle
+    beq @chk_right
     dec ACTOR_INTENT_X,x
 
 @chk_right
@@ -72,10 +74,13 @@
     beq @anim
     lda #0
     sta ACTOR_DIR,x
-    ; Zmniejszenie prędkości poziomej o połowę (ruch co drugą klatkę)
-    lda FrameCounter
-    and #$01
-    bne @anim
+    
+    ; Zmniejszenie prędkości poziomej o połowę (ruch co drugie wejście do funkcji)
+    ; Używamy tego samego toggle co wyżej, bo w danym wykonaniu naciskamy tylko 1 kierunek (left lub right)
+    lda player_move_toggle
+    eor #$01
+    sta player_move_toggle
+    beq @anim
     inc ACTOR_INTENT_X,x
 
 @anim
@@ -109,6 +114,10 @@
 
 @done
     rts
+
+player_move_toggle
+    dta 0
+
 .endp
 
 GERWALT_ANIM_LIMITS

@@ -4,7 +4,7 @@ grid_y: 0
 exits:
   north: null
   south: VILLAGE
-  east: CROSSROADS
+  east: WOOD
   west: null
 objects:
 - object: TREE_SMALL
@@ -37,12 +37,6 @@ objects:
 - object: TREE_2
   x: 0
   y: 0
-- object: TREE_2
-  x: 4
-  y: 0
-- object: TREE_2
-  x: 6
-  y: 1
 - object: HOUSE_SMALL
   x: 8
   y: 0
@@ -73,48 +67,6 @@ objects:
 - object: FENCE_1
   x: 16
   y: 1
-- object: WATER
-  x: 19
-  y: 0
-- object: WATER
-  x: 20
-  y: 0
-- object: WATER
-  x: 21
-  y: 0
-- object: WATER
-  x: 23
-  y: 0
-- object: WATER
-  x: 22
-  y: 0
-- object: WATER_DOWN
-  x: 19
-  y: 1
-- object: WATER_DOWN
-  x: 20
-  y: 1
-- object: WATER_DOWN
-  x: 23
-  y: 1
-- object: WATER_DOWN
-  x: 22
-  y: 1
-- object: WATER_DOWN
-  x: 21
-  y: 1
-- object: WAVES
-  x: 17
-  y: 0
-- object: WAVES
-  x: 18
-  y: 0
-- object: WAVES
-  x: 24
-  y: 0
-- object: WAVES
-  x: 25
-  y: 0
 - object: TREE_3
   x: 15
   y: 6
@@ -130,4 +82,31 @@ objects:
 - object: TREE_3
   x: 37
   y: 6
+- object: BARN_SMALL
+  x: 4
+  y: 0
+- object: SIGNPOINT_RIGHT
+  x: 38
+  y: 0
+- object: CROSS_2
+  x: 0
+  y: 3
+- object: WELL
+  x: 18
+  y: 0
+- object: TREE_2
+  x: 21
+  y: 0
+- object: TREE_2
+  x: 24
+  y: 0
+- object: ROCK_2
+  x: 29
+  y: 0
+- object: ROCK_2
+  x: 31
+  y: 1
+- object: ROCK_1
+  x: 28
+  y: 1
 enemies: []

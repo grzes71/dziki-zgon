@@ -434,3 +434,84 @@ objects:
     interactive: true
   tiles: [0, 0, 0, 1, 132, 0, 0, 0, 0, 0, 0, 33, 33, 0, 0, 0, 59, 60, 55, 61, 61,
     55, 59, 60, 91, 92, 33, 33, 33, 33, 91, 92, 91, 92, 34, 87, 88, 34, 91, 92]
+- object: HOUSE_SMALL_BLUE
+  id: HOUSE_SMALL_BLUE
+  code: 44
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [129, 130, 131, 132, 65, 66, 163, 164]
+- object: HOUSE_MEDIUM_BLUE
+  id: HOUSE_MEDIUM_BLUE
+  code: 45
+  size:
+    width: 5
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [144, 131, 130, 131, 146, 33, 65, 66, 163, 164]
+- object: CHURCH
+  id: CHURCH
+  code: 46
+  size:
+    width: 4
+    height: 6
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [0, 96, 97, 0, 0, 185, 56, 0, 0, 189, 189, 0, 16, 33, 33, 18, 33, 157, 157,
+    33, 33, 215, 88, 33]
+- object: BUSH
+  id: BUSH
+  code: 47
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [68]
+- object: MUSHROOM
+  id: MUSHROOM
+  code: 48
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [69, 70]
+- object: BUSH_2
+  id: BUSH_2
+  code: 49
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [71, 72]
+- object: HOUSE_MEDIUM_GREEN
+  id: HOUSE_MEDIUM_GREEN
+  code: 50
+  size:
+    width: 5
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [16, 3, 2, 3, 18, 195, 65, 66, 163, 164]
+- object: ROCK_GREEN
+  id: ROCK_GREEN
+  code: 51
+  size:
+    width: 3
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [13, 14, 15]

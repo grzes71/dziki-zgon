@@ -1,0 +1,52 @@
+id: WOOD
+grid_x: 1
+grid_y: 0
+exits:
+  north: null
+  south: VILLAGE2
+  east: SWAMP
+  west: TAVERN
+objects:
+- object: TREE_SMALL
+  x: 13
+  y: 4
+- object: TREE_SMALL
+  x: 31
+  y: 4
+- object: TREE_SMALL
+  x: 24
+  y: 0
+- object: TREE_SMALL
+  x: 4
+  y: 7
+- object: TREE_SMALL
+  x: 0
+  y: 2
+- object: TREE_SMALL
+  x: 23
+  y: 7
+- object: TREE_2
+  x: 16
+  y: 4
+- object: TREE_2
+  x: 19
+  y: 1
+- object: TREE_2
+  x: 7
+  y: 1
+- object: TREE_2
+  x: 36
+  y: 7
+- object: TREE_2
+  x: 37
+  y: 0
+- object: TREE_3
+  x: 3
+  y: 0
+- object: TREE_3
+  x: 11
+  y: 7
+- object: TREE_3
+  x: 38
+  y: 4
+enemies: []

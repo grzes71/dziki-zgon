@@ -1,0 +1,10 @@
+id: VILLAGE_3
+grid_x: 1
+grid_y: 2
+exits:
+  north: VILLAGE2
+  south: null
+  east: HARBOUR
+  west: CHURCH
+objects: []
+enemies: []
