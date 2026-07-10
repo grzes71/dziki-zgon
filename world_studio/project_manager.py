@@ -9,6 +9,7 @@ class ProjectManager:
         self.world_config: Optional[WorldConfig] = None
         self.colors: Dict[str, tuple] = {} # Deprecated global colors
         self.region_colors: Dict[str, Dict[str, tuple]] = {}
+        self.region_atari_colors: Dict[str, Dict[str, int]] = {}
         self.objects: List[ObjectDefinition] = []
         self.enemy_defs: List[EnemyDef] = []
         self.regions: Dict[str, RegionDef] = {}
@@ -68,12 +69,17 @@ class ProjectManager:
                     # Load region colors from region.yaml
                     r_colors_data = r_data.get("colors", {})
                     r_colors = {}
+                    r_atari = {}
                     for k, v in r_colors_data.items():
-                        if isinstance(v, dict) and "rgb" in v:
-                            r_colors[k] = tuple(v["rgb"])
+                        if isinstance(v, dict):
+                            if "rgb" in v:
+                                r_colors[k] = tuple(v["rgb"])
+                            if "atari" in v:
+                                r_atari[k] = v["atari"]
                         elif isinstance(v, list) and len(v) == 3:
                             r_colors[k] = tuple(v)
                     self.region_colors[item.name] = r_colors
+                    self.region_atari_colors[item.name] = r_atari
                     
                     screens_dir = item / "screens"
                     if screens_dir.exists():
@@ -118,7 +124,10 @@ class ProjectManager:
                 c_data = {}
                 for k, v in self.region_colors[region_id].items():
                     r, g, b = v
-                    atari_val = rgb_to_atari(r, g, b)
+                    if region_id in self.region_atari_colors and k in self.region_atari_colors[region_id]:
+                        atari_val = self.region_atari_colors[region_id][k]
+                    else:
+                        atari_val = rgb_to_atari(r, g, b)
                     c_data[k] = {"rgb": list(v), "atari": atari_val}
                 r_dump["colors"] = c_data
                 
