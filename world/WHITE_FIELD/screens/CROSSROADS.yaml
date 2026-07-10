@@ -14,26 +14,9 @@ objects:
   x: 33
   y: 7
 - object: WAVES_UP
-  x: 32
-  y: 9
-- object: WAVES_UP
-  x: 30
-  y: 9
-- object: WAVES_UP
-  x: 29
-  y: 9
-- object: WAVES_UP
-  x: 28
-  y: 9
-- object: WAVES_UP
-  x: 27
-  y: 9
-- object: WAVES_UP
   x: 26
   y: 9
-- object: WAVES_UP
-  x: 31
-  y: 9
+  repeat-x: 7
 - object: TREE_3
   x: 12
   y: 5
@@ -101,14 +84,9 @@ objects:
   x: 12
   y: 2
 - object: WAVES
-  x: 39
-  y: 6
-- object: WAVES
   x: 37
   y: 6
-- object: WAVES
-  x: 38
-  y: 6
+  repeat-x: 3
 - object: WAVES
   x: 39
   y: 1

@@ -28,9 +28,7 @@ objects:
 - object: BRICK_WALL
   x: 22
   y: 5
-- object: BRICK_WALL
-  x: 23
-  y: 5
+  repeat-x: 2
 - object: BARN_MEDIUM
   x: 24
   y: 4

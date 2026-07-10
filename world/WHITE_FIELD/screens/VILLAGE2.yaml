@@ -38,14 +38,12 @@ objects:
   x: 11
   y: 9
 - object: BUSH
-  x: 13
-  y: 7
-- object: BUSH
   x: 24
   y: 2
 - object: BUSH
   x: 12
   y: 7
+  repeat-x: 2
 - object: BUSH
   x: 30
   y: 6

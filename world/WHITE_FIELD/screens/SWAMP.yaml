@@ -19,288 +19,74 @@ objects:
 - object: WAVES
   x: 26
   y: 4
-- object: WAVES
-  x: 27
-  y: 4
-- object: WAVES
-  x: 28
-  y: 4
-- object: WAVES
-  x: 29
-  y: 4
-- object: WAVES
-  x: 30
-  y: 4
+  repeat-x: 5
 - object: WAVES
   x: 28
   y: 5
-- object: WAVES
-  x: 30
-  y: 5
-- object: WAVES
-  x: 29
-  y: 5
-- object: WAVES
-  x: 31
-  y: 5
-- object: WAVES
-  x: 33
-  y: 5
-- object: WAVES
-  x: 32
-  y: 5
-- object: WAVES
-  x: 20
-  y: 9
-- object: WAVES
-  x: 22
-  y: 9
-- object: WAVES
-  x: 21
-  y: 8
-- object: WAVES
-  x: 21
-  y: 9
+  repeat-x: 6
 - object: WAVES
   x: 17
   y: 9
-- object: WAVES
-  x: 19
-  y: 9
-- object: WAVES
-  x: 18
-  y: 9
+  repeat-x: 13
 - object: WAVES
   x: 20
   y: 8
-- object: WAVES
-  x: 22
-  y: 8
-- object: WAVES
-  x: 23
-  y: 9
-- object: WAVES
-  x: 24
-  y: 9
-- object: WAVES
-  x: 25
-  y: 9
-- object: WAVES
-  x: 26
-  y: 8
-- object: WAVES
-  x: 26
-  y: 9
-- object: WAVES
-  x: 27
-  y: 9
-- object: WAVES
-  x: 23
-  y: 8
-- object: WAVES
-  x: 24
-  y: 8
-- object: WAVES
-  x: 25
-  y: 8
-- object: WAVES
-  x: 29
-  y: 9
-- object: WAVES
-  x: 28
-  y: 9
-- object: WAVES
-  x: 16
-  y: 3
-- object: WAVES
-  x: 18
-  y: 3
-- object: WAVES
-  x: 20
-  y: 3
-- object: WAVES
-  x: 19
-  y: 3
-- object: WAVES
-  x: 14
-  y: 3
-- object: WAVES
-  x: 15
-  y: 3
-- object: WAVES
-  x: 17
-  y: 3
-- object: WAVES
-  x: 15
-  y: 4
-- object: WAVES
-  x: 16
-  y: 4
-- object: WAVES
-  x: 18
-  y: 4
-- object: WAVES
-  x: 17
-  y: 4
-- object: WAVES
-  x: 16
-  y: 2
-- object: WAVES
-  x: 17
-  y: 2
+  repeat-x: 7
 - object: WAVES
   x: 13
   y: 3
+  repeat-x: 11
 - object: WAVES
   x: 15
   y: 2
-- object: WAVES
-  x: 18
-  y: 2
-- object: WAVES
-  x: 35
-  y: 0
-- object: WAVES
-  x: 37
-  y: 0
-- object: WAVES
-  x: 36
-  y: 0
-- object: WAVES
-  x: 38
-  y: 0
-- object: WAVES
-  x: 39
-  y: 1
-- object: WAVES
-  x: 39
-  y: 0
-- object: WAVES
-  x: 38
-  y: 1
+  repeat-x: 8
 - object: WAVES
   x: 37
   y: 1
+  repeat-x: 3
 - object: WAVES
   x: 34
   y: 0
-- object: WAVES
-  x: 5
-  y: 7
+  repeat-x: 6
 - object: WAVES
   x: 3
   y: 7
-- object: WAVES
-  x: 4
-  y: 7
-- object: WAVES
-  x: 7
-  y: 7
-- object: WAVES
-  x: 6
-  y: 7
-- object: WAVES
-  x: 6
-  y: 8
-- object: WAVES
-  x: 4
-  y: 8
-- object: WAVES
-  x: 5
-  y: 8
-- object: WAVES
-  x: 39
-  y: 7
+  repeat-x: 5
 - object: WAVES
   x: 37
   y: 7
+  repeat-x: 3
 - object: WAVES
   x: 38
   y: 8
-- object: WAVES
-  x: 39
-  y: 8
-- object: WAVES
-  x: 38
-  y: 7
-- object: WAVES
-  x: 39
-  y: 6
-- object: WAVES
-  x: 38
-  y: 6
+  repeat-x: 2
 - object: WAVES
   x: 38
   y: 5
-- object: WAVES
-  x: 39
-  y: 5
+  repeat-x: 2
+  repeat-y: 2
 - object: WAVES
   x: 39
   y: 4
 - object: WAVES
   x: 39
   y: 9
-- object: WAVES
-  x: 21
-  y: 3
-- object: WAVES
-  x: 20
-  y: 2
-- object: WAVES
-  x: 19
-  y: 2
-- object: WAVES
-  x: 22
-  y: 3
-- object: WAVES
-  x: 23
-  y: 3
-- object: WAVES
-  x: 22
-  y: 2
-- object: WAVES
-  x: 21
-  y: 2
-- object: WAVES
-  x: 19
-  y: 4
-- object: WAVES
-  x: 13
-  y: 4
-- object: WAVES
-  x: 14
-  y: 4
-- object: WAVES
-  x: 11
-  y: 4
-- object: WAVES
-  x: 12
-  y: 4
 - object: WAVES
   x: 10
   y: 4
-- object: WAVES
-  x: 7
-  y: 6
+  repeat-x: 10
 - object: WAVES
   x: 6
   y: 6
+  repeat-x: 2
 - object: WAVES
   x: 2
   y: 8
-- object: WAVES
-  x: 3
-  y: 8
-- object: WAVES
-  x: 3
-  y: 9
-- object: WAVES
-  x: 2
-  y: 9
+  repeat-x: 5
 - object: WAVES
   x: 1
   y: 9
+  repeat-x: 3
 - object: SIGNPOINT_LEFT
   x: 2
   y: 2
@@ -338,11 +124,9 @@ objects:
   x: 10
   y: 5
 - object: ROCK_1
-  x: 22
-  y: 6
-- object: ROCK_1
   x: 20
   y: 6
+  repeat-x: 2
 - object: ROCK_1
   x: 32
   y: 0
