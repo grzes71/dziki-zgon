@@ -88,7 +88,7 @@ class WorldValidator:
     def _check_bounds(self):
         # Start position
         pos = self.world.world.start_position
-        if not (0 <= pos.x <= 39 and 0 <= pos.y <= 9):
+        if not (0 <= pos.x <= 39 and 0 <= pos.y <= 11):
             raise ValidationError(f"start_position ({pos.x}, {pos.y}) is out of bounds")
             
         # Object footprints
@@ -98,9 +98,9 @@ class WorldValidator:
                     obj_def = self.objects_by_id[inst.object]
                     right = inst.x + obj_def.size.width
                     bottom = inst.y + obj_def.size.height
-                    # Bounds are up to 40 and 10 (exclusive max)
-                    if right > 40 or bottom > 10:
-                        raise ValidationError(f"Object '{inst.object}' on screen '{screen.id}' footprint out of bounds (Right: {right}, Bottom: {bottom})")
+                    # Bounds are up to 40 and 12 (exclusive max)
+                    if right > 40 or bottom > 12:
+                        raise ValidationError(f"Screen '{screen.id}': Object '{inst.object}' goes out of bounds. Right: {right}, Bottom: {bottom}")
 
     def _check_reachability(self):
         # Build graph

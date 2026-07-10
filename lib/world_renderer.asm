@@ -9,12 +9,12 @@
 row_offsets_lo
     dta <(GAME_SCREEN_A5 + 0*40), <(GAME_SCREEN_A5 + 1*40), <(GAME_SCREEN_A5 + 2*40), <(GAME_SCREEN_A5 + 3*40)
     dta <(GAME_SCREEN_A5 + 4*40), <(GAME_SCREEN_A5 + 5*40), <(GAME_SCREEN_A5 + 6*40), <(GAME_SCREEN_A5 + 7*40)
-    dta <(GAME_SCREEN_A5 + 8*40), <(GAME_SCREEN_A5 + 9*40)
+    dta <(GAME_SCREEN_A5 + 8*40), <(GAME_SCREEN_A5 + 9*40), <(GAME_SCREEN_A5 + 10*40), <(GAME_SCREEN_A5 + 11*40)
 
 row_offsets_hi
     dta >(GAME_SCREEN_A5 + 0*40), >(GAME_SCREEN_A5 + 1*40), >(GAME_SCREEN_A5 + 2*40), >(GAME_SCREEN_A5 + 3*40)
     dta >(GAME_SCREEN_A5 + 4*40), >(GAME_SCREEN_A5 + 5*40), >(GAME_SCREEN_A5 + 6*40), >(GAME_SCREEN_A5 + 7*40)
-    dta >(GAME_SCREEN_A5 + 8*40), >(GAME_SCREEN_A5 + 9*40)
+    dta >(GAME_SCREEN_A5 + 8*40), >(GAME_SCREEN_A5 + 9*40), >(GAME_SCREEN_A5 + 10*40), >(GAME_SCREEN_A5 + 11*40)
 
 ;==============================================================
 ; build_screen — buduje ekran z danych mapy dla GAME_SCREEN_ID

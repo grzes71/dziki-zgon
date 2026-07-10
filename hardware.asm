@@ -52,7 +52,9 @@ IRQEN   = $D20E     ; włączenie przerwań IRQ z POKEY
 ; UWAGA: Jeśli NMIEN=$C0 (VBI włączone), OS przepisuje cienie do sprzętu w każdej klatce.
 ; Dlatego inicjalizacje scen muszą pisać do cieni. Zapis bezpośredni do hardware ma sens 
 ; tylko przy wyłączonym VBI (NMIEN=$00) lub wewnątrz DLI.
-VDSLST  = $0200     ; wektor DLI (2 bajty: lo, hi) — używany przez OS NMI handler
+VDSLST  = $0200     ; wektor przerwania DLI
+VVBLKD  = $0222     ; wektor przerwania VBI (Immediate VBLANK)
+VVBLKI  = $0224     ; wektor przerwania VBI (Deferred VBLANK)
 SDMCTL  = $022F     ; cień DMACTL
 SDLSTL  = $0230     ; cień DLISTL
 SDLSTH  = $0231     ; cień DLISTH

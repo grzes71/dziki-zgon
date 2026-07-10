@@ -7,3 +7,4 @@ exits:
   east: null
   west: TAVERN
 objects: []
+enemies: []

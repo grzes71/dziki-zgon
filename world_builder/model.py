@@ -12,7 +12,7 @@ class EnemyDef(BaseModel):
 class EnemyInstance(BaseModel):
     enemy: str
     x: int = Field(ge=0, le=39)
-    y: int = Field(ge=0, le=9)
+    y: int = Field(ge=0, le=11)
 
 class ObjectFlags(BaseModel):
     blocking: bool = False
@@ -28,7 +28,7 @@ class ObjectDefinition(BaseModel):
 class ObjectInstance(BaseModel):
     object: str
     x: int = Field(ge=0, le=39)
-    y: int = Field(ge=0, le=9)
+    y: int = Field(ge=0, le=11)
 
 class ScreenExits(BaseModel):
     north: Optional[str]
@@ -60,7 +60,7 @@ class RegionDef(BaseModel):
 
 class StartPosition(BaseModel):
     x: int = Field(ge=0, le=39)
-    y: int = Field(ge=0, le=9)
+    y: int = Field(ge=0, le=11)
 
 class WorldConfig(BaseModel):
     start_region: str

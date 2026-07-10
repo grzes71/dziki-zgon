@@ -8,9 +8,6 @@ exits:
   west: null
 objects:
 - object: TREE_SMALL
-  x: 17
-  y: 5
-- object: TREE_SMALL
   x: 12
   y: 5
 - object: THE_TAVERN
@@ -25,9 +22,6 @@ objects:
 - object: TREE_2
   x: 34
   y: 2
-- object: TREE_2
-  x: 16
-  y: 2
 - object: FENCE_1
   x: 5
   y: 6
@@ -40,15 +34,6 @@ objects:
 - object: HOUSE_TALL
   x: 1
   y: 4
-- object: TREE_2
-  x: 35
-  y: 6
-- object: TREE_2
-  x: 0
-  y: 2
-- object: TREE_2
-  x: 2
-  y: 1
 - object: TREE_2
   x: 0
   y: 0
@@ -71,26 +56,78 @@ objects:
   x: 4
   y: 9
 - object: TREE_3
-  x: 14
-  y: 7
-- object: TREE_3
   x: 26
   y: 0
-- object: TREE_3
-  x: 22
-  y: 2
-- object: TREE_3
-  x: 37
+- object: TREE_SMALL
+  x: 38
+  y: 8
+- object: TREE_2
+  x: 2
+  y: 1
+- object: FENCE_1
+  x: 12
+  y: 1
+- object: FENCE_1
+  x: 14
+  y: 1
+- object: FENCE_1
+  x: 16
+  y: 1
+- object: WATER
+  x: 19
   y: 0
-- object: BARN_SMALL
-  x: 37
-  y: 5
-- object: LAKE
-  x: 27
+- object: WATER
+  x: 20
+  y: 0
+- object: WATER
+  x: 21
+  y: 0
+- object: WATER
+  x: 23
+  y: 0
+- object: WATER
+  x: 22
+  y: 0
+- object: WATER_DOWN
+  x: 19
+  y: 1
+- object: WATER_DOWN
+  x: 20
+  y: 1
+- object: WATER_DOWN
+  x: 23
+  y: 1
+- object: WATER_DOWN
+  x: 22
+  y: 1
+- object: WATER_DOWN
+  x: 21
+  y: 1
+- object: WAVES
+  x: 17
+  y: 0
+- object: WAVES
+  x: 18
+  y: 0
+- object: WAVES
+  x: 24
+  y: 0
+- object: WAVES
+  x: 25
+  y: 0
+- object: TREE_3
+  x: 15
+  y: 6
+- object: TREE_3
+  x: 18
   y: 5
 - object: TREE_3
-  x: 36
+  x: 35
+  y: 0
+- object: TREE_3
+  x: 38
   y: 3
 - object: TREE_3
-  x: 36
-  y: 1
+  x: 37
+  y: 6
+enemies: []

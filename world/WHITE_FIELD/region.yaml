@@ -6,33 +6,33 @@ layout:
 start_screen: TAVERN
 music: WHITE_FIELD
 colors:
-  BACKGROUND:
-    rgb:
-    - 0
-    - 0
-    - 0
-    atari: 0
   PF0:
     rgb:
-    - 132
-    - 59
-    - 0
-    atari: 36
+      - 132
+      - 59
+      - 0
+    atari: 20
   PF1:
     rgb:
-    - 193
-    - 120
-    - 29
-    atari: 46
+      - 193
+      - 120
+      - 29
+    atari: 24
   PF2:
     rgb:
-    - 3
-    - 80
-    - 0
-    atari: 198
+      - 3
+      - 80
+      - 0
+    atari: 194
   PF3_INV:
     rgb:
-    - 0
-    - 48
-    - 139
-    atari: 134
+      - 0
+      - 48
+      - 139
+    atari: 130
+  BACKGROUND:
+    rgb:
+      - 0
+      - 0
+      - 0
+    atari: 0

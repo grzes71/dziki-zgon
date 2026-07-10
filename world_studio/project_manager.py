@@ -105,7 +105,21 @@ class ProjectManager:
             
             # Save region colors into region.yaml
             if region_id in self.region_colors and self.region_colors[region_id]:
-                c_data = {k: {"rgb": list(v), "atari": 0} for k, v in self.region_colors[region_id].items()}
+                import sys
+                from pathlib import Path
+                scripts_path = str(Path(__file__).parent.parent / "scripts")
+                if scripts_path not in sys.path:
+                    sys.path.append(scripts_path)
+                try:
+                    from img2asm import rgb_to_atari
+                except ImportError:
+                    rgb_to_atari = lambda r, g, b: 0
+                
+                c_data = {}
+                for k, v in self.region_colors[region_id].items():
+                    r, g, b = v
+                    atari_val = rgb_to_atari(r, g, b)
+                    c_data[k] = {"rgb": list(v), "atari": atari_val}
                 r_dump["colors"] = c_data
                 
             self._save_yaml(r_dir / "region.yaml", r_dump)

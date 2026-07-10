@@ -187,6 +187,8 @@ System palet etapów oparty jest na szybkim indeksowaniu tablic konfiguracyjnych
 4. **VRAM_ARENA ownership**: Title/Game/GameOver współdzielą ten sam bufor `$4000-$5E0F`; każda scena musi kompletnie odtworzyć własny ekran w `_init`.
 5. **Wspólny bufor tekstu**: Story/GameOver/stopka Title współdzielą `$5E10-$5F4F`; przejścia scen nie mogą zakładać trwałości poprzedniej treści.
 6. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter dyrektyw i ostrożności przy wielu segmentach `org`.
+7. **Przerwanie VBLANK (Omijanie OS)**: Standardowe OS VBLANK (skok przez wektor `SYSVBV`) automatycznie przepisuje wszystkie rejestry-cienie do układów wejścia-wyjścia, często psując własne optymalizacje silnika np. modyfikacje wyświetlania w DLI lub ręczne zarządzanie kolorami w `STATE_GAME`. Odpowiedzią jest napisanie własnego Frame Handlera (`Engine_FrameHandler`), który ręcznie przepisuje wymagane cienie (np. `SDLSTL` czy `CHBAS`) i kończy działanie skokiem do drugiej fazy VBLANK przez `jmp (VVBLKI)`. Zabezpiecza to własne renderowanie, a jednocześnie zachowuje obsługę klawiatury sprzętowej OS-u.
+8. **Modyfikacja rozmiarów planszy gry (World Builder)**: Zmiana limitów na planszy (np. z 10 wierszy na 12) to rozproszona zmiana architektoniczna, która zawsze wymaga aktualizacji w trzech miejscach: w Pythonowych walidatorach map (`validator.py` oraz `model.py` - Pydantic), w tabelach wektorów matematycznych (`row_offsets_lo/hi` w `world_renderer.asm`), Display Liście i rozkładzie pamięci (`game.asm`), oraz w twardych limitach kolizji i obcinania obszaru osi Y w silniku fizyki (`engine/collision.asm`).
 
 ## Szczegóły techniczne
 

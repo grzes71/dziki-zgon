@@ -3,8 +3,8 @@
 ;----------------------------------------
 
 ;---- Adresy pamięci dla gry (współdzielone z main.asm przez .global) ----
-GAME_SCREEN_A5 = SCREEN      ; mapa 40×10 (ANTIC 5) = 400 bajtów
-GAME_SCREEN_A2 = SCREEN+400  ; mapa 40×4 (ANTIC 2) = 160 bajtów
+GAME_SCREEN_A5 = SCREEN      ; mapa 40×12 (ANTIC 5) = 480 bajtów
+GAME_SCREEN_A2 = SCREEN+480  ; mapa 40×2 (ANTIC 2) = 80 bajtów
 GAME_CHARSET  = $A800       ; charset gry — kafelki terenu (1 KB, CHBASE=$A8)
 
 ;---- Zmienne lokalne sceny ----
@@ -22,9 +22,6 @@ DEBUG_START_SCREEN  dta SCREEN_ID_TAVERN
 game_palette
     .ds 9
 
-; Paleta kolorów sprzętowych dla panelu statusu (ANTIC 2) od PCOLR0 do COLBK
-game_status_palette
-    .ds 9
 
 ; Jedna wspólna paleta dla panelu statusu (ANTIC 2)
 status_palette
@@ -41,8 +38,7 @@ status_palette
 @loop
     lda REGION_PALETTES,y
     sta game_palette,x
-    lda status_palette,x
-    sta game_status_palette,x
+    sta $02C0,x            ; Kopiuj do OS shadows (PCOLR0-3, COLOR0-4)
     iny
     inx
     cpx #9
@@ -128,10 +124,8 @@ status_palette
     ; --- Display List gry (ANTIC 4/5) ---
     lda #<DLIST_GAME
     sta SDLSTL
-    sta DLISTL          ; Bezpośredni zapis do rejestru sprzętowego!
     lda #>DLIST_GAME
     sta SDLSTH
-    sta DLISTH          ; Bezpośredni zapis do rejestru sprzętowego!
 
     ; --- Wczytanie początkowego charsetu (górny panel gry, game.fnt) ---
     lda #$64
@@ -151,6 +145,15 @@ status_palette
     ; --- Zbuduj ekran gry bazując na World Builderze ---
     jsr build_screen
 
+    ; --- Wypełnij pasek statusu testowymi znakami (0-79) ---
+    ldx #0
+@fill_status
+    txa
+    sta GAME_SCREEN_A2,x
+    inx
+    cpx #80
+    bne @fill_status
+
     ; --- PMG: rozmiar normalny, włącz PMG ---
     lda #$00
     sta SIZEP0
@@ -168,9 +171,9 @@ status_palette
     jsr Render_Prepare
 
     ; --- Przygotuj przerwania DLI ---
-    lda #<game_dli_1
+    lda #<game_dli
     sta VDSLST
-    lda #>game_dli_1
+    lda #>game_dli
     sta VDSLST+1
 
     ; --- VBLANK i DLI ON ---
@@ -214,87 +217,39 @@ status_palette
 ; Przerwania DLI
 ;==============================================================
 
-.proc game_dli_1
+.proc game_dli
     pha
     txa
     pha
-    
-
-    ; Ustawienie fontu dla górnej części ekranu (game.fnt pod $6400 -> CHBASE=$64)
-    lda #$64
-    sta CHBASE
-
-    ; Ustawienie całej palety ze zdefiniowanej tablicy (rozwinięte)
-    lda game_palette+0
-    sta PCOLR0
-    lda game_palette+1
-    sta PCOLR1
-    lda game_palette+2
-    sta PCOLR2
-    lda game_palette+3
-    sta PCOLR3
-    lda game_palette+4
-    sta COLPF0
-    lda game_palette+5
-    sta COLPF1
-    lda game_palette+6
-    sta COLPF2
-    lda game_palette+7
-    sta COLPF3
-    lda game_palette+8
-    sta COLBK
-
-    ; Przygotuj wektor na drugie DLI
-    lda #<game_dli_2
-    sta VDSLST
-    lda #>game_dli_2
-    sta VDSLST+1
-
-    pla
-    tax
-    pla
-    rti
-.endp
-
-.proc game_dli_2
-    pha
-    txa
-    pha
-
 
     ; Zmień font na font.fnt ($6000 -> CHBASE=$60)
     lda #$60
     sta CHBASE
 
     ; Ustawienie całej palety (rozwinięte)
-    lda game_status_palette+0
+    lda status_palette+0
     sta PCOLR0
-    lda game_status_palette+1
+    lda status_palette+1
     sta PCOLR1
-    lda game_status_palette+2
+    lda status_palette+2
     sta PCOLR2
-    lda game_status_palette+3
+    lda status_palette+3
     sta PCOLR3
-    lda game_status_palette+4
+    lda status_palette+4
     sta COLPF0
-    lda game_status_palette+5
+    lda status_palette+5
     sta COLPF1
-    lda game_status_palette+6
+    lda status_palette+6
     sta COLPF2
-    lda game_status_palette+7
+    lda status_palette+7
     sta COLPF3
-    lda game_status_palette+8
+    lda status_palette+8
     sta COLBK
-
-    ; Przywróć wektor na pierwsze DLI (na następną klatkę)
-    lda #<game_dli_1
-    sta VDSLST
-    lda #>game_dli_1
-    sta VDSLST+1
 
     pla
     tax
     pla
     rti
 .endp
+
 

@@ -95,11 +95,11 @@
     lda ACTOR_Y,x
     sta ACTOR_Y_OLD,x
     
-    ; Ustaw X i kolor (rejestry sprzętowe leżą obok siebie: HPOSP0..HPOSP3, PCOLR0..PCOLR3)
+    ; Ustaw X i kolor (rejestry sprzętowe)
     lda ACTOR_X,x
     sta HPOSP0,x
     lda ACTOR_COLOR,x
-    sta PCOLR0,x
+    sta $02C0,x            ; Używamy OS shadow dla PCOLR0, aby SYSVBV go nie nadpisał złym kolorem
 
 @next_actor
     inx

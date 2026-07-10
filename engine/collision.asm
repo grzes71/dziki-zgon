@@ -31,7 +31,7 @@
     sta ACTOR_TMP_X
 
 @check_y
-    ; Limity dla osi Y (32 - 178) 
+    ; Limity dla osi Y (32 - 210) 
     lda ACTOR_TMP_Y
     cmp #32
     bcs @check_bot
@@ -40,9 +40,9 @@
     jmp @screen_ok
 
 @check_bot
-    cmp #178
+    cmp #210
     bcc @screen_ok
-    lda #178
+    lda #210
     sta ACTOR_TMP_Y
 
 @screen_ok

@@ -159,7 +159,6 @@ main_loop
     lda #0
     sta Engine_RequestStageAdvance
 @gm 
-    inc $D016               ; PANIC FLASH: Miganie kolorem tekstu (COLPF0) - sygnalizuje że pętla główna działa
     jsr Engine_WaitFrame
     jsr EngineScheduler
 
@@ -238,14 +237,13 @@ DLIST_STORY
 ; --- DL gra ---
 DLIST_GAME
     dta $70,$70,$70        ; 24 puste linie
-    dta $90                ; 2 puste linie + DLI (przed ANTIC 5)
     dta $45,a(GAME_SCREEN_A5) ; ANTIC 5, 1 linia
-    .rept 9                ; Kolejne 9 linii ANTIC 5
+    .rept 11               ; Kolejne 11 linii ANTIC 5 (razem 12)
     dta $05
     .endr
-    dta $90                ; 2 puste linie + DLI (przed ANTIC 2)
+    dta $90                ; 1 pusta linia + DLI gdzie powinno być ustawienie charsetu dla statusu (font.fnt) oraz kolorów dla statusu!
     dta $42,a(GAME_SCREEN_A2) ; ANTIC 2, 1 linia
-    dta $02,$02,$02        ; 3 linie ANTIC 2 (razem 4)
+    dta $02                ; Kolejna 1 linia ANTIC 2 (razem 2)
     dta $41,a(DLIST_GAME)  ; JVB
 
 ; --- DL game over (ANTIC D, narrow, 128×96, 4 kolory) ---
