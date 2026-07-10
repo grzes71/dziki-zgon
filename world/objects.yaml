@@ -400,7 +400,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [236, 230, 230, 230, 230, 230, 230, 148, 208, 202, 202, 202, 202, 202, 202,
+  tiles: [236, 230, 230, 230, 230, 230, 230, 148, 208, 243, 243, 243, 243, 243, 243,
     210, 237, 229, 229, 229, 229, 229, 229, 235]
 - object: ROCK_BIG
   id: ROCK_BIG
@@ -515,3 +515,23 @@ objects:
     blocking: false
     interactive: false
   tiles: [13, 14, 15]
+- object: WATER_ANIM
+  id: WATER_ANIM
+  code: 52
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [243]
+- object: WATERFALL_GREEN
+  id: WATERFALL_GREEN
+  code: 53
+  size:
+    width: 5
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [0, 13, 230, 15, 0, 13, 14, 202, 74, 15]

@@ -2,7 +2,7 @@
 ; engine/charset_anim.asm
 ;----------------------------------------
 
-ANIM_CHAR_COUNT = 5
+ANIM_CHAR_COUNT = 2
 
 .proc animate_charset
     ; Zachowaj wskaźnik SRC_PTR na stosie
@@ -21,7 +21,7 @@ ANIM_CHAR_COUNT = 5
     lda anim_char_speeds,x
     sta anim_char_counters,x
 
-    ; Oblicz adres znaku: GAME_CHARSET + ID * 8
+    ; Oblicz adres znaku: GAME_CHARSET ($6400) + ID * 8
     lda #0
     sta SRC_PTR+1
     lda anim_char_ids,x
@@ -35,7 +35,7 @@ ANIM_CHAR_COUNT = 5
     clc
     sta SRC_PTR
     lda SRC_PTR+1
-    adc #$A8            ; GAME_CHARSET ($A800) -> high byte is $A8
+    adc #$64            ; GAME_CHARSET ($6400) -> high byte is $64
     sta SRC_PTR+1
 
     ; Zroluj 8 bajtów znaku w lewo o 2 bity (ROL ROL)
@@ -62,11 +62,11 @@ ANIM_CHAR_COUNT = 5
     rts
 
 anim_char_ids
-    dta $05, $20, $40, $65, $66
+    dta $05, $73
 
 anim_char_speeds
-    dta 10, 10, 10, 10, 10
+    dta 10, 5
 
 anim_char_counters
-    dta 10, 10, 10, 10, 10
+    dta 10, 5
 .endp

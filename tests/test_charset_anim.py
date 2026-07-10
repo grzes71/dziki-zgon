@@ -81,17 +81,19 @@ def test_charset_anim_counters_decrement(harness):
     game_charset = labels["GAME_CHARSET"]
     start_test = labels["START_TEST"]
     src_ptr_z = labels["SRC_PTR"]
+    char_count = labels["ANIM_CHAR_COUNT"]
     
     # 1. Setup mock data
-    # Ustaw początkowe liczniki na 5 dla wszystkich 5 animowanych znaków
-    for i in range(5):
+    # Ustaw początkowe liczniki na 5 dla wszystkich animowanych znaków
+    for i in range(char_count):
         cpu.memory[counters_addr + i] = 5
         cpu.memory[speeds_addr + i] = 10
         
-    # Ustaw dane znaku $05 na znane wartości (np. 0xAA)
-    char_05_addr = game_charset + 0x05 * 8
+    # Ustaw dane pierwszego znaku na znane wartości (np. 0xAA)
+    first_char_id = cpu.memory[ids_addr]
+    char_addr = game_charset + first_char_id * 8
     for i in range(8):
-        cpu.memory[char_05_addr + i] = 0xAA  # %10101010
+        cpu.memory[char_addr + i] = 0xAA  # %10101010
         
     # Mock ZP src_ptr
     cpu.memory[src_ptr_z] = 0x12
@@ -101,11 +103,13 @@ def test_charset_anim_counters_decrement(harness):
     run_cpu_until_brk(cpu, start_test)
     
     # 3. Weryfikacja: liczniki powinny zmaleć o 1 (do 4), a dane znaków nie powinny ulec zmianie
-    for i in range(5):
-        assert cpu.memory[counters_addr + i] == 4
+    for i in range(char_count):
+        assert cpu.memory[counters_addr + i] == 4, \
+            f"Counter {i} should be 4, got {cpu.memory[counters_addr + i]}"
         
     for i in range(8):
-        assert cpu.memory[char_05_addr + i] == 0xAA
+        assert cpu.memory[char_addr + i] == 0xAA, \
+            f"Char byte {i} should be 0xAA, got {cpu.memory[char_addr + i]:#04x}"
         
     # Wskaźnik ZP powinien pozostać nietknięty
     assert cpu.memory[src_ptr_z] == 0x12
@@ -122,19 +126,21 @@ def test_charset_anim_rotate_and_reset(harness):
     game_charset = labels["GAME_CHARSET"]
     start_test = labels["START_TEST"]
     src_ptr_z = labels["SRC_PTR"]
+    char_count = labels["ANIM_CHAR_COUNT"]
     
     # 1. Setup mock data
-    # Ustaw licznik znaku $05 (indeks 0) na 1 (powinien się zrolować), a resztę na 5
+    # Ustaw licznik pierwszego znaku na 1 (powinien się zrolować), a resztę na 5
     cpu.memory[counters_addr + 0] = 1
     cpu.memory[speeds_addr + 0] = 12
-    for i in range(1, 5):
+    for i in range(1, char_count):
         cpu.memory[counters_addr + i] = 5
         cpu.memory[speeds_addr + i] = 10
         
-    # Ustaw dane znaku $05 na %10100101 ($A5)
-    char_05_addr = game_charset + 0x05 * 8
+    # Ustaw dane pierwszego znaku na %10100101 ($A5)
+    first_char_id = cpu.memory[ids_addr]
+    char_addr = game_charset + first_char_id * 8
     for i in range(8):
-        cpu.memory[char_05_addr + i] = 0xA5
+        cpu.memory[char_addr + i] = 0xA5
         
     # Mock ZP src_ptr
     cpu.memory[src_ptr_z] = 0x55
@@ -144,15 +150,18 @@ def test_charset_anim_rotate_and_reset(harness):
     run_cpu_until_brk(cpu, start_test)
     
     # 3. Weryfikacja:
-    # - Licznik znaku $05 zresetowany do 12
+    # - Licznik pierwszego znaku zresetowany do 12
     assert cpu.memory[counters_addr + 0] == 12
     # - Inne liczniki zmalały do 4
-    for i in range(1, 5):
-        assert cpu.memory[counters_addr + i] == 4
+    for i in range(1, char_count):
+        assert cpu.memory[counters_addr + i] == 4, \
+            f"Counter {i} should be 4, got {cpu.memory[counters_addr + i]}"
         
-    # - Dane znaku $05 zrolowane w lewo o 2 bity (circular shift): %10100101 -> %10010110 ($96)
+    # - Dane pierwszego znaku zrolowane w lewo o 2 bity (circular shift):
+    #   %10100101 -> %10010110 ($96)
     for i in range(8):
-        assert cpu.memory[char_05_addr + i] == 0x96
+        assert cpu.memory[char_addr + i] == 0x96, \
+            f"Char byte {i} should be 0x96, got {cpu.memory[char_addr + i]:#04x}"
         
     # - Wskaźnik ZP nienaruszony
     assert cpu.memory[src_ptr_z] == 0x55

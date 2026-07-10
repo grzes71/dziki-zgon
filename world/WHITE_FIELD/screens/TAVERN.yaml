@@ -104,12 +104,6 @@ objects:
   x: 25
   y: 3
 - object: GROUND_GREEN_UP
-  x: 19
-  y: 9
-- object: GROUND_GREEN_UP
-  x: 25
-  y: 9
-- object: GROUND_GREEN_UP
   x: 38
   y: 1
   repeat-x: 2
@@ -126,22 +120,51 @@ objects:
 - object: GROUND_GREEN_UP
   x: 39
   y: 2
-- object: CROSS_1
-  x: 0
-  y: 8
 - object: MUSHROOM
   x: 21
   y: 10
-- object: WAVES_UP
-  x: 32
+- object: HOUSE_SMALL
+  x: 33
   y: 9
-  repeat-x: 4
-- object: WAVES_DOWN
-  x: 32
-  y: 11
-  repeat-x: 4
-- object: WAVES
-  x: 32
+- object: BUSH_2
+  x: 30
   y: 10
-  repeat-x: 4
+- object: GROUND_BROWN_UP
+  x: 19
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 25
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 36
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 2
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 7
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 6
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 8
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 9
+  repeat-x: 3
+- object: GROUND_BROWN_UP
+  x: 2
+  y: 10
+  repeat-x: 3
+- object: GROUND_BROWN_UP
+  x: 5
+  y: 11
 enemies: []

@@ -14,7 +14,7 @@ start_test
     rts
 
 ; --- Pamięć dla bufora znaków ---
-    org $A800
+    org $6400
 GAME_CHARSET
     .ds 1024  ; 1 KB na znaki
 
