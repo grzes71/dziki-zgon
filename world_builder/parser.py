@@ -74,7 +74,7 @@ def parse_world_dir(base_dir: Path) -> GameWorld:
                                     new_inst.pop("repeat-y", None)
                                     new_x = base_x + rx * w
                                     new_y = base_y + ry * h
-                                    if new_x <= 39 and new_y <= 9:
+                                    if new_x <= 39 and new_y <= 11:
                                         new_inst["x"] = new_x
                                         new_inst["y"] = new_y
                                         expanded_objects.append(new_inst)

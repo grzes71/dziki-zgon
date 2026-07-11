@@ -66,8 +66,8 @@ objects:
     width: 4
     height: 1
   flags:
-    blocking: true
-    interactive: true
+    blocking: false
+    interactive: false
   tiles: [23, 24, 25, 26]
 - object: HOUSE_TALL
   id: HOUSE_TALL
@@ -319,7 +319,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 227, 34, 234, 233]
+  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 87, 90, 234, 233]
 - object: PYRAMID_BIG
   id: PYRAMID_BIG
   code: 33
@@ -330,7 +330,7 @@ objects:
     blocking: true
     interactive: false
   tiles: [0, 0, 0, 0, 232, 233, 0, 0, 0, 0, 0, 0, 232, 231, 227, 34, 234, 233, 0,
-    0, 232, 231, 227, 227, 227, 34, 34, 34, 234, 233]
+    0, 232, 231, 227, 227, 155, 156, 34, 34, 234, 233]
 - object: PALM_TREE
   id: PALM_TREE
   code: 34
@@ -358,7 +358,7 @@ objects:
     width: 5
     height: 2
   flags:
-    blocking: false
+    blocking: true
     interactive: false
   tiles: [0, 10, 230, 12, 0, 10, 11, 202, 9, 12]
 - object: TREASURE
@@ -461,7 +461,7 @@ objects:
     width: 4
     height: 7
   flags:
-    blocking: false
+    blocking: true
     interactive: false
   tiles: [0, 46, 47, 0, 0, 103, 106, 0, 0, 185, 56, 0, 0, 61, 189, 0, 16, 33, 33,
     18, 33, 157, 157, 33, 33, 215, 88, 33]
@@ -512,7 +512,7 @@ objects:
     width: 3
     height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
   tiles: [13, 14, 15]
 - object: WATER_ANIM
@@ -522,7 +522,7 @@ objects:
     width: 1
     height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
   tiles: [243]
 - object: WATERFALL_GREEN
@@ -532,6 +532,66 @@ objects:
     width: 5
     height: 2
   flags:
-    blocking: false
+    blocking: true
     interactive: false
   tiles: [0, 13, 230, 15, 0, 13, 14, 202, 74, 15]
+- object: RIVER_TL
+  id: RIVER_TL
+  code: 54
+  size:
+    width: 4
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [236, 230, 230, 230, 208, 202, 202, 202, 208, 202, 246, 229]
+- object: RIVER_TR
+  id: RIVER_TR
+  code: 55
+  size:
+    width: 4
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [230, 230, 230, 148, 202, 202, 202, 210, 229, 248, 202, 210]
+- object: RIVER_BL
+  id: RIVER_BL
+  code: 56
+  size:
+    width: 4
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [208, 202, 249, 230, 208, 202, 202, 202, 237, 229, 229, 229]
+- object: RIVER_BR
+  id: RIVER_BR
+  code: 57
+  size:
+    width: 4
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [230, 247, 202, 210, 202, 202, 202, 210, 229, 229, 229, 235]
+- object: WAVES_RIGHT
+  id: WAVES_RIGHT
+  code: 58
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [210]
+- object: WAVES_LEFT
+  id: WAVES_LEFT
+  code: 59
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [208]

@@ -120,9 +120,9 @@ def test_full_screen_rendering(integration_harness):
     cpu = MPU()
     load_xex(xex_file, cpu.memory)
     
-    # 1. Zbuduj VRAM oczekiwany w oparciu o parser Pythona (Screen 000.yaml = TAVERN)
+    # 1. Zbuduj VRAM oczekiwany w oparciu o parser Pythona (Screen SWAMP.yaml)
     world_dir = Path(__file__).parent.parent / "world"
-    expected_vram = compute_expected_vram(world_dir, "WHITE_FIELD", "TAVERN")
+    expected_vram = compute_expected_vram(world_dir, "WHITE_FIELD", "SWAMP")
     
     # 2. Skonfiguruj 6502
     GAME_SCREEN_A5 = labels["GAME_SCREEN_A5"]
@@ -133,9 +133,9 @@ def test_full_screen_rendering(integration_harness):
         cpu.memory[GAME_SCREEN_A5 + i] = 0
         
     # Ustaw ekran (MADS exportuje labele globalne)
-    # Z world.inc mamy SCREEN_ID_TAVERN
-    assert "SCREEN_ID_TAVERN" in labels, "Brak labela SCREEN_ID_TAVERN"
-    cpu.memory[GAME_SCREEN_ID_Z] = labels["SCREEN_ID_TAVERN"]
+    # Z world.inc mamy SCREEN_ID_SWAMP
+    assert "SCREEN_ID_SWAMP" in labels, "Brak labela SCREEN_ID_SWAMP"
+    cpu.memory[GAME_SCREEN_ID_Z] = labels["SCREEN_ID_SWAMP"]
     
     # Wywołanie procedury
     cpu.sp = 0xFF

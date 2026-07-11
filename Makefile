@@ -71,6 +71,7 @@ WORLD_DIR := world
 WORLD_GEN_DIR := $(GEN_DIR)/world
 WORLD_INC := $(WORLD_GEN_DIR)/world.inc
 WORLD_YAMLS := $(wildcard $(WORLD_DIR)/*.yaml) $(wildcard $(WORLD_DIR)/*/*.yaml) $(wildcard $(WORLD_DIR)/*/screens/*.yaml)
+WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 
 # ---- Cele ----
 .PHONY: all xex bg go sprites texts fonts music world clean run smoke-test test
@@ -87,7 +88,7 @@ xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FON
 # Kompilator świata gry
 world: $(WORLD_INC)
 
-$(WORLD_INC): $(WORLD_YAMLS)
+$(WORLD_INC): $(WORLD_YAMLS) $(WORLD_SCRIPTS)
 	@echo "=== Kompilacja świata gry ==="
 	$(PYTHON) -m world_builder $(WORLD_DIR) $(WORLD_GEN_DIR)
 
