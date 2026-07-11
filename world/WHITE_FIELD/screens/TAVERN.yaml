@@ -108,10 +108,6 @@ objects:
   y: 1
   repeat-x: 2
 - object: GROUND_GREEN_UP
-  x: 37
-  y: 0
-  repeat-x: 3
-- object: GROUND_GREEN_UP
   x: 36
   y: 1
 - object: GROUND_GREEN_UP
@@ -167,4 +163,7 @@ objects:
 - object: GROUND_BROWN_UP
   x: 5
   y: 11
+- object: RIVER_BR
+  x: 0
+  y: 0
 enemies: []

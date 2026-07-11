@@ -1,6 +1,6 @@
 world:
   start_region: WHITE_FIELD
-  start_screen: SWAMP
+  start_screen: TAVERN
   start_position:
-    x: 0
-    y: 0
+    x: 22
+    y: 8
