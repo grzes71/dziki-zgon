@@ -29,9 +29,6 @@ objects:
   x: 2
   y: 8
 - object: BUSH_2
-  x: 10
-  y: 3
-- object: BUSH_2
   x: 27
   y: 6
 - object: BUSH_2
@@ -74,4 +71,65 @@ objects:
 - object: FENCE_1
   x: 38
   y: 7
+- object: GROUND_BROWN_UP
+  x: 33
+  y: 11
+  repeat-x: 7
+- object: GROUND_BROWN_UP
+  x: 31
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 32
+  y: 10
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 35
+  y: 10
+  repeat-x: 5
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 34
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 1
+  repeat-y: 2
+- object: GROUND_BROWN_DOWN
+  x: 35
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 34
+  y: 0
+  repeat-x: 6
+- object: GROUND_BROWN_DOWN
+  x: 32
+  y: 0
+- object: ROCK_2
+  x: 17
+  y: 10
+- object: ROCK_1
+  x: 20
+  y: 9
+- object: WAVES
+  x: 36
+  y: 1
+  repeat-x: 3
+- object: WAVES
+  x: 37
+  y: 2
+  repeat-x: 2
+- object: TREE_2
+  x: 10
+  y: 2
+- object: TREE_2
+  x: 15
+  y: 9
 enemies: []

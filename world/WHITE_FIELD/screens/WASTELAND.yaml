@@ -141,9 +141,6 @@ objects:
 - object: MUSHROOM
   x: 14
   y: 9
-- object: MUSHROOM
-  x: 15
-  y: 2
 - object: GROUND_GREEN_UP
   x: 37
   y: 11
@@ -180,4 +177,20 @@ objects:
 - object: ROCK_GREEN
   x: 37
   y: 5
+- object: ROCK_2
+  x: 22
+  y: 0
+- object: ROCK_2
+  x: 20
+  y: 1
+- object: ROCK_2
+  x: 18
+  y: 0
+- object: CROSS_1
+  x: 15
+  y: 1
+- object: CROSS_1
+  x: 14
+  y: 0
+  repeat-x: 2
 enemies: []

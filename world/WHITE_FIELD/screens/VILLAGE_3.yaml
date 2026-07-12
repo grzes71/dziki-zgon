@@ -122,16 +122,9 @@ objects:
   x: 21
   y: 0
 - object: GROUND_GREEN_UP
-  x: 32
-  y: 1
-- object: GROUND_GREEN_UP
   x: 31
   y: 0
   repeat-x: 4
-- object: GROUND_GREEN_UP
-  x: 36
-  y: 0
-  repeat-x: 2
 - object: GROUND_GREEN_UP
   x: 37
   y: 11
@@ -173,17 +166,62 @@ objects:
 - object: GROUND_GREEN_UP
   x: 0
   y: 2
-- object: GROUND_GREEN_UP
-  x: 38
-  y: 1
-- object: GROUND_GREEN_UP
-  x: 39
-  y: 2
-- object: GROUND_BROWN_DOWN
-  x: 39
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 38
-  y: 0
+- object: GROUND_BROWN_UP
+  x: 36
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 10
+- object: GROUND_BROWN_UP
+  x: 34
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 22
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 26
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 28
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 24
+  y: 10
+  repeat-y: 2
+- object: GROUND_BROWN_UP
+  x: 21
+  y: 10
   repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 18
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 16
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 10
+  repeat-y: 2
+- object: GROUND_BROWN_UP
+  x: 2
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 4
+  y: 11
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 7
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 35
+  y: 0
+  repeat-x: 5
+- object: GROUND_GREEN_DOWN
+  x: 31
+  y: 1
+  repeat-x: 4
+- object: GROUND_BROWN_DOWN
+  x: 35
+  y: 1
+  repeat-x: 5
 enemies: []
