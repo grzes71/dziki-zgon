@@ -18,11 +18,11 @@
     lda ACTOR_HEIGHT,x
     sta ACTOR_TMP_HEIGHT
 
-    ; Limity dla osi X (48 - 200)
+    ; Limity dla osi X (SCREEN_LIMIT_LEFT - SCREEN_LIMIT_RIGHT)
     lda ACTOR_TMP_X
-    cmp #48
+    cmp #SCREEN_LIMIT_LEFT
     bcc @hit_left
-    cmp #200
+    cmp #SCREEN_LIMIT_RIGHT
     bcs @hit_right
     jmp @check_y
 
@@ -41,14 +41,14 @@
     sta NEW_SCREEN_ID
     lda #1
     sta REQ_SCREEN_TRANSITION
-    lda #196
+    lda #TRANSITION_SPAWN_RIGHT
     sta NEW_ACTOR_X
     lda ACTOR_TMP_Y
     sta NEW_ACTOR_Y
     jmp @next_actor
 
 @clamp_left
-    lda #48
+    lda #SCREEN_LIMIT_LEFT
     sta ACTOR_TMP_X
     jmp @check_y
 
@@ -67,23 +67,23 @@
     sta NEW_SCREEN_ID
     lda #1
     sta REQ_SCREEN_TRANSITION
-    lda #48
+    lda #TRANSITION_SPAWN_LEFT
     sta NEW_ACTOR_X
     lda ACTOR_TMP_Y
     sta NEW_ACTOR_Y
     jmp @next_actor
 
 @clamp_right
-    lda #200
+    lda #SCREEN_LIMIT_RIGHT
     sta ACTOR_TMP_X
 
 @check_y
-    ; Limity dla osi Y (32 - 210) 
+    ; Limity dla osi Y (SCREEN_LIMIT_TOP - SCREEN_LIMIT_BOTTOM) 
 @apply_y
     lda ACTOR_TMP_Y
-    cmp #32
+    cmp #SCREEN_LIMIT_TOP
     bcc @hit_top
-    cmp #210
+    cmp #SCREEN_LIMIT_BOTTOM
     bcs @hit_bottom
     jmp @screen_ok
 
@@ -104,12 +104,12 @@
     sta REQ_SCREEN_TRANSITION
     lda ACTOR_TMP_X
     sta NEW_ACTOR_X
-    lda #206
+    lda #TRANSITION_SPAWN_BOTTOM
     sta NEW_ACTOR_Y
     jmp @next_actor
 
 @clamp_top
-    lda #32
+    lda #SCREEN_LIMIT_TOP
     sta ACTOR_TMP_Y
     jmp @screen_ok
 
@@ -130,12 +130,12 @@
     sta REQ_SCREEN_TRANSITION
     lda ACTOR_TMP_X
     sta NEW_ACTOR_X
-    lda #36
+    lda #TRANSITION_SPAWN_TOP
     sta NEW_ACTOR_Y
     jmp @next_actor
 
 @clamp_bottom
-    lda #210
+    lda #SCREEN_LIMIT_BOTTOM
     sta ACTOR_TMP_Y
 
 @screen_ok

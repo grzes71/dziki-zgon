@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QDialog
 from PySide6.QtGui import QPainter, QPen, QColor, QMouseEvent
 from PySide6.QtCore import Qt, Signal
 from world_studio.models import ScreenDef, ObjectInstance, EnemyInstance
@@ -64,6 +64,17 @@ class ScreenCanvasWidget(QWidget):
             return
             
         if event.button() == Qt.LeftButton:
+            # 1. Check if there is an existing enemy at this coordinate to edit
+            existing_enemy = next((e for e in self.screen_def.enemies if e.x == x and e.y == y), None)
+            if existing_enemy:
+                from world_studio.widgets.enemy_properties_dialog import EnemyPropertiesDialog
+                dialog = EnemyPropertiesDialog(existing_enemy, self.project.enemy_defs, self)
+                if dialog.exec() == QDialog.Accepted:
+                    self.screen_changed.emit()
+                    self.update()
+                return
+
+            # 2. Add new entity/object if clicking empty space
             if self.active_tool == "PLAYER_START":
                 if self.project.world_config:
                     self.project.world_config.start_screen = self.screen_def.id
@@ -73,9 +84,20 @@ class ScreenCanvasWidget(QWidget):
             elif self.active_tool and self.active_tool.startswith("ENEMY:"):
                 enemy_id = self.active_tool.split(":")[1]
                 if len(self.screen_def.enemies) < 3:
-                    new_enemy = EnemyInstance(enemy=enemy_id, x=int(x), y=int(y))
-                    self.screen_def.enemies.append(new_enemy)
-                    self.screen_changed.emit()
+                    # Create temporary enemy instance with default properties
+                    new_enemy = EnemyInstance(
+                        enemy=enemy_id,
+                        x=int(x),
+                        y=int(y),
+                        strategy="vertical",
+                        speed="medium",
+                        color="white"
+                    )
+                    from world_studio.widgets.enemy_properties_dialog import EnemyPropertiesDialog
+                    dialog = EnemyPropertiesDialog(new_enemy, self.project.enemy_defs, self)
+                    if dialog.exec() == QDialog.Accepted:
+                        self.screen_def.enemies.append(new_enemy)
+                        self.screen_changed.emit()
             elif self.active_tool:
                 active_obj_def = next((o for o in self.project.objects if o.id == self.active_tool), None)
                 if not active_obj_def:

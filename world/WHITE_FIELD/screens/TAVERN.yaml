@@ -116,18 +116,12 @@ objects:
   x: 39
   y: 3
 - object: GROUND_BROWN_UP
-  x: 7
-  y: 1
-- object: GROUND_BROWN_UP
   x: 0
   y: 8
 - object: GROUND_BROWN_UP
   x: 0
   y: 9
   repeat-x: 3
-- object: RIVER_BR
-  x: 0
-  y: 0
 - object: HOUSE_SMALL
   x: 33
   y: 8
@@ -156,4 +150,10 @@ objects:
   x: 37
   y: 0
   repeat-x: 3
+- object: ROCK_GREEN
+  x: 1
+  y: 1
+- object: BUSH_2
+  x: 5
+  y: 1
 enemies: []

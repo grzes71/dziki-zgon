@@ -13,6 +13,9 @@ class EnemyInstance(BaseModel):
     enemy: str
     x: int = Field(ge=0, le=39)
     y: int = Field(ge=0, le=11)
+    strategy: str = "vertical"
+    speed: str = "medium"
+    color: str = "white"
 
 class ObjectFlags(BaseModel):
     blocking: bool = False

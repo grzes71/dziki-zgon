@@ -7,21 +7,9 @@ exits:
   east: null
   west: VILLAGE2
 objects:
-- object: WATER
-  x: 26
-  y: 0
-  repeat-y: 2
 - object: RIVER_BL
   x: 25
   y: 2
-- object: WAVES_LEFT
-  x: 25
-  y: 0
-  repeat-y: 2
-- object: WAVES_RIGHT
-  x: 27
-  y: 0
-  repeat-y: 2
 - object: WAVES_RIGHT
   x: 32
   y: 5
@@ -49,18 +37,9 @@ objects:
 - object: RIVER_TR
   x: 29
   y: 2
-- object: WATERFALL_GREEN
-  x: 34
-  y: 1
-- object: ROCK_GREEN
-  x: 28
-  y: 0
 - object: SIGNPOINT_LEFT
   x: 2
   y: 5
-- object: TREE_3
-  x: 22
-  y: 2
 - object: TREE_3
   x: 6
   y: 1
@@ -71,23 +50,8 @@ objects:
   x: 4
   y: 9
 - object: TREE_3
-  x: 20
-  y: 8
-- object: TREE_3
   x: 27
   y: 8
-- object: GROUND_BROWN_UP
-  x: 33
-  y: 5
-- object: GROUND_BROWN_UP
-  x: 28
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 31
-  y: 0
-- object: HOUSE_SMALL
-  x: 17
-  y: 5
 - object: TREE_SMALL
   x: 12
   y: 7
@@ -119,13 +83,6 @@ objects:
   x: 35
   y: 9
 - object: GROUND_BROWN_UP
-  x: 32
-  y: 10
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 34
-  y: 11
-- object: GROUND_BROWN_UP
   x: 36
   y: 10
   repeat-x: 4
@@ -133,13 +90,7 @@ objects:
   x: 39
   y: 11
 - object: BUSH
-  x: 22
-  y: 6
-- object: BUSH
   x: 23
-  y: 9
-- object: MUSHROOM
-  x: 14
   y: 9
 - object: GROUND_GREEN_UP
   x: 37
@@ -161,36 +112,110 @@ objects:
 - object: GROUND_GREEN_UP
   x: 35
   y: 11
-- object: GROUND_GREEN_UP
-  x: 29
-  y: 11
-  repeat-x: 5
-- object: GROUND_GREEN_UP
-  x: 39
-  y: 2
-- object: TREE_2
-  x: 32
-  y: 0
-- object: TREE_2
-  x: 34
-  y: 4
-- object: ROCK_GREEN
-  x: 37
-  y: 5
-- object: ROCK_2
-  x: 22
-  y: 0
-- object: ROCK_2
-  x: 20
+- object: WATER
+  x: 25
   y: 1
-- object: ROCK_2
+  repeat-x: 2
+- object: WATER
+  x: 26
+  y: 0
+- object: WAVES_DOWN
+  x: 17
+  y: 1
+  repeat-x: 8
+- object: WAVES_LEFT
+  x: 16
+  y: 0
+- object: WAVES_RIGHT
+  x: 27
+  y: 0
+  repeat-y: 2
+- object: WATER_ANIM
   x: 18
   y: 0
-- object: CROSS_1
-  x: 15
-  y: 1
-- object: CROSS_1
-  x: 14
+  repeat-x: 8
+- object: WATER
+  x: 17
   y: 0
+- object: WATERFALL_GREEN
+  x: 35
+  y: 2
+- object: BARN_SMALL
+  x: 16
+  y: 9
+- object: CROSS_2
+  x: 23
+  y: 6
+- object: WATER_UP
+  x: 16
+  y: 1
+- object: WATER_ANIM
+  x: 36
+  y: 4
+  repeat-x: 4
+- object: WAVES
+  x: 35
+  y: 4
+- object: REED
+  x: 29
+  y: 6
+- object: REED
+  x: 28
+  y: 7
+- object: REED
+  x: 24
+  y: 3
+- object: REED
+  x: 23
+  y: 2
   repeat-x: 2
+- object: REED
+  x: 15
+  y: 0
+  repeat-y: 2
+- object: REED
+  x: 13
+  y: 0
+- object: REED
+  x: 28
+  y: 0
+- object: REED
+  x: 28
+  y: 1
+  repeat-x: 2
+- object: REED
+  x: 30
+  y: 0
+- object: REED
+  x: 32
+  y: 0
+- object: REED
+  x: 31
+  y: 1
+- object: REED
+  x: 31
+  y: 9
+- object: REED
+  x: 33
+  y: 5
+  repeat-x: 2
+- object: REED
+  x: 33
+  y: 4
+- object: REED
+  x: 27
+  y: 5
+  repeat-x: 3
+- object: STONE_BIG
+  x: 17
+  y: 5
+- object: CROSS_1
+  x: 20
+  y: 8
+- object: CROSS_1
+  x: 2
+  y: 7
+- object: MUSHROOM
+  x: 13
+  y: 4
 enemies: []

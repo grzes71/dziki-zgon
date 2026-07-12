@@ -10,19 +10,9 @@ objects:
 - object: SIGNPOINT_LEFT
   x: 2
   y: 3
-- object: ROCK_BIG
-  x: 33
-  y: 7
-- object: WAVES_UP
-  x: 26
-  y: 9
-  repeat-x: 7
 - object: TREE_3
   x: 12
   y: 5
-- object: TREE_3
-  x: 33
-  y: 0
 - object: TREE_3
   x: 27
   y: 4
@@ -32,80 +22,104 @@ objects:
 - object: TREE_3
   x: 4
   y: 2
-- object: TREE_3
-  x: 19
-  y: 8
-- object: BRIDGE
-  x: 22
-  y: 9
-- object: WAVES
-  x: 21
-  y: 9
-- object: BUSH_2
-  x: 16
-  y: 6
 - object: BUSH_2
   x: 33
   y: 5
 - object: ROCK_GREEN
   x: 4
   y: 6
-- object: HOUSE_SMALL_BLUE
-  x: 20
-  y: 4
-- object: BUSH
-  x: 25
-  y: 5
-- object: BUSH
-  x: 17
-  y: 9
 - object: BUSH
   x: 11
   y: 6
 - object: BUSH
   x: 36
   y: 1
-- object: ROCK_GREEN
-  x: 6
-  y: 7
 - object: SIGNPOINT_RIGHT
   x: 30
   y: 5
-- object: GROUND_BROWN_UP
-  x: 7
-  y: 6
-- object: GROUND_BROWN_UP
-  x: 3
-  y: 6
 - object: ROCK_2
   x: 16
   y: 2
 - object: MUSHROOM
   x: 12
   y: 2
-- object: WAVES
-  x: 37
-  y: 6
-  repeat-x: 3
-- object: WAVES
-  x: 39
-  y: 1
 - object: ROCK_1
   x: 29
   y: 1
-- object: TREE_2
-  x: 4
-  y: 7
 - object: TREE_2
   x: 21
   y: 1
 - object: TREE_2
   x: 24
   y: 1
-- object: BUSH_2
-  x: 29
-  y: 6
-- object: BUSH_2
-  x: 32
+- object: HOUSE_MEDIUM_BLUE
+  x: 4
+  y: 8
+- object: HOUSE_MEDIUM_GREEN
+  x: 19
   y: 4
-enemies: []
+- object: BUSH_2
+  x: 2
+  y: 9
+- object: ROCK_BIG
+  x: 31
+  y: 8
+- object: BRICK_WALL
+  x: 9
+  y: 9
+  repeat-x: 5
+- object: ROCK_2
+  x: 27
+  y: 10
+- object: ROCK_1
+  x: 23
+  y: 10
+- object: BARN_MEDIUM
+  x: 14
+  y: 8
+- object: FENCE_1
+  x: 17
+  y: 5
+- object: FENCE_1
+  x: 24
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 26
+  y: 8
+- object: GROUND_BROWN_UP
+  x: 24
+  y: 8
+- object: GROUND_BROWN_UP
+  x: 25
+  y: 7
+- object: GROUND_BROWN_UP
+  x: 23
+  y: 7
+- object: GROUND_BROWN_UP
+  x: 27
+  y: 7
+- object: GROUND_BROWN_UP
+  x: 28
+  y: 8
+- object: GROUND_BROWN_UP
+  x: 33
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 35
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 34
+  y: 2
+enemies:
+- enemy: kimikora
+  x: 16
+  y: 3
+  strategy: horizontal
+  speed: slow
+  color: green
+- enemy: kimikora
+  x: 38
+  y: 5
+  strategy: vertical
+  speed: medium
+  color: orange

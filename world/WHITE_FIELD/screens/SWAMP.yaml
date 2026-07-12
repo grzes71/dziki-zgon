@@ -31,9 +31,6 @@ objects:
   x: 2
   y: 2
 - object: CROSS_2
-  x: 37
-  y: 2
-- object: CROSS_2
   x: 38
   y: 3
 - object: TREE_SMALL
@@ -62,21 +59,8 @@ objects:
   y: 6
   repeat-x: 2
 - object: ROCK_1
-  x: 32
-  y: 0
-- object: ROCK_1
   x: 35
   y: 1
-- object: WATER
-  x: 39
-  y: 6
-- object: WATER
-  x: 38
-  y: 7
-  repeat-x: 2
-- object: WATER
-  x: 39
-  y: 8
 - object: WAVES
   x: 37
   y: 7
@@ -102,18 +86,6 @@ objects:
 - object: LAKE
   x: 16
   y: 2
-- object: WATER
-  x: 19
-  y: 9
-  repeat-x: 5
-- object: WATER
-  x: 18
-  y: 10
-  repeat-x: 7
-- object: WATER
-  x: 17
-  y: 11
-  repeat-x: 10
 - object: WAVES
   x: 24
   y: 9
@@ -127,28 +99,8 @@ objects:
   y: 11
   repeat-x: 2
 - object: WAVES
-  x: 34
-  y: 0
-  repeat-x: 3
-- object: WAVES
-  x: 37
-  y: 1
-  repeat-x: 3
-- object: WAVES
   x: 39
   y: 2
-- object: WATER
-  x: 37
-  y: 0
-  repeat-x: 3
-- object: WATER
-  x: 3
-  y: 8
-  repeat-x: 3
-- object: WATER
-  x: 4
-  y: 9
-  repeat-x: 3
 - object: WAVES
   x: 1
   y: 8
@@ -192,21 +144,9 @@ objects:
 - object: BUSH_2
   x: 33
   y: 4
-- object: BUSH_2
-  x: 33
-  y: 9
-- object: BUSH_2
-  x: 4
-  y: 2
 - object: BUSH
   x: 6
   y: 6
-- object: BUSH
-  x: 29
-  y: 1
-- object: BUSH
-  x: 31
-  y: 0
 - object: GROUND_GREEN_UP
   x: 37
   y: 9
@@ -218,4 +158,146 @@ objects:
   x: 37
   y: 11
   repeat-x: 3
+- object: BUSH_2
+  x: 33
+  y: 10
+- object: BUSH
+  x: 1
+  y: 6
+- object: BUSH
+  x: 19
+  y: 0
+- object: BUSH
+  x: 1
+  y: 0
+- object: WATER_ANIM
+  x: 38
+  y: 0
+  repeat-x: 2
+- object: WATER_ANIM
+  x: 39
+  y: 1
+- object: WAVES
+  x: 37
+  y: 1
+  repeat-x: 2
+- object: WAVES
+  x: 35
+  y: 0
+  repeat-x: 3
+- object: WATER_ANIM
+  x: 39
+  y: 6
+- object: WATER_ANIM
+  x: 38
+  y: 7
+  repeat-x: 2
+- object: WATER_ANIM
+  x: 39
+  y: 8
+- object: WATER_ANIM
+  x: 17
+  y: 11
+  repeat-x: 10
+- object: WATER_ANIM
+  x: 18
+  y: 10
+  repeat-x: 7
+- object: WATER_ANIM
+  x: 19
+  y: 9
+  repeat-x: 5
+- object: WATER_ANIM
+  x: 3
+  y: 8
+  repeat-x: 3
+- object: WATER_ANIM
+  x: 4
+  y: 9
+  repeat-x: 3
+- object: REED
+  x: 12
+  y: 11
+  repeat-x: 3
+- object: REED
+  x: 14
+  y: 10
+  repeat-x: 2
+- object: REED
+  x: 15
+  y: 9
+- object: REED
+  x: 10
+  y: 11
+- object: REED
+  x: 8
+  y: 10
+  repeat-y: 2
+- object: REED
+  x: 8
+  y: 8
+- object: REED
+  x: 1
+  y: 9
+- object: REED
+  x: 1
+  y: 10
+  repeat-x: 2
+- object: REED
+  x: 0
+  y: 11
+  repeat-x: 7
+- object: REED
+  x: 29
+  y: 10
+  repeat-x: 2
+- object: REED
+  x: 29
+  y: 11
+- object: REED
+  x: 31
+  y: 11
+- object: REED
+  x: 26
+  y: 3
+  repeat-x: 3
+- object: REED
+  x: 27
+  y: 5
+- object: REED
+  x: 34
+  y: 5
+- object: REED
+  x: 33
+  y: 0
+- object: REED
+  x: 36
+  y: 2
+  repeat-x: 3
+- object: REED
+  x: 37
+  y: 3
+- object: REED
+  x: 38
+  y: 4
+- object: REED
+  x: 35
+  y: 11
+  repeat-x: 2
+- object: REED
+  x: 36
+  y: 10
+- object: REED
+  x: 15
+  y: 0
+  repeat-x: 2
+- object: REED
+  x: 13
+  y: 0
+- object: REED
+  x: 14
+  y: 1
+- object: REED
+  x: 11
+  y: 0
 enemies: []

@@ -129,3 +129,15 @@ STATE_OVER  = 3
 
 ; ---- Development — indeks etapu startowego (0=title, 1=story, 2=game, 3=gameover) ----
 DEV_START_STAGE = 2         ; zmień, by wystartować od innego etapu podczas developmentu
+
+; ---- Limity i współrzędne spawnu przy przejściu między ekranami ----
+SCREEN_LIMIT_LEFT   = 48   ; Lewa granica chodzenia. Ruch poniżej wyzwala transition na zachód.
+SCREEN_LIMIT_RIGHT  = 200  ; Prawa granica chodzenia. Ruch równy lub powyżej wyzwala transition na wschód.
+SCREEN_LIMIT_TOP    = 32   ; Górna granica chodzenia. Ruch poniżej wyzwala transition na północ.
+SCREEN_LIMIT_BOTTOM = 210  ; Dolna granica chodzenia. Ruch równy lub powyżej wyzwala transition na południe.
+
+TRANSITION_SPAWN_LEFT   = 48   ; Pozycja X po wejściu na ekran z lewej strony (wschodni transition)
+TRANSITION_SPAWN_RIGHT  = 199  ; Pozycja X po wejściu na ekran z prawej strony (zachodni transition)
+TRANSITION_SPAWN_TOP    = 32   ; Pozycja Y po wejściu na ekran od góry (południowy transition)
+TRANSITION_SPAWN_BOTTOM = 209  ; Pozycja Y po wejściu na ekran od dołu (północny transition)
+

@@ -128,3 +128,63 @@ def test_resolution_verification():
     if blocking: flags |= 0x80
     if interactive: flags |= 0x40
     assert flags == 0x80
+
+def test_enemy_properties(happy_path_world):
+    world_dir, out_dir = happy_path_world
+    
+    # 1. Modify 000.yaml to include a custom enemy with strategy, speed, and color
+    create_yaml(world_dir / "TEST_REGION" / "screens" / "000.yaml", {
+        "id": "START",
+        "exits": {"north": None, "south": None, "east": "NEXT", "west": None},
+        "objects": [
+            {"object": "BOX", "x": 10, "y": 5}
+        ],
+        "enemies": [
+            {
+                "enemy": "strzyga",
+                "x": 20,
+                "y": 8,
+                "strategy": "horizontal",
+                "speed": "fast",
+                "color": "red"
+            }
+        ]
+    })
+    
+    # Run parsing and check attributes
+    world = parse_world_dir(world_dir)
+    start_screen = next(s for s in world.regions[0].screens if s.id == "START")
+    assert len(start_screen.enemies) == 1
+    enemy = start_screen.enemies[0]
+    assert enemy.enemy == "strzyga"
+    assert enemy.x == 20
+    assert enemy.y == 8
+    assert enemy.strategy == "horizontal"
+    assert enemy.speed == "fast"
+    assert enemy.color == "red"
+    
+    # 2. Modify 000.yaml to include a custom enemy without the new fields to verify defaults
+    create_yaml(world_dir / "TEST_REGION" / "screens" / "000.yaml", {
+        "id": "START",
+        "exits": {"north": None, "south": None, "east": "NEXT", "west": None},
+        "objects": [],
+        "enemies": [
+            {
+                "enemy": "bazyliszek",
+                "x": 15,
+                "y": 6
+            }
+        ]
+    })
+    
+    # Run parsing and check default attributes
+    world = parse_world_dir(world_dir)
+    start_screen = next(s for s in world.regions[0].screens if s.id == "START")
+    assert len(start_screen.enemies) == 1
+    enemy = start_screen.enemies[0]
+    assert enemy.enemy == "bazyliszek"
+    assert enemy.x == 15
+    assert enemy.y == 6
+    assert enemy.strategy == "vertical"
+    assert enemy.speed == "medium"
+    assert enemy.color == "white"

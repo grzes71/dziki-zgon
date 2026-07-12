@@ -8,15 +8,6 @@ exits:
   west: VILLAGE
 objects:
 - object: HOUSE_SMALL_BLUE
-  x: 5
-  y: 7
-- object: HOUSE_SMALL_BLUE
-  x: 31
-  y: 2
-- object: HOUSE_SMALL_BLUE
-  x: 19
-  y: 1
-- object: HOUSE_SMALL_BLUE
   x: 25
   y: 8
 - object: HOUSE_BIGGER
@@ -25,46 +16,12 @@ objects:
 - object: HOUSE_MEDIUM_GREEN
   x: 33
   y: 6
-- object: BUSH_2
-  x: 2
-  y: 8
-- object: BUSH_2
-  x: 27
-  y: 6
-- object: BUSH_2
-  x: 11
-  y: 9
-- object: BUSH
-  x: 24
-  y: 2
-- object: BUSH
-  x: 12
-  y: 7
-  repeat-x: 2
-- object: BUSH
-  x: 30
-  y: 6
 - object: ROCK_GREEN
   x: 22
   y: 4
-- object: HOUSE_TALL
-  x: 0
-  y: 2
-- object: TREE_SMALL
-  x: 5
-  y: 3
-- object: TREE_SMALL
-  x: 0
-  y: 6
 - object: TREE_SMALL
   x: 15
   y: 1
-- object: TREE_SMALL
-  x: 28
-  y: 1
-- object: WELL
-  x: 38
-  y: 3
 - object: FENCE_1
   x: 17
   y: 2
@@ -96,40 +53,49 @@ objects:
   x: 34
   y: 9
 - object: GROUND_BROWN_DOWN
-  x: 39
-  y: 1
-  repeat-y: 2
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 36
-  y: 2
-- object: GROUND_BROWN_DOWN
   x: 34
   y: 0
   repeat-x: 6
 - object: GROUND_BROWN_DOWN
   x: 32
   y: 0
-- object: ROCK_2
-  x: 17
-  y: 10
-- object: ROCK_1
-  x: 20
-  y: 9
-- object: WAVES
-  x: 36
-  y: 1
-  repeat-x: 3
-- object: WAVES
-  x: 37
-  y: 2
-  repeat-x: 2
-- object: TREE_2
-  x: 10
-  y: 2
 - object: TREE_2
   x: 15
   y: 9
+- object: HOME_SMALL_2
+  x: 6
+  y: 8
+- object: HOME_NEW_2
+  x: 2
+  y: 2
+- object: HOME_SMALL_2
+  x: 19
+  y: 1
+- object: ROCK_GREEN
+  x: 5
+  y: 5
+- object: ROCK_GREEN
+  x: 7
+  y: 6
+- object: BARN_SMALL
+  x: 18
+  y: 9
+- object: HOME_NEW_2
+  x: 31
+  y: 3
+- object: TREE_3
+  x: 28
+  y: 3
+- object: TREE_3
+  x: 22
+  y: 6
+- object: TREE_2
+  x: 3
+  y: 8
+- object: TREE_2
+  x: 30
+  y: 6
+- object: WELL
+  x: 9
+  y: 2
 enemies: []

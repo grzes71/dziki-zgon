@@ -595,3 +595,85 @@ objects:
     blocking: true
     interactive: false
   tiles: [208]
+- object: HOME_NEW
+  id: HOME_NEW
+  code: 60
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [96, 3, 2, 3, 3, 97, 250, 163, 164, 65, 66, 251]
+- object: HOME_NEW_2
+  id: HOME_NEW_2
+  code: 61
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [224, 131, 130, 131, 131, 225, 250, 81, 6, 163, 164, 251]
+- object: HOME_SMALL_2
+  id: HOME_SMALL_2
+  code: 62
+  size:
+    width: 5
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [144, 131, 130, 131, 146, 250, 33, 65, 66, 251]
+- object: PORT
+  id: PORT
+  code: 63
+  size:
+    width: 10
+    height: 3
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [96, 17, 17, 17, 17, 17, 17, 17, 17, 97, 250, 34, 163, 164, 33, 33, 163,
+    164, 34, 251, 250, 29, 29, 29, 27, 28, 29, 29, 29, 251]
+- object: STONE_BIG
+  id: STONE_BIG
+  code: 64
+  size:
+    width: 4
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [10, 11, 9, 12]
+- object: REED
+  id: REED
+  code: 65
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [124]
+- object: BLOCK_1
+  id: BLOCK_1
+  code: 66
+  size:
+    width: 4
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [98, 73, 73, 100]
+- object: SHIP
+  id: SHIP
+  code: 67
+  size:
+    width: 9
+    height: 3
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [0, 0, 0, 0, 0, 126, 19, 126, 0, 0, 0, 0, 0, 0, 195, 193, 194, 0, 93, 94,
+    94, 94, 94, 94, 94, 94, 125]

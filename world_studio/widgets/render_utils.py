@@ -81,9 +81,14 @@ def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Chars
         
     if screen_def.enemies:
         p = QPainter(img)
-        p.setPen(Qt.magenta)
-        p.setBrush(QColor(255, 0, 255, 128))
         for enemy in screen_def.enemies:
+            color_name = getattr(enemy, 'color', 'white') or 'white'
+            q_color = QColor(color_name)
+            if not q_color.isValid():
+                q_color = QColor(255, 0, 255) # fallback to magenta
+            p.setPen(q_color)
+            fill_color = QColor(q_color.red(), q_color.green(), q_color.blue(), 128)
+            p.setBrush(fill_color)
             p.drawRect(enemy.x * 4, enemy.y * 8, 4, 8)
         p.end()
         
