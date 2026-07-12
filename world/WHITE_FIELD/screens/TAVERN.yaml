@@ -50,27 +50,9 @@ objects:
 - object: BUSH_2
   x: 28
   y: 1
-- object: SIGNPOINT_RIGHT
-  x: 36
-  y: 3
 - object: TREE_3
   x: 33
   y: 2
-- object: BUSH
-  x: 14
-  y: 6
-- object: BUSH
-  x: 17
-  y: 7
-- object: TREE_SMALL
-  x: 28
-  y: 9
-- object: TREE_2
-  x: 8
-  y: 9
-- object: TREE_2
-  x: 12
-  y: 9
 - object: BUSH_2
   x: 6
   y: 6
@@ -80,10 +62,6 @@ objects:
 - object: MUSHROOM
   x: 36
   y: 6
-- object: GROUND_GREEN_UP
-  x: 0
-  y: 11
-  repeat-x: 5
 - object: GROUND_GREEN_UP
   x: 0
   y: 10
@@ -119,12 +97,6 @@ objects:
 - object: MUSHROOM
   x: 21
   y: 10
-- object: HOUSE_SMALL
-  x: 33
-  y: 9
-- object: BUSH_2
-  x: 30
-  y: 10
 - object: GROUND_BROWN_UP
   x: 19
   y: 9
@@ -148,22 +120,40 @@ objects:
   y: 1
 - object: GROUND_BROWN_UP
   x: 0
-  y: 6
-- object: GROUND_BROWN_UP
-  x: 0
   y: 8
 - object: GROUND_BROWN_UP
   x: 0
   y: 9
   repeat-x: 3
-- object: GROUND_BROWN_UP
-  x: 2
-  y: 10
-  repeat-x: 3
-- object: GROUND_BROWN_UP
-  x: 5
-  y: 11
 - object: RIVER_BR
   x: 0
   y: 0
+- object: HOUSE_SMALL
+  x: 33
+  y: 8
+- object: TREE_SMALL
+  x: 29
+  y: 8
+- object: TREE_2
+  x: 4
+  y: 8
+- object: TREE_2
+  x: 8
+  y: 8
+- object: BUSH_2
+  x: 37
+  y: 10
+- object: BUSH
+  x: 6
+  y: 11
+- object: BUSH
+  x: 29
+  y: 3
+- object: BUSH
+  x: 8
+  y: 4
+- object: GROUND_GREEN_UP
+  x: 37
+  y: 0
+  repeat-x: 3
 enemies: []
