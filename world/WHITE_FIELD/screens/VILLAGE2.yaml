@@ -86,15 +86,15 @@ objects:
   x: 9
   y: 2
 enemies:
-- enemy: kimikora
-  x: 27
-  y: 0
-  strategy: horizontal
-  speed: slow
-  color: green
 - enemy: strzyga
   x: 11
   y: 6
   strategy: vertical
   speed: medium
   color: orange
+- enemy: kimikora
+  x: 26
+  y: 0
+  strategy: vertical
+  speed: medium
+  color: magenta

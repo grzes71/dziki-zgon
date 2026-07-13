@@ -204,6 +204,7 @@ SpriteData = DzikizgonData
     icl "gen/bazyliszek.sprite.asm"
     icl "gen/kikimora.sprite.asm"
     icl "gen/strzyga.sprite.asm"
+    icl "gen/sukkub.sprite.asm"
 
 ; ===================================================================
 ; 6. Display Listy ($3000)

@@ -287,4 +287,10 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 7
   y: 0
-enemies: []
+enemies:
+- enemy: sukkub
+  x: 19
+  y: 6
+  strategy: horizontal
+  speed: medium
+  color: red

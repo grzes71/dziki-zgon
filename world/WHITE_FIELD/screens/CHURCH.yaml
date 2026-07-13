@@ -114,4 +114,10 @@ objects:
 - object: BUSH
   x: 0
   y: 8
-enemies: []
+enemies:
+- enemy: bazyliszek
+  x: 23
+  y: 5
+  strategy: vertical
+  speed: slow
+  color: yellow

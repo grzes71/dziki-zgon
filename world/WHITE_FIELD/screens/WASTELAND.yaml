@@ -140,9 +140,6 @@ objects:
 - object: WATERFALL_GREEN
   x: 35
   y: 2
-- object: BARN_SMALL
-  x: 16
-  y: 9
 - object: CROSS_2
   x: 23
   y: 6
@@ -218,4 +215,10 @@ objects:
 - object: MUSHROOM
   x: 13
   y: 4
-enemies: []
+enemies:
+- enemy: strzyga
+  x: 8
+  y: 5
+  strategy: vertical
+  speed: slow
+  color: orange

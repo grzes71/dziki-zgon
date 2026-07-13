@@ -5,6 +5,8 @@ enemies:
     name: "Strzyga"
   - id: "bazyliszek"
     name: "Bazyliszek"
+  - id: "sukkub"
+    name: "Sukkub"
 colors:
   white: 15
   red: 54

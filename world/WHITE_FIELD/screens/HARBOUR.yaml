@@ -142,4 +142,16 @@ objects:
   y: 9
   repeat-x: 2
   repeat-y: 3
-enemies: []
+enemies:
+- enemy: bazyliszek
+  x: 21
+  y: 4
+  strategy: vertical
+  speed: slow
+  color: white
+- enemy: strzyga
+  x: 35
+  y: 0
+  strategy: horizontal
+  speed: medium
+  color: blue

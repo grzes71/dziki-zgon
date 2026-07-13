@@ -58,9 +58,6 @@ objects:
 - object: ROCK_GREEN
   x: 28
   y: 9
-- object: ROCK_GREEN
-  x: 20
-  y: 2
 - object: WELL
   x: 12
   y: 2
@@ -224,4 +221,10 @@ objects:
   x: 35
   y: 1
   repeat-x: 5
-enemies: []
+enemies:
+- enemy: kimikora
+  x: 22
+  y: 5
+  strategy: vertical
+  speed: medium
+  color: red

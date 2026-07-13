@@ -300,4 +300,10 @@ objects:
 - object: REED
   x: 11
   y: 0
-enemies: []
+enemies:
+- enemy: bazyliszek
+  x: 13
+  y: 6
+  strategy: vertical
+  speed: slow
+  color: brown
