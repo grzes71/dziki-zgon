@@ -12,6 +12,7 @@ class ProjectManager:
         self.region_atari_colors: Dict[str, Dict[str, int]] = {}
         self.objects: List[ObjectDefinition] = []
         self.enemy_defs: List[EnemyDef] = []
+        self.enemy_colors: List[str] = []
         self.regions: Dict[str, RegionDef] = {}
         self.screens: Dict[str, Dict[str, ScreenDef]] = {}
         
@@ -53,6 +54,7 @@ class ProjectManager:
         # enemies.yaml
         e_data = self._load_yaml(world_dir / "enemies.yaml")
         self.enemy_defs = [EnemyDef.model_validate(e) for e in e_data.get("enemies", [])]
+        self.enemy_colors = list(e_data.get("colors", {}).keys())
         
         # regions
         self.regions.clear()

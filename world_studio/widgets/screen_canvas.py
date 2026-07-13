@@ -68,7 +68,7 @@ class ScreenCanvasWidget(QWidget):
             existing_enemy = next((e for e in self.screen_def.enemies if e.x == x and e.y == y), None)
             if existing_enemy:
                 from world_studio.widgets.enemy_properties_dialog import EnemyPropertiesDialog
-                dialog = EnemyPropertiesDialog(existing_enemy, self.project.enemy_defs, self)
+                dialog = EnemyPropertiesDialog(existing_enemy, self.project.enemy_defs, self.project.enemy_colors, self)
                 if dialog.exec() == QDialog.Accepted:
                     self.screen_changed.emit()
                     self.update()
@@ -94,7 +94,7 @@ class ScreenCanvasWidget(QWidget):
                         color="white"
                     )
                     from world_studio.widgets.enemy_properties_dialog import EnemyPropertiesDialog
-                    dialog = EnemyPropertiesDialog(new_enemy, self.project.enemy_defs, self)
+                    dialog = EnemyPropertiesDialog(new_enemy, self.project.enemy_defs, self.project.enemy_colors, self)
                     if dialog.exec() == QDialog.Accepted:
                         self.screen_def.enemies.append(new_enemy)
                         self.screen_changed.emit()

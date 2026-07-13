@@ -33,24 +33,11 @@ objects:
   y: 11
   repeat-x: 7
 - object: GROUND_BROWN_UP
-  x: 31
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 32
-  y: 10
-  repeat-x: 2
-- object: GROUND_BROWN_UP
   x: 35
   y: 10
   repeat-x: 5
 - object: GROUND_BROWN_UP
   x: 39
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 34
   y: 9
 - object: GROUND_BROWN_DOWN
   x: 34
@@ -98,4 +85,16 @@ objects:
 - object: WELL
   x: 9
   y: 2
-enemies: []
+enemies:
+- enemy: kimikora
+  x: 27
+  y: 0
+  strategy: horizontal
+  speed: slow
+  color: green
+- enemy: strzyga
+  x: 11
+  y: 6
+  strategy: vertical
+  speed: medium
+  color: orange

@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 from world_studio.models import EnemyInstance
 
 class EnemyPropertiesDialog(QDialog):
-    def __init__(self, enemy_instance: EnemyInstance, enemy_defs: list, parent=None):
+    def __init__(self, enemy_instance: EnemyInstance, enemy_defs: list, enemy_colors: list = None, parent=None):
         super().__init__(parent)
         self.enemy_instance = enemy_instance
         self.enemy_defs = enemy_defs
@@ -45,11 +45,12 @@ class EnemyPropertiesDialog(QDialog):
         # Color (English name, editable combo box)
         self.combo_color = QComboBox()
         self.combo_color.setEditable(True)
-        self.combo_color.addItems([
+        colors = enemy_colors if enemy_colors else [
             "white", "red", "green", "blue", "yellow", 
             "magenta", "cyan", "orange", "purple", "brown", 
             "gray", "black"
-        ])
+        ]
+        self.combo_color.addItems(colors)
         self.combo_color.setCurrentText(enemy_instance.color)
         form.addRow("Color (English):", self.combo_color)
         
