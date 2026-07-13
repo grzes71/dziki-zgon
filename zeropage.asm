@@ -36,3 +36,5 @@ REQ_SCREEN_TRANSITION equ $9C ; Flaga żądania zmiany ekranu (1 = tak)
 NEW_SCREEN_ID         equ $9D ; ID nowego ekranu do wczytania
 NEW_ACTOR_X           equ $9E ; Nowa pozycja gracza na nowym ekranie
 NEW_ACTOR_Y           equ $9F ; Nowa pozycja gracza na nowym ekranie
+ENEMY_COUNT_TMP       equ $A0 ; Tymczasowa liczba przeciwników na ekranie
+CURRENT_ACTOR         equ $A1 ; Indeks aktualnie ładowanego aktora (1..3)

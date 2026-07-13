@@ -51,3 +51,6 @@ TILES_DATA         .ds 1024  ; Miejsce na zdefiniowane na brudno kafle obiektów
 ; --- Włączenie biblioteki docelowej ---
     org $7000
     icl "../lib/world_renderer.asm"
+
+Load_Screen_Enemies
+    rts

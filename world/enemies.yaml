@@ -5,3 +5,16 @@ enemies:
     name: "Strzyga"
   - id: "bazyliszek"
     name: "Bazyliszek"
+colors:
+  white: 15
+  red: 48
+  green: 128
+  blue: 192
+  yellow: 96
+  magenta: 240
+  cyan: 160
+  orange: 64
+  purple: 224
+  brown: 32
+  gray: 10
+  black: 0

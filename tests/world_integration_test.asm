@@ -39,3 +39,6 @@ start_test
 ; --- Włączenie biblioteki docelowej ---
     org $8000
     icl "../lib/world_renderer.asm"
+
+Load_Screen_Enemies
+    rts

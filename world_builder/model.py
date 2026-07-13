@@ -75,4 +75,5 @@ class GameWorld(BaseModel):
     world: WorldConfig
     objects: List[ObjectDefinition] = Field(default_factory=list)
     enemies: List[EnemyDef] = Field(default_factory=list)
+    enemy_colors: dict = Field(default_factory=dict)
     regions: List[RegionDef] = Field(default_factory=list)

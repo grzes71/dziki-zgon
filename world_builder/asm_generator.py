@@ -154,12 +154,28 @@ class AsmGenerator:
         out.append("\n; Screen Layout Configurations")
         objects_by_id = {obj.id: obj for obj in self.world.objects}
         
+        enemy_types = {e.id: idx for idx, e in enumerate(self.world.enemies)}
+        strategies = {"horizontal": 0, "vertical": 1, "random": 2}
+        speeds = {"slow": 0, "medium": 1, "fast": 2}
+        
         for s in self.screens_sorted:
             out.append(f"SCREEN_{s.id}")
             out.append(f"    dta {len(s.objects)} ; Object count")
             for inst in s.objects:
                 obj_def = objects_by_id[inst.object]
                 out.append(f"    dta {obj_def.code}, {inst.x}, {inst.y} ; {inst.object}")
+            
+            # Append compiled enemy data
+            out.append(f"    dta {len(s.enemies)} ; Enemy count")
+            for inst in s.enemies:
+                e_type = enemy_types.get(inst.enemy, 0)
+                pixel_x = inst.x * 4 + 48
+                pixel_y = inst.y * 16 + 32
+                e_strat = strategies.get(inst.strategy, 1)
+                e_speed = speeds.get(inst.speed, 1)
+                e_color = self.world.enemy_colors.get(inst.color, 15)
+                
+                out.append(f"    dta {e_type}, {pixel_x}, {pixel_y}, {e_strat}, {e_speed}, {e_color} ; enemy {inst.enemy} (x={inst.x}, y={inst.y}, strategy={inst.strategy}, speed={inst.speed}, color={inst.color})")
                 
         with open(self.out_dir / "screens.asm", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")

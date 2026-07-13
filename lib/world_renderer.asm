@@ -157,6 +157,7 @@ row_offsets_hi
     jmp @object_loop
 
 @end
+    jsr Load_Screen_Enemies
     rts
 .endp
 
