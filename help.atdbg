@@ -1,0 +1,4 @@
+.logopen "c:/Users/grzes/Documents/Projects/witcher-atari-game/help.txt"
+.help
+.logclose
+.quit

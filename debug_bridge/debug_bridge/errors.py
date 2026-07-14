@@ -6,6 +6,7 @@ from enum import IntEnum
 
 class ExitCode(IntEnum):
     SUCCESS = 0
+    TIMEOUT = 1
     CONFIG_ERROR = 2
     MISSING_INPUT = 3
     LAUNCH_ERROR = 4
@@ -19,6 +20,10 @@ class DebugBridgeError(Exception):
     def __init__(self, message: str, exit_code: ExitCode):
         super().__init__(message)
         self.exit_code = exit_code
+
+class TimeoutError(DebugBridgeError):
+    def __init__(self, message: str):
+        super().__init__(message, ExitCode.TIMEOUT)
 
 class ConfigError(DebugBridgeError):
     def __init__(self, message: str):

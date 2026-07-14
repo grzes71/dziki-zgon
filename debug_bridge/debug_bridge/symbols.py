@@ -19,9 +19,11 @@ class LabParser:
         # MADS LAB format:
         # NAME = $ADDRESS
         # NAME = $ADDRESS (BANK=X)
-        # We need to extract NAME and ADDRESS.
+        # Or label table format:
+        # BANK ADDRESS NAME
+        # ADDRESS NAME
 
-        pattern = re.compile(r"^([a-zA-Z0-9_]+)\s*=\s*\$([0-9a-fA-F]+)")
+        assignment_pattern = re.compile(r"^([a-zA-Z0-9_]+)\s*=\s*\$?([0-9a-fA-F]+)")
 
         try:
             with open(path, "r", encoding="utf-8") as f:
@@ -30,20 +32,42 @@ class LabParser:
                     if not line or line.startswith(";"):
                         continue
                     
-                    match = pattern.match(line)
+                    # Try assignment format
+                    match = assignment_pattern.match(line)
                     if match:
                         name = match.group(1)
                         address_hex = match.group(2)
-                        
-                        if self.include_list is not None and name not in self.include_list:
+                    else:
+                        # Try table format
+                        parts = line.split()
+                        if len(parts) >= 2:
+                            # Is the first part a valid hex string?
+                            is_parts0_hex = all(c in "0123456789abcdefABCDEF" for c in parts[0])
+                            is_parts1_hex = all(c in "0123456789abcdefABCDEF" for c in parts[1])
+                            
+                            is_parts1_id = re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", parts[1]) is not None
+                            is_parts2_id = len(parts) >= 3 and re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", parts[2]) is not None
+                            
+                            if len(parts) >= 3 and is_parts0_hex and is_parts1_hex and is_parts2_id:
+                                name = parts[2]
+                                address_hex = parts[1]
+                            elif is_parts0_hex and is_parts1_id:
+                                name = parts[1]
+                                address_hex = parts[0]
+                            else:
+                                continue
+                        else:
                             continue
                             
-                        address = int(address_hex, 16)
+                    if self.include_list is not None and name not in self.include_list:
+                        continue
                         
-                        if name in symbols and symbols[name] != address:
-                            raise SymbolError(f"Duplicate symbol definition with different addresses: {name}")
-                            
-                        symbols[name] = address
+                    address = int(address_hex, 16)
+                    
+                    if name in symbols and symbols[name] != address:
+                        raise SymbolError(f"Duplicate symbol definition with different addresses: {name}")
+                        
+                    symbols[name] = address
         except Exception as e:
             if isinstance(e, SymbolError):
                 raise
@@ -53,7 +77,17 @@ class LabParser:
         if self.include_list is not None:
             missing = self.include_list - set(symbols.keys())
             if missing:
-                # Warning is handled at the higher level, but we should make sure the caller knows
                 pass
 
         return symbols
+
+    def resolve_label(self, path: str | Path, label: str) -> str:
+        """Resolves a label name to a hex address using a MADS .lab file."""
+        if label.startswith("$"):
+            return label
+        
+        symbols = self.parse(path)
+        if label in symbols:
+            return f"${symbols[label]:04X}"
+            
+        raise ValueError(f"Label '{label}' not found in '{path}'.")

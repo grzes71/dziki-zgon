@@ -95,7 +95,7 @@ Służą do konwersji i wymiany krojów pisma pomiędzy Atari Font Maker a proje
 
 ## 7. Debug Bridge (`debug_bridge/`)
 
-Narzędzie konsolowe do automatyzacji emulatora Altirra na potrzeby procesów Spec-Driven Development (SDD) oraz analizy stanów za pomocą AI. Pozwala na automatyczne uruchomienie gry, zatrzymanie w określonej klatce (lub czasie), zrzut pamięci i zrzut ekranu do weryfikacji testowej. Narzędzie zostało wyodrębnione jako własny moduł pip.
+Narzędzie konsolowe do automatyzacji emulatora Altirra na potrzeby procesów Spec-Driven Development (SDD) oraz analizy stanów za pomocą AI. Narzędzie zostało wyodrębnione jako własny moduł pip i oferuje dwa zintegrowane tryby pracy (`snapshot` oraz `break`).
 
 ### Instalacja (jednorazowa w venv projektu):
 ```bash
@@ -104,48 +104,39 @@ cd debug_bridge
 cd ..
 ```
 
-### Wywołanie:
-Konfiguracja odbywa się przez plik YAML (domyślnie `debug_bridge/debug.yaml`).
+### Tryby wywołania:
+
+#### A. Tryb Snapshot (`snapshot` lub legacy `run`)
+Automatyczne uruchomienie gry i zrzut stanu gry (pamięci, zrzutu ekranu oraz etykiet) po określonej liczbie klatek lub sekund. Domyślnie konfiguruje się go plikiem YAML.
 
 ```bash
-.\.venv\Scripts\debug-bridge.exe run --config debug_bridge/debug.yaml
+# Wywołanie z domyślnym plikiem konfiguracyjnym
+.\.venv\Scripts\debug-bridge.exe snapshot --config debug_bridge/debug.yaml
+
+# Wywołanie z nadpisaniem pliku XEX lub docelowego katalogu wyjściowego
+.\.venv\Scripts\debug-bridge.exe snapshot --config debug_bridge/debug.yaml --xex dziki_zgon.xex --out custom_out/
 ```
 
-Wyniki, w tym `debug_state.json`, `debug_report.md` oraz zrzuty ekranu (`screenshot.png`), lądują w katalogu zdefiniowanym w sekcji `output` (domyślnie `out/`).
+#### B. Tryb Breakpoint (`break`)
+Pozwala na uruchomienie emulatora i wstrzymanie w momencie napotkania breakpointu programowego (`--bp`) lub pułapki sprzętowej (`--bx` lub predefiniowane `--trap-wsync`, `--trap-vbi`, `--trap-dli`). Wypluwa pełen raport w formacie JSON zawierający stan rejestrów, call stack, opcjonalny dump pamięci i deasemblację.
+
+```bash
+# Zatrzymanie na etykiecie i zrzut rejestrów
+.\.venv\Scripts\debug-bridge.exe break --xex dziki_zgon.xex --bp GAME_STATE --lab main.lab --hw-regs
+```
 
 ---
 
-## 8. Altirra Auto-Debugger Basic (`scripts/atdbg.py`)
+## 8. Altirra Auto-Debugger Compatibility Shim (`scripts/atdbg.py`)
 
-Proste, jednoplikowe narzędzie konsolowe (CLI) dla systemu Windows, pozwalające na automatyczne, deterministyczne debugowanie kodu na emulatorze Altirra. Skrypt stawia wskazany breakpoint (programowy lub sprzętowy), wykonuje zrzuty pamięci i wypuszcza ustrukturyzowany wynik w formacie JSON (zawierający rejestry, zdeasemblowaną instrukcję, call stack i zrzuty pamięci).
+Skrypt `scripts/atdbg.py` służy jako przejściowa nakładka wstecznej kompatybilności. Automatycznie mapuje dawne parametry (`--rom` -> `--xex` oraz `--lab-file` -> `--lab`) i wywołuje polecenie `debug-bridge break`, przekazując z powrotem kod wyjścia (exit code) oraz wygenerowany dokument JSON na standardowe wyjście (stdout).
 
-Narzędzie przydaje się zarówno do szybkiego testowania, jak i jako warstwa spodnia (subprocess) dla większego `debug_bridge`. Zawsze bezpiecznie sprząta pliki tymczasowe i sprawnie zarządza opóźnieniami (timeout).
-
-### Zależności:
-- Python 3.8+ (wyłącznie biblioteki standardowe, zero zewnętrznych zależności)
-- Windows (Altirra)
-
-### Przykłady użycia:
-
+### Przykłady użycia shima:
 ```bash
-# Breakpoint programowy (software) pod danym adresem
+# Wywołanie shima (automatycznie mapuje --rom na --xex)
 python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000'
 
-# Breakpoint z wykorzystaniem nazwy etykiety (automatycznie odczytanej z pliku .lab)
+# Z użyciem pliku lab (mapuje --lab-file na --lab)
 python scripts/atdbg.py --rom dziki_zgon.xex --bp GAME_STATE --lab-file dziki_zgon.lab
-
-# Breakpoint sprzętowy (hardware) - np. na moment zapisu do rejestru NMIEN
-python scripts/atdbg.py --rom dziki_zgon.xex --bx 'write($D40E)'
-
-# Użycie predefiniowanych pułapek sprzętowych, zrzutów rejestrów HW i deasemblacji bloku
-# Dostępne pułapki: --trap-wsync, --trap-vbi, --trap-dli
-python scripts/atdbg.py --rom dziki_zgon.xex --trap-vbi --hw-regs --disasm 20
-
-# Tryb Warp (brak limitu FPS), zrzuty wybranych bloków pamięci i własny limit czasu (timeout)
-python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000' \
-    --mem-dump '$0600:L$40' --mem-dump '$A000:L$100' \
-    --timeout 30 --warp --verbose
-
-# Zapisanie wyniku JSON do dodatkowego pliku (np. na potrzeby AI lub CI)
-python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000' --output-json result.json
 ```
+
