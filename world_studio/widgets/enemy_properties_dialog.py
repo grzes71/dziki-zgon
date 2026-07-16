@@ -30,9 +30,9 @@ class EnemyPropertiesDialog(QDialog):
             self.combo_type.setCurrentIndex(idx)
         form.addRow("Enemy Type:", self.combo_type)
         
-        # Strategy (vertical/horizontal/random)
+        # Strategy (vertical/horizontal/random/chaotic)
         self.combo_strategy = QComboBox()
-        self.combo_strategy.addItems(["vertical", "horizontal", "random"])
+        self.combo_strategy.addItems(["vertical", "horizontal", "random", "chaotic"])
         self.combo_strategy.setCurrentText(enemy_instance.strategy)
         form.addRow("Movement Strategy:", self.combo_strategy)
         

@@ -99,9 +99,6 @@ objects:
   x: 31
   y: 1
 - object: BUSH
-  x: 37
-  y: 9
-- object: BUSH
   x: 29
   y: 1
 - object: GROUND_BROWN_DOWN
@@ -117,30 +114,6 @@ objects:
   x: 0
   y: 1
   repeat-y: 2
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 11
-  repeat-x: 3
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 10
-- object: GROUND_BROWN_UP
-  x: 4
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 11
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 35
-  y: 11
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 10
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 10
 - object: GROUND_BROWN_UP
   x: 33
   y: 11
@@ -200,13 +173,6 @@ objects:
   x: 16
   y: 11
 - object: GROUND_GREEN_DOWN
-  x: 3
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 1
-  y: 10
-  repeat-x: 2
-- object: GROUND_GREEN_DOWN
   x: 0
   y: 9
 - object: GROUND_GREEN_DOWN
@@ -258,20 +224,11 @@ objects:
   x: 23
   y: 11
 - object: GROUND_GREEN_DOWN
-  x: 27
-  y: 11
-- object: GROUND_GREEN_DOWN
   x: 25
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 29
   y: 11
 - object: GROUND_GREEN_DOWN
   x: 34
   y: 10
-- object: GROUND_GREEN_DOWN
-  x: 38
-  y: 9
 - object: GROUND_GREEN_DOWN
   x: 39
   y: 8
@@ -287,6 +244,53 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 7
   y: 0
+- object: ROCK_2
+  x: 0
+  y: 11
+- object: GROUND_GREEN_DOWN
+  x: 4
+  y: 11
+- object: GROUND_GREEN_DOWN
+  x: 3
+  y: 10
+- object: TREE_SMALL
+  x: 28
+  y: 10
+- object: TREE_SMALL
+  x: 38
+  y: 10
+- object: GROUND_GREEN_DOWN
+  x: 35
+  y: 11
+- object: GROUND_GREEN_DOWN
+  x: 36
+  y: 10
+- object: GROUND_GREEN_DOWN
+  x: 37
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 35
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 34
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 31
+  y: 11
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN
+  x: 32
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 9
+  repeat-x: 3
 enemies:
 - enemy: sukkub
   x: 19

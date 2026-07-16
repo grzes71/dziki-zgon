@@ -22,6 +22,8 @@ REQ_SCREEN_TRANSITION .ds 1
 NEW_SCREEN_ID         .ds 1
 NEW_ACTOR_X           .ds 1
 NEW_ACTOR_Y           .ds 1
+ENEMY_COUNT_TMP       .ds 1
+CURRENT_ACTOR         .ds 1
 
 FrameCounter    .ds 1
 InputState_Joy  .ds 1
@@ -48,6 +50,16 @@ start_test_render
     brk
     rts
 
+start_test_npc_update
+    jsr NPC_Update
+    brk
+    rts
+
+start_test_load_enemies
+    jsr Load_Screen_Enemies
+    brk
+    rts
+
 ; --- Mockowanie globalnych tablic kolizji ---
     org $3000
 SCREEN_POINTERS_LO .ds 256
@@ -70,6 +82,7 @@ GAME_SCREEN_A5 .ds 480
     icl "../engine/player.asm"
     icl "../engine/collision.asm"
     icl "../engine/render.asm"
+    icl "../engine/npc.asm"
 
     ; Mock dla pmg_clear_all (z main.asm)
 pmg_clear_all
@@ -80,6 +93,24 @@ SPRITE_GERWALT_RIGHT_FRAMES = 4
 SPRITE_GERWALT_LEFT_FRAMES = 4
 SPRITE_GERWALT_UP_FRAMES = 4
 SPRITE_GERWALT_DOWN_FRAMES = 4
+
+SPRITE_KIKIMORA_FRAMES = 2
+SPRITE_KIKIMORA_HEIGHT = 16
+SPRITE_STRZYGA_FRAMES = 2
+SPRITE_STRZYGA_HEIGHT = 16
+SPRITE_BAZYLISZEK_FRAMES = 2
+SPRITE_BAZYLISZEK_HEIGHT = 16
+SPRITE_SUKKUB_RIGHT_FRAMES = 2
+SPRITE_SUKKUB_LEFT_FRAMES = 2
+SPRITE_SUKKUB_RIGHT_HEIGHT = 16
+SPRITE_SUKKUB_LEFT_HEIGHT = 16
+
+KIKIMORA_PTRS
+STRZYGA_PTRS
+BAZYLISZEK_PTRS
+SUKKUB_RIGHT_PTRS
+SUKKUB_LEFT_PTRS
+    dta a(0)
 
 SCREEN_LIMIT_LEFT   = 48
 SCREEN_LIMIT_RIGHT  = 200

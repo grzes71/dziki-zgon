@@ -10,12 +10,6 @@ objects:
 - object: CHURCH
   x: 18
   y: 2
-- object: BUSH
-  x: 11
-  y: 7
-- object: ROCK_GREEN
-  x: 6
-  y: 3
 - object: ROCK_GREEN
   x: 2
   y: 1
@@ -26,40 +20,16 @@ objects:
   x: 24
   y: 7
 - object: CROSS_2
-  x: 27
-  y: 7
-- object: CROSS_2
-  x: 26
-  y: 6
-- object: CROSS_2
-  x: 30
-  y: 7
-- object: CROSS_2
-  x: 29
-  y: 6
-- object: CROSS_2
   x: 32
   y: 6
 - object: CROSS_2
   x: 33
   y: 7
 - object: CROSS_2
-  x: 32
-  y: 8
-- object: CROSS_2
-  x: 29
-  y: 8
-- object: CROSS_2
   x: 26
   y: 8
 - object: CROSS_2
   x: 35
-  y: 6
-- object: CROSS_2
-  x: 35
-  y: 8
-- object: TREE_SMALL
-  x: 14
   y: 6
 - object: TREE_SMALL
   x: 31
@@ -70,10 +40,6 @@ objects:
 - object: TREE_SMALL
   x: 28
   y: 0
-- object: WAVES
-  x: 0
-  y: 11
-  repeat-x: 40
 - object: SIGNPOINT_RIGHT
   x: 35
   y: 3
@@ -85,39 +51,49 @@ objects:
   x: 8
   y: 7
 - object: TREE_2
-  x: 4
-  y: 4
-- object: TREE_2
-  x: 9
-  y: 2
-- object: TREE_2
   x: 0
   y: 0
 - object: TREE_2
-  x: 12
-  y: 2
-- object: TREE_2
   x: 3
   y: 8
-- object: BUSH_2
-  x: 11
-  y: 4
-- object: MUSHROOM
-  x: 6
-  y: 4
 - object: BUSH
   x: 0
   y: 4
-- object: BUSH
-  x: 31
-  y: 1
 - object: BUSH
   x: 0
   y: 8
+- object: TREE_2
+  x: 38
+  y: 9
+- object: WATER_ANIM
+  x: 0
+  y: 11
+  repeat-x: 40
+- object: TREE_3
+  x: 12
+  y: 3
+- object: TREE_SMALL
+  x: 7
+  y: 4
+- object: TREE_2
+  x: 38
+  y: 0
+- object: CROSS_1
+  x: 24
+  y: 9
+- object: CROSS_1
+  x: 26
+  y: 6
+- object: CROSS_1
+  x: 34
+  y: 8
+- object: CROSS_1
+  x: 28
+  y: 7
 enemies:
 - enemy: bazyliszek
-  x: 23
-  y: 5
-  strategy: vertical
-  speed: slow
-  color: yellow
+  x: 16
+  y: 1
+  strategy: chaotic
+  speed: medium
+  color: orange

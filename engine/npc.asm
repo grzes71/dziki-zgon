@@ -118,11 +118,13 @@ ENEMY_SPEED_MASK
     jsr npc_advance_screen_ptr
     lda (SCREEN_PTR),y
     cmp #2                      ; random?
-    bne @store_strat
+    bne @not_random
     
     ; Losujemy oś ruchu: 0 (horiz) lub 1 (vert)
     lda $D20A
     and #$01
+    jmp @store_strat
+@not_random
 @store_strat
     sta ACTOR_STRATEGY,x
     
@@ -163,6 +165,16 @@ ENEMY_SPEED_MASK
     
     ; Wybór początkowego kierunku ruchu na podstawie strategii
     lda ACTOR_STRATEGY,x
+    cmp #3                      ; chaotic?
+    bne @not_chaotic_init
+    
+    ; Dla chaotycznego losujemy dowolny kierunek 0..3 (Right, Left, Up, Down)
+    lda $D20A
+    and #$03
+    sta ACTOR_DIR,x
+    jmp @next_iteration
+
+@not_chaotic_init
     cmp #0
     bne @dir_vert
     
@@ -235,7 +247,41 @@ ENEMY_SPEED_MASK
     beq @not_blocked
     
 @blocked
-    ; Nastąpiło zablokowanie o ścianę/przeszkodę -> zmiana kierunku
+    ; Nastąpiło zablokowanie o ścianę/przeszkodę -> zmiana kierunku lub chaotic losowanie
+    lda ACTOR_STRATEGY,x
+    cmp #3                      ; chaotic?
+    bne @standard_bounce
+    
+    ; Chaotic bounce:
+    ; Losujemy nową oś: 0 (poziom) lub 1 (pion)
+    lda $D20A
+    and #$01
+    tay                         ; Y = nowa oś (0 lub 1)
+    
+    lda ACTOR_DIR,x             ; A = aktualny kierunek
+    lsr                         ; A = aktualna oś (0 lub 1)
+    
+    sty SRC_TMP                 ; SRC_TMP = nowa oś
+    cmp SRC_TMP
+    beq @same_axis              ; Jeśli nowa oś == aktualna oś, zmieniamy tylko zwrot (reverse)
+    
+    ; Nowa oś jest inna. Losujemy kierunek na nowej osi (0 lub 1).
+    lda $D20A
+    and #$01                    ; A = 0 lub 1
+    cpy #0                      ; czy nowa oś to poziom?
+    beq @store_dir
+    clc
+    adc #2                      ; dla pionu dodajemy 2 -> 2 lub 3
+    bne @store_dir              ; skok bezwarunkowy (ponieważ A != 0)
+    
+@same_axis
+    lda ACTOR_DIR,x
+    eor #$01                    ; Odwrócenie kierunku na tej samej osi
+@store_dir
+    sta ACTOR_DIR,x
+    jmp @not_blocked
+    
+@standard_bounce
     lda ACTOR_DIR,x
     eor #$01
     sta ACTOR_DIR,x

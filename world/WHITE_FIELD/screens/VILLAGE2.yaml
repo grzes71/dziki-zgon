@@ -85,6 +85,9 @@ objects:
 - object: WELL
   x: 9
   y: 2
+- object: ROCK_1
+  x: 0
+  y: 11
 enemies:
 - enemy: strzyga
   x: 11

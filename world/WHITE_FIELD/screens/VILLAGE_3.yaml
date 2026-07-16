@@ -19,9 +19,6 @@ objects:
 - object: BARN_SMALL
   x: 18
   y: 8
-- object: SIGNPOINT_LEFT
-  x: 3
-  y: 6
 - object: TREE_3
   x: 8
   y: 8
@@ -77,23 +74,6 @@ objects:
   x: 18
   y: 5
 - object: GROUND_GREEN_UP
-  x: 7
-  y: 9
-- object: GROUND_GREEN_UP
-  x: 23
-  y: 10
-  repeat-y: 2
-- object: GROUND_GREEN_UP
-  x: 25
-  y: 11
-- object: GROUND_GREEN_UP
-  x: 19
-  y: 11
-  repeat-x: 3
-- object: GROUND_GREEN_UP
-  x: 17
-  y: 11
-- object: GROUND_GREEN_UP
   x: 26
   y: 7
 - object: GROUND_GREEN_UP
@@ -119,112 +99,132 @@ objects:
   x: 21
   y: 0
 - object: GROUND_GREEN_UP
-  x: 31
-  y: 0
-  repeat-x: 4
-- object: GROUND_GREEN_UP
-  x: 37
-  y: 11
-  repeat-x: 3
-- object: GROUND_GREEN_UP
-  x: 35
-  y: 11
-- object: GROUND_GREEN_UP
-  x: 38
-  y: 10
-  repeat-x: 2
-- object: GROUND_GREEN_UP
   x: 39
   y: 8
-- object: GROUND_GREEN_UP
-  x: 9
-  y: 11
-- object: GROUND_GREEN_UP
-  x: 1
-  y: 11
-- object: GROUND_GREEN_UP
-  x: 3
-  y: 11
-- object: GROUND_GREEN_UP
-  x: 5
-  y: 7
-- object: GROUND_GREEN_UP
-  x: 7
-  y: 5
 - object: GROUND_GREEN_UP
   x: 8
   y: 0
 - object: GROUND_GREEN_UP
   x: 5
   y: 0
-- object: GROUND_GREEN_UP
+- object: GROUND_BROWN_UP
+  x: 35
+  y: 0
+  repeat-x: 5
+- object: TREE_2
   x: 0
   y: 0
-- object: GROUND_GREEN_UP
+- object: WAVES
   x: 0
-  y: 2
-- object: GROUND_BROWN_UP
-  x: 36
   y: 11
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 10
-- object: GROUND_BROWN_UP
-  x: 34
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 22
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 26
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 28
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 24
-  y: 10
-  repeat-y: 2
-- object: GROUND_BROWN_UP
-  x: 21
-  y: 10
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 18
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 16
-  y: 11
-- object: GROUND_BROWN_UP
+  repeat-x: 40
+- object: TREE_3
   x: 0
-  y: 10
-  repeat-y: 2
+  y: 9
 - object: GROUND_BROWN_UP
-  x: 2
-  y: 11
+  x: 6
+  y: 5
 - object: GROUND_BROWN_UP
   x: 4
-  y: 11
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 3
+  y: 4
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 25
+  y: 7
+- object: GROUND_BROWN_UP
+  x: 25
+  y: 8
   repeat-x: 2
 - object: GROUND_BROWN_UP
-  x: 7
-  y: 11
+  x: 23
+  y: 8
 - object: GROUND_BROWN_UP
-  x: 35
+  x: 22
+  y: 7
+- object: GROUND_BROWN_UP
+  x: 27
+  y: 7
+- object: GROUND_BROWN_UP
+  x: 1
+  y: 5
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 4
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 5
+  y: 6
+- object: GROUND_BROWN_UP
+  x: 3
+  y: 6
+- object: GROUND_BROWN_UP
+  x: 8
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 17
   y: 0
-  repeat-x: 5
-- object: GROUND_GREEN_DOWN
+- object: GROUND_BROWN_UP
+  x: 20
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 14
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 12
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 1
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 33
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 34
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 32
+  y: 1
+- object: GROUND_BROWN_UP
   x: 31
-  y: 1
-  repeat-x: 4
-- object: GROUND_BROWN_DOWN
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 2
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 4
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 10
+- object: REED
   x: 35
-  y: 1
-  repeat-x: 5
+  y: 10
+  repeat-x: 3
+- object: REED
+  x: 22
+  y: 10
+  repeat-x: 3
+- object: REED
+  x: 6
+  y: 10
+  repeat-x: 2
 enemies:
 - enemy: kimikora
-  x: 22
-  y: 5
-  strategy: vertical
-  speed: medium
-  color: red
+  x: 24
+  y: 7
+  strategy: horizontal
+  speed: slow
+  color: green
