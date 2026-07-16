@@ -129,7 +129,7 @@ Pozwala na uruchomienie emulatora i wstrzymanie w momencie napotkania breakpoint
 
 ## 8. Altirra Auto-Debugger Compatibility Shim (`scripts/atdbg.py`)
 
-Skrypt `scripts/atdbg.py` służy jako przejściowa nakładka wstecznej kompatybilności. Automatycznie mapuje dawne parametry (`--rom` -> `--xex` oraz `--lab-file` -> `--lab`) i wywołuje polecenie `debug-bridge break`, przekazując z powrotem kod wyjścia (exit code) oraz wygenerowany dokument JSON na standardowe wyjście (stdout).
+Skrypt `scripts/atdbg.py` został zintegrowany z **Debug Bridge** i służy obecnie jako przejściowa nakładka (shim) wstecznej kompatybilności. Automatycznie mapuje dawne parametry (`--rom` -> `--xex` oraz `--lab-file` -> `--lab`) i przekazuje wywołanie bezpośrednio do polecenia `debug-bridge break`, zwracając kod wyjścia (exit code) oraz wygenerowany dokument JSON na standardowe wyjście (stdout).
 
 ### Przykłady użycia shima:
 ```bash
@@ -138,5 +138,40 @@ python scripts/atdbg.py --rom dziki_zgon.xex --bp '$4000'
 
 # Z użyciem pliku lab (mapuje --lab-file na --lab)
 python scripts/atdbg.py --rom dziki_zgon.xex --bp GAME_STATE --lab-file dziki_zgon.lab
+
+---
+
+## 9. Konwerter Sprite'ów z PNG (`scripts/png2sprite.py`)
+
+Narzędzie konsolowe konwertujące klatki sprite'a z 1-bitowego indeksowanego obrazu PNG bezpośrednio na format JSON zgodny ze Sprite Studio.
+
+```bash
+python scripts/png2sprite.py -i <obraz_png> -n <ilosc_klatek> [opcje]
+
+Argumenty:
+  -i, --input        Ścieżka do pliku wejściowego PNG (indeksowany, 1-bitowy)
+  -n, --frames       Ilość klatek animacji pionowej na arkuszu
+
+Opcje:
+  -o, --output       Ścieżka do pliku wyjściowego JSON (domyślnie: <input>.sprite.json)
+  --id ID            Identyfikator sprite'a w pliku JSON (domyślnie: nazwa pliku wielkimi literami)
+  --mirror           Obraca klatki w poziomie (lustrzane odbicie)
+  --add-mirrored     Generuje w jednym pliku oryginalny sprite oraz jego lustrzane odbicie (z sufiksem _MIRRORED)
+  --invert           Inwertuje piksele (0 -> 1, 1 -> 0)
+  --color COLOR      Indeks koloru w strukturze JSON (domyślnie: 0)
+  --duration DUR     Czas trwania klatki (domyślnie: 4)
+  --no-loop          Wyłącza pętlę animacji (domyślnie: włączona)
+```
+
+### Przykłady
+
+```bash
+# Konwersja arkusza 8x96 z 6 klatkami (każda klatka o wysokości 16)
+python scripts/png2sprite.py -i sprites/gerwalt_sheet.png -n 6 --id GERWALT
+
+# Konwersja z automatycznym wygenerowaniem wersji w lustrzanym odbiciu (GERWALT i GERWALT_MIRRORED w jednym pliku)
+python scripts/png2sprite.py -i sprites/gerwalt_sheet.png -n 6 --id GERWALT --add-mirrored
+```
+
 ```
 

@@ -84,7 +84,7 @@ default_status_bar
     sta ACTOR_ACTIVE,x
     lda #6
     sta ACTOR_ANIM_SPEED,x
-    lda #14
+    lda #SPRITE_GERWALT_RIGHT_HEIGHT
     sta ACTOR_HEIGHT,x
     
     ; Wskaźniki na klatki animacji i limity
