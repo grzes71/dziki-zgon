@@ -89,20 +89,19 @@ row_offsets_hi
     adc #1
     sta OBJ_H
 
-    ; --- Oznacz w siatce kolizji, jeśli obiekt jest blokujący ---
+    ; Pobierz wskaźnik kafelków (potrzebny również do wykrywania pustych kafli w kolizjach)
     ldx OBJ_CODE
-    lda OBJ_FLAGS,x
-    and #$80
-    beq @skip_col_mark
-    jsr mark_object_blocking
-    ldx OBJ_CODE
-@skip_col_mark
-
-    ; Pobierz wskaźnik kafelków
     lda OBJ_TILES_LO,x
     sta TILE_PTR
     lda OBJ_TILES_HI,x
     sta TILE_PTR+1
+
+    ; --- Oznacz w siatce kolizji, jeśli obiekt jest blokujący ---
+    lda OBJ_FLAGS,x
+    and #$80
+    beq @skip_col_mark
+    jsr mark_object_blocking
+@skip_col_mark
 
     ; Rysowanie
     lda #0
@@ -166,12 +165,20 @@ row_offsets_hi
 ; Wejście: OBJ_X, OBJ_Y, OBJ_W, OBJ_H
 ;==============================================================
 .proc mark_object_blocking
+    lda #0
+    sta TMP_TILE_IDX
+
     lda OBJ_Y
     sta TMP_Y_GRID
 @row_loop
     lda OBJ_X
     sta TMP_X_GRID
 @col_loop
+    ; Sprawdź kafelek pod TMP_TILE_IDX w (TILE_PTR)
+    ldy TMP_TILE_IDX
+    lda (TILE_PTR),y
+    beq @skip_tile_mark
+
     ; Oblicz Row * 5
     lda TMP_Y_GRID
     asl
@@ -199,6 +206,9 @@ row_offsets_hi
     ora COLLISION_GRID,y
     sta COLLISION_GRID,y
 
+@skip_tile_mark
+    inc TMP_TILE_IDX
+
     ; Kolumny loop
     inc TMP_X_GRID
     lda TMP_X_GRID
@@ -223,5 +233,6 @@ bit_masks
 TMP_X_GRID     dta $00
 TMP_Y_GRID     dta $00
 TMP_GRID_INDEX dta $00
+TMP_TILE_IDX   dta $00
 .endp
 

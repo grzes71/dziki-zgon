@@ -121,3 +121,102 @@ def test_build_screen_single_tile(harness):
     # Sprawdzenie czy dookoła nic nie ma
     assert cpu.memory[GAME_SCREEN_A5 + 41] == 0
     assert cpu.memory[GAME_SCREEN_A5 + 43] == 0
+
+def test_build_screen_blocking_with_empty_tiles(harness):
+    xex_file, labels = harness
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    
+    # Adresy
+    SCREEN_PTR_Z = labels["SCREEN_PTR"]
+    GAME_SCREEN_ID_Z = labels["GAME_SCREEN_ID"]
+    SCREEN_POINTERS_LO = labels["SCREEN_POINTERS_LO"]
+    SCREEN_POINTERS_HI = labels["SCREEN_POINTERS_HI"]
+    OBJ_SIZE = labels["OBJ_SIZE"]
+    OBJ_FLAGS = labels["OBJ_FLAGS"]
+    COLLISION_GRID = labels["COLLISION_GRID"]
+    OBJ_TILES_LO = labels["OBJ_TILES_LO"]
+    OBJ_TILES_HI = labels["OBJ_TILES_HI"]
+    GAME_SCREEN_A5 = labels["GAME_SCREEN_A5"]
+    SCREEN_DATA = labels["SCREEN_DATA"]
+    TILES_DATA = labels["TILES_DATA"]
+    
+    # Wyczyść VRAM (480 bajtów dla ANTIC 5)
+    for i in range(480):
+        cpu.memory[GAME_SCREEN_A5 + i] = 0
+        
+    # Wyczyść COLLISION_GRID (60 bajtów)
+    for i in range(60):
+        cpu.memory[COLLISION_GRID + i] = 0
+        
+    # GAME_SCREEN_ID = 0
+    cpu.memory[GAME_SCREEN_ID_Z] = 0
+    
+    # Setup SCREEN_POINTERS dla mapy 0 na adres SCREEN_DATA
+    cpu.memory[SCREEN_POINTERS_LO] = SCREEN_DATA & 0xFF
+    cpu.memory[SCREEN_POINTERS_HI] = (SCREEN_DATA >> 8) & 0xFF
+    
+    # Setup SCREEN_DATA: 1 obiekt (kod=1, x=4, y=3)
+    cpu.memory[SCREEN_DATA] = 1     # Liczba obiektów
+    cpu.memory[SCREEN_DATA+1] = 1   # Kod obiektu
+    cpu.memory[SCREEN_DATA+2] = 4   # X
+    cpu.memory[SCREEN_DATA+3] = 3   # Y
+    
+    # Setup OBJ_SIZE: (W-1)<<4 | (H-1) -> W=2, H=2 -> (2-1)<<4 | (2-1) = 0x11
+    cpu.memory[OBJ_SIZE + 1] = 0x11
+    
+    # Setup OBJ_FLAGS: blocking (bit 7) -> 0x80
+    cpu.memory[OBJ_FLAGS + 1] = 0x80
+    
+    # Setup OBJ_TILES wskaźnik kafelków dla kodu 1
+    cpu.memory[OBJ_TILES_LO + 1] = TILES_DATA & 0xFF
+    cpu.memory[OBJ_TILES_HI + 1] = (TILES_DATA >> 8) & 0xFF
+    
+    # Setup TILES_DATA: kafelek = [0, 42, 43, 0]
+    cpu.memory[TILES_DATA] = 0
+    cpu.memory[TILES_DATA+1] = 42
+    cpu.memory[TILES_DATA+2] = 43
+    cpu.memory[TILES_DATA+3] = 0
+    
+    # Wywołanie (sp reset na dół stosu by zapobiec błędom)
+    cpu.sp = 0xFF
+    cpu.pc = labels["START_TEST"]
+    
+    max_steps = 2000
+    steps = 0
+    while steps < max_steps:
+        if cpu.memory[cpu.pc] == 0x00: # BRK
+            break
+        cpu.step()
+        steps += 1
+        
+    assert steps < max_steps, "Nieskończona pętla w 6502!"
+    
+    # Asercja wirtualnego VRAMu
+    # Row 3, Col 4 -> 3 * 40 + 4 = 124
+    # Row 3, Col 5 -> 3 * 40 + 5 = 125
+    # Row 4, Col 4 -> 4 * 40 + 4 = 164
+    # Row 4, Col 5 -> 4 * 40 + 5 = 165
+    assert cpu.memory[GAME_SCREEN_A5 + 124] == 0
+    assert cpu.memory[GAME_SCREEN_A5 + 125] == 42
+    assert cpu.memory[GAME_SCREEN_A5 + 164] == 43
+    assert cpu.memory[GAME_SCREEN_A5 + 165] == 0
+    
+    # Asercja COLLISION_GRID
+    def is_blocking(x, y):
+        byte_offset = y * 5 + x // 8
+        bit_index = x % 8
+        mask = 0x80 >> bit_index
+        return bool(cpu.memory[COLLISION_GRID + byte_offset] & mask)
+        
+    assert is_blocking(4, 3) is False, "Empty tile (4,3) should not block"
+    assert is_blocking(5, 3) is True, "Non-empty tile (5,3) should block"
+    assert is_blocking(4, 4) is True, "Non-empty tile (4,4) should block"
+    assert is_blocking(5, 4) is False, "Empty tile (5,4) should not block"
+    
+    # Sprawdzenie czy dookoła nic nie jest zablokowane
+    assert is_blocking(3, 3) is False
+    assert is_blocking(6, 3) is False
+    assert is_blocking(4, 2) is False
+    assert is_blocking(4, 5) is False
+
