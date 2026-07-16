@@ -43,28 +43,12 @@ objects:
 - object: GROUND_BROWN_UP
   x: 23
   y: 5
-- object: WATER_ANIM
-  x: 3
-  y: 10
-  repeat-x: 37
-  repeat-y: 2
-- object: WAVES_LEFT
-  x: 2
-  y: 10
-  repeat-y: 2
-- object: WATER_DOWN
-  x: 2
-  y: 9
 - object: PORT
   x: 25
   y: 6
 - object: SHIP
   x: 12
   y: 7
-- object: WAVES
-  x: 3
-  y: 9
-  repeat-x: 9
 - object: WAVES
   x: 21
   y: 9
@@ -114,12 +98,6 @@ objects:
   x: 39
   y: 2
 - object: GROUND_BROWN_DOWN
-  x: 38
-  y: 3
-- object: GROUND_BROWN_DOWN
-  x: 39
-  y: 4
-- object: GROUND_BROWN_DOWN
   x: 0
   y: 1
   repeat-x: 3
@@ -137,21 +115,30 @@ objects:
 - object: GROUND_BROWN_UP
   x: 0
   y: 8
-- object: GROUND_BROWN_UP
+- object: WAVES
   x: 0
   y: 9
-  repeat-x: 2
-  repeat-y: 3
+  repeat-x: 12
+- object: WATER_ANIM
+  x: 0
+  y: 10
+  repeat-x: 13
+- object: WATER_ANIM
+  x: 0
+  y: 11
+  repeat-x: 40
+- object: WATER_ANIM
+  x: 22
+  y: 10
+  repeat-x: 18
+- object: WAVES
+  x: 13
+  y: 10
+  repeat-x: 9
 enemies:
-- enemy: bazyliszek
-  x: 21
-  y: 4
-  strategy: vertical
-  speed: slow
-  color: white
 - enemy: strzyga
-  x: 35
-  y: 0
-  strategy: horizontal
+  x: 16
+  y: 5
+  strategy: chaotic
   speed: medium
-  color: blue
+  color: green

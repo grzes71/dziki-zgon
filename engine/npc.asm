@@ -145,6 +145,7 @@ ENEMY_SPEED_MASK
     lda #0
     sta ACTOR_ANIM_FRAME,x
     sta ACTOR_ANIM_TIMER,x
+    sta ACTOR_PAUSE_TIMER,x
     lda #6                      ; Standardowa prędkość animacji
     sta ACTOR_ANIM_SPEED,x
     
@@ -165,10 +166,10 @@ ENEMY_SPEED_MASK
     
     ; Wybór początkowego kierunku ruchu na podstawie strategii
     lda ACTOR_STRATEGY,x
-    cmp #3                      ; chaotic?
-    bne @not_chaotic_init
+    cmp #3                      ; >= 3 (chaotic/patrol/pacing/snake)?
+    bcc @not_chaotic_init
     
-    ; Dla chaotycznego losujemy dowolny kierunek 0..3 (Right, Left, Up, Down)
+    ; Dla strategii >= 3 losujemy dowolny kierunek 0..3 (Right, Left, Up, Down)
     lda $D20A
     and #$03
     sta ACTOR_DIR,x
@@ -238,17 +239,61 @@ ENEMY_SPEED_MASK
     jmp @next_npc               ; Pomiń ruch, jeśli to nie jest klatka ruchu
     
 @move_now
+    ; Sprawdzenie timera pauzy (dla strategii pacing)
+    lda ACTOR_PAUSE_TIMER,x
+    beq @not_paused
+    
+    dec ACTOR_PAUSE_TIMER,x
+    
+    ; Pozostawiamy aktualną pozycję
+    lda ACTOR_X,x
+    sta ACTOR_INTENT_X,x
+    lda ACTOR_Y,x
+    sta ACTOR_INTENT_Y,x
+    
+    ; Jeśli timer właśnie osiągnął 0, zmieniamy zwrot na przeciwny dla kolejnej klatki
+    lda ACTOR_PAUSE_TIMER,x
+    bne @skip_reverse
+    
+    lda ACTOR_DIR,x
+    eor #$01
+    sta ACTOR_DIR,x
+@skip_reverse
+    jmp @next_npc
+
+@not_paused
     ; Sprawdzenie, czy ruch w poprzedniej klatce się powiódł
     lda ACTOR_X,x
     cmp ACTOR_INTENT_X,x
     bne @blocked
     lda ACTOR_Y,x
     cmp ACTOR_INTENT_Y,x
-    beq @not_blocked
+    beq @not_blocked_snake_check
     
 @blocked
-    ; Nastąpiło zablokowanie o ścianę/przeszkodę -> zmiana kierunku lub chaotic losowanie
+    ; Nastąpiło zablokowanie o ścianę/przeszkodę -> zmiana kierunku lub chaotic/patrol/pacing losowanie
     lda ACTOR_STRATEGY,x
+    cmp #5                      ; pacing?
+    bne @not_pacing
+    
+    ; Strategia pacing:
+    ; Ustawiamy timer pauzy na 30 klatek (~0.5 sekundy) i stoimy w miejscu w tej klatce
+    lda #30
+    sta ACTOR_PAUSE_TIMER,x
+    jmp @not_blocked
+
+@not_pacing
+    cmp #4                      ; patrol?
+    bne @chk_chaotic
+    
+    ; Patrol bounce:
+    ; Obrót w prawo (clockwise) na podstawie ROTATION_TABLE
+    ldy ACTOR_DIR,x
+    lda ROTATION_TABLE,y
+    sta ACTOR_DIR,x
+    jmp @not_blocked
+
+@chk_chaotic
     cmp #3                      ; chaotic?
     bne @standard_bounce
     
@@ -286,6 +331,88 @@ ENEMY_SPEED_MASK
     eor #$01
     sta ACTOR_DIR,x
     
+@not_blocked_snake_check
+    lda ACTOR_STRATEGY,x
+    cmp #6                      ; snake?
+    bne @chk_homing
+    
+    ; Snake strategy switch check:
+    txa
+    clc
+    adc FrameCounter
+    and #$3F                    ; co 64 klatki
+    bne @not_blocked
+    
+    ; Losujemy nowy kierunek 0..3
+    lda $D20A
+    and #$03
+    sta ACTOR_DIR,x
+    jmp @not_blocked
+
+@chk_homing
+    cmp #7                      ; homing?
+    bne @not_blocked
+    
+    ; Homing strategy recalculate check:
+    txa
+    clc
+    adc FrameCounter
+    and #$0F                    ; co 16 klatek
+    bne @not_blocked
+    
+    ; Obliczanie odległości w osiach X i Y (do gracza na indeksie 0)
+    ; 1. dx = abs(ACTOR_X - ACTOR_X,x)
+    lda ACTOR_X
+    sec
+    sbc ACTOR_X,x
+    bcs @dx_pos
+    eor #$FF
+    clc
+    adc #1
+@dx_pos
+    sta SRC_TMP
+    
+    ; 2. dy = abs(ACTOR_Y - ACTOR_Y,x)
+    lda ACTOR_Y
+    sec
+    sbc ACTOR_Y,x
+    bcs @dy_pos
+    eor #$FF
+    clc
+    adc #1
+@dy_pos
+    sta SRC_TMP+1
+    
+    ; 3. Porównanie dx i dy
+    lda SRC_TMP
+    cmp SRC_TMP+1
+    bcc @move_vert
+    
+    ; Ruch w poziomie: porównanie współrzędnych X gracza i przeciwnika
+    lda ACTOR_X
+    cmp ACTOR_X,x
+    bcs @go_right
+    lda #1                      ; Left
+    sta ACTOR_DIR,x
+    jmp @not_blocked
+@go_right
+    lda #0                      ; Right
+    sta ACTOR_DIR,x
+    jmp @not_blocked
+    
+@move_vert
+    ; Ruch w pionie: porównanie współrzędnych Y gracza i przeciwnika
+    lda ACTOR_Y
+    cmp ACTOR_Y,x
+    bcs @go_down
+    lda #2                      ; Up
+    sta ACTOR_DIR,x
+    jmp @not_blocked
+@go_down
+    lda #3                      ; Down
+    sta ACTOR_DIR,x
+    jmp @not_blocked
+
 @not_blocked
     ; Klonujemy aktualną pozycję do intencji
     lda ACTOR_X,x
@@ -348,4 +475,7 @@ ENEMY_SPEED_MASK
     jmp @npc_loop
 @done_npc
     rts
+
+ROTATION_TABLE
+    dta 3, 2, 0, 1
 .endp

@@ -144,9 +144,6 @@ objects:
 - object: BUSH_2
   x: 33
   y: 4
-- object: BUSH
-  x: 6
-  y: 6
 - object: GROUND_GREEN_UP
   x: 37
   y: 9
@@ -300,10 +297,13 @@ objects:
 - object: REED
   x: 11
   y: 0
+- object: BUSH_2
+  x: 7
+  y: 6
 enemies:
 - enemy: bazyliszek
   x: 13
   y: 6
-  strategy: vertical
-  speed: slow
+  strategy: snake
+  speed: medium
   color: brown

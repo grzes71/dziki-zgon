@@ -155,7 +155,7 @@ class AsmGenerator:
         objects_by_id = {obj.id: obj for obj in self.world.objects}
         
         enemy_types = {e.id: idx for idx, e in enumerate(self.world.enemies)}
-        strategies = {"horizontal": 0, "vertical": 1, "random": 2, "chaotic": 3}
+        strategies = {"horizontal": 0, "vertical": 1, "random": 2, "chaotic": 3, "patrol": 4, "pacing": 5, "snake": 6, "homing": 7}
         speeds = {"slow": 0, "medium": 1, "fast": 2}
         
         for s in self.screens_sorted:

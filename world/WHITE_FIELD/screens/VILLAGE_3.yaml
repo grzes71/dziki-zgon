@@ -35,9 +35,6 @@ objects:
   x: 5
   y: 9
 - object: ROCK_2
-  x: 30
-  y: 8
-- object: ROCK_2
   x: 28
   y: 2
 - object: ROCK_2
@@ -49,12 +46,6 @@ objects:
 - object: BUSH
   x: 24
   y: 5
-- object: BUSH
-  x: 36
-  y: 5
-- object: ROCK_GREEN
-  x: 28
-  y: 9
 - object: WELL
   x: 12
   y: 2
@@ -67,21 +58,6 @@ objects:
 - object: BUSH_2
   x: 3
   y: 9
-- object: BUSH_2
-  x: 35
-  y: 9
-- object: BUSH_2
-  x: 18
-  y: 5
-- object: GROUND_GREEN_UP
-  x: 26
-  y: 7
-- object: GROUND_GREEN_UP
-  x: 24
-  y: 8
-- object: GROUND_GREEN_UP
-  x: 23
-  y: 7
 - object: GROUND_GREEN_UP
   x: 16
   y: 0
@@ -133,22 +109,6 @@ objects:
 - object: GROUND_BROWN_UP
   x: 0
   y: 3
-- object: GROUND_BROWN_UP
-  x: 25
-  y: 7
-- object: GROUND_BROWN_UP
-  x: 25
-  y: 8
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 23
-  y: 8
-- object: GROUND_BROWN_UP
-  x: 22
-  y: 7
-- object: GROUND_BROWN_UP
-  x: 27
-  y: 7
 - object: GROUND_BROWN_UP
   x: 1
   y: 5
@@ -214,17 +174,25 @@ objects:
   y: 10
   repeat-x: 3
 - object: REED
-  x: 22
-  y: 10
-  repeat-x: 3
-- object: REED
   x: 6
   y: 10
   repeat-x: 2
+- object: CROSS_2
+  x: 36
+  y: 9
+- object: TREE_2
+  x: 19
+  y: 5
+- object: TREE_2
+  x: 36
+  y: 5
+- object: CROSS_1
+  x: 21
+  y: 10
 enemies:
-- enemy: kimikora
-  x: 24
-  y: 7
-  strategy: horizontal
+- enemy: sukkub
+  x: 27
+  y: 9
+  strategy: patrol
   speed: slow
-  color: green
+  color: cyan

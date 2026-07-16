@@ -150,19 +150,8 @@ objects:
   x: 21
   y: 9
 - object: REED
-  x: 12
-  y: 10
-  repeat-x: 2
-- object: REED
   x: 15
   y: 10
-- object: REED
-  x: 11
-  y: 9
-  repeat-x: 2
-- object: REED
-  x: 12
-  y: 8
 - object: REED
   x: 17
   y: 10
@@ -239,9 +228,6 @@ objects:
   x: 31
   y: 6
 - object: GROUND_GREEN_DOWN
-  x: 12
-  y: 5
-- object: GROUND_GREEN_DOWN
   x: 7
   y: 0
 - object: ROCK_2
@@ -292,9 +278,9 @@ objects:
   y: 9
   repeat-x: 3
 enemies:
-- enemy: sukkub
-  x: 19
-  y: 6
-  strategy: horizontal
-  speed: medium
-  color: red
+- enemy: strzyga
+  x: 12
+  y: 5
+  strategy: homing
+  speed: slow
+  color: green

@@ -41,6 +41,8 @@ ACTOR_STRATEGY
     .ds MAX_ACTORS
 ACTOR_SPEED
     .ds MAX_ACTORS
+ACTOR_PAUSE_TIMER
+    .ds MAX_ACTORS
 
 ; Siatka kolizji (40 kolumn * 12 wierszy = 480 kafelków, pakowane po 8 bitów na bajt = 60 bajtów)
 COLLISION_GRID

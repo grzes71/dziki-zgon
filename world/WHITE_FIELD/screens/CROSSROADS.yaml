@@ -111,15 +111,9 @@ objects:
   x: 34
   y: 2
 enemies:
-- enemy: kimikora
-  x: 38
-  y: 5
-  strategy: vertical
-  speed: medium
-  color: orange
 - enemy: sukkub
   x: 25
   y: 7
-  strategy: horizontal
+  strategy: pacing
   speed: medium
   color: brown
