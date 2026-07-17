@@ -3,13 +3,10 @@ grid_x: 1
 grid_y: 1
 exits:
   north: CROSSROADS
-  south: VILLAGE_3
+  south: null
   east: WASTELAND
   west: VILLAGE
 objects:
-- object: HOUSE_SMALL_BLUE
-  x: 25
-  y: 8
 - object: HOUSE_BIGGER
   x: 15
   y: 5
@@ -19,54 +16,15 @@ objects:
 - object: ROCK_GREEN
   x: 22
   y: 4
-- object: TREE_SMALL
-  x: 15
-  y: 1
-- object: FENCE_1
-  x: 17
-  y: 2
-- object: FENCE_1
-  x: 38
-  y: 7
-- object: GROUND_BROWN_UP
-  x: 33
-  y: 11
-  repeat-x: 7
-- object: GROUND_BROWN_UP
-  x: 35
-  y: 10
-  repeat-x: 5
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 34
-  y: 0
-  repeat-x: 6
-- object: GROUND_BROWN_DOWN
-  x: 32
-  y: 0
-- object: TREE_2
-  x: 15
-  y: 9
 - object: HOME_SMALL_2
   x: 6
   y: 8
-- object: HOME_NEW_2
-  x: 2
-  y: 2
-- object: HOME_SMALL_2
-  x: 19
-  y: 1
 - object: ROCK_GREEN
   x: 5
   y: 5
 - object: ROCK_GREEN
   x: 7
   y: 6
-- object: BARN_SMALL
-  x: 18
-  y: 9
 - object: HOME_NEW_2
   x: 31
   y: 3
@@ -77,17 +35,68 @@ objects:
   x: 22
   y: 6
 - object: TREE_2
-  x: 3
-  y: 8
-- object: TREE_2
   x: 30
   y: 6
-- object: WELL
-  x: 9
-  y: 2
-- object: ROCK_1
+- object: HOUSE_MEDIUM_GREEN
   x: 0
+  y: 0
+- object: FENCE_1
+  x: 5
+  y: 1
+  repeat-x: 4
+- object: WELL
+  x: 13
+  y: 0
+- object: TREE_2
+  x: 15
+  y: 0
+- object: WATER
+  x: 19
+  y: 0
+  repeat-x: 21
+- object: WAVES
+  x: 17
+  y: 0
+  repeat-x: 2
+- object: WAVES
+  x: 17
+  y: 1
+  repeat-x: 23
+- object: BUSH_2
+  x: 26
+  y: 6
+- object: BUSH_2
+  x: 2
+  y: 6
+- object: SHED
+  x: 37
+  y: 10
+- object: FENCE_4
+  x: 29
   y: 11
+  repeat-x: 8
+- object: OUTHOUSE_2
+  x: 27
+  y: 10
+- object: TREE_3
+  x: 3
+  y: 9
+- object: TREE_3
+  x: 0
+  y: 9
+- object: SIGNPOINT_LEFT
+  x: 6
+  y: 11
+- object: FENCE_1
+  x: 17
+  y: 11
+  repeat-x: 5
+- object: BARN_4
+  x: 14
+  y: 10
+- object: TREE_3
+  x: 11
+  y: 10
 enemies:
 - enemy: strzyga
   x: 11
@@ -95,9 +104,3 @@ enemies:
   strategy: vertical
   speed: medium
   color: orange
-- enemy: kimikora
-  x: 26
-  y: 0
-  strategy: vertical
-  speed: medium
-  color: magenta

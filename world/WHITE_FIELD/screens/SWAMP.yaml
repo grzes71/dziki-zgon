@@ -102,38 +102,6 @@ objects:
   x: 39
   y: 2
 - object: WAVES
-  x: 1
-  y: 8
-  repeat-x: 2
-- object: WAVES
-  x: 2
-  y: 7
-  repeat-x: 5
-- object: WAVES
-  x: 6
-  y: 8
-  repeat-x: 2
-- object: WAVES
-  x: 7
-  y: 9
-  repeat-x: 2
-- object: WAVES
-  x: 3
-  y: 10
-  repeat-x: 5
-- object: WAVES
-  x: 2
-  y: 9
-  repeat-x: 2
-- object: WAVES
-  x: 15
-  y: 11
-  repeat-x: 2
-- object: WAVES
-  x: 16
-  y: 10
-  repeat-x: 2
-- object: WAVES
   x: 17
   y: 9
   repeat-x: 2
@@ -193,10 +161,6 @@ objects:
   x: 39
   y: 8
 - object: WATER_ANIM
-  x: 17
-  y: 11
-  repeat-x: 10
-- object: WATER_ANIM
   x: 18
   y: 10
   repeat-x: 7
@@ -204,46 +168,9 @@ objects:
   x: 19
   y: 9
   repeat-x: 5
-- object: WATER_ANIM
-  x: 3
-  y: 8
-  repeat-x: 3
-- object: WATER_ANIM
-  x: 4
-  y: 9
-  repeat-x: 3
-- object: REED
-  x: 12
-  y: 11
-  repeat-x: 3
-- object: REED
-  x: 14
-  y: 10
-  repeat-x: 2
 - object: REED
   x: 15
   y: 9
-- object: REED
-  x: 10
-  y: 11
-- object: REED
-  x: 8
-  y: 10
-  repeat-y: 2
-- object: REED
-  x: 8
-  y: 8
-- object: REED
-  x: 1
-  y: 9
-- object: REED
-  x: 1
-  y: 10
-  repeat-x: 2
-- object: REED
-  x: 0
-  y: 11
-  repeat-x: 7
 - object: REED
   x: 29
   y: 10
@@ -300,6 +227,14 @@ objects:
 - object: BUSH_2
   x: 7
   y: 6
+- object: WAVES
+  x: 0
+  y: 10
+  repeat-x: 18
+- object: WATER_ANIM
+  x: 0
+  y: 11
+  repeat-x: 27
 enemies:
 - enemy: bazyliszek
   x: 13

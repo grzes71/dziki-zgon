@@ -52,8 +52,8 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. Wskazywana przez `CHBASE = $64`. |
 | **`$6800` – `$7FFF`** | 6144 B | — | **WOLNY RAM** | Gigantyczny, ciągły blok wolnego RAM-u odzyskany dzięki VRAM_ARENA. |
 | **`$8000` – `$AE06`** | 11783 B | `ROM_DATA` | Dane (ROM) | Skompresowane grafiki w XEX (`title.rle` oraz `gameover.rle`). Rozpakowywane do `VRAM_ARENA`. |
-| **`$7649` – `$76B1`** | 105 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
-| **`$76B2` – `$9FFF`** | 10574 B | `DUMMY_VBI` | Kod programu | Zapasowy handler VBI używany przez system audio (obszar zajęty, nie jest wolnym RAM-em). |
+| **`$77E5` – `$784D`** | 105 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
+| **`$784E` – `$9FFF`** | 10162 B | `DUMMY_VBI` | Kod programu | Zapasowy handler VBI używany przez system audio (obszar zajęty, nie jest wolnym RAM-em). |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |

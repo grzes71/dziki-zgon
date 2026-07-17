@@ -2,7 +2,7 @@ id: VILLAGE
 grid_x: 0
 grid_y: 1
 exits:
-  north: TAVERN
+  north: null
   south: CHURCH
   east: VILLAGE2
   west: null
@@ -118,19 +118,12 @@ objects:
   x: 33
   y: 11
 - object: GROUND_BROWN_DOWN
-  x: 38
-  y: 0
-  repeat-x: 2
-- object: GROUND_BROWN_DOWN
   x: 35
   y: 0
 - object: GROUND_BROWN_DOWN
   x: 36
   y: 1
   repeat-x: 2
-- object: GROUND_BROWN_DOWN
-  x: 39
-  y: 1
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 2
@@ -178,9 +171,6 @@ objects:
   y: 0
   repeat-x: 2
 - object: GROUND_GREEN_DOWN
-  x: 38
-  y: 1
-- object: GROUND_GREEN_DOWN
   x: 39
   y: 2
 - object: GROUND_GREEN_DOWN
@@ -220,9 +210,6 @@ objects:
   y: 10
 - object: GROUND_GREEN_DOWN
   x: 39
-  y: 8
-- object: GROUND_GREEN_DOWN
-  x: 39
   y: 6
 - object: GROUND_GREEN_DOWN
   x: 31
@@ -242,24 +229,9 @@ objects:
 - object: TREE_SMALL
   x: 28
   y: 10
-- object: TREE_SMALL
-  x: 38
-  y: 10
 - object: GROUND_GREEN_DOWN
   x: 35
   y: 11
-- object: GROUND_GREEN_DOWN
-  x: 36
-  y: 10
-- object: GROUND_GREEN_DOWN
-  x: 37
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 36
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 37
-  y: 10
 - object: GROUND_BROWN_DOWN
   x: 35
   y: 10
@@ -273,10 +245,15 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 32
   y: 10
-- object: GROUND_BROWN_DOWN
-  x: 37
+- object: TREE_3
+  x: 38
+  y: 0
+- object: TREE_SMALL
+  x: 38
   y: 9
-  repeat-x: 3
+- object: TREE_SMALL
+  x: 36
+  y: 10
 enemies:
 - enemy: strzyga
   x: 12

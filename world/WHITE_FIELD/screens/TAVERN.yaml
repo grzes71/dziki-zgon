@@ -3,7 +3,7 @@ grid_x: 0
 grid_y: 0
 exits:
   north: null
-  south: VILLAGE
+  south: null
   east: CROSSROADS
   west: null
 objects:
@@ -56,16 +56,9 @@ objects:
 - object: BUSH_2
   x: 6
   y: 6
-- object: BUSH_2
-  x: 15
-  y: 10
 - object: MUSHROOM
   x: 36
   y: 6
-- object: GROUND_GREEN_UP
-  x: 0
-  y: 10
-  repeat-x: 2
 - object: GROUND_GREEN_UP
   x: 10
   y: 3
@@ -94,15 +87,6 @@ objects:
 - object: GROUND_GREEN_UP
   x: 39
   y: 2
-- object: MUSHROOM
-  x: 21
-  y: 10
-- object: GROUND_BROWN_UP
-  x: 19
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 25
-  y: 9
 - object: GROUND_BROWN_UP
   x: 36
   y: 0
@@ -115,31 +99,6 @@ objects:
 - object: GROUND_BROWN_UP
   x: 39
   y: 3
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 8
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 9
-  repeat-x: 3
-- object: HOUSE_SMALL
-  x: 33
-  y: 8
-- object: TREE_SMALL
-  x: 29
-  y: 8
-- object: TREE_2
-  x: 4
-  y: 8
-- object: TREE_2
-  x: 8
-  y: 8
-- object: BUSH_2
-  x: 37
-  y: 10
-- object: BUSH
-  x: 6
-  y: 11
 - object: BUSH
   x: 29
   y: 3
@@ -156,4 +115,47 @@ objects:
 - object: BUSH_2
   x: 5
   y: 1
+- object: HOUSE_BIGGER
+  x: 1
+  y: 9
+- object: FENCE_1
+  x: 6
+  y: 11
+  repeat-x: 5
+- object: TREE_3
+  x: 16
+  y: 10
+- object: SIGNPOINT_RIGHT
+  x: 18
+  y: 11
+- object: TREE_3
+  x: 38
+  y: 10
+- object: TREE_2
+  x: 20
+  y: 10
+- object: TREE_2
+  x: 23
+  y: 10
+- object: TREE_SMALL
+  x: 26
+  y: 10
+- object: ROCK_2
+  x: 29
+  y: 11
+- object: ROCK_2
+  x: 32
+  y: 10
+- object: ROCK_1
+  x: 35
+  y: 11
+- object: ROCK_1
+  x: 36
+  y: 10
+- object: ROCK_1
+  x: 32
+  y: 11
+- object: ROCK_1
+  x: 35
+  y: 9
 enemies: []

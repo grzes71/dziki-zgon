@@ -3,115 +3,22 @@ grid_x: 2
 grid_y: 1
 exits:
   north: SWAMP
-  south: HARBOUR
+  south: null
   east: null
   west: VILLAGE2
 objects:
 - object: RIVER_BL
   x: 25
   y: 2
-- object: WAVES_RIGHT
-  x: 32
-  y: 5
-- object: WAVES_LEFT
-  x: 30
-  y: 5
-- object: RIVER_BL
-  x: 30
-  y: 6
-- object: WAVES_DOWN
-  x: 34
-  y: 8
-  repeat-x: 6
-- object: WAVES_UP
-  x: 34
-  y: 6
-  repeat-x: 6
-- object: WATER
-  x: 31
-  y: 5
-- object: WATER_ANIM
-  x: 34
-  y: 7
-  repeat-x: 6
-- object: RIVER_TR
-  x: 29
-  y: 2
 - object: SIGNPOINT_LEFT
   x: 2
   y: 5
-- object: TREE_3
-  x: 6
-  y: 1
-- object: TREE_3
-  x: 11
-  y: 3
-- object: TREE_3
-  x: 4
-  y: 9
-- object: TREE_3
-  x: 27
-  y: 8
-- object: TREE_SMALL
-  x: 12
-  y: 7
-- object: TREE_SMALL
-  x: 3
-  y: 2
 - object: TREE_2
   x: 6
   y: 5
 - object: BUSH_2
-  x: 9
-  y: 8
-- object: BUSH_2
   x: 19
   y: 3
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 36
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 33
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 35
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 36
-  y: 10
-  repeat-x: 4
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 11
-- object: BUSH
-  x: 23
-  y: 9
-- object: GROUND_GREEN_UP
-  x: 37
-  y: 11
-  repeat-x: 2
-- object: GROUND_GREEN_UP
-  x: 38
-  y: 9
-- object: GROUND_GREEN_UP
-  x: 36
-  y: 9
-- object: GROUND_GREEN_UP
-  x: 34
-  y: 9
-- object: GROUND_GREEN_UP
-  x: 34
-  y: 10
-  repeat-x: 2
-- object: GROUND_GREEN_UP
-  x: 35
-  y: 11
 - object: WATER
   x: 25
   y: 1
@@ -119,46 +26,16 @@ objects:
 - object: WATER
   x: 26
   y: 0
-- object: WAVES_DOWN
-  x: 17
-  y: 1
-  repeat-x: 8
-- object: WAVES_LEFT
-  x: 16
-  y: 0
 - object: WAVES_RIGHT
   x: 27
   y: 0
   repeat-y: 2
-- object: WATER_ANIM
-  x: 18
-  y: 0
-  repeat-x: 8
-- object: WATER
-  x: 17
-  y: 0
 - object: WATERFALL_GREEN
   x: 35
   y: 2
-- object: CROSS_2
-  x: 23
-  y: 6
-- object: WATER_UP
-  x: 16
-  y: 1
-- object: WATER_ANIM
-  x: 36
-  y: 4
-  repeat-x: 4
 - object: WAVES
   x: 35
   y: 4
-- object: REED
-  x: 29
-  y: 6
-- object: REED
-  x: 28
-  y: 7
 - object: REED
   x: 24
   y: 3
@@ -167,13 +44,6 @@ objects:
   y: 2
   repeat-x: 2
 - object: REED
-  x: 15
-  y: 0
-  repeat-y: 2
-- object: REED
-  x: 13
-  y: 0
-- object: REED
   x: 28
   y: 0
 - object: REED
@@ -181,39 +51,98 @@ objects:
   y: 1
   repeat-x: 2
 - object: REED
-  x: 30
-  y: 0
-- object: REED
-  x: 32
-  y: 0
-- object: REED
   x: 31
   y: 1
-- object: REED
-  x: 31
-  y: 9
-- object: REED
-  x: 33
-  y: 5
-  repeat-x: 2
-- object: REED
-  x: 33
-  y: 4
-- object: REED
-  x: 27
-  y: 5
-  repeat-x: 3
-- object: STONE_BIG
-  x: 17
-  y: 5
-- object: CROSS_1
-  x: 20
-  y: 8
 - object: CROSS_1
   x: 2
   y: 7
-- object: MUSHROOM
-  x: 13
+- object: BRIDGE
+  x: 30
+  y: 5
+- object: RIVER_BL
+  x: 30
+  y: 6
+- object: WATER_ANIM
+  x: 34
+  y: 7
+  repeat-x: 6
+- object: WAVES_DOWN
+  x: 34
+  y: 8
+  repeat-x: 6
+- object: WAVES_UP
+  x: 34
+  y: 6
+  repeat-x: 6
+- object: WATER_ANIM
+  x: 36
+  y: 4
+  repeat-x: 3
+- object: WAVES
+  x: 39
+  y: 4
+- object: WATER_ANIM
+  x: 0
+  y: 0
+  repeat-x: 26
+- object: WAVES_DOWN
+  x: 0
+  y: 1
+  repeat-x: 25
+- object: RIVER_TR
+  x: 29
+  y: 2
+- object: ROCK_GREEN
+  x: 37
+  y: 11
+- object: HOUSE_MEDIUM_GREEN
+  x: 32
+  y: 10
+- object: CROSS_2
+  x: 18
+  y: 11
+- object: TREE_3
+  x: 16
+  y: 10
+- object: FENCE_1
+  x: 28
+  y: 11
+  repeat-x: 2
+- object: WELL
+  x: 26
+  y: 10
+- object: CROSS_2
+  x: 24
+  y: 11
+- object: CROSS_1
+  x: 23
+  y: 10
+- object: CROSS_1
+  x: 21
+  y: 11
+- object: CROSS_1
+  x: 20
+  y: 10
+- object: ROCK_GREEN
+  x: 6
+  y: 11
+- object: ROCK_GREEN
+  x: 2
+  y: 11
+- object: ROCK_BIG
+  x: 9
+  y: 9
+- object: ROCK_1
+  x: 0
+  y: 11
+- object: ROCK_1
+  x: 5
+  y: 10
+- object: CROSS_2
+  x: 22
+  y: 8
+- object: HOUSE_TALL
+  x: 11
   y: 4
 enemies:
 - enemy: strzyga

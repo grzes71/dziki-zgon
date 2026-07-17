@@ -48,7 +48,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [21, 22]
+  tiles: [21, 21]
 - object: TREE_2
   id: TREE_2
   code: 6
@@ -464,7 +464,7 @@ objects:
     blocking: true
     interactive: false
   tiles: [0, 46, 47, 0, 0, 103, 106, 0, 0, 185, 56, 0, 0, 61, 189, 0, 16, 33, 33,
-    18, 33, 157, 157, 33, 33, 215, 88, 33]
+    18, 33, 163, 164, 33, 33, 27, 28, 33]
 - object: BUSH
   id: BUSH
   code: 47
@@ -689,3 +689,135 @@ objects:
   tiles: [0, 0, 0, 0, 0, 224, 225, 0, 0, 0, 0, 0, 0, 0, 96, 97, 0, 33, 33, 0, 96,
     97, 0, 0, 0, 0, 58, 58, 55, 58, 58, 55, 58, 58, 0, 0, 59, 60, 29, 29, 33, 29,
     29, 33, 29, 29, 59, 60, 91, 92, 87, 88, 29, 27, 28, 29, 87, 88, 91, 92]
+- object: FENCE_2
+  id: FENCE_2
+  code: 69
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [22]
+- object: FENCE_3
+  id: FENCE_3
+  code: 70
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [116]
+- object: BRICKS_2
+  id: BRICKS_2
+  code: 71
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [95]
+- object: FENCE_4
+  id: FENCE_4
+  code: 72
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [89]
+- object: BARN_3
+  id: BARN_3
+  code: 73
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [144, 145, 146, 122, 90, 123]
+- object: OUTHOUSE
+  id: OUTHOUSE
+  code: 74
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [224, 225, 65, 66]
+- object: OUTHOUSE_2
+  id: OUTHOUSE_2
+  code: 75
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [96, 97, 65, 66]
+- object: OUTHOUSE_3
+  id: OUTHOUSE_3
+  code: 76
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [224, 131, 131, 225, 122, 87, 88, 123]
+- object: CASTLE_MID
+  id: CASTLE_MID
+  code: 77
+  size:
+    width: 8
+    height: 4
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [0, 0, 0, 158, 159, 0, 0, 0, 59, 60, 55, 58, 58, 55, 59, 60, 91, 92, 57,
+    56, 57, 56, 91, 92, 91, 92, 250, 215, 88, 251, 91, 92]
+- object: BARN_4
+  id: BARN_4
+  code: 78
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [224, 131, 225, 122, 90, 123]
+- object: HOUSE_BIGGER_2
+  id: HOUSE_BIGGER_2
+  code: 79
+  size:
+    width: 5
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [96, 3, 2, 3, 97, 250, 163, 164, 34, 251, 250, 34, 193, 194, 251]
+- object: CHURCH_SMALL
+  id: CHURCH_SMALL
+  code: 80
+  size:
+    width: 4
+    height: 5
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [0, 46, 47, 0, 0, 231, 234, 0, 0, 57, 56, 0, 16, 61, 61, 18, 33, 87, 88,
+    33]
+- object: SHED
+  id: SHED
+  code: 81
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [1, 3, 4, 33, 65, 66]

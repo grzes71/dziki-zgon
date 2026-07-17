@@ -3,45 +3,24 @@ grid_x: 1
 grid_y: 0
 exits:
   north: null
-  south: VILLAGE2
+  south: null
   east: SWAMP
   west: TAVERN
 objects:
-- object: SIGNPOINT_LEFT
-  x: 2
-  y: 3
-- object: TREE_3
-  x: 12
-  y: 5
 - object: TREE_3
   x: 27
   y: 4
 - object: TREE_3
   x: 14
   y: 1
-- object: TREE_3
-  x: 4
-  y: 2
 - object: BUSH_2
   x: 33
   y: 5
-- object: ROCK_GREEN
-  x: 4
-  y: 6
-- object: BUSH
-  x: 11
-  y: 6
-- object: BUSH
-  x: 36
-  y: 1
 - object: SIGNPOINT_RIGHT
   x: 30
   y: 5
 - object: ROCK_2
   x: 16
-  y: 2
-- object: MUSHROOM
-  x: 12
   y: 2
 - object: ROCK_1
   x: 29
@@ -52,31 +31,9 @@ objects:
 - object: TREE_2
   x: 24
   y: 1
-- object: HOUSE_MEDIUM_BLUE
-  x: 4
-  y: 8
 - object: HOUSE_MEDIUM_GREEN
   x: 19
   y: 4
-- object: BUSH_2
-  x: 2
-  y: 9
-- object: ROCK_BIG
-  x: 31
-  y: 8
-- object: BRICK_WALL
-  x: 9
-  y: 9
-  repeat-x: 5
-- object: ROCK_2
-  x: 27
-  y: 10
-- object: ROCK_1
-  x: 23
-  y: 10
-- object: BARN_MEDIUM
-  x: 14
-  y: 8
 - object: FENCE_1
   x: 17
   y: 5
@@ -84,32 +41,122 @@ objects:
   x: 24
   y: 5
 - object: GROUND_BROWN_UP
-  x: 26
-  y: 8
-- object: GROUND_BROWN_UP
-  x: 24
-  y: 8
-- object: GROUND_BROWN_UP
   x: 25
   y: 7
-- object: GROUND_BROWN_UP
-  x: 23
-  y: 7
-- object: GROUND_BROWN_UP
-  x: 27
-  y: 7
-- object: GROUND_BROWN_UP
-  x: 28
-  y: 8
-- object: GROUND_BROWN_UP
+- object: TREE_2
+  x: 11
+  y: 10
+- object: TREE_2
+  x: 14
+  y: 10
+- object: WATER
+  x: 18
+  y: 11
+  repeat-x: 22
+- object: WAVES
+  x: 17
+  y: 11
+- object: WAVES
+  x: 17
+  y: 10
+  repeat-x: 23
+- object: TREE_2
+  x: 0
+  y: 10
+  repeat-x: 3
+- object: ROCK_GREEN
+  x: 6
+  y: 11
+- object: ROCK_1
+  x: 9
+  y: 11
+- object: GROUND_GREEN_DOWN
   x: 33
-  y: 3
-- object: GROUND_BROWN_UP
+  y: 9
+- object: GROUND_GREEN_DOWN
   x: 35
-  y: 3
-- object: GROUND_BROWN_UP
+  y: 9
+- object: GROUND_GREEN_DOWN
+  x: 37
+  y: 9
+  repeat-x: 3
+- object: GROUND_GREEN_DOWN
+  x: 38
+  y: 8
+  repeat-x: 2
+- object: GROUND_GREEN_DOWN
+  x: 39
+  y: 7
+- object: GROUND_GREEN_DOWN
+  x: 31
+  y: 9
+- object: GROUND_GREEN_UP
   x: 34
+  y: 9
+- object: GROUND_GREEN_UP
+  x: 37
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 32
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 30
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 29
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 33
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 31
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 27
+  y: 9
+  repeat-x: 2
+- object: SIGNPOINT_LEFT
+  x: 15
+  y: 5
+- object: TREE_3
+  x: 2
   y: 2
+- object: TREE_SMALL
+  x: 5
+  y: 2
+- object: TREE_SMALL
+  x: 9
+  y: 6
+- object: ROCK_GREEN
+  x: 3
+  y: 8
+- object: ROCK_GREEN
+  x: 33
+  y: 1
+- object: ROCK_GREEN
+  x: 17
+  y: 8
+- object: BUSH_2
+  x: 12
+  y: 7
+- object: BUSH_2
+  x: 36
+  y: 3
+- object: BUSH_2
+  x: 10
+  y: 1
+- object: TREE_3
+  x: 35
+  y: 7
 enemies:
 - enemy: sukkub
   x: 25
