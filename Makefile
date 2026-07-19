@@ -55,6 +55,8 @@ FONT_FNT    := fonts/font.fnt
 FONT_ASM    := $(GEN_DIR)/font.asm
 GAME_FONT_FNT := fonts/game.fnt
 GAME_FONT_ASM := $(GEN_DIR)/game_font.asm
+ANIM_CHARS_JSON := chars/animated.json
+ANIM_CHARS_ASM := $(GEN_DIR)/animated_chars.asm
 
 # Muzyka
 MUSIC_SAP       := music/title.sap
@@ -79,7 +81,7 @@ WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 all: texts sprites bg go fonts music world test xex
 
 # Updated Makefile rules
-xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
+xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
 	@echo "=== Weryfikacja mapy pamięci ==="
@@ -139,7 +141,7 @@ $(GO_BIN): $(GO_IMG) scripts/img2asm.py
 	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(GO_IMG) 2 --all -o $(GO_PREFIX) --screen-base 0x4000 -c rle
 
 # Generowanie czcionek
-fonts: $(FONT_ASM) $(GAME_FONT_ASM)
+fonts: $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM)
 
 $(FONT_ASM): $(FONT_FNT) scripts/fnt2asm.py
 	-@mkdir $(GEN_DIR)
@@ -150,6 +152,11 @@ $(GAME_FONT_ASM): $(GAME_FONT_FNT) scripts/fnt2asm.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Konwersja $(GAME_FONT_FNT) → $(GAME_FONT_ASM) ==="
 	$(PYTHON) scripts/fnt2asm.py -i $(GAME_FONT_FNT) -o $@ -l GameFontData
+
+$(ANIM_CHARS_ASM): $(ANIM_CHARS_JSON) scripts/gen_animated_charset.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Konwersja $(ANIM_CHARS_JSON) → $(ANIM_CHARS_ASM) ==="
+	$(PYTHON) scripts/gen_animated_charset.py -i $(ANIM_CHARS_JSON) -o $@
 
 # Generowanie muzyki
 music: $(MUSIC_ASM) $(PLAYR_ASM)
@@ -171,7 +178,7 @@ smoke-test: all
 	@echo "=== Uruchamianie atari-smoke-test ==="
 	$(PYTHON) -m atari_smoke_test.main --xex $(XEX_OUT) --timeout 5
 
-test:
+test: $(ANIM_CHARS_ASM)
 	@echo "=== Uruchamianie testów jednostkowych (Py65) ==="
 	$(PYTHON) -m pytest tests/
 

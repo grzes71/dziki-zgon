@@ -1,0 +1,45 @@
+{
+    "characters": [
+        {
+            "index": 112,
+            "frames": [
+                {
+                    "duration": 100,
+                    "data": "00 00 00 00 00 00 00 00"
+                },
+                {
+                    "duration": 5,
+                    "data": "00 3C C3 83 C3 00 3C 2C"
+                },
+                {
+                    "duration": 5,
+                    "data": "3C C3 83 C3 00 3C 2C 00"
+                },
+                {
+                    "duration": 5,
+                    "data": "C3 83 C3 00 3C 2C 00 3C"
+                },
+                {
+                    "duration": 5,
+                    "data": "83 C3 00 3C 2C 00 3C C3"
+                },
+                {
+                    "duration": 5,
+                    "data": "C3 00 3C 2C 00 3C C3 83"
+                },
+                {
+                    "duration": 5,
+                    "data": "00 3C 2C 00 3C C3 83 C3"
+                },
+                {
+                    "duration": 5,
+                    "data": "3C 2C 00 3C C3 83 C3 00"
+                },
+                {
+                    "duration": 5,
+                    "data": "2C 00 3C C3 83 C3 00 3C"
+                }
+            ]
+        }
+    ]
+}

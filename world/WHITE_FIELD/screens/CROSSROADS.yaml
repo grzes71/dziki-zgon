@@ -196,6 +196,10 @@ objects:
 - object: BARREL
   x: 14
   y: 5
+- object: CHAIN_1
+  x: 13
+  y: 0
+  repeat-y: 7
 enemies:
 - enemy: sukkub
   x: 25

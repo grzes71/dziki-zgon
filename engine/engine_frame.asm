@@ -13,6 +13,7 @@
     cmp #STATE_GAME
     bne @skip_anim
     jsr animate_charset
+    jsr update_animated_charset
 @skip_anim
 
     ; 2. Sygnał dla pętli głównej

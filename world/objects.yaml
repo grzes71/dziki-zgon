@@ -921,3 +921,53 @@ objects:
     blocking: false
     interactive: false
   tiles: [100]
+- object: CLAW
+  id: CLAW
+  code: 92
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [207]
+- object: CHAIN_1
+  id: CHAIN_1
+  code: 93
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [240]
+- object: CHAIN_2
+  id: CHAIN_2
+  code: 94
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [206]
+- object: CLAW_2
+  id: CLAW_2
+  code: 95
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [242]
+- object: CLAW_3
+  id: CLAW_3
+  code: 96
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [241]

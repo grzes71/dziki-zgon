@@ -166,3 +166,61 @@ def test_charset_anim_rotate_and_reset(harness):
     # - Wskaźnik ZP nienaruszony
     assert cpu.memory[src_ptr_z] == 0x55
     assert cpu.memory[src_ptr_z + 1] == 0xAA
+
+def test_update_animated_charset(harness):
+    xex_file, labels = harness
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+
+    num_anim_chars = labels.get("NUM_ANIM_CHARS", 0)
+    if num_anim_chars == 0:
+        pytest.skip("No animated characters defined in animated.json")
+
+    cur_frame_addr = labels["ANIMATED_CHAR_CUR_FRAME"]
+    timers_addr = labels["ANIMATED_CHAR_TIMERS"]
+    start_test = labels["START_ANIMATED_TEST"]
+    src_ptr_z = labels["SRC_PTR"]
+    dst_ptr_z = labels["DST_PTR"]
+
+    cpu.memory[src_ptr_z] = 0x12
+    cpu.memory[src_ptr_z + 1] = 0x34
+    cpu.memory[dst_ptr_z] = 0x56
+    cpu.memory[dst_ptr_z + 1] = 0x78
+
+    assert cpu.memory[cur_frame_addr] == 255
+    assert cpu.memory[timers_addr] == 1
+
+    run_cpu_until_brk(cpu, start_test)
+
+    assert cpu.memory[cur_frame_addr] == 0
+    assert cpu.memory[timers_addr] == 100
+
+    char_addr = 0x6400 + 112 * 8
+    expected_frame0 = [0, 0, 0, 0, 0, 0, 0, 0]
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == expected_frame0[i], \
+            f"Byte {i} should be {expected_frame0[i]}, got {cpu.memory[char_addr + i]}"
+
+    assert cpu.memory[src_ptr_z] == 0x12
+    assert cpu.memory[src_ptr_z + 1] == 0x34
+    assert cpu.memory[dst_ptr_z] == 0x56
+    assert cpu.memory[dst_ptr_z + 1] == 0x78
+
+    for i in range(8):
+        cpu.memory[char_addr + i] = 0
+    
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_frame_addr] == 0
+    assert cpu.memory[timers_addr] == 99
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == 0
+
+    cpu.memory[timers_addr] = 1
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_frame_addr] == 1
+    assert cpu.memory[timers_addr] == 5
+    expected_frame1 = [0, 60, 195, 131, 195, 0, 60, 44]
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == expected_frame1[i], \
+            f"Byte {i} should be {expected_frame1[i]}, got {cpu.memory[char_addr + i]}"
+

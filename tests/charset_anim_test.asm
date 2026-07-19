@@ -5,11 +5,17 @@
 
 ; --- Mocki rejestrów Zero Page ---
 SRC_PTR = $82
+DST_PTR = $84
 
 ; --- Entry Point ---
     org $2000
 start_test
     jsr animate_charset
+    brk
+    rts
+
+start_animated_test
+    jsr update_animated_charset
     brk
     rts
 

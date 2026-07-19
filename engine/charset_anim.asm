@@ -70,3 +70,104 @@ anim_char_speeds
 anim_char_counters
     dta 10, 5
 .endp
+
+.proc update_animated_charset
+    .if NUM_ANIM_CHARS > 0
+    ; Zachowaj wskaźniki na stosie
+    lda SRC_PTR
+    pha
+    lda SRC_PTR+1
+    pha
+    lda DST_PTR
+    pha
+    lda DST_PTR+1
+    pha
+
+    ldx #NUM_ANIM_CHARS-1
+@loop
+    ; Zmniejsz licznik dla danego znaku
+    dec animated_char_timers,x
+    bne @next_char
+
+    ; Pobierz i zaktualizuj indeks klatki
+    lda animated_char_cur_frame,x
+    clc
+    adc #1
+    cmp animated_char_max_frames,x
+    bcc @store_frame
+    lda #0                  ; Zawiń do początku
+@store_frame
+    sta animated_char_cur_frame,x
+    tay                     ; Y = indeks klatki
+
+    ; Ustaw wskaźnik SRC_PTR na adres tabeli czasów trwania (durations) dla znaku X
+    lda animated_char_durations_lo,x
+    sta SRC_PTR
+    lda animated_char_durations_hi,x
+    sta SRC_PTR+1
+    
+    ; Odczytaj czas trwania i zapisz go
+    lda (SRC_PTR),y
+    sta animated_char_timers,x
+
+    ; Oblicz adres danych klatki: BaseAddress + FrameIndex * 8
+    lda animated_char_data_lo,x
+    sta SRC_PTR
+    lda animated_char_data_hi,x
+    sta SRC_PTR+1
+
+    ; Pomnóż Y (indeks klatki) przez 8 i dodaj do SRC_PTR bez niszczenia rejestru X
+    tya                     ; A = indeks klatki (Y)
+    asl                     ; * 2, carry w C
+    ldy #0
+    bcc @no_carry1
+    ldy #1
+@no_carry1
+    asl                     ; * 4, carry w C
+    bcc @no_carry2
+    iny
+@no_carry2
+    asl                     ; * 8, carry w C
+    bcc @no_carry3
+    iny
+@no_carry3
+    ; A = low byte of offset, Y = high byte of offset
+    clc
+    adc SRC_PTR
+    sta SRC_PTR
+    tya                     ; A = high byte offset
+    adc SRC_PTR+1
+    sta SRC_PTR+1
+
+    ; Ustaw DST_PTR na docelowy adres znaku w charset
+    lda animated_char_dest_lo,x
+    sta DST_PTR
+    lda animated_char_dest_hi,x
+    sta DST_PTR+1
+
+    ; Kopiuj 8 bajtów z SRC_PTR do DST_PTR
+    ldy #7
+@copy_loop
+    lda (SRC_PTR),y
+    sta (DST_PTR),y
+    dey
+    bpl @copy_loop
+
+@next_char
+    dex
+    bpl @loop
+
+    ; Przywróć wskaźniki ze stosu
+    pla
+    sta DST_PTR+1
+    pla
+    sta DST_PTR
+    pla
+    sta SRC_PTR+1
+    pla
+    sta SRC_PTR
+    .endif
+    rts
+.endp
+
+    icl "../gen/animated_chars.asm"
