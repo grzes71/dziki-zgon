@@ -45,6 +45,8 @@ def main():
                 f.write("animated_char_data_hi\n")
                 f.write("animated_char_cur_frame\n")
                 f.write("animated_char_timers\n")
+                f.write("animated_char_ids\n")
+                f.write("animated_char_bit_masks\n")
                 return 0
 
             # Write dest lo/hi tables
@@ -55,6 +57,8 @@ def main():
             durations_hi = []
             data_lo = []
             data_hi = []
+            char_ids = []
+            bit_masks = []
 
             for idx, char_info in enumerate(characters):
                 char_idx = char_info["index"]
@@ -74,6 +78,9 @@ def main():
                 
                 data_lo.append(f"<char{idx}_data")
                 data_hi.append(f">char{idx}_data")
+                
+                char_ids.append(str(char_idx))
+                bit_masks.append(str(1 << (2 + idx)))
 
             f.write("animated_char_dest_lo\n")
             f.write(f"\tdta {', '.join(dest_lo)}\n\n")
@@ -105,6 +112,13 @@ def main():
             timers_init = [ "1" for _ in range(num_chars) ]
             f.write("animated_char_timers\n")
             f.write(f"\tdta {', '.join(timers_init)}\n\n")
+
+            # Write animated character IDs and bitmasks
+            f.write("animated_char_ids\n")
+            f.write(f"\tdta {', '.join(char_ids)}\n\n")
+
+            f.write("animated_char_bit_masks\n")
+            f.write(f"\tdta {', '.join(bit_masks)}\n\n")
 
             # Write duration and frame data arrays for each character
             for idx, char_info in enumerate(characters):

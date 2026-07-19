@@ -235,6 +235,10 @@ objects:
   x: 0
   y: 11
   repeat-x: 27
+- object: CHAIN_1
+  x: 18
+  y: 5
+  repeat-y: 3
 enemies:
 - enemy: bazyliszek
   x: 13

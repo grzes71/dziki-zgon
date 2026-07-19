@@ -150,6 +150,7 @@ default_status_bar
     
     ; --- Zbuduj ekran gry bazując na World Builderze ---
     jsr build_screen
+    jsr check_active_charset_animations
 
     ; --- Wypełnij pasek statusu domyślnym tekstem ---
     ldx #0

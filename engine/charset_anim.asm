@@ -4,6 +4,12 @@
 
 ANIM_CHAR_COUNT = 2
 
+anim_chars_active_mask
+    dta 0
+
+anim_char_bit_masks
+    dta 1, 2
+
 .proc animate_charset
     ; Zachowaj wskaźnik SRC_PTR na stosie
     lda SRC_PTR
@@ -13,6 +19,11 @@ ANIM_CHAR_COUNT = 2
 
     ldx #ANIM_CHAR_COUNT-1
 @loop
+    ; Sprawdź czy znak jest aktywny na tym ekranie
+    lda anim_chars_active_mask
+    and anim_char_bit_masks,x
+    beq @next_char
+
     ; Zmniejsz licznik dla danego znaku
     dec anim_char_counters,x
     bne @next_char
@@ -85,6 +96,11 @@ anim_char_counters
 
     ldx #NUM_ANIM_CHARS-1
 @loop
+    ; Sprawdź czy znak jest aktywny na tym ekranie
+    lda anim_chars_active_mask
+    and animated_char_bit_masks,x
+    beq @next_char
+
     ; Zmniejsz licznik dla danego znaku
     dec animated_char_timers,x
     bne @next_char
@@ -167,6 +183,62 @@ anim_char_counters
     pla
     sta SRC_PTR
     .endif
+    rts
+.endp
+
+.proc check_active_charset_animations
+    ; Wyzeruj maskę aktywności znaków
+    lda #0
+    sta anim_chars_active_mask
+
+    ldx #0
+@loop
+    lda GAME_SCREEN_A5,x
+    jsr @check_char
+    lda GAME_SCREEN_A5+240,x
+    jsr @check_char
+    inx
+    cpx #240
+    bne @loop
+    rts
+
+@check_char
+    and #$7F                ; Ignoruj bit 7 (inwersja / kolor w ANTIC 4/5)
+    pha                     ; Zachowaj A na stosie (kod znaku)
+
+    ; Przeszukaj znaki rolowane
+    ldy #ANIM_CHAR_COUNT-1
+@rolled_loop
+    cmp animate_charset.anim_char_ids,y
+    bne @next_rolled
+    ; Znaleziono - ustaw bit w masce
+    lda anim_chars_active_mask
+    ora anim_char_bit_masks,y
+    sta anim_chars_active_mask
+    pla                     ; Przywróć A
+    rts
+@next_rolled
+    dey
+    bpl @rolled_loop
+
+    ; Przeszukaj znaki klatkowe
+    .if NUM_ANIM_CHARS > 0
+    ldy #NUM_ANIM_CHARS-1
+@anim_loop
+    cmp animated_char_ids,y
+    bne @next_anim
+    ; Znaleziono - ustaw bit w masce
+    lda anim_chars_active_mask
+    ora animated_char_bit_masks,y
+    sta anim_chars_active_mask
+    pla                     ; Przywróć A
+    rts
+@next_anim
+    dey
+    bpl @anim_loop
+    .endif
+
+    pla                     ; Przywróć A
     rts
 .endp
 

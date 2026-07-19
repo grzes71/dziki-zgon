@@ -27,6 +27,7 @@
     ; Przebuduj ekran
     jsr clear_game_screens
     jsr build_screen
+    jsr check_active_charset_animations
     
     ; Wyczyść pamięć PMG, aby usunąć stare duszki pozycje
     jsr pmg_clear_all

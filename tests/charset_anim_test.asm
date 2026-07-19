@@ -19,10 +19,17 @@ start_animated_test
     brk
     rts
 
+start_check_animations_test
+    jsr check_active_charset_animations
+    brk
+    rts
+
 ; --- Pamięć dla bufora znaków ---
     org $6400
 GAME_CHARSET
     .ds 1024  ; 1 KB na znaki
+GAME_SCREEN_A5
+    .ds 480   ; 480 bajtów na ekran gry
 
 ; --- Włączenie biblioteki docelowej ---
     org $3000

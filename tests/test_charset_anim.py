@@ -58,7 +58,7 @@ def harness():
     labels = load_labels(lab)
     return xex, labels
 
-def run_cpu_until_brk(cpu, start_pc, max_steps=1000):
+def run_cpu_until_brk(cpu, start_pc, max_steps=30000):
     cpu.sp = 0xFF
     cpu.pc = start_pc
     steps = 0
@@ -82,6 +82,7 @@ def test_charset_anim_counters_decrement(harness):
     start_test = labels["START_TEST"]
     src_ptr_z = labels["SRC_PTR"]
     char_count = labels["ANIM_CHAR_COUNT"]
+    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = 0xFF
     
     # 1. Setup mock data
     # Ustaw początkowe liczniki na 5 dla wszystkich animowanych znaków
@@ -127,6 +128,7 @@ def test_charset_anim_rotate_and_reset(harness):
     start_test = labels["START_TEST"]
     src_ptr_z = labels["SRC_PTR"]
     char_count = labels["ANIM_CHAR_COUNT"]
+    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = 0xFF
     
     # 1. Setup mock data
     # Ustaw licznik pierwszego znaku na 1 (powinien się zrolować), a resztę na 5
@@ -186,6 +188,7 @@ def test_update_animated_charset(harness):
     cpu.memory[src_ptr_z + 1] = 0x34
     cpu.memory[dst_ptr_z] = 0x56
     cpu.memory[dst_ptr_z + 1] = 0x78
+    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = 0xFF
 
     assert cpu.memory[cur_frame_addr] == 255
     assert cpu.memory[timers_addr] == 1
@@ -223,4 +226,48 @@ def test_update_animated_charset(harness):
     for i in range(8):
         assert cpu.memory[char_addr + i] == expected_frame1[i], \
             f"Byte {i} should be {expected_frame1[i]}, got {cpu.memory[char_addr + i]}"
+
+def test_check_active_charset_animations(harness):
+    xex_file, labels = harness
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+
+    start_test = labels["START_CHECK_ANIMATIONS_TEST"]
+    active_mask_addr = labels["ANIM_CHARS_ACTIVE_MASK"]
+    screen_addr = labels["GAME_SCREEN_A5"]
+
+    # Clear screen and mask
+    for i in range(480):
+        cpu.memory[screen_addr + i] = 0
+    cpu.memory[active_mask_addr] = 0
+
+    # 1. Run check with empty screen -> mask should remain 0
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[active_mask_addr] == 0
+
+    # 2. Put character $05 at index 100 on screen -> mask should have bit 0 set (1)
+    cpu.memory[screen_addr + 100] = 0x05
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[active_mask_addr] == 1
+
+    # 3. Clear screen, put character $73 at index 300 on screen -> mask should have bit 1 set (2)
+    cpu.memory[screen_addr + 100] = 0
+    cpu.memory[screen_addr + 300] = 0x73
+    cpu.memory[active_mask_addr] = 0
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[active_mask_addr] == 2
+
+    # 4. Put character 112 at index 400 on screen -> mask should have both bit 1 (2) and bit 2 (4) set -> 6
+    cpu.memory[screen_addr + 400] = 112
+    cpu.memory[active_mask_addr] = 0
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[active_mask_addr] == 6
+
+    # 5. Put character $85 ($05 with bit 7 set) at index 100 on screen -> mask should have bit 0 set (1)
+    cpu.memory[screen_addr + 300] = 0
+    cpu.memory[screen_addr + 400] = 0
+    cpu.memory[screen_addr + 100] = 0x85
+    cpu.memory[active_mask_addr] = 0
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[active_mask_addr] == 1
 
