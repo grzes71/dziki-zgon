@@ -37,18 +37,9 @@ objects:
 - object: FENCE_1
   x: 17
   y: 5
-- object: FENCE_1
-  x: 24
-  y: 5
 - object: GROUND_BROWN_UP
   x: 25
   y: 7
-- object: TREE_2
-  x: 11
-  y: 10
-- object: TREE_2
-  x: 14
-  y: 10
 - object: WATER
   x: 18
   y: 11
@@ -60,16 +51,6 @@ objects:
   x: 17
   y: 10
   repeat-x: 23
-- object: TREE_2
-  x: 0
-  y: 10
-  repeat-x: 3
-- object: ROCK_GREEN
-  x: 6
-  y: 11
-- object: ROCK_1
-  x: 9
-  y: 11
 - object: GROUND_GREEN_DOWN
   x: 33
   y: 9
@@ -124,9 +105,6 @@ objects:
   x: 27
   y: 9
   repeat-x: 2
-- object: SIGNPOINT_LEFT
-  x: 15
-  y: 5
 - object: TREE_3
   x: 2
   y: 2
@@ -136,9 +114,6 @@ objects:
 - object: TREE_SMALL
   x: 9
   y: 6
-- object: ROCK_GREEN
-  x: 3
-  y: 8
 - object: ROCK_GREEN
   x: 33
   y: 1
@@ -157,6 +132,21 @@ objects:
 - object: TREE_3
   x: 35
   y: 7
+- object: BARN_4
+  x: 14
+  y: 4
+- object: SIGNPOINT_LEFT
+  x: 3
+  y: 0
+- object: ROCK_2
+  x: 5
+  y: 10
+- object: CROSS_2
+  x: 4
+  y: 8
+- object: CROSS_2
+  x: 10
+  y: 9
 enemies:
 - enemy: sukkub
   x: 25

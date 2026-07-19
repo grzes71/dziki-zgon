@@ -10,12 +10,6 @@ objects:
 - object: CHURCH
   x: 18
   y: 2
-- object: ROCK_GREEN
-  x: 2
-  y: 1
-- object: ROCK_GREEN
-  x: 1
-  y: 5
 - object: CROSS_2
   x: 24
   y: 7
@@ -23,73 +17,70 @@ objects:
   x: 32
   y: 6
 - object: CROSS_2
-  x: 33
-  y: 7
-- object: CROSS_2
   x: 26
   y: 8
-- object: CROSS_2
-  x: 35
-  y: 6
 - object: TREE_SMALL
   x: 31
   y: 2
 - object: TREE_SMALL
   x: 24
   y: 2
-- object: TREE_SMALL
-  x: 28
-  y: 0
 - object: SIGNPOINT_RIGHT
   x: 35
   y: 3
-- object: FENCE_1
-  x: 10
-  y: 8
-  repeat-x: 4
-- object: TREE_SMALL
-  x: 8
-  y: 7
-- object: TREE_2
-  x: 0
-  y: 0
-- object: TREE_2
-  x: 3
-  y: 8
-- object: BUSH
-  x: 0
-  y: 4
-- object: BUSH
-  x: 0
-  y: 8
-- object: TREE_2
-  x: 38
-  y: 9
 - object: TREE_3
   x: 12
   y: 3
 - object: TREE_SMALL
   x: 7
   y: 4
-- object: TREE_2
-  x: 38
-  y: 0
-- object: CROSS_1
-  x: 24
-  y: 9
 - object: CROSS_1
   x: 26
   y: 6
 - object: CROSS_1
-  x: 34
-  y: 8
-- object: CROSS_1
   x: 28
   y: 7
-- object: WAVES
-  x: 0
+- object: RIVER_TR
+  x: 1
+  y: 6
+- object: WATER_ANIM
+  x: 16
   y: 11
-  repeat-x: 40
+  repeat-x: 24
+- object: RIVER_BL
+  x: 2
+  y: 9
+- object: WATER_ANIM
+  x: 6
+  y: 10
+  repeat-x: 5
+- object: WAVES_UP
+  x: 6
+  y: 9
+  repeat-x: 6
+- object: WAVES_DOWN
+  x: 6
+  y: 11
+  repeat-x: 6
+- object: WAVES_UP
+  x: 15
+  y: 10
+  repeat-x: 25
+- object: CROSS_1
+  x: 35
+  y: 5
+- object: CROSS_1
+  x: 35
+  y: 7
+- object: BRICK_WALL
+  x: 17
+  y: 8
+- object: TREE_3
+  x: 4
+  y: 2
+- object: TREE_3
+  x: 29
+  y: 3
 enemies:
 - enemy: bazyliszek
   x: 16

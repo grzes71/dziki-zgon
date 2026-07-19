@@ -2,6 +2,9 @@
 
 Przygodowo-zręcznościowa gra z widokiem z góry na **Atari 800 XL / 65 XE** — humorystyczna parodia Wiedźmina.
 
+- Otwarty Świat
+- Nieliniowa fabuła
+
 ![Game cover](/cover.png)
 
 ## Fabuła

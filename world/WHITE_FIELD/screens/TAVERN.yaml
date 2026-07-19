@@ -7,9 +7,6 @@ exits:
   east: CROSSROADS
   west: null
 objects:
-- object: TREE_SMALL
-  x: 12
-  y: 5
 - object: THE_TAVERN
   x: 20
   y: 5
@@ -25,40 +22,16 @@ objects:
 - object: HOUSE_SMALL
   x: 8
   y: 0
-- object: TREE_3
-  x: 26
-  y: 0
 - object: FENCE_1
   x: 12
   y: 1
   repeat-x: 3
-- object: TREE_3
-  x: 15
-  y: 6
-- object: TREE_3
-  x: 18
-  y: 5
-- object: WELL
-  x: 18
-  y: 0
-- object: TREE_2
-  x: 21
-  y: 0
 - object: TREE_2
   x: 24
   y: 0
 - object: BUSH_2
   x: 28
   y: 1
-- object: TREE_3
-  x: 33
-  y: 2
-- object: BUSH_2
-  x: 6
-  y: 6
-- object: MUSHROOM
-  x: 36
-  y: 6
 - object: GROUND_GREEN_UP
   x: 10
   y: 3
@@ -102,9 +75,6 @@ objects:
 - object: BUSH
   x: 29
   y: 3
-- object: BUSH
-  x: 8
-  y: 4
 - object: GROUND_GREEN_UP
   x: 37
   y: 0
@@ -118,16 +88,9 @@ objects:
 - object: HOUSE_BIGGER
   x: 1
   y: 9
-- object: FENCE_1
-  x: 6
-  y: 11
-  repeat-x: 5
 - object: TREE_3
   x: 16
   y: 10
-- object: SIGNPOINT_RIGHT
-  x: 18
-  y: 11
 - object: TREE_3
   x: 38
   y: 10
@@ -143,19 +106,33 @@ objects:
 - object: ROCK_2
   x: 29
   y: 11
-- object: ROCK_2
-  x: 32
-  y: 10
 - object: ROCK_1
   x: 35
   y: 11
-- object: ROCK_1
-  x: 36
-  y: 10
-- object: ROCK_1
+- object: TREE_SMALL
   x: 32
+  y: 10
+- object: FENCE_1
+  x: 6
   y: 11
-- object: ROCK_1
+  repeat-x: 3
+- object: SIGNPOINT_RIGHT
   x: 35
-  y: 9
+  y: 6
+- object: SHED
+  x: 12
+  y: 10
+- object: OUTHOUSE
+  x: 18
+  y: 0
+- object: FENCE_4
+  x: 5
+  y: 6
+  repeat-x: 4
+- object: OUTHOUSE
+  x: 9
+  y: 5
+- object: TREE_3
+  x: 15
+  y: 5
 enemies: []
