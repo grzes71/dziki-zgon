@@ -7,37 +7,18 @@ exits:
   east: VILLAGE2
   west: null
 objects:
-- object: WELL
-  x: 15
-  y: 4
 - object: HOUSE_TALL
   x: 18
   y: 3
 - object: HOUSE_SMALL
   x: 2
   y: 4
-- object: FENCE_1
-  x: 0
-  y: 5
-- object: FENCE_1
-  x: 6
-  y: 5
-- object: TREE_2
-  x: 8
-  y: 4
-- object: BRICK_WALL
-  x: 22
-  y: 5
-  repeat-x: 2
 - object: BARN_MEDIUM
   x: 24
   y: 4
 - object: TREE_SMALL
   x: 34
   y: 7
-- object: ROCK_GREEN
-  x: 30
-  y: 4
 - object: ROCK_GREEN
   x: 34
   y: 5
@@ -92,9 +73,6 @@ objects:
 - object: ROCK_GREEN
   x: 25
   y: 2
-- object: ROCK_GREEN
-  x: 1
-  y: 2
 - object: BUSH
   x: 31
   y: 1
@@ -108,15 +86,9 @@ objects:
   x: 5
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 2
-  y: 1
-- object: GROUND_BROWN_DOWN
   x: 0
   y: 1
   repeat-y: 2
-- object: GROUND_BROWN_UP
-  x: 33
-  y: 11
 - object: GROUND_BROWN_DOWN
   x: 35
   y: 0
@@ -206,9 +178,6 @@ objects:
   x: 25
   y: 11
 - object: GROUND_GREEN_DOWN
-  x: 34
-  y: 10
-- object: GROUND_GREEN_DOWN
   x: 39
   y: 6
 - object: GROUND_GREEN_DOWN
@@ -217,43 +186,99 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 7
   y: 0
-- object: ROCK_2
-  x: 0
-  y: 11
 - object: GROUND_GREEN_DOWN
   x: 4
   y: 11
 - object: GROUND_GREEN_DOWN
   x: 3
   y: 10
-- object: TREE_SMALL
-  x: 28
-  y: 10
-- object: GROUND_GREEN_DOWN
-  x: 35
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 10
-- object: GROUND_BROWN_DOWN
-  x: 34
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 31
-  y: 11
-  repeat-x: 2
 - object: GROUND_BROWN_DOWN
   x: 32
   y: 10
-- object: TREE_3
-  x: 38
-  y: 0
-- object: TREE_SMALL
-  x: 38
-  y: 9
-- object: TREE_SMALL
-  x: 36
+- object: BARREL
+  x: 1
+  y: 5
+- object: FENCE_5
+  x: 6
+  y: 5
+  repeat-x: 2
+- object: OUTHOUSE
+  x: 8
+  y: 4
+- object: FENCE_4
+  x: 22
+  y: 5
+  repeat-x: 2
+- object: REED
+  x: 13
   y: 10
+- object: REED
+  x: 20
+  y: 10
+- object: BUSH
+  x: 16
+  y: 5
+- object: BUSH_2
+  x: 34
+  y: 10
+- object: GROUND_GREEN_DOWN
+  x: 28
+  y: 11
+- object: GROUND_GREEN_DOWN
+  x: 31
+  y: 11
+- object: GROUND_GREEN_DOWN
+  x: 30
+  y: 10
+- object: GROUND_GREEN_DOWN
+  x: 36
+  y: 11
+- object: GROUND_GREEN_DOWN
+  x: 38
+  y: 11
+- object: GROUND_GREEN_DOWN
+  x: 37
+  y: 10
+- object: GROUND_GREEN_DOWN
+  x: 1
+  y: 11
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 3
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 10
+  repeat-x: 3
+- object: GROUND_BROWN_UP
+  x: 1
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 1
+  y: 1
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 0
+  repeat-x: 3
+- object: GROUND_BROWN_UP
+  x: 4
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 3
+  y: 2
+- object: GROUND_BROWN_UP
+  x: 1
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 27
+  y: 0
+- object: STONE_BIG
+  x: 29
+  y: 3
 enemies:
 - enemy: strzyga
   x: 12

@@ -34,9 +34,6 @@ objects:
 - object: HOUSE_MEDIUM_GREEN
   x: 19
   y: 4
-- object: FENCE_1
-  x: 17
-  y: 5
 - object: GROUND_BROWN_UP
   x: 25
   y: 7
@@ -132,9 +129,6 @@ objects:
 - object: TREE_3
   x: 35
   y: 7
-- object: BARN_4
-  x: 14
-  y: 4
 - object: SIGNPOINT_LEFT
   x: 3
   y: 0
@@ -147,6 +141,61 @@ objects:
 - object: CROSS_2
   x: 10
   y: 9
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 1
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 4
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 3
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 5
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 4
+- object: FENCE_5
+  x: 17
+  y: 5
+  repeat-x: 2
+- object: OUTHOUSE
+  x: 15
+  y: 4
+- object: BARREL
+  x: 14
+  y: 5
 enemies:
 - enemy: sukkub
   x: 25

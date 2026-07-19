@@ -19,12 +19,6 @@ objects:
 - object: TREE_2
   x: 17
   y: 1
-- object: TREE_3
-  x: 4
-  y: 5
-- object: TREE_3
-  x: 38
-  y: 7
 - object: BUSH_2
   x: 18
   y: 5
@@ -56,13 +50,6 @@ objects:
 - object: STONE_BIG
   x: 3
   y: 2
-- object: REED
-  x: 36
-  y: 8
-  repeat-x: 2
-- object: REED
-  x: 6
-  y: 8
 - object: REED
   x: 8
   y: 8
@@ -135,6 +122,23 @@ objects:
   x: 13
   y: 10
   repeat-x: 9
+- object: BARREL
+  x: 22
+  y: 8
+  repeat-x: 3
+- object: FENCE_2
+  x: 35
+  y: 8
+  repeat-x: 2
+- object: SHED
+  x: 37
+  y: 7
+- object: TREE_SMALL
+  x: 2
+  y: 5
+- object: TREE_SMALL
+  x: 5
+  y: 6
 enemies:
 - enemy: strzyga
   x: 16

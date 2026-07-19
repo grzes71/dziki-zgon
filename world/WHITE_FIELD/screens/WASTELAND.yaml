@@ -237,6 +237,9 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 6
   y: 11
+- object: BARREL
+  x: 19
+  y: 10
 enemies:
 - enemy: strzyga
   x: 8

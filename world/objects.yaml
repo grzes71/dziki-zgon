@@ -656,16 +656,16 @@ objects:
     blocking: false
     interactive: false
   tiles: [124]
-- object: BLOCK_1
-  id: BLOCK_1
+- object: DOOR
+  id: DOOR
   code: 66
   size:
-    width: 4
+    width: 1
     height: 1
   flags:
     blocking: true
     interactive: false
-  tiles: [98, 73, 73, 100]
+  tiles: [90]
 - object: SHIP
   id: SHIP
   code: 67
@@ -861,3 +861,63 @@ objects:
     blocking: false
     interactive: false
   tiles: [237]
+- object: WATER_INNER_TL
+  id: WATER_INNER_TL
+  code: 86
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [246]
+- object: WATER_INNER_TR
+  id: WATER_INNER_TR
+  code: 87
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [248]
+- object: WATER_INNER_BL
+  id: WATER_INNER_BL
+  code: 88
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [247]
+- object: WATER_INNER_BR
+  id: WATER_INNER_BR
+  code: 89
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [249]
+- object: FENCE_5
+  id: FENCE_5
+  code: 90
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [98]
+- object: BARREL
+  id: BARREL
+  code: 91
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [100]
