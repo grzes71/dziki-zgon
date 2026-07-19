@@ -35,8 +35,14 @@ witcher-atari-game/
 ├── hardware.asm                 # Definicje rejestrów GTIA/ANTIC/POKEY i stałe
 ├── zeropage.asm                 # Zmienne page zero ($80–$85)
 ├── Makefile                     # Automatyzacja budowania
-├── dziki_zgon.xex               # Skompilowany plik wykonywalny
-├── requirements.txt              # Zależności Pythona (Pillow)
+├── requirements.txt              # Zależności Pythona (Pillow, PySide6 itp.)
+├── engine/                      # Silnik gry (fizyka, rendering, AI, sterowanie)
+│   ├── engine.asm               # Pętla główna i inicjalizacja silnika
+│   ├── actor.asm                # Logika i interakcje obiektów/aktorów
+│   ├── collision.asm            # Wykrywanie i obsługa kolizji
+│   ├── npc.asm                  # Sztuczna inteligencja i zachowania postaci (NPC)
+│   ├── player.asm               # Ruch i sterowanie gracza (Gerwanta)
+│   └── render.asm               # Renderowanie świata i dynamicznej czcionki
 ├── lib/
 │   ├── pmg.asm                  # Procedury pomocnicze PMG
 │   └── rle.asm                  # Wspólny dekompresor RLE (6502)
@@ -50,21 +56,7 @@ witcher-atari-game/
 │   ├── story/story.asm          # Ekran opisu (dekompresja story do stopki)
 │   ├── game/game.asm            # Gra właściwa
 │   └── gameover/gameover.asm    # Ekran końca gry (ANTIC D narrow + ANTIC 3 tęcza)
-├── gen/                         # Pliki generowane podczas buildu (część jest trzymana w repo)
-│   ├── title.bin                # Surowe dane binarne ekranu tytułu
-│   ├── title.rle                # Skompresowany ekran tytułu (używany w runtime)
-│   ├── title.asm                # Dane .byte ekranu tytułu (MADS)
-│   ├── title_colors.asm         # Kolory tytułu: stałe .equ + kod init
-│   ├── title_displaylist.asm    # ANTIC Display List tytułu (2 segmenty)
-│   ├── title_music.asm          # Skonwertowany moduł muzyczny MADS (title.sap -> title_music.asm)
-│   ├── rmtplayr.asm             # Skonwertowany kod playera RMT (MADS)
-│   ├── gameover.bin             # Surowe dane binarne ekranu game over
-│   ├── gameover.rle             # Skompresowany ekran game over (używany w runtime)
-│   ├── gameover.asm             # Dane .byte ekranu game over (MADS)
-│   ├── gameover_colors.asm      # Kolory game over: stałe .equ + kod init
-│   ├── gameover_displaylist.asm # ANTIC Display List game over (ANTIC D)
-│   ├── moon.asm                 # Sprite księżyca (MADS)
-│   └── dziki-zgon.asm           # Sprite logo (MADS)
+├── sprites/                     # Definicje i klatki sprite'ów postaci w formacie JSON
 ├── texts/
 │   ├── story.txt                # Źródłowy tekst fabuły (ASCII)
 │   └── gameover.txt             # Źródłowy tekst końca gry (ASCII)
@@ -83,15 +75,14 @@ witcher-atari-game/
 │   ├── game-over.png            # Ekran game over (128×96, 4 kolory)
 │   ├── moon.png                 # Księżyc (32×24, 1 bpp, 4 graczy)
 │   └── dziki-zgon.png           # Napis tytułowy (40×37, 1 bpp, 4 graczy + 5th)
-├── docs/
-│   ├── KONSPEKT.md              # Dokument projektowy — fabuła, regiony, mechaniki
-│   └── py65.md                  # Dokumentacja emulatora Py65 (6502 w Pythonie)
 ├── world/                       # Dane wejściowe w formacie YAML definiujące świat, ekrany i obiekty gry
 ├── world_builder/               # Dedykowany kompilator map gry w Pythonie (YAML → ASM)
 ├── object_studio/               # Graficzny edytor obiektów gry w PySide6 (GUI do edycji world/objects.yaml)
 ├── world_studio/                # Graficzny edytor map świata w PySide6 (GUI do wizualnej edycji regionów i ekranów)
-├── tests/                       # Testy jednostkowe i integracyjne (Py65, World Builder)
-└── rgb2a8/                      # Referencyjna paleta Atari PAL (256 wartości RGB)
+├── sprite_studio/               # Graficzny edytor sprite'ów w PySide6 (GUI do edycji sprites/)
+├── debug_bridge/                # Narzędzie łączące emulator z zewnętrznym debuggerem (do SDD)
+├── atari_smoke_test/            # Automatyczne testy integracyjne w emulatorze Atari
+└── tests/                       # Testy jednostkowe i integracyjne (Py65, World Builder)
 ```
 
 ## Wymagania
@@ -103,7 +94,7 @@ witcher-atari-game/
 | [Pillow](https://python-pillow.org/) | 12.x | Biblioteka do przetwarzania obrazów (`pip install -r requirements.txt`) |
 | [PyYAML](https://pyyaml.org/) | — | Do parsowania plików map w World Builderze (`pip install -r requirements.txt`) |
 | [Pydantic](https://docs.pydantic.dev/) | 2.x | Do zaawansowanej walidacji struktury map i obiektów (`pip install -r requirements.txt`) |
-| [PySide6](https://doc.qt.io/qtforpython-6/) | 6.x | Do interfejsu graficznego narzędzia Object Studio (`pip install pyside6`) |
+| [PySide6](https://doc.qt.io/qtforpython-6/) | 6.x | Do interfejsu graficznego edytorów (Object Studio, World Studio, Sprite Studio) |
 | Emulator Atari | — | Np. [Altirra](https://www.virtualdub.org/altirra.html), Atari800 |
 | [Atari Image Converter](https://github.com/grzes71/py-image-converter/#atari-image-converter) | — | Konwersja obrazów na formaty Atari (PNG → GR7, GR8, MIC, i inne) |
 | [html-to-markdown](https://github.com/grzes71/html-to-markdown#html-to-markdown) | — | Konwersja dokumentacji HTML do Markdown
@@ -155,7 +146,7 @@ altirra dziki_zgon.xex
 
 ## Narzędzia
 
-Szczegółowe opisy wszystkich dedykowanych narzędzi, w tym **Konwertera obrazów**, kompilatora **World Builder**, oraz wizualnych edytorów GUI (**World Studio**, **Object Studio**), przeniesiono do pliku: [TOOLS.md](TOOLS.md).
+Szczegółowe opisy wszystkich dedykowanych narzędzi, w tym **Konwertera obrazów**, kompilatora **World Builder**, debuggera **Debug Bridge** oraz wizualnych edytorów GUI (**World Studio**, **Object Studio**, **Sprite Studio**), przeniesiono do pliku: [TOOLS.md](TOOLS.md).
 ## Licencja
 
 Projekt hobbystyczny — do użytku niekomercyjnego.

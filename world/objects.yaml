@@ -821,3 +821,43 @@ objects:
     blocking: true
     interactive: false
   tiles: [1, 3, 4, 33, 65, 66]
+- object: WATER_TR
+  id: WATER_TR
+  code: 82
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [148]
+- object: WATER_TL
+  id: WATER_TL
+  code: 83
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [236]
+- object: WATER_BR
+  id: WATER_BR
+  code: 84
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [235]
+- object: WATER_BL
+  id: WATER_BL
+  code: 85
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [237]
