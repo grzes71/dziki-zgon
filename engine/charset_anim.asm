@@ -2,13 +2,10 @@
 ; engine/charset_anim.asm
 ;----------------------------------------
 
-ANIM_CHAR_COUNT = 2
+    icl "../gen/rotated_chars_global.asm"
 
 anim_chars_active_mask
     dta 0
-
-anim_char_bit_masks
-    dta 1, 2
 
 .proc animate_charset
     ; Zachowaj wskaźnik SRC_PTR na stosie
@@ -72,14 +69,7 @@ anim_char_bit_masks
     sta SRC_PTR
     rts
 
-anim_char_ids
-    dta $05, $73
-
-anim_char_speeds
-    dta 10, 5
-
-anim_char_counters
-    dta 10, 5
+    icl "../gen/rotated_chars_proc.asm"
 .endp
 
 .proc update_animated_charset
@@ -99,22 +89,91 @@ anim_char_counters
     ; Sprawdź czy znak jest aktywny na tym ekranie
     lda anim_chars_active_mask
     and animated_char_bit_masks,x
-    beq @next_char
+    bne @is_active
+    jmp @next_char
+@is_active
 
     ; Zmniejsz licznik dla danego znaku
     dec animated_char_timers,x
-    bne @next_char
+    beq @timer_triggered
+    jmp @next_char
+@timer_triggered
 
     ; Pobierz i zaktualizuj indeks klatki
     lda animated_char_cur_frame,x
     clc
     adc #1
-    cmp animated_char_max_frames,x
-    bcc @store_frame
-    lda #0                  ; Zawiń do początku
-@store_frame
     sta animated_char_cur_frame,x
-    tay                     ; Y = indeks klatki
+
+    ; Ustaw wskaźnik SRC_PTR na adres tabeli liczby klatek segmentów dla znaku X
+    lda animated_char_seg_num_frames_lo,x
+    sta SRC_PTR
+    lda animated_char_seg_num_frames_hi,x
+    sta SRC_PTR+1
+
+    ; Pobierz indeks obecnego segmentu do Y
+    ldy animated_char_cur_segment,x
+    
+    ; Pobierz liczbę klatek w obecnym segmencie
+    lda (SRC_PTR),y
+
+    ; Porównaj z nowym relative_frame_idx
+    cmp animated_char_cur_frame,x
+    bne @store_frame_directly
+
+    ; Jeśli relative_frame_idx == num_frames, to koniec segmentu.
+    ; Sprawdź czy powtarzamy segment
+    lda animated_char_repeat_counter,x
+    beq @next_segment
+
+    ; Powtarzamy segment:
+    dec animated_char_repeat_counter,x
+    lda #0
+    sta animated_char_cur_frame,x
+    jmp @get_frame_data
+
+@next_segment
+    ; Przechodzimy do kolejnego segmentu
+    lda animated_char_cur_segment,x
+    clc
+    adc #1
+    cmp animated_char_num_segments,x
+    bcc @store_segment
+    lda #0                  ; Zawiń do pierwszego segmentu
+@store_segment
+    sta animated_char_cur_segment,x
+    tay                     ; Y = nowy segment index
+
+    ; Zainicjalizuj licznik powtórzeń dla nowego segmentu:
+    ; Ustaw SRC_PTR na char{idx}_segment_repeats
+    lda animated_char_seg_repeats_lo,x
+    sta SRC_PTR
+    lda animated_char_seg_repeats_hi,x
+    sta SRC_PTR+1
+    lda (SRC_PTR),y
+    sta animated_char_repeat_counter,x
+
+    ; Zresetuj relative_frame_idx do 0
+    lda #0
+    sta animated_char_cur_frame,x
+
+@store_frame_directly
+    ; relative_frame_idx jest poprawny
+
+@get_frame_data
+    ; Y = current segment index
+    ldy animated_char_cur_segment,x
+
+    ; Oblicz flat frame index = segment_frame_starts[Y] + relative_frame_idx
+    ; Ustaw SRC_PTR na char{idx}_segment_frame_starts
+    lda animated_char_seg_frame_starts_lo,x
+    sta SRC_PTR
+    lda animated_char_seg_frame_starts_hi,x
+    sta SRC_PTR+1
+    lda (SRC_PTR),y         ; A = segment_frame_starts[Y]
+    clc
+    adc animated_char_cur_frame,x
+    tay                     ; Y = flat_frame_idx (global frame index)
 
     ; Ustaw wskaźnik SRC_PTR na adres tabeli czasów trwania (durations) dla znaku X
     lda animated_char_durations_lo,x
@@ -126,14 +185,14 @@ anim_char_counters
     lda (SRC_PTR),y
     sta animated_char_timers,x
 
-    ; Oblicz adres danych klatki: BaseAddress + FrameIndex * 8
+    ; Oblicz adres danych klatki: BaseAddress + FlatFrameIndex * 8
     lda animated_char_data_lo,x
     sta SRC_PTR
     lda animated_char_data_hi,x
     sta SRC_PTR+1
 
-    ; Pomnóż Y (indeks klatki) przez 8 i dodaj do SRC_PTR bez niszczenia rejestru X
-    tya                     ; A = indeks klatki (Y)
+    ; Pomnóż Y (flat_frame_idx) przez 8 i dodaj do SRC_PTR bez niszczenia rejestru X
+    tya                     ; A = flat_frame_idx
     asl                     ; * 2, carry w C
     ldy #0
     bcc @no_carry1
@@ -171,7 +230,9 @@ anim_char_counters
 
 @next_char
     dex
-    bpl @loop
+    bmi @done_loop
+    jmp @loop
+@done_loop
 
     ; Przywróć wskaźniki ze stosu
     pla

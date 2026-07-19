@@ -38,11 +38,19 @@ def main():
                 # If no animated characters, generate empty labels
                 f.write("animated_char_dest_lo\n")
                 f.write("animated_char_dest_hi\n")
-                f.write("animated_char_max_frames\n")
+                f.write("animated_char_num_segments\n")
+                f.write("animated_char_seg_repeats_lo\n")
+                f.write("animated_char_seg_repeats_hi\n")
+                f.write("animated_char_seg_num_frames_lo\n")
+                f.write("animated_char_seg_num_frames_hi\n")
+                f.write("animated_char_seg_frame_starts_lo\n")
+                f.write("animated_char_seg_frame_starts_hi\n")
                 f.write("animated_char_durations_lo\n")
                 f.write("animated_char_durations_hi\n")
                 f.write("animated_char_data_lo\n")
                 f.write("animated_char_data_hi\n")
+                f.write("animated_char_cur_segment\n")
+                f.write("animated_char_repeat_counter\n")
                 f.write("animated_char_cur_frame\n")
                 f.write("animated_char_timers\n")
                 f.write("animated_char_ids\n")
@@ -52,13 +60,31 @@ def main():
             # Write dest lo/hi tables
             dest_lo = []
             dest_hi = []
-            max_frames = []
+            num_segments_list = []
+            seg_repeats_lo = []
+            seg_repeats_hi = []
+            seg_num_frames_lo = []
+            seg_num_frames_hi = []
+            seg_frame_starts_lo = []
+            seg_frame_starts_hi = []
             durations_lo = []
             durations_hi = []
             data_lo = []
             data_hi = []
             char_ids = []
             bit_masks = []
+            repeat_counters_init = []
+
+            # Determine offset for animated character bit masks by reading rotated.json if it exists
+            rotated_count = 2 # backward compatibility / fallback default
+            rotated_json = os.path.join(os.path.dirname(args.input), "rotated.json")
+            if os.path.exists(rotated_json):
+                try:
+                    with open(rotated_json, "r", encoding="utf-8") as rf:
+                        rotated_data = json.load(rf)
+                        rotated_count = len(rotated_data.get("characters", []))
+                except Exception:
+                    pass
 
             for idx, char_info in enumerate(characters):
                 char_idx = char_info["index"]
@@ -66,12 +92,26 @@ def main():
                 dest_lo.append(f"<{dest_addr}")
                 dest_hi.append(f">{dest_addr}")
                 
-                frames = char_info["frames"]
-                num_frames = len(frames)
-                if num_frames > 32:
-                    print(f"Warning: Character at index {char_idx} has {num_frames} frames (max supported is 32).", file=sys.stderr)
+                segments = char_info.get("animation", [])
+                num_segments = len(segments)
+                num_segments_list.append(str(num_segments))
                 
-                max_frames.append(str(num_frames))
+                flat_frames = []
+                for seg in segments:
+                    flat_frames.extend(seg.get("frames", []))
+                
+                num_flat_frames = len(flat_frames)
+                if num_flat_frames > 32:
+                    print(f"Warning: Character at index {char_idx} has {num_flat_frames} frames (max supported is 32).", file=sys.stderr)
+                
+                seg_repeats_lo.append(f"<char{idx}_segment_repeats")
+                seg_repeats_hi.append(f">char{idx}_segment_repeats")
+                
+                seg_num_frames_lo.append(f"<char{idx}_segment_num_frames")
+                seg_num_frames_hi.append(f">char{idx}_segment_num_frames")
+                
+                seg_frame_starts_lo.append(f"<char{idx}_segment_frame_starts")
+                seg_frame_starts_hi.append(f">char{idx}_segment_frame_starts")
                 
                 durations_lo.append(f"<char{idx}_durations")
                 durations_hi.append(f">char{idx}_durations")
@@ -80,7 +120,11 @@ def main():
                 data_hi.append(f">char{idx}_data")
                 
                 char_ids.append(str(char_idx))
-                bit_masks.append(str(1 << (2 + idx)))
+                bit_masks.append(str(1 << (rotated_count + idx)))
+                
+                # Repeat counter initially loaded with the repeat count of segment 0
+                initial_repeat = segments[0].get("repeat", 0) if num_segments > 0 else 0
+                repeat_counters_init.append(str(initial_repeat))
 
             f.write("animated_char_dest_lo\n")
             f.write(f"\tdta {', '.join(dest_lo)}\n\n")
@@ -88,8 +132,26 @@ def main():
             f.write("animated_char_dest_hi\n")
             f.write(f"\tdta {', '.join(dest_hi)}\n\n")
 
-            f.write("animated_char_max_frames\n")
-            f.write(f"\tdta {', '.join(max_frames)}\n\n")
+            f.write("animated_char_num_segments\n")
+            f.write(f"\tdta {', '.join(num_segments_list)}\n\n")
+
+            f.write("animated_char_seg_repeats_lo\n")
+            f.write(f"\tdta {', '.join(seg_repeats_lo)}\n\n")
+
+            f.write("animated_char_seg_repeats_hi\n")
+            f.write(f"\tdta {', '.join(seg_repeats_hi)}\n\n")
+
+            f.write("animated_char_seg_num_frames_lo\n")
+            f.write(f"\tdta {', '.join(seg_num_frames_lo)}\n\n")
+
+            f.write("animated_char_seg_num_frames_hi\n")
+            f.write(f"\tdta {', '.join(seg_num_frames_hi)}\n\n")
+
+            f.write("animated_char_seg_frame_starts_lo\n")
+            f.write(f"\tdta {', '.join(seg_frame_starts_lo)}\n\n")
+
+            f.write("animated_char_seg_frame_starts_hi\n")
+            f.write(f"\tdta {', '.join(seg_frame_starts_hi)}\n\n")
 
             f.write("animated_char_durations_lo\n")
             f.write(f"\tdta {', '.join(durations_lo)}\n\n")
@@ -102,6 +164,15 @@ def main():
 
             f.write("animated_char_data_hi\n")
             f.write(f"\tdta {', '.join(data_hi)}\n\n")
+
+            # Write current segment (initialized to 0)
+            cur_segments_init = [ "0" for _ in range(num_chars) ]
+            f.write("animated_char_cur_segment\n")
+            f.write(f"\tdta {', '.join(cur_segments_init)}\n\n")
+
+            # Write repeat counter (initialized to segment 0's repeat value)
+            f.write("animated_char_repeat_counter\n")
+            f.write(f"\tdta {', '.join(repeat_counters_init)}\n\n")
 
             # Write current frames (initialized to 255 for first-frame wrap-around to 0)
             cur_frames_init = [ "255" for _ in range(num_chars) ]
@@ -123,18 +194,41 @@ def main():
             # Write duration and frame data arrays for each character
             for idx, char_info in enumerate(characters):
                 f.write(f"; Character {char_info['index']}\n")
+                segments = char_info.get("animation", [])
                 
-                # durations
-                durations = [str(frame["duration"]) for frame in char_info["frames"]]
+                # repeats
+                repeats = [str(seg.get("repeat", 0)) for seg in segments]
+                f.write(f"char{idx}_segment_repeats\n")
+                f.write(f"\tdta {', '.join(repeats)}\n")
+                
+                # num_frames
+                num_frames = [str(len(seg.get("frames", []))) for seg in segments]
+                f.write(f"char{idx}_segment_num_frames\n")
+                f.write(f"\tdta {', '.join(num_frames)}\n")
+                
+                # frame starts
+                starts = []
+                curr_start = 0
+                for seg in segments:
+                    starts.append(str(curr_start))
+                    curr_start += len(seg.get("frames", []))
+                f.write(f"char{idx}_segment_frame_starts\n")
+                f.write(f"\tdta {', '.join(starts)}\n")
+                
+                # durations (flat across all segments)
+                durations = []
+                for seg in segments:
+                    durations.extend([str(frame["duration"]) for frame in seg.get("frames", [])])
                 f.write(f"char{idx}_durations\n")
                 f.write(f"\tdta {', '.join(durations)}\n")
                 
-                # data frames
+                # data frames (flat across all segments)
                 f.write(f"char{idx}_data\n")
-                for frame in char_info["frames"]:
-                    hex_bytes = frame["data"].split()
-                    decimal_bytes = [str(int(b, 16)) for b in hex_bytes]
-                    f.write(f"\tdta {', '.join(decimal_bytes)}\n")
+                for seg in segments:
+                    for frame in seg.get("frames", []):
+                        hex_bytes = frame["data"].split()
+                        decimal_bytes = [str(int(b, 16)) for b in hex_bytes]
+                        f.write(f"\tdta {', '.join(decimal_bytes)}\n")
                 f.write("\n")
 
     except Exception as e:

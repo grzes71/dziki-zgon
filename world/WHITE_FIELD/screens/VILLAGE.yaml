@@ -13,9 +13,6 @@ objects:
 - object: HOUSE_SMALL
   x: 2
   y: 4
-- object: BARN_MEDIUM
-  x: 24
-  y: 4
 - object: TREE_SMALL
   x: 34
   y: 7
@@ -178,9 +175,6 @@ objects:
   x: 25
   y: 11
 - object: GROUND_GREEN_DOWN
-  x: 39
-  y: 6
-- object: GROUND_GREEN_DOWN
   x: 31
   y: 6
 - object: GROUND_GREEN_DOWN
@@ -279,6 +273,30 @@ objects:
 - object: STONE_BIG
   x: 29
   y: 3
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 32
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 4
+- object: SHED
+  x: 24
+  y: 4
 enemies:
 - enemy: strzyga
   x: 12

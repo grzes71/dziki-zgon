@@ -40,9 +40,6 @@ objects:
   x: 32
   y: 7
 - object: TREE_SMALL
-  x: 31
-  y: 3
-- object: TREE_SMALL
   x: 11
   y: 2
 - object: TREE_SMALL
@@ -58,9 +55,6 @@ objects:
   x: 20
   y: 6
   repeat-x: 2
-- object: ROCK_1
-  x: 35
-  y: 1
 - object: WAVES
   x: 37
   y: 7
@@ -123,15 +117,9 @@ objects:
   x: 37
   y: 11
   repeat-x: 3
-- object: BUSH_2
-  x: 33
-  y: 10
 - object: BUSH
   x: 1
   y: 6
-- object: BUSH
-  x: 19
-  y: 0
 - object: BUSH
   x: 1
   y: 0
@@ -182,18 +170,11 @@ objects:
   x: 31
   y: 11
 - object: REED
-  x: 26
-  y: 3
-  repeat-x: 3
-- object: REED
   x: 27
   y: 5
 - object: REED
   x: 34
   y: 5
-- object: REED
-  x: 33
-  y: 0
 - object: REED
   x: 36
   y: 2
@@ -219,9 +200,6 @@ objects:
   x: 13
   y: 0
 - object: REED
-  x: 14
-  y: 1
-- object: REED
   x: 11
   y: 0
 - object: BUSH_2
@@ -235,10 +213,18 @@ objects:
   x: 0
   y: 11
   repeat-x: 27
-- object: CHAIN_1
-  x: 18
-  y: 5
-  repeat-y: 3
+- object: ROCK_GREEN
+  x: 4
+  y: 9
+- object: ROCK_GREEN
+  x: 30
+  y: 1
+- object: ROCK_1
+  x: 33
+  y: 11
+- object: CROSS_2
+  x: 8
+  y: 9
 enemies:
 - enemy: bazyliszek
   x: 13

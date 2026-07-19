@@ -2,55 +2,156 @@
     "characters": [
         {
             "index": 112,
-            "frames": [
+            "animation": [
                 {
-                    "duration": 100,
-                    "data": "00 00 00 00 00 00 00 00"
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 100,
+                            "data": "00 00 00 00 00 00 00 00"
+                        }
+                    ]
                 },
                 {
-                    "duration": 5,
-                    "data": "00 3C C3 83 C3 00 3C 2C"
-                },
-                {
-                    "duration": 5,
-                    "data": "3C C3 83 C3 00 3C 2C 00"
-                },
-                {
-                    "duration": 5,
-                    "data": "C3 83 C3 00 3C 2C 00 3C"
-                },
-                {
-                    "duration": 5,
-                    "data": "83 C3 00 3C 2C 00 3C C3"
-                },
-                {
-                    "duration": 5,
-                    "data": "C3 00 3C 2C 00 3C C3 83"
-                },
-                {
-                    "duration": 5,
-                    "data": "00 3C 2C 00 3C C3 83 C3"
-                },
-                {
-                    "duration": 5,
-                    "data": "3C 2C 00 3C C3 83 C3 00"
-                },
-                {
-                    "duration": 5,
-                    "data": "2C 00 3C C3 83 C3 00 3C"
+                    "repeat": 10,
+                    "frames": [
+                        {
+                            "duration": 5,
+                            "data": "00 3C C3 83 C3 00 3C 2C"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "3C C3 83 C3 00 3C 2C 00"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "C3 83 C3 00 3C 2C 00 3C"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "83 C3 00 3C 2C 00 3C C3"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "C3 00 3C 2C 00 3C C3 83"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 3C 2C 00 3C C3 83 C3"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "3C 2C 00 3C C3 83 C3 00"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "2C 00 3C C3 83 C3 00 3C"
+                        }
+                    ]
                 }
             ]
         },
         {
             "index": 78,
-            "frames": [
+            "animation": [
                 {
-                    "duration": 5,
-                    "data": "33 00 33 00 33 00 33 00"
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 10,
+                            "data": "33 00 33 00 33 00 33 00"
+                        },
+                        {
+                            "duration": 10,
+                            "data": "00 33 00 33 00 33 00 33"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "index": 79,
+            "animation": [
+                {
+                    "repeat": 2,
+                    "frames": [
+                        {
+                            "duration": 100,
+                            "data": "00 00 00 00 00 00 00 00"
+                        }
+                    ]
                 },
                 {
-                    "duration": 5,
-                    "data": "00 33 00 33 00 33 00 33"
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 5,
+                            "data": "00 00 20 30 BC BC 00 00"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 20 30 BC BC 00 00 00"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "20 30 BC BC 00 00 00 00"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "30 BC BC 00 00 00 00 20"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "BC BC 00 00 00 00 20 30"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "BC 00 00 00 00 20 30 BC"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 20 30 BC BC"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 20 30 BC BC 00"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "index": 114,
+            "animation": [
+                {
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 150,
+                            "data": "00 00 00 00 00 00 00 00"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 2,
+                    "frames": [
+                        {
+                            "duration": 10,
+                            "data": "2C 2C BF 00 2C 2C BF 00"
+                        },
+                        {
+                            "duration": 10,
+                            "data": "2C BF 00 2C 2C BF 00 2C"
+                        },
+                        {
+                            "duration": 10,
+                            "data": "BF 00 2C 2C BF 00 2C 2C"
+                        },
+                        {
+                            "duration": 10,
+                            "data": "00 2C 2C BF 00 2C 2C BF"
+                        }
+                    ]
                 }
             ]
         }

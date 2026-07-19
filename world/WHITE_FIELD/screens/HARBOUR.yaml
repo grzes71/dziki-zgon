@@ -23,14 +23,8 @@ objects:
   x: 18
   y: 5
 - object: BUSH_2
-  x: 38
-  y: 5
-- object: BUSH_2
   x: 22
   y: 3
-- object: BUSH
-  x: 15
-  y: 2
 - object: GROUND_BROWN_UP
   x: 14
   y: 5
@@ -60,9 +54,6 @@ objects:
 - object: BUSH
   x: 31
   y: 1
-- object: BUSH
-  x: 27
-  y: 0
 - object: GROUND_GREEN_DOWN
   x: 37
   y: 0
@@ -84,24 +75,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 2
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 1
-  repeat-x: 3
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 0
-  repeat-x: 4
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 2
-  repeat-x: 2
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 3
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 8
 - object: WAVES
   x: 0
   y: 9
@@ -139,6 +112,54 @@ objects:
 - object: TREE_SMALL
   x: 5
   y: 6
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 2
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 1
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 2
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 1
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 1
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 0
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 2
+  repeat-y: 2
+- object: ROCK_GREEN
+  x: 37
+  y: 5
+- object: TREE_SMALL
+  x: 14
+  y: 1
 enemies:
 - enemy: strzyga
   x: 16

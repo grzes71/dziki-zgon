@@ -178,6 +178,7 @@ def test_update_animated_charset(harness):
     if num_anim_chars == 0:
         pytest.skip("No animated characters defined in animated.json")
 
+    cur_segment_addr = labels["ANIMATED_CHAR_CUR_SEGMENT"]
     cur_frame_addr = labels["ANIMATED_CHAR_CUR_FRAME"]
     timers_addr = labels["ANIMATED_CHAR_TIMERS"]
     start_test = labels["START_ANIMATED_TEST"]
@@ -190,11 +191,14 @@ def test_update_animated_charset(harness):
     cpu.memory[dst_ptr_z + 1] = 0x78
     cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = 0xFF
 
+    assert cpu.memory[cur_segment_addr] == 0
     assert cpu.memory[cur_frame_addr] == 255
     assert cpu.memory[timers_addr] == 1
 
+    # First update: wrap frame from 255 to 0, start Segment 0
     run_cpu_until_brk(cpu, start_test)
 
+    assert cpu.memory[cur_segment_addr] == 0
     assert cpu.memory[cur_frame_addr] == 0
     assert cpu.memory[timers_addr] == 100
 
@@ -212,20 +216,121 @@ def test_update_animated_charset(harness):
     for i in range(8):
         cpu.memory[char_addr + i] = 0
     
+    # Tick down timer (100 -> 99)
     run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_segment_addr] == 0
     assert cpu.memory[cur_frame_addr] == 0
     assert cpu.memory[timers_addr] == 99
     for i in range(8):
         assert cpu.memory[char_addr + i] == 0
 
+    # Force tick trigger (timers_addr = 1 -> becomes 0 -> advances)
     cpu.memory[timers_addr] = 1
     run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[cur_frame_addr] == 1
+    
+    # Segment 0 has 1 frame, so we end Segment 0 and move to Segment 1
+    # Segment 1 starts at relative frame 0
+    assert cpu.memory[cur_segment_addr] == 1
+    assert cpu.memory[cur_frame_addr] == 0
     assert cpu.memory[timers_addr] == 5
     expected_frame1 = [0, 60, 195, 131, 195, 0, 60, 44]
     for i in range(8):
         assert cpu.memory[char_addr + i] == expected_frame1[i], \
             f"Byte {i} should be {expected_frame1[i]}, got {cpu.memory[char_addr + i]}"
+
+def test_charset_anim_segment_repeats(harness):
+    xex_file, labels = harness
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+
+    num_anim_chars = labels.get("NUM_ANIM_CHARS", 0)
+    if num_anim_chars < 3:
+        pytest.skip("Test requires at least 3 animated characters")
+
+    cur_segment_addr = labels["ANIMATED_CHAR_CUR_SEGMENT"] + 2
+    repeat_counter_addr = labels["ANIMATED_CHAR_REPEAT_COUNTER"] + 2
+    cur_frame_addr = labels["ANIMATED_CHAR_CUR_FRAME"] + 2
+    timers_addr = labels["ANIMATED_CHAR_TIMERS"] + 2
+    start_test = labels["START_ANIMATED_TEST"]
+    
+    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = 0xFF
+    char_addr = 0x6400 + 79 * 8
+
+    # Initial state
+    assert cpu.memory[cur_segment_addr] == 0
+    assert cpu.memory[repeat_counter_addr] == 2
+    assert cpu.memory[cur_frame_addr] == 255
+    assert cpu.memory[timers_addr] == 1
+
+    # Playback sequence expected (relative frame index: RF, global frame data index: GD)
+    # Step 1: Seg 0, Repeat 2, RF 0, GD 0 (dur 100, data [0]*8)
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_segment_addr] == 0
+    assert cpu.memory[repeat_counter_addr] == 2
+    assert cpu.memory[cur_frame_addr] == 0
+    assert cpu.memory[timers_addr] == 100
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == 0
+
+    # Step 2: Seg 0, Repeat 1 (decremented), RF 0, GD 0 (dur 100, data [0]*8)
+    cpu.memory[timers_addr] = 1
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_segment_addr] == 0
+    assert cpu.memory[repeat_counter_addr] == 1
+    assert cpu.memory[cur_frame_addr] == 0
+    assert cpu.memory[timers_addr] == 100
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == 0
+
+    # Step 3: Seg 0, Repeat 0 (decremented), RF 0, GD 0 (dur 100, data [0]*8)
+    cpu.memory[timers_addr] = 1
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_segment_addr] == 0
+    assert cpu.memory[repeat_counter_addr] == 0
+    assert cpu.memory[cur_frame_addr] == 0
+    assert cpu.memory[timers_addr] == 100
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == 0
+
+    # Step 4: Seg 1 (advanced), Repeat 0, RF 0, GD 1 (dur 5, data [0, 0, 0x20, 0x30, 0xBC, 0xBC, 0, 0])
+    cpu.memory[timers_addr] = 1
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_segment_addr] == 1
+    assert cpu.memory[repeat_counter_addr] == 0
+    assert cpu.memory[cur_frame_addr] == 0
+    assert cpu.memory[timers_addr] == 5
+    expected_data_seg1_f0 = [0, 0, 0x20, 0x30, 0xBC, 0xBC, 0, 0]
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == expected_data_seg1_f0[i]
+
+    # Step 5: Seg 1, Repeat 0, RF 1, GD 2 (dur 5, data [0, 0x20, 0x30, 0xBC, 0xBC, 0, 0, 0])
+    cpu.memory[timers_addr] = 1
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_segment_addr] == 1
+    assert cpu.memory[repeat_counter_addr] == 0
+    assert cpu.memory[cur_frame_addr] == 1
+    assert cpu.memory[timers_addr] == 5
+    expected_data_seg1_f1 = [0, 0x20, 0x30, 0xBC, 0xBC, 0, 0, 0]
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == expected_data_seg1_f1[i]
+
+    # Step 6 to 11: Play through remaining 6 frames of Segment 1 (RF 2 to 7)
+    for frame_idx in range(2, 8):
+        cpu.memory[timers_addr] = 1
+        run_cpu_until_brk(cpu, start_test)
+        assert cpu.memory[cur_segment_addr] == 1
+        assert cpu.memory[cur_frame_addr] == frame_idx
+        assert cpu.memory[timers_addr] == 5
+
+    # Step 12: Seg 0 (wrapped), Repeat 2 (reloaded), RF 0, GD 0 (dur 100, data [0]*8)
+    cpu.memory[timers_addr] = 1
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[cur_segment_addr] == 0
+    assert cpu.memory[repeat_counter_addr] == 2
+    assert cpu.memory[cur_frame_addr] == 0
+    assert cpu.memory[timers_addr] == 100
+    for i in range(8):
+        assert cpu.memory[char_addr + i] == 0
 
 def test_check_active_charset_animations(harness):
     xex_file, labels = harness
