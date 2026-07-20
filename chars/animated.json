@@ -82,7 +82,7 @@
                     ]
                 },
                 {
-                    "repeat": 0,
+                    "repeat": 10,
                     "frames": [
                         {
                             "duration": 5,
@@ -150,6 +150,57 @@
                         {
                             "duration": 10,
                             "data": "00 2C 2C BF 00 2C 2C BF"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "index": 113,
+            "animation": [
+                {
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 40,
+                            "data": "00 00 00 00 00 00 00 00"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 10,
+                    "frames": [
+                        {
+                            "duration": 5,
+                            "data": "00 0C 37 0C 00 30 DC 30"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "0C 37 0C 00 30 DC 30 00"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "37 0C 00 30 DC 30 00 0C"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "0C 00 30 DC 30 00 0C 37"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 30 DC 30 00 0C 37 0C"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "30 DC 30 00 0C 37 0C 00"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "DC 30 00 0C 37 0C 00 30"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "30 00 0C 37 0C 00 30 DC"
                         }
                     ]
                 }

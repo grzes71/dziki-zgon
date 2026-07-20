@@ -292,22 +292,22 @@ def test_charset_anim_segment_repeats(harness):
     for i in range(8):
         assert cpu.memory[char_addr + i] == 0
 
-    # Step 4: Seg 1 (advanced), Repeat 0, RF 0, GD 1 (dur 5, data [0, 0, 0x20, 0x30, 0xBC, 0xBC, 0, 0])
+    # Step 4: Seg 1 (advanced), Repeat 10, RF 0, GD 1 (dur 5, data [0, 0, 0x20, 0x30, 0xBC, 0xBC, 0, 0])
     cpu.memory[timers_addr] = 1
     run_cpu_until_brk(cpu, start_test)
     assert cpu.memory[cur_segment_addr] == 1
-    assert cpu.memory[repeat_counter_addr] == 0
+    assert cpu.memory[repeat_counter_addr] == 10
     assert cpu.memory[cur_frame_addr] == 0
     assert cpu.memory[timers_addr] == 5
     expected_data_seg1_f0 = [0, 0, 0x20, 0x30, 0xBC, 0xBC, 0, 0]
     for i in range(8):
         assert cpu.memory[char_addr + i] == expected_data_seg1_f0[i]
 
-    # Step 5: Seg 1, Repeat 0, RF 1, GD 2 (dur 5, data [0, 0x20, 0x30, 0xBC, 0xBC, 0, 0, 0])
+    # Step 5: Seg 1, Repeat 10, RF 1, GD 2 (dur 5, data [0, 0x20, 0x30, 0xBC, 0xBC, 0, 0, 0])
     cpu.memory[timers_addr] = 1
     run_cpu_until_brk(cpu, start_test)
     assert cpu.memory[cur_segment_addr] == 1
-    assert cpu.memory[repeat_counter_addr] == 0
+    assert cpu.memory[repeat_counter_addr] == 10
     assert cpu.memory[cur_frame_addr] == 1
     assert cpu.memory[timers_addr] == 5
     expected_data_seg1_f1 = [0, 0x20, 0x30, 0xBC, 0xBC, 0, 0, 0]
@@ -319,10 +319,30 @@ def test_charset_anim_segment_repeats(harness):
         cpu.memory[timers_addr] = 1
         run_cpu_until_brk(cpu, start_test)
         assert cpu.memory[cur_segment_addr] == 1
+        assert cpu.memory[repeat_counter_addr] == 10
         assert cpu.memory[cur_frame_addr] == frame_idx
         assert cpu.memory[timers_addr] == 5
 
-    # Step 12: Seg 0 (wrapped), Repeat 2 (reloaded), RF 0, GD 0 (dur 100, data [0]*8)
+    # Step 12 to 91: Repeat Segment 1 10 times (repeat counter goes from 10 to 0)
+    for rep in range(10, 0, -1):
+        # Trigger segment repeat transition from RF 7 -> RF 0 of Segment 1
+        cpu.memory[timers_addr] = 1
+        run_cpu_until_brk(cpu, start_test)
+        assert cpu.memory[cur_segment_addr] == 1
+        assert cpu.memory[repeat_counter_addr] == rep - 1
+        assert cpu.memory[cur_frame_addr] == 0
+        assert cpu.memory[timers_addr] == 5
+        
+        # Play through frames 1 to 7 of the repeated segment
+        for frame_idx in range(1, 8):
+            cpu.memory[timers_addr] = 1
+            run_cpu_until_brk(cpu, start_test)
+            assert cpu.memory[cur_segment_addr] == 1
+            assert cpu.memory[repeat_counter_addr] == rep - 1
+            assert cpu.memory[cur_frame_addr] == frame_idx
+            assert cpu.memory[timers_addr] == 5
+
+    # Step 92: Seg 0 (wrapped), Repeat 2 (reloaded), RF 0, GD 0 (dur 100, data [0]*8)
     cpu.memory[timers_addr] = 1
     run_cpu_until_brk(cpu, start_test)
     assert cpu.memory[cur_segment_addr] == 0

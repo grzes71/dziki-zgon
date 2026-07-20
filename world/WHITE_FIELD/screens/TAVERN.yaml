@@ -172,9 +172,6 @@ objects:
   x: 31
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 7
-  y: 3
-- object: GROUND_BROWN_DOWN
   x: 1
   y: 3
 - object: GROUND_BROWN_DOWN

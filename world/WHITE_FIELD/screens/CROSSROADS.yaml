@@ -226,6 +226,26 @@ objects:
 - object: SIGNPOINT_LEFT
   x: 4
   y: 6
+- object: CLAW_3
+  x: 20
+  y: 6
+  repeat-y: 4
+- object: CLAW_2
+  x: 23
+  y: 6
+  repeat-y: 4
+- object: CLAW
+  x: 15
+  y: 6
+  repeat-y: 6
+- object: CHAIN_2
+  x: 12
+  y: 0
+  repeat-y: 7
+- object: CHAIN_1
+  x: 5
+  y: 7
+  repeat-y: 3
 enemies:
 - enemy: sukkub
   x: 25
