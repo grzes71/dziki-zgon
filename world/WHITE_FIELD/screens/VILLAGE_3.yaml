@@ -26,17 +26,11 @@ objects:
   x: 25
   y: 4
 - object: TREE_3
-  x: 35
-  y: 2
-- object: TREE_3
   x: 3
   y: 2
 - object: CROSS_2
   x: 5
   y: 9
-- object: ROCK_2
-  x: 28
-  y: 2
 - object: ROCK_2
   x: 10
   y: 6
@@ -77,10 +71,6 @@ objects:
 - object: GROUND_GREEN_UP
   x: 5
   y: 0
-- object: GROUND_BROWN_UP
-  x: 35
-  y: 0
-  repeat-x: 5
 - object: WAVES
   x: 0
   y: 11
@@ -106,26 +96,11 @@ objects:
   y: 1
   repeat-x: 2
 - object: GROUND_BROWN_UP
-  x: 33
-  y: 0
-- object: GROUND_BROWN_UP
-  x: 34
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 32
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 31
-  y: 0
-- object: GROUND_BROWN_UP
   x: 39
   y: 2
 - object: GROUND_BROWN_UP
   x: 39
   y: 4
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 3
 - object: GROUND_BROWN_UP
   x: 38
   y: 9
@@ -140,14 +115,8 @@ objects:
   x: 6
   y: 10
   repeat-x: 2
-- object: CROSS_2
-  x: 36
-  y: 9
 - object: TREE_2
   x: 19
-  y: 5
-- object: TREE_2
-  x: 36
   y: 5
 - object: CROSS_1
   x: 21
@@ -157,12 +126,6 @@ objects:
   y: 7
 - object: GROUND_BROWN_DOWN
   x: 25
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 23
-  y: 8
-- object: GROUND_BROWN_DOWN
-  x: 35
   y: 7
 - object: GROUND_BROWN_DOWN
   x: 0
@@ -190,9 +153,6 @@ objects:
 - object: TREE_2
   x: 4
   y: 5
-- object: OUTHOUSE_2
-  x: 32
-  y: 8
 - object: FENCE_5
   x: 16
   y: 9
@@ -203,6 +163,42 @@ objects:
 - object: BARREL
   x: 10
   y: 9
+- object: OUTHOUSE
+  x: 35
+  y: 4
+- object: TREE_SMALL
+  x: 35
+  y: 1
+- object: TREE_2
+  x: 25
+  y: 1
+- object: MUSHROOM
+  x: 30
+  y: 2
+- object: ROCK_GREEN
+  x: 31
+  y: 9
+- object: ROCK_GREEN
+  x: 33
+  y: 8
+- object: BUSH
+  x: 39
+  y: 0
+- object: BUSH
+  x: 8
+  y: 6
+- object: BUSH
+  x: 1
+  y: 8
+- object: BUSH
+  x: 30
+  y: 0
+- object: BUSH_2
+  x: 17
+  y: 3
+- object: BARREL
+  x: 27
+  y: 5
 enemies:
 - enemy: sukkub
   x: 27

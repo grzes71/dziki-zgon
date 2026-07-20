@@ -52,48 +52,26 @@ objects:
   x: 33
   y: 9
 - object: GROUND_GREEN_DOWN
-  x: 35
-  y: 9
-- object: GROUND_GREEN_DOWN
-  x: 37
-  y: 9
-  repeat-x: 3
-- object: GROUND_GREEN_DOWN
-  x: 38
-  y: 8
-  repeat-x: 2
-- object: GROUND_GREEN_DOWN
   x: 39
   y: 7
 - object: GROUND_GREEN_DOWN
   x: 31
   y: 9
-- object: GROUND_GREEN_UP
-  x: 34
-  y: 9
-- object: GROUND_GREEN_UP
-  x: 37
-  y: 8
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 6
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 7
+  repeat-y: 2
 - object: GROUND_BROWN_DOWN
   x: 32
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 36
   y: 9
 - object: GROUND_BROWN_DOWN
   x: 30
   y: 9
 - object: GROUND_BROWN_DOWN
   x: 29
-  y: 8
-- object: GROUND_BROWN_DOWN
-  x: 33
   y: 8
 - object: GROUND_BROWN_DOWN
   x: 31
@@ -212,9 +190,6 @@ objects:
   x: 24
   y: 9
 - object: GROUND_GREEN_DOWN
-  x: 34
-  y: 8
-- object: GROUND_GREEN_DOWN
   x: 32
   y: 8
 - object: GROUND_GREEN_DOWN
@@ -223,29 +198,37 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 27
   y: 8
-- object: SIGNPOINT_LEFT
+- object: BARN_4
+  x: 3
+  y: 6
+- object: BUSH
+  x: 32
+  y: 3
+- object: BUSH
   x: 4
-  y: 6
-- object: CLAW_3
-  x: 20
-  y: 6
-  repeat-y: 4
-- object: CLAW_2
-  x: 23
-  y: 6
-  repeat-y: 4
-- object: CLAW
-  x: 15
-  y: 6
-  repeat-y: 6
-- object: CHAIN_2
-  x: 12
+  y: 4
+- object: BUSH
+  x: 4
   y: 0
-  repeat-y: 7
-- object: CHAIN_1
-  x: 5
-  y: 7
-  repeat-y: 3
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 9
+  repeat-x: 3
+- object: GROUND_BROWN_UP
+  x: 35
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 34
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 33
+  y: 8
 enemies:
 - enemy: sukkub
   x: 25
