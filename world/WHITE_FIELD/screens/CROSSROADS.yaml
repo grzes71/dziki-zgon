@@ -86,9 +86,6 @@ objects:
 - object: TREE_SMALL
   x: 5
   y: 2
-- object: TREE_SMALL
-  x: 9
-  y: 6
 - object: ROCK_GREEN
   x: 33
   y: 1
@@ -101,21 +98,9 @@ objects:
 - object: BUSH_2
   x: 36
   y: 3
-- object: BUSH_2
-  x: 10
-  y: 1
 - object: TREE_3
   x: 35
   y: 7
-- object: ROCK_2
-  x: 5
-  y: 10
-- object: CROSS_2
-  x: 10
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 10
-  y: 11
 - object: GROUND_BROWN_DOWN
   x: 2
   y: 11
@@ -128,9 +113,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 4
   y: 11
-- object: GROUND_BROWN_DOWN
-  x: 3
-  y: 10
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 9
@@ -146,9 +128,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 1
-- object: GROUND_BROWN_DOWN
-  x: 10
-  y: 4
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 4
@@ -167,12 +146,6 @@ objects:
   y: 10
 - object: GROUND_GREEN_DOWN
   x: 1
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 2
-  y: 10
-- object: GROUND_GREEN_DOWN
-  x: 3
   y: 11
 - object: GROUND_GREEN_DOWN
   x: 1
@@ -229,6 +202,27 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 33
   y: 8
+- object: SIGNPOINT_LEFT
+  x: 3
+  y: 10
+- object: BUSH_2
+  x: 6
+  y: 10
+- object: BUSH_2
+  x: 15
+  y: 11
+- object: FENCE_5
+  x: 6
+  y: 7
+- object: BARREL
+  x: 7
+  y: 7
+- object: TREE_SMALL
+  x: 9
+  y: 4
+- object: TREE_2
+  x: 10
+  y: 9
 enemies:
 - enemy: sukkub
   x: 25

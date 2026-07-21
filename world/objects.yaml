@@ -68,7 +68,7 @@ objects:
   flags:
     blocking: false
     interactive: false
-  tiles: [23, 24, 25, 26]
+  tiles: [23, 24, 24, 26]
 - object: HOUSE_TALL
   id: HOUSE_TALL
   code: 8
@@ -318,8 +318,8 @@ objects:
     height: 2
   flags:
     blocking: true
-    interactive: false
-  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 87, 90, 234, 233]
+    interactive: true
+  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 27, 28, 234, 233]
 - object: PYRAMID_BIG
   id: PYRAMID_BIG
   code: 33
@@ -340,7 +340,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [78, 79, 110, 111]
+  tiles: [79, 114, 110, 111]
 - object: CART
   id: CART
   code: 35
@@ -350,7 +350,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [240, 113, 242]
+  tiles: [112, 241, 112]
 - object: WATERFALL
   id: WATERFALL
   code: 36
@@ -930,7 +930,7 @@ objects:
   flags:
     blocking: false
     interactive: false
-  tiles: [207]
+  tiles: [206]
 - object: CHAIN_1
   id: CHAIN_1
   code: 93
@@ -948,9 +948,9 @@ objects:
     width: 1
     height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
-  tiles: [206]
+  tiles: [112]
 - object: CLAW_2
   id: CLAW_2
   code: 95
@@ -958,9 +958,9 @@ objects:
     width: 1
     height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
-  tiles: [242]
+  tiles: [78]
 - object: CLAW_3
   id: CLAW_3
   code: 96
@@ -971,3 +971,13 @@ objects:
     blocking: false
     interactive: false
   tiles: [241]
+- object: CLAW_4
+  id: CLAW_4
+  code: 97
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [113]

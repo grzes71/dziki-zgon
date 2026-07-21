@@ -50,12 +50,6 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 34
   y: 11
-- object: GROUND_GREEN_DOWN
-  x: 38
-  y: 9
-- object: GROUND_GREEN_DOWN
-  x: 39
-  y: 8
 - object: GROUND_BROWN_UP
   x: 35
   y: 11
@@ -66,15 +60,8 @@ objects:
   x: 32
   y: 11
 - object: GROUND_BROWN_UP
-  x: 36
-  y: 9
-  repeat-y: 2
-- object: GROUND_BROWN_UP
   x: 30
   y: 11
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 8
 - object: GROUND_BROWN_UP
   x: 38
   y: 7
@@ -90,16 +77,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 8
-- object: GROUND_BROWN_DOWN
-  x: 37
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 36
-  y: 7
-  repeat-y: 2
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 4
@@ -267,6 +244,31 @@ objects:
 - object: BUSH
   x: 33
   y: 9
+- object: SIGNPOINT_RIGHT
+  x: 36
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 9
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 0
+- object: TREE_SMALL
+  x: 15
+  y: 0
+- object: REED
+  x: 21
+  y: 2
+- object: REED
+  x: 23
+  y: 2
+- object: REED
+  x: 25
+  y: 2
+- object: REED
+  x: 37
+  y: 2
+  repeat-x: 2
 enemies:
 - enemy: strzyga
   x: 11

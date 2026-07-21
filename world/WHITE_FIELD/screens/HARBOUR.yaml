@@ -28,9 +28,6 @@ objects:
 - object: GROUND_BROWN_UP
   x: 14
   y: 5
-- object: GROUND_BROWN_UP
-  x: 23
-  y: 5
 - object: PORT
   x: 25
   y: 6
@@ -44,10 +41,6 @@ objects:
 - object: STONE_BIG
   x: 3
   y: 2
-- object: REED
-  x: 8
-  y: 8
-  repeat-x: 3
 - object: TREE_3
   x: 30
   y: 3
@@ -160,6 +153,43 @@ objects:
 - object: TREE_SMALL
   x: 14
   y: 1
+- object: SIGNPOINT_LEFT
+  x: 6
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 8
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 11
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 21
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 24
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 28
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 35
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 23
+  y: 5
+- object: REED
+  x: 0
+  y: 8
+  repeat-x: 2
+- object: REED
+  x: 3
+  y: 8
+- object: REED
+  x: 9
+  y: 8
+- object: REED
+  x: 11
+  y: 8
 enemies:
 - enemy: strzyga
   x: 16

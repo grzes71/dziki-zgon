@@ -95,8 +95,8 @@ Stwórz plik `sprites/<nazwa_przeciwnika>.sprite.json` zawierający definicję p
 Dodaj unikalne ID nowego przeciwnika na końcu pliku [world/enemies.yaml](file:///c:/Users/grzes/Documents/Projects/witcher-atari-game/world/enemies.yaml):
 ```yaml
 enemies:
-  - id: "kimikora"
-    name: "Kimikora"
+  - id: "kikimora"
+    name: "Kikimora"
   ...
   - id: "sukkub"
     name: "Sukkub"

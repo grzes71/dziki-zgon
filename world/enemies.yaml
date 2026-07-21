@@ -1,6 +1,6 @@
 enemies:
-  - id: "kimikora"
-    name: "Kimikora"
+  - id: "kikimora"
+    name: "Kikimora"
   - id: "strzyga"
     name: "Strzyga"
   - id: "bazyliszek"

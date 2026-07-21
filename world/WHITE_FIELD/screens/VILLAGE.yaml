@@ -71,9 +71,6 @@ objects:
   x: 25
   y: 2
 - object: BUSH
-  x: 31
-  y: 1
-- object: BUSH
   x: 29
   y: 1
 - object: GROUND_BROWN_DOWN
@@ -297,6 +294,9 @@ objects:
 - object: SHED
   x: 24
   y: 4
+- object: SIGNPOINT_RIGHT
+  x: 31
+  y: 1
 enemies:
 - enemy: strzyga
   x: 12
