@@ -92,7 +92,11 @@ def main():
                 dest_lo.append(f"<{dest_addr}")
                 dest_hi.append(f">{dest_addr}")
                 
-                segments = char_info.get("animation", [])
+                raw_anim = char_info.get("animation", [])
+                if raw_anim and isinstance(raw_anim[0], dict) and "duration" in raw_anim[0] and "data" in raw_anim[0]:
+                    segments = [{"repeat": 0, "frames": raw_anim}]
+                else:
+                    segments = raw_anim
                 num_segments = len(segments)
                 num_segments_list.append(str(num_segments))
                 
@@ -194,7 +198,11 @@ def main():
             # Write duration and frame data arrays for each character
             for idx, char_info in enumerate(characters):
                 f.write(f"; Character {char_info['index']}\n")
-                segments = char_info.get("animation", [])
+                raw_anim = char_info.get("animation", [])
+                if raw_anim and isinstance(raw_anim[0], dict) and "duration" in raw_anim[0] and "data" in raw_anim[0]:
+                    segments = [{"repeat": 0, "frames": raw_anim}]
+                else:
+                    segments = raw_anim
                 
                 # repeats
                 repeats = [str(seg.get("repeat", 0)) for seg in segments]

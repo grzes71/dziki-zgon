@@ -360,7 +360,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [0, 10, 230, 12, 0, 10, 11, 202, 9, 12]
+  tiles: [0, 10, 230, 12, 0, 10, 11, 153, 9, 12]
 - object: TREASURE
   id: TREASURE
   code: 37
@@ -534,7 +534,7 @@ objects:
   flags:
     blocking: true
     interactive: false
-  tiles: [0, 13, 230, 15, 0, 13, 14, 202, 74, 15]
+  tiles: [0, 13, 230, 15, 0, 13, 14, 153, 74, 15]
 - object: RIVER_TL
   id: RIVER_TL
   code: 54
@@ -981,3 +981,24 @@ objects:
     blocking: true
     interactive: false
   tiles: [113]
+- object: WATERFALL_2
+  id: WATERFALL_2
+  code: 98
+  size:
+    width: 7
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+  tiles: [0, 0, 13, 230, 15, 0, 0, 0, 13, 14, 153, 121, 15, 0, 13, 14, 74, 153, 74,
+    121, 15]
+- object: WAVE_UP
+  id: WAVE_UP
+  code: 99
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [153]

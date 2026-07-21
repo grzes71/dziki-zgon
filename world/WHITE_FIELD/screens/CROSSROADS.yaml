@@ -223,6 +223,10 @@ objects:
 - object: TREE_2
   x: 10
   y: 9
+- object: CLAW
+  x: 15
+  y: 7
+  repeat-x: 9
 enemies:
 - enemy: sukkub
   x: 25

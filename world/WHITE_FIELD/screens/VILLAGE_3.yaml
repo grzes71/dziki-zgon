@@ -60,9 +60,6 @@ objects:
   x: 15
   y: 1
 - object: GROUND_GREEN_UP
-  x: 39
-  y: 8
-- object: GROUND_GREEN_UP
   x: 8
   y: 0
 - object: GROUND_GREEN_UP
@@ -98,12 +95,6 @@ objects:
 - object: GROUND_BROWN_UP
   x: 39
   y: 4
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 10
 - object: REED
   x: 35
   y: 10
@@ -168,9 +159,6 @@ objects:
 - object: ROCK_GREEN
   x: 31
   y: 9
-- object: ROCK_GREEN
-  x: 33
-  y: 8
 - object: BUSH
   x: 39
   y: 0
@@ -192,11 +180,14 @@ objects:
 - object: BUSH_2
   x: 23
   y: 9
-- object: SIGNPOINT_RIGHT
-  x: 36
-  y: 8
 - object: SIGNPOINT_LEFT
   x: 3
+  y: 8
+- object: TREE_SMALL
+  x: 38
+  y: 9
+- object: SIGNPOINT_RIGHT
+  x: 34
   y: 8
 enemies:
 - enemy: kikimora

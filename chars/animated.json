@@ -55,15 +55,79 @@
             "index": 78,
             "animation": [
                 {
+                    "repeat": 5,
+                    "frames": [
+                        {
+                            "duration": 50,
+                            "data": "00 00 00 00 00 00 00 00"
+                        }
+                    ]
+                },
+                {
                     "repeat": 0,
                     "frames": [
                         {
-                            "duration": 10,
-                            "data": "33 00 33 00 33 00 33 00"
+                            "duration": 5,
+                            "data": "00 00 00 00 00 00 00 00"
                         },
                         {
-                            "duration": 10,
-                            "data": "00 33 00 33 00 33 00 33"
+                            "duration": 5,
+                            "data": "00 00 00 00 00 00 00 08"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 00 00 08 2F"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 00 08 2F 2F"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 08 2F 2F 2F"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 1,
+                    "frames": [
+                        {
+                            "duration": 50,
+                            "data": "00 00 00 00 08 2F 2F 2F"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 08 2F 2F 2F"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 00 08 2F 2F"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 00 00 08 2F"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 00 00 00 08"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "00 00 00 00 00 00 00 00"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 10,
+                    "frames": [
+                        {
+                            "duration": 50,
+                            "data": "00 00 00 00 00 00 00 00"
                         }
                     ]
                 }
@@ -121,41 +185,6 @@
             ]
         },
         {
-            "index": 114,
-            "animation": [
-                {
-                    "repeat": 0,
-                    "frames": [
-                        {
-                            "duration": 150,
-                            "data": "00 00 00 00 00 00 00 00"
-                        }
-                    ]
-                },
-                {
-                    "repeat": 2,
-                    "frames": [
-                        {
-                            "duration": 10,
-                            "data": "2C 2C BF 00 2C 2C BF 00"
-                        },
-                        {
-                            "duration": 10,
-                            "data": "2C BF 00 2C 2C BF 00 2C"
-                        },
-                        {
-                            "duration": 10,
-                            "data": "BF 00 2C 2C BF 00 2C 2C"
-                        },
-                        {
-                            "duration": 10,
-                            "data": "00 2C 2C BF 00 2C 2C BF"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "index": 113,
             "animation": [
                 {
@@ -172,35 +201,95 @@
                     "frames": [
                         {
                             "duration": 5,
-                            "data": "00 0C 37 0C 00 30 DC 30"
+                            "data": "00 0C 3B 0C 00 30 EC 30"
                         },
                         {
                             "duration": 5,
-                            "data": "0C 37 0C 00 30 DC 30 00"
+                            "data": "0C 3B 0C 00 30 EC 30 00"
                         },
                         {
                             "duration": 5,
-                            "data": "37 0C 00 30 DC 30 00 0C"
+                            "data": "3B 0C 00 30 EC 30 00 0C"
                         },
                         {
                             "duration": 5,
-                            "data": "0C 00 30 DC 30 00 0C 37"
+                            "data": "0C 00 30 EC 30 00 0C 3B"
                         },
                         {
                             "duration": 5,
-                            "data": "00 30 DC 30 00 0C 37 0C"
+                            "data": "00 30 EC 30 00 0C 3B 0C"
                         },
                         {
                             "duration": 5,
-                            "data": "30 DC 30 00 0C 37 0C 00"
+                            "data": "30 EC 30 00 0C 3B 0C 00"
                         },
                         {
                             "duration": 5,
-                            "data": "DC 30 00 0C 37 0C 00 30"
+                            "data": "EC 30 00 0C 3B 0C 00 30"
                         },
                         {
                             "duration": 5,
-                            "data": "30 00 0C 37 0C 00 30 DC"
+                            "data": "30 00 0C 3B 0C 00 30 EC"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "index": 25,
+            "animation": [
+                {
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 5,
+                            "data": "FF F3 3C FF FF CF 3C FF"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "FF FF F3 3C FF FF CF 3C"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "3C FF FF F3 3C FF FF CF"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "CF 3C FF FF F3 3C FF FF"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "FF CF 3C FF FF F3 3C FF"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "FF FF CF 3C FF FF F3 3C"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "3C FF FF CF 3C FF FF F3"
+                        },
+                        {
+                            "duration": 5,
+                            "data": "F3 3C FF FF CF 3C FF FF"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "index": 124,
+            "animation": [
+                {
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 20,
+                            "data": "0C 30 33 0C CC 30 10 10"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "C0 30 0C CC CC 30 10 10"
                         }
                     ]
                 }
