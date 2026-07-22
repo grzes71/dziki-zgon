@@ -8,12 +8,13 @@
     ; 1. Odtwarzacz muzyki/dźwięku
     jsr Audio_Update
 
-    ; Animowanie wybranych znaków charsetu podczas gry
+    ; Animowanie wybranych znaków charsetu podczas gry i aktualizacja czasu
     lda GAME_STATE
     cmp #STATE_GAME
     bne @skip_anim
     jsr animate_charset
     jsr update_animated_charset
+    jsr update_timer
 @skip_anim
 
     ; 2. Sygnał dla pętli głównej

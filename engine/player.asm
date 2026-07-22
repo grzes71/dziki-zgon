@@ -10,7 +10,7 @@
     rts
 
 @process
-    ; Usunięto nadpisywanie koloru gracza - ładujemy go z palety w YAML
+    inc player_frame_counter
 
     ; Resetuj intencję do aktualnej pozycji (brak ruchu = stoisz)
     lda ACTOR_X,x
@@ -36,6 +36,14 @@
     ; Zapiszmy stan joysticka do Y, by móc łatwo do niego wracać.
     tay
 
+    ; check if vertical movement should be skipped (during collision, skip even frames)
+    lda collision_active
+    beq @vertical_ok
+    lda player_frame_counter
+    and #$01
+    beq @chk_left
+@vertical_ok
+
     ; GÓRA (2)
     tya
     and #$01
@@ -59,10 +67,7 @@
     lda #1
     sta ACTOR_DIR,x
     
-    ; Zmniejszenie prędkości poziomej o połowę (ruch co drugie wejście do funkcji)
-    lda player_move_toggle
-    eor #$01
-    sta player_move_toggle
+    jsr check_horizontal_move
     beq @chk_right
     dec ACTOR_INTENT_X,x
 
@@ -73,11 +78,7 @@
     lda #0
     sta ACTOR_DIR,x
     
-    ; Zmniejszenie prędkości poziomej o połowę (ruch co drugie wejście do funkcji)
-    ; Używamy tego samego toggle co wyżej, bo w danym wykonaniu naciskamy tylko 1 kierunek (left lub right)
-    lda player_move_toggle
-    eor #$01
-    sta player_move_toggle
+    jsr check_horizontal_move
     beq @anim
     inc ACTOR_INTENT_X,x
 
@@ -112,11 +113,40 @@
 
 @done
     rts
-
-player_move_toggle
-    dta 0
-
 .endp
+
+;==============================================================
+; check_horizontal_move — pomocnicza procedura do decydowania o ruchu w poziomie
+; Zwraca A=1 (ruch dozwolony) lub A=0 (brak ruchu w tej klatce)
+;==============================================================
+.proc check_horizontal_move
+    lda collision_active
+    beq @normal
+    
+    ; Kolizja: ruch co 4 klatki (gdy licznik % 4 == 1)
+    lda player_frame_counter
+    and #$03
+    cmp #$01
+    beq @ok
+    lda #0
+    rts
+    
+@normal
+    ; Normalnie: ruch co 2 klatki (gdy licznik % 2 == 1)
+    lda player_frame_counter
+    and #$01
+    cmp #$01
+    beq @ok
+    lda #0
+    rts
+    
+@ok
+    lda #1
+    rts
+.endp
+
+player_frame_counter
+    dta 0
 
 GERWALT_ANIM_LIMITS
     dta SPRITE_GERWALT_RIGHT_FRAMES

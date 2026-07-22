@@ -29,6 +29,13 @@
     jsr build_screen
     jsr check_active_charset_animations
     
+    ; Zaktualizuj region i odśwież kolory oraz HUD
+    ldx GAME_SCREEN_ID
+    lda SCREEN_REGION,x
+    sta game_stage
+    jsr update_stage_colors
+    jsr draw_region_name
+
     ; Wyczyść pamięć PMG, aby usunąć stare duszki pozycje
     jsr pmg_clear_all
 

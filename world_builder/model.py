@@ -8,6 +8,7 @@ class ObjectSize(BaseModel):
 class EnemyDef(BaseModel):
     id: str
     name: str
+    damage: int = 1
 
 class EnemyInstance(BaseModel):
     enemy: str
@@ -56,6 +57,7 @@ class RegionDef(BaseModel):
     layout: RegionLayout
     start_screen: str
     music: str
+    damage: int = 1
     screens: List[ScreenDef] = Field(default_factory=list)
     palette: dict = Field(default_factory=dict)
     # the directory name for matching validation

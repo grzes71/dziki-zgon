@@ -1,12 +1,17 @@
 enemies:
   - id: "kikimora"
     name: "Kikimora"
+    damage: 1
   - id: "strzyga"
     name: "Strzyga"
+    damage: 2
   - id: "bazyliszek"
     name: "Bazyliszek"
+    damage: 5
   - id: "sukkub"
     name: "Sukkub"
+    damage: 10
+
 colors:
   white: 15
   red: 54

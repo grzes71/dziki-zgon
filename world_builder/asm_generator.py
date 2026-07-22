@@ -1,6 +1,35 @@
 from pathlib import Path
 from .model import GameWorld
 
+POLISH_CHARS = {
+    'ą': 0x7B, 'Ą': 0x7B,
+    'ć': 0x7C, 'Ć': 0x7C,
+    'ę': 0x7D, 'Ę': 0x7D,
+    'ł': 0x7E, 'Ł': 0x7E,
+    'ń': 0x7F, 'Ń': 0x7F,
+    'ó': 0x5F, 'Ó': 0x5F,
+    'ś': 0x5E, 'Ś': 0x5E,
+    'ź': 0x5D, 'Ź': 0x5D,
+    'ż': 0x5C, 'Ż': 0x5C
+}
+
+def to_screencodes(s: str) -> list:
+    codes = []
+    for c in s:
+        if c in POLISH_CHARS:
+            codes.append(POLISH_CHARS[c])
+        else:
+            val = ord(c)
+            if 32 <= val <= 95:
+                codes.append(val - 32)
+            elif 96 <= val <= 127:
+                codes.append(val)
+            elif 0 <= val <= 31:
+                codes.append(val + 64)
+            else:
+                codes.append(val)
+    return codes
+
 class AsmGenerator:
     def __init__(self, world: GameWorld, out_dir: Path):
         self.world = world
@@ -121,6 +150,55 @@ class AsmGenerator:
             hex_bytes = ", ".join(f"${b:02X}" for b in p_bytes)
             out.append(f"    dta {hex_bytes} ; Region {r.id}")
             
+        # Mapping of ScreenId to RegionId
+        screen_regions = []
+        for s in self.screens_sorted:
+            # Find region containing s
+            region_found = None
+            for r in self.regions_sorted:
+                if any(x.id == s.id for x in r.screens):
+                    region_found = r
+                    break
+            if region_found:
+                screen_regions.append(self.region_idx[region_found.id])
+            else:
+                screen_regions.append(0)
+                
+        out.append("\n; Mapping of ScreenId to RegionId")
+        out.append("SCREEN_REGION")
+        out.append(f"    dta {', '.join(str(idx) for idx in screen_regions)}")
+        
+        # Region Names Pointers Table
+        out.append("\n; Region Names Pointers Table")
+        out.append("REGION_NAMES_LO")
+        for i, r in enumerate(self.regions_sorted):
+            out.append(f"    dta <REGION_NAME_{i}")
+        out.append("REGION_NAMES_HI")
+        for i, r in enumerate(self.regions_sorted):
+            out.append(f"    dta >REGION_NAME_{i}")
+            
+        # Padded Region Names (35 bytes each)
+        out.append("\n; Padded Region Names (35 bytes each)")
+        for i, r in enumerate(self.regions_sorted):
+            codes = to_screencodes(r.name)
+            # Pad to 35 bytes
+            codes = codes[:35] + [0] * (35 - len(codes))
+            hex_bytes = ", ".join(f"${b:02X}" for b in codes)
+            out.append(f"REGION_NAME_{i}")
+            out.append(f"    dta {hex_bytes} ; \"{r.name}\"")
+            
+        # Enemy Damage Table (Indexed by Enemy Type ID)
+        out.append("\n; Enemy Damage Table (Indexed by Enemy Type ID)")
+        out.append("ENEMY_DAMAGE")
+        for e in self.world.enemies:
+            out.append(f"    dta {e.damage} ; {e.id}")
+
+        # Region Damage Table (Indexed by RegionId)
+        out.append("\n; Region Damage Table (Indexed by RegionId)")
+        out.append("REGION_DAMAGE")
+        for r in self.regions_sorted:
+            out.append(f"    dta {r.damage} ; Region {r.id}")
+
         with open(self.out_dir / "regions.asm", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")
 

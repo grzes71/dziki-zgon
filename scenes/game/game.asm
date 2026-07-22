@@ -28,8 +28,247 @@ status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
 default_status_bar
-    dta d' HP: 20/20      XP: 0/100      LVL: 1    '
     dta d'                                        '
+    dta d'                                        '
+
+timer_minutes
+    dta 12
+timer_seconds
+    dta 0
+timer_frames
+    dta 50
+temp_units
+    dta 0
+temp_step
+    dta 0
+temp_val
+    dta 0
+temp_sub
+    dta 0
+
+
+;==============================================================
+; draw_region_name — kopiuje 35-bajtową nazwę regionu do status baru
+;==============================================================
+.proc draw_region_name
+    ldx game_stage
+    lda REGION_NAMES_LO,x
+    sta SRC_PTR
+    lda REGION_NAMES_HI,x
+    sta SRC_PTR+1
+
+    ldy #34
+@loop
+    lda (SRC_PTR),y
+    sta GAME_SCREEN_A2,y
+    dey
+    bpl @loop
+    rts
+.endp
+
+;==============================================================
+; draw_timer — formatuje i wyświetla czas na status barze
+;==============================================================
+.proc draw_timer
+    ; Oblicz minuty
+    lda timer_minutes
+    jsr get_digits
+    txa
+    clc
+    adc #$10
+    sta GAME_SCREEN_A2 + 35
+    lda temp_units
+    clc
+    adc #$10
+    sta GAME_SCREEN_A2 + 36
+
+    ; ':'
+    lda #$1A
+    sta GAME_SCREEN_A2 + 37
+
+    ; Oblicz sekundy
+    lda timer_seconds
+    jsr get_digits
+    txa
+    clc
+    adc #$10
+    sta GAME_SCREEN_A2 + 38
+    lda temp_units
+    clc
+    adc #$10
+    sta GAME_SCREEN_A2 + 39
+
+    rts
+.endp
+
+.proc get_digits
+    ldx #0
+@loop
+    cmp #10
+    bcc @done
+    sec
+    sbc #10
+    inx
+    jmp @loop
+@done
+    sta temp_units
+    rts
+.endp
+
+;==============================================================
+; get_collision_damage — sprawdza kolizje z przeciwnikami i zwraca max damage
+;==============================================================
+.proc get_collision_damage
+    lda #0                  ; domyślny damage = 0
+    sta temp_step
+    
+    ldx #1                  ; pętla po przeciwnikach (Aktorzy 1..3)
+@loop
+    lda ACTOR_ACTIVE,x
+    beq @next
+    
+    ; Sprawdzenie osi X: abs(ACTOR_X[0] - ACTOR_X[x]) < 8
+    lda ACTOR_X
+    sec
+    sbc ACTOR_X,x
+    bpl @abs_x
+    eor #$FF
+    clc
+    adc #1
+@abs_x
+    cmp #8
+    bcs @next               ; brak kolizji na osi X
+
+    ; Sprawdzenie osi Y part 1: Y_p < Y_e + H_e
+    lda ACTOR_Y,x
+    clc
+    adc ACTOR_HEIGHT,x
+    sta temp_val
+    lda ACTOR_Y
+    cmp temp_val
+    bcs @next               ; brak kolizji (Y_p >= bottom_e)
+
+    ; Sprawdzenie osi Y part 2: Y_e < Y_p + H_p
+    lda ACTOR_Y
+    clc
+    adc ACTOR_HEIGHT
+    sta temp_val
+    lda ACTOR_Y,x
+    cmp temp_val
+    bcs @next               ; brak kolizji (Y_e >= bottom_p)
+
+    ; Wykryto kolizję! Pobierz damage z tabeli
+    ldy ACTOR_TYPE,x
+    lda ENEMY_DAMAGE,y
+    cmp temp_step
+    bcc @next               ; mniejszy damage niż dotychczasowy max
+    sta temp_step
+
+@next
+    inx
+    cpx #MAX_ACTORS
+    bne @loop
+
+    ; 2. Sprawdź kolizję z kolorem PF3 (rejestr sprzętowy P0PF)
+    lda P0PF
+    and #$08                ; bit 3 = PF3
+    beq @no_pf3
+    
+    ; Kolizja z PF3! Pobierz REGION_DAMAGE dla obecnego game_stage
+    ldy game_stage
+    lda REGION_DAMAGE,y
+    cmp temp_step
+    bcc @no_pf3
+    sta temp_step
+
+@no_pf3
+    ; Czyszczenie rejestru kolizji na koniec odczytu klatki
+    lda #0
+    sta HITCLR
+
+    lda temp_step
+    beq @no_col_color
+    
+    lda #1
+    sta collision_active
+    lda #54 ; red color
+    sta ACTOR_COLOR
+    jmp @done_color
+    
+@no_col_color
+    lda #0
+    sta collision_active
+    lda game_palette
+    sta ACTOR_COLOR
+    
+@done_color
+    lda temp_step
+    rts
+.endp
+
+;==============================================================
+; subtract_seconds — odejmuje A sekund od czasu MM:SS
+;==============================================================
+.proc subtract_seconds
+    sta temp_sub
+    beq @done               ; jeśli A = 0, nic nie robimy
+
+@sub_loop
+    lda timer_seconds
+    sec
+    sbc temp_sub
+    bcs @store_seconds      ; jeśli timer_seconds >= temp_sub, brak pożyczki
+
+    ; Pożyczka z minut
+    lda timer_minutes
+    beq @game_over          ; jeśli minuty = 0, koniec czasu!
+
+    dec timer_minutes
+    lda timer_seconds
+    clc
+    adc #60
+    sta timer_seconds
+    jmp @sub_loop
+
+@store_seconds
+    sta timer_seconds
+    jsr draw_timer
+    rts
+
+@game_over
+    lda #0
+    sta timer_minutes
+    sta timer_seconds
+    jsr draw_timer
+    lda #1
+    sta Engine_RequestStageAdvance
+
+@done
+    rts
+.endp
+
+;==============================================================
+; update_timer — aktualizuje czas co klatkę (VBLANK)
+;==============================================================
+.proc update_timer
+    ; 1. Sprawdź i zaaplikuj obrażenia kolizyjne
+    jsr get_collision_damage
+    jsr subtract_seconds
+
+    ; 2. Normalny upływ czasu (1 sekunda co 50 klatek)
+    dec timer_frames
+    lda timer_frames
+    bne @done_normal
+
+    lda #50
+    sta timer_frames
+    
+    lda #1
+    jsr subtract_seconds
+
+@done_normal
+    rts
+.endp
 
 ;==============================================================
 ; update_stage_colors — kopiuje odpowiednie kolory w oparciu o game_stage
@@ -160,6 +399,25 @@ default_status_bar
     inx
     cpx #80
     bne @fill_status
+
+    ; --- Inicjalizacja czasu i regionu ---
+    lda #12
+    sta timer_minutes
+    lda #0
+    sta timer_seconds
+    lda #50
+    sta timer_frames
+
+    ; --- Zaktualizuj region w oparciu o startowy ekran ---
+    ldx GAME_SCREEN_ID
+    lda SCREEN_REGION,x
+    sta game_stage
+
+    ; --- Narysuj nazwę regionu ---
+    jsr draw_region_name
+
+    ; --- Narysuj zegar ---
+    jsr draw_timer
 
     ; --- PMG: rozmiar normalny, włącz PMG ---
     lda #$00

@@ -149,10 +149,12 @@ ENEMY_SPEED_MASK
     lda #6                      ; Standardowa prędkość animacji
     sta ACTOR_ANIM_SPEED,x
     
-    ; Ładowanie wskaźników i limitów na podstawie typu
     ldy OBJ_CODE
     lda ENEMY_HEIGHTS,y
     sta ACTOR_HEIGHT,x
+    
+    tya
+    sta ACTOR_TYPE,x
     
     lda ENEMY_PTRS_TABLE_LO,y
     sta ACTOR_PTRS_TABLE_LO,x

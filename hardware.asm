@@ -30,6 +30,8 @@ COLBK   = $D01A     ; kolor tła (COLBAK) — wspólny dla playfield i PMG
 PRIOR   = $D01B     ; priorytety: bit 4=5th player, bity 1-0=tryb priorytetu
 GPRIOR  = $026F     ; shadow dla PRIOR
 GRACTL  = $D01D     ; włączenie DMA PMG: bit 0=P/M, bit 1=missiles
+P0PF    = $D004     ; GTIA: kolizje gracz 0 z playfieldem (read-only)
+HITCLR  = $D01E     ; GTIA: czyszczenie rejestrów kolizji (write-only)
 
 ; ---- PIA (Port Interface Adapter — PORTB, banki pamięci) ----
 PORTB   = $D301     ; bit 0=OS ROM, bit 1=BASIC, bity 7-2=banki rozszerzonej pamięci
