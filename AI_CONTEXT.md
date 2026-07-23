@@ -115,7 +115,9 @@ W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie prob
 - **ANTIC 2** (Graphics 0), 40×24 znaków, 1 kolor (biały na czarnym, COLPF1=$0E) — ekran opisu (story) i współdzielony bufor tekstu pod $5E10
 - **Gra właściwa** używa dwóch trybów łączonych w jednym ekranie (Display List):
   - **ANTIC 5** (górne 10 linii), 40×10 znaków podwójnej wysokości, kolorowa plansza gry (używa czcionki kafelków pod $6400)
-  - **ANTIC 2** (dolne 4 linie), 40×4 znaków, panel statusowy (używa systemowej czcionki pod $6000)
+  - **ANTIC 2** (dolne linie), 40 znaków/linia, panel statusowy (używa systemowej czcionki pod $6000):
+  - **Info Line** (górna linia statusowa): wyświetla nazwę regionu oraz pozostały czas gry
+  - **Message Line** (dolna linia statusowa): przeznaczona na teksty interaktywnych akcji
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
 - Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) i dostarcza stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`-2) do użycia w DLI
 

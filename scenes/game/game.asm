@@ -48,7 +48,7 @@ temp_sub
 
 
 ;==============================================================
-; draw_region_name — kopiuje 35-bajtową nazwę regionu do status baru
+; draw_region_name — kopiuje 35-bajtową nazwę regionu do Info Line (górna linia statusowa)
 ;==============================================================
 .proc draw_region_name
     ldx game_stage
@@ -67,7 +67,7 @@ temp_sub
 .endp
 
 ;==============================================================
-; draw_timer — formatuje i wyświetla czas na status barze
+; draw_timer — formatuje i wyświetla czas na Info Line (górna linia statusowa)
 ;==============================================================
 .proc draw_timer
     ; Oblicz minuty

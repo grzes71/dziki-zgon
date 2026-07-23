@@ -37,6 +37,11 @@ Uruchamiane 50 razy na sekundę na początku powrotu pionowego. Jest możliwie j
 ### Przerwania DLI (Display List Interrupts)
 Służą **wyłącznie** operacjom wizualnym na ekranie. Zmieniają rejestry sprzętowe w trakcie rysowania klatki przez układ ANTIC. W tej grze DLI realizują m.in. zmianę palety kolorów i zestawu znaków (`CHBASE`) oddzielając panel statusu od właściwego okna gry.
 
+### Panel Statusowy (HUD)
+Panel statusowy u dołu ekranu tworzą linie tekstowe w trybie ANTIC 2 (40 znaków szerokości). Wykorzystuje precyzyjną nomenklaturę:
+- **Info Line** (dawniej górna linia statusowa): wyświetla nazwę regionu oraz pozostały czas gry (timer MM:SS).
+- **Message Line** (dawniej dolna linia statusowa): linia przeznaczona na teksty i komunikaty związane z interaktywnymi akcjami.
+
 ---
 
 ## 4. Potok Wykonawczy (Engine Scheduler)

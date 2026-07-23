@@ -10,6 +10,11 @@
     lda #0
     sta REQ_SCREEN_TRANSITION
 
+    ; Ukryj duszka gracza (HPOSP0 = 0) oraz wyczyść PMG przed rysowaniem nowego ekranu,
+    ; aby uniknąć fałszywych kolizji GTIA (P0PF) ze starymi współrzędnymi gracza
+    sta HPOSP0
+    jsr pmg_clear_all
+
     ; Zaktualizuj ID ekranu
     lda NEW_SCREEN_ID
     sta GAME_SCREEN_ID
@@ -36,8 +41,10 @@
     jsr update_stage_colors
     jsr draw_region_name
 
-    ; Wyczyść pamięć PMG, aby usunąć stare duszki pozycje
+    ; Wyczyść pamięć PMG oraz fałszywe kolizje sprzętowe GTIA powstałe podczas rysowania
     jsr pmg_clear_all
+    lda #0
+    sta HITCLR
 
 @done
     rts
