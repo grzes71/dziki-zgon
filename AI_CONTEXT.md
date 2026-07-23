@@ -116,8 +116,15 @@ W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie prob
 - **Gra właściwa** używa dwóch trybów łączonych w jednym ekranie (Display List):
   - **ANTIC 5** (górne 10 linii), 40×10 znaków podwójnej wysokości, kolorowa plansza gry (używa czcionki kafelków pod $6400)
   - **ANTIC 2** (dolne linie), 40 znaków/linia, panel statusowy (używa systemowej czcionki pod $6000):
-  - **Info Line** (górna linia statusowa): wyświetla nazwę regionu oraz pozostały czas gry
-  - **Message Line** (dolna linia statusowa): przeznaczona na teksty interaktywnych akcji
+  - **Info Line** (górna linia statusowa): 
+    - Pozycje 0–1: zarezerwowane znaki (kody 1 i 3)
+    - Pozycje 2–32: nazwa regionu (przesunięta o 2 znaki w prawo, max 31 znaków)
+    - Pozycje 33–37: timer gry MM:SS (przesunięty o 2 znaki w lewo)
+    - Pozycje 38–39: zarezerwowane znaki (kody 5 i 6)
+  - **Message Line** (dolna linia statusowa): 
+    - Pozycje 0–1: zarezerwowane znaki (kody 4 i 8)
+    - Pozycje 2–37: treść komunikatów i interakcji (max 36 znaków)
+    - Pozycje 38–39: zarezerwowane znaki (kody 9 i 7)
 - Kolory: indeks 0→COLBK, 1→COLPF0, 2→COLPF1, 3→COLPF2
 - Generator `_colors.asm` zapisuje **bezpośrednio do GTIA** ($D016-$D01A) i dostarcza stałe `.equ` (`TITLE_COLBK`, `TITLE_COLPF0`-2) do użycia w DLI
 

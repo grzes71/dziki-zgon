@@ -39,8 +39,8 @@ Służą **wyłącznie** operacjom wizualnym na ekranie. Zmieniają rejestry spr
 
 ### Panel Statusowy (HUD)
 Panel statusowy u dołu ekranu tworzą linie tekstowe w trybie ANTIC 2 (40 znaków szerokości). Wykorzystuje precyzyjną nomenklaturę:
-- **Info Line** (dawniej górna linia statusowa): wyświetla nazwę regionu oraz pozostały czas gry (timer MM:SS).
-- **Message Line** (dawniej dolna linia statusowa): linia przeznaczona na teksty i komunikaty związane z interaktywnymi akcjami.
+- **Info Line** (górna linia statusowa): zawiera zarezerwowane kody 1 i 3 (indeksy 0–1), nazwę regionu przesuniętą do indeksów 2–32 (max 31 B), czas gry MM:SS przesunięty do indeksów 33–37 oraz zarezerwowane kody 5 i 6 (indeksy 38–39).
+- **Message Line** (dolna linia statusowa): linia przeznaczona na teksty i komunikaty związane z interaktywnymi akcjami. Zawiera zarezerwowane kody 4 i 8 (indeksy 0–1 / adresy 40–41), treść komunikatu (indeksy 2–37 / adresy 42–77, max 36 B) oraz zarezerwowane kody 9 i 7 (indeksy 38–39 / adresy 78–79).
 
 ---
 

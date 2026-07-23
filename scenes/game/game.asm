@@ -28,8 +28,12 @@ status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
 default_status_bar
-    dta d'                                        '
-    dta d'                                        '
+    dta 1, 3
+    dta d'                                    '
+    dta 5, 6
+    dta 4, 8
+    dta d'                                    '
+    dta 9, 7
 
 timer_minutes
     dta 12
@@ -48,7 +52,9 @@ temp_sub
 
 
 ;==============================================================
-; draw_region_name — kopiuje 35-bajtową nazwę regionu do Info Line (górna linia statusowa)
+; draw_region_name — kopiuje 31-bajtową nazwę regionu do Info Line (górna linia statusowa)
+; Zarezerwowane pozycje: 0..1 (kody 1,3) oraz 38..39 (kody 5,6)
+; Nazwa regionu wyświetlana od indeksu 2 (31 znaków max)
 ;==============================================================
 .proc draw_region_name
     ldx game_stage
@@ -57,17 +63,17 @@ temp_sub
     lda REGION_NAMES_HI,x
     sta SRC_PTR+1
 
-    ldy #34
+    ldy #30
 @loop
     lda (SRC_PTR),y
-    sta GAME_SCREEN_A2,y
+    sta GAME_SCREEN_A2 + 2,y
     dey
     bpl @loop
     rts
 .endp
 
 ;==============================================================
-; draw_timer — formatuje i wyświetla czas na Info Line (górna linia statusowa)
+; draw_timer — formatuje i wyświetla czas na Info Line (indeksy 33..37)
 ;==============================================================
 .proc draw_timer
     ; Oblicz minuty
@@ -76,15 +82,15 @@ temp_sub
     txa
     clc
     adc #$10
-    sta GAME_SCREEN_A2 + 35
+    sta GAME_SCREEN_A2 + 33
     lda temp_units
     clc
     adc #$10
-    sta GAME_SCREEN_A2 + 36
+    sta GAME_SCREEN_A2 + 34
 
     ; ':'
     lda #$1A
-    sta GAME_SCREEN_A2 + 37
+    sta GAME_SCREEN_A2 + 35
 
     ; Oblicz sekundy
     lda timer_seconds
@@ -92,11 +98,11 @@ temp_sub
     txa
     clc
     adc #$10
-    sta GAME_SCREEN_A2 + 38
+    sta GAME_SCREEN_A2 + 36
     lda temp_units
     clc
     adc #$10
-    sta GAME_SCREEN_A2 + 39
+    sta GAME_SCREEN_A2 + 37
 
     rts
 .endp
