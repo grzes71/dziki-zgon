@@ -246,8 +246,8 @@ DLIST_GAME
     dta $05
     .endr
     dta $90                ; 1 pusta linia + DLI gdzie powinno być ustawienie charsetu dla statusu (font.fnt) oraz kolorów dla statusu!
-    dta $42,a(GAME_SCREEN_A2) ; ANTIC 2, 1 linia
-    dta $02                ; Kolejna 1 linia ANTIC 2 (razem 2)
+    dta $42,a(GAME_SCREEN_A2) ; ANTIC 2, 1 linia (Info Line)
+    dta $82                ; Kolejna 1 linia ANTIC 2 (Message Line) + DLI dla Message Line
     dta $41,a(DLIST_GAME)  ; JVB
 
 ; --- DL game over (ANTIC D, narrow, 128×96, 4 kolory) ---

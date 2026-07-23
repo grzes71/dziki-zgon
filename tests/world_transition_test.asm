@@ -61,3 +61,5 @@ draw_region_name
     rts
 pmg_clear_all
     rts
+init_game_missiles
+    rts

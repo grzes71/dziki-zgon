@@ -178,9 +178,9 @@ Projekt używa DLI w co najmniej dwóch scenach:
 
 1. **Title**: DLI_Handler steruje kolorami, PRIOR i tęczą PMG (logo + księżyc/gwiazdy).
 2. **GameOver**: DLI_Gameover przełącza paletę pomiędzy obrazkiem i migotaniem tekstu (efekt pulse/rainbow).
-3. **Game**: Używa łańcucha dwóch DLI (przełączają się nawzajem na koniec swojego wykonania):
-   - `game_dli_1`: ładuje 9-kolorową paletę (tło + PMG) odpowiadającą bieżącemu etapowi (od 0 do 4) oraz ustawia charset mapy na `CHBASE=$64`.
-   - `game_dli_2`: uruchamia się przed strefą statusową, zmieniając kolory tekstu i tła oraz ładując czytelny charset `CHBASE=$60`.
+3. **Game**: Używa łańcucha przerwań DLI w `DLIST_GAME` (przełączają wektor `VDSLST` w trakcie skanowania klatki):
+   - `game_dli`: uruchamia się przy pustej linii przed Info Line ($90), ładuje paletę statusu oraz `CHBASE=$60`. Na koniec przepina `VDSLST` na `game_dli_msg`.
+   - `game_dli_msg`: uruchamia się przy Message Line ($82), na razie pełni funkcję placeholderu i przywraca `VDSLST` na `game_dli` dla kolejnej klatki.
 
 System palet etapów oparty jest na szybkim indeksowaniu tablic konfiguracyjnych w trakcie startu sceny (`update_stage_colors`).
 

@@ -27,13 +27,24 @@ game_palette
 status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
+;---- Kody znaków ozdobnych linii statusu (HUD) ----
+INFO_LINE_CHAR_L0 = 10     ; Info Line — pierwszy znak po lewej (indeks 0)
+INFO_LINE_CHAR_L1 = 12      ; Info Line — drugi znak po lewej (indeks 1)
+INFO_LINE_CHAR_R0 = 37      ; Info Line — pierwszy znak po prawej (indeks 38)
+INFO_LINE_CHAR_R1 = 38      ; Info Line — drugi znak po prawej (indeks 39)
+
+MSG_LINE_CHAR_L0  = 11   ; Message Line — pierwszy znak po lewej (indeks 40)
+MSG_LINE_CHAR_L1  = 13    ; Message Line — drugi znak po lewej (indeks 41)
+MSG_LINE_CHAR_R0  = 40       ; Message Line — pierwszy znak po prawej (indeks 78)
+MSG_LINE_CHAR_R1  = 39      ; Message Line — drugi znak po prawej (indeks 79)
+
 default_status_bar
-    dta 1, 3
+    dta INFO_LINE_CHAR_L0, INFO_LINE_CHAR_L1
     dta d'                                    '
-    dta 5, 6
-    dta 4, 8
+    dta INFO_LINE_CHAR_R0, INFO_LINE_CHAR_R1
+    dta MSG_LINE_CHAR_L0, MSG_LINE_CHAR_L1
     dta d'                                    '
-    dta 9, 7
+    dta MSG_LINE_CHAR_R0, MSG_LINE_CHAR_R1
 
 timer_minutes
     dta 12
@@ -425,10 +436,9 @@ temp_sub
     ; --- Narysuj zegar ---
     jsr draw_timer
 
-    ; --- PMG: rozmiar normalny, włącz PMG ---
+    ; --- PMG: rozmiar normalny dla gracza, włącz PMG ---
     lda #$00
     sta SIZEP0
-    sta SIZEM
     lda #PRIOR_5TH
     sta GPRIOR
     sta PRIOR
@@ -438,6 +448,9 @@ temp_sub
     sta GRACTL
     lda #$60
     sta HPOSP0
+
+    ; --- Inicjalizacja 4 pocisków (M0..M3: Y=216..226, X=50, SIZEM=x4) ---
+    jsr init_game_missiles
 
     jsr Render_Prepare
 
@@ -482,7 +495,26 @@ temp_sub
     rts
 .endp
 
+;==============================================================
+; init_game_missiles — Inicjalizuje 4 pociski (M0..M3)
+; Wypełnia Y=216..226, pozycja X=50, maksymalna szerokość x4 ($FF)
+;==============================================================
+.proc init_game_missiles
+    ; Szerokość pocisków: x4 dla wszystkich 4 pocisków (M0..M3)
+    lda #$FF
+    sta SIZEM
 
+    ; Wypełnienie pamięci PMG dla pocisków (zakres Y = 216..226)
+    ldx #226
+    lda #$FF
+@loop
+    sta MISSILES,x
+    inx
+    cpx #242
+    bne @loop
+
+    rts
+.endp
 
 ;==============================================================
 ; Przerwania DLI
@@ -493,9 +525,48 @@ temp_sub
     txa
     pha
 
+    ldx #3
+    stx PRIOR
+
+    lda #0
+    sta HPOSM0
+    sta HPOSM1
+
+    lda #48
+    sta HPOSM2
+
+    lda #200
+    sta HPOSM3
+
     ; Zmień font na font.fnt ($6000 -> CHBASE=$60)
     lda #$60
     sta CHBASE
+
+    lda #14
+    sta COLPF1
+    lda #$10
+    sta COLPF2
+
+    ; Ustaw wektor DLI na drugą procedurę (game_dli_msg) dla Message Line
+    lda #<game_dli_msg
+    sta VDSLST
+    lda #>game_dli_msg
+    sta VDSLST+1
+
+    pla
+    tax
+    pla
+    rti
+.endp
+
+.proc game_dli_msg
+    pha
+    txa
+    pha
+
+    lda #0
+    sta WSYNC
+    sta COLBK
 
     ; Ustawienie całej palety (rozwinięte)
     lda status_palette+0
@@ -514,8 +585,14 @@ temp_sub
     sta COLPF2
     lda status_palette+7
     sta COLPF3
-    lda status_palette+8
-    sta COLBK
+    ; lda status_palette+8
+    ; sta COLBK
+
+    ; Placeholder DLI dla Message Line: przywróć wektor DLI na pierwszą procedurę (game_dli) dla kolejnej klatki
+    lda #<game_dli
+    sta VDSLST
+    lda #>game_dli
+    sta VDSLST+1
 
     pla
     tax
