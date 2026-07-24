@@ -1,39 +1,39 @@
 id: WHITE_FIELD
-name: białe pole
+name: "bia\u0142e pole"
+damage: 10
 layout:
   rows: 3
   columns: 3
 start_screen: TAVERN
 music: WHITE_FIELD
-damage: 10
 colors:
   PF0:
     rgb:
-      - 132
-      - 59
-      - 0
+    - 132
+    - 59
+    - 0
     atari: 34
   PF1:
     rgb:
-      - 193
-      - 120
-      - 29
+    - 193
+    - 120
+    - 29
     atari: 38
   PF2:
     rgb:
-      - 3
-      - 80
-      - 0
+    - 3
+    - 80
+    - 0
     atari: 192
   PF3_INV:
     rgb:
-      - 0
-      - 48
-      - 139
+    - 0
+    - 48
+    - 139
     atari: 128
   BACKGROUND:
     rgb:
-      - 0
-      - 0
-      - 0
+    - 0
+    - 0
+    - 0
     atari: 0

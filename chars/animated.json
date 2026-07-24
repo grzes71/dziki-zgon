@@ -72,19 +72,19 @@
                         },
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 00 00 00 08"
+                            "data": "00 00 00 00 00 00 00 88"
                         },
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 00 00 08 2F"
+                            "data": "00 00 00 00 00 00 88 00"
                         },
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 00 08 2F 2F"
+                            "data": "00 00 00 00 00 88 00 CC "
                         },
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 08 2F 2F 2F"
+                            "data": "00 00 00 00 88 00 CC CC"
                         }
                     ]
                 },
@@ -93,7 +93,7 @@
                     "frames": [
                         {
                             "duration": 50,
-                            "data": "00 00 00 00 08 2F 2F 2F"
+                            "data": "00 00 00 00 88 00 CC CC"
                         }
                     ]
                 },
@@ -102,19 +102,19 @@
                     "frames": [
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 08 2F 2F 2F"
+                            "data": "00 00 00 00 88 00 CC CC"
                         },
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 00 08 2F 2F"
+                            "data": "00 00 00 00 00 88 00 CC"
                         },
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 00 00 08 2F"
+                            "data": "00 00 00 00 00 00 88 00"
                         },
                         {
                             "duration": 5,
-                            "data": "00 00 00 00 00 00 00 08"
+                            "data": "00 00 00 00 00 00 00 88"
                         },
                         {
                             "duration": 5,
@@ -128,57 +128,6 @@
                         {
                             "duration": 50,
                             "data": "00 00 00 00 00 00 00 00"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "index": 79,
-            "animation": [
-                {
-                    "repeat": 2,
-                    "frames": [
-                        {
-                            "duration": 100,
-                            "data": "00 00 00 00 00 00 00 00"
-                        }
-                    ]
-                },
-                {
-                    "repeat": 10,
-                    "frames": [
-                        {
-                            "duration": 5,
-                            "data": "00 00 20 30 BC BC 00 00"
-                        },
-                        {
-                            "duration": 5,
-                            "data": "00 20 30 BC BC 00 00 00"
-                        },
-                        {
-                            "duration": 5,
-                            "data": "20 30 BC BC 00 00 00 00"
-                        },
-                        {
-                            "duration": 5,
-                            "data": "30 BC BC 00 00 00 00 20"
-                        },
-                        {
-                            "duration": 5,
-                            "data": "BC BC 00 00 00 00 20 30"
-                        },
-                        {
-                            "duration": 5,
-                            "data": "BC 00 00 00 00 20 30 BC"
-                        },
-                        {
-                            "duration": 5,
-                            "data": "00 00 00 00 20 30 BC BC"
-                        },
-                        {
-                            "duration": 5,
-                            "data": "00 00 00 20 30 BC BC 00"
                         }
                     ]
                 }
@@ -290,6 +239,112 @@
                         {
                             "duration": 20,
                             "data": "C0 30 0C CC CC 30 10 10"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "index": 75,
+            "animation": [
+                {
+                    "repeat": 5,
+                    "frames": [
+                        {
+                            "duration": 50,
+                            "data": "00 00 00 00 00 00 00 00"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 30 00 00 00"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F0 00 00 00"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F3 00 00 00"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F3 00 03 00"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F3 00 0F 30"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 0C 00 F3 00 0F 30"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 3C 00 F3 00 0F 30"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 03 3C 00 F3 00 0F 30"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 1,
+                    "frames": [
+                        {
+                            "duration": 50,
+                            "data": "00 03 3C 00 F3 00 0F 30"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 0,
+                    "frames": [
+                        {
+                            "duration": 20,
+                            "data": "00 03 3C 00 F3 00 0F 30"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 3C 00 F3 00 0F 30"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 0C 00 F3 00 0F 30"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F3 00 0F 30"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F3 00 03 00"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F3 00 00 00"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 F0 00 00 00"
+                        },
+                        {
+                            "duration": 20,
+                            "data": "00 00 00 00 30 00 00 00"
+                        }
+                    ]
+                },
+                {
+                    "repeat": 5,
+                    "frames": [
+                        {
+                            "duration": 50,
+                            "data": "00 00 00 00 00 00 00 00"
                         }
                     ]
                 }

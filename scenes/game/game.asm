@@ -28,15 +28,15 @@ status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
 ;---- Kody znaków ozdobnych linii statusu (HUD) ----
-INFO_LINE_CHAR_L0 = 10     ; Info Line — pierwszy znak po lewej (indeks 0)
-INFO_LINE_CHAR_L1 = 12      ; Info Line — drugi znak po lewej (indeks 1)
-INFO_LINE_CHAR_R0 = 37      ; Info Line — pierwszy znak po prawej (indeks 38)
-INFO_LINE_CHAR_R1 = 38      ; Info Line — drugi znak po prawej (indeks 39)
+INFO_LINE_CHAR_L0 = 64+128    ; Info Line — pierwszy znak po lewej (indeks 0)
+INFO_LINE_CHAR_L1 = 65+128      ; Info Line — drugi znak po lewej (indeks 1)
+INFO_LINE_CHAR_R0 = 64+128      ; Info Line — pierwszy znak po prawej (indeks 38)
+INFO_LINE_CHAR_R1 = 65+128      ; Info Line — drugi znak po prawej (indeks 39)
 
-MSG_LINE_CHAR_L0  = 11   ; Message Line — pierwszy znak po lewej (indeks 40)
-MSG_LINE_CHAR_L1  = 13    ; Message Line — drugi znak po lewej (indeks 41)
-MSG_LINE_CHAR_R0  = 40       ; Message Line — pierwszy znak po prawej (indeks 78)
-MSG_LINE_CHAR_R1  = 39      ; Message Line — drugi znak po prawej (indeks 79)
+MSG_LINE_CHAR_L0  = 68+128   ; Message Line — pierwszy znak po lewej (indeks 40)
+MSG_LINE_CHAR_L1  = 67+128    ; Message Line — drugi znak po lewej (indeks 41)
+MSG_LINE_CHAR_R0  = 68+128       ; Message Line — pierwszy znak po prawej (indeks 78)
+MSG_LINE_CHAR_R1  = 67+128      ; Message Line — drugi znak po prawej (indeks 79)
 
 default_status_bar
     dta INFO_LINE_CHAR_L0, INFO_LINE_CHAR_L1
@@ -542,7 +542,7 @@ temp_sub
     lda #$60
     sta CHBASE
 
-    lda #14
+    lda #$78
     sta COLPF1
     lda #$10
     sta COLPF2
@@ -585,8 +585,8 @@ temp_sub
     sta COLPF2
     lda status_palette+7
     sta COLPF3
-    ; lda status_palette+8
-    ; sta COLBK
+    lda status_palette+8
+    sta COLBK
 
     ; Placeholder DLI dla Message Line: przywróć wektor DLI na pierwszą procedurę (game_dli) dla kolejnej klatki
     lda #<game_dli

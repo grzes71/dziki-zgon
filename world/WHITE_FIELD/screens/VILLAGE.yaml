@@ -43,24 +43,6 @@ objects:
 - object: TREE_3
   x: 7
   y: 7
-- object: WATER_ANIM
-  x: 14
-  y: 8
-  repeat-x: 7
-- object: WAVES_UP
-  x: 14
-  y: 7
-  repeat-x: 7
-- object: WAVES_DOWN
-  x: 14
-  y: 9
-  repeat-x: 7
-- object: WAVES_RIGHT
-  x: 21
-  y: 8
-- object: WAVES_LEFT
-  x: 13
-  y: 8
 - object: TREE_2
   x: 24
   y: 8
@@ -96,18 +78,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 3
-- object: WATER_DOWN
-  x: 13
-  y: 7
-- object: WATER_DOWN
-  x: 21
-  y: 7
-- object: WATER_UP
-  x: 13
-  y: 9
-- object: WATER_UP
-  x: 21
-  y: 9
 - object: REED
   x: 15
   y: 10
@@ -297,10 +267,14 @@ objects:
 - object: SIGNPOINT_RIGHT
   x: 31
   y: 1
+- object: CHAIN_1
+  x: 19
+  y: 6
+  repeat-y: 4
 enemies:
 - enemy: strzyga
   x: 12
   y: 5
   strategy: homing
   speed: slow
-  color: green
+  color: magenta

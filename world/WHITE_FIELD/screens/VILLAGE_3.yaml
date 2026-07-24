@@ -2,7 +2,7 @@ id: VILLAGE_3
 grid_x: 1
 grid_y: 2
 exits:
-  north: VILLAGE2
+  north: null
   south: null
   east: HARBOUR
   west: CHURCH
@@ -195,4 +195,4 @@ enemies:
   y: 8
   strategy: snake
   speed: slow
-  color: orange
+  color: cyan

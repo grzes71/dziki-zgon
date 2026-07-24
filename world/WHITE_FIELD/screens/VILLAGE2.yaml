@@ -60,9 +60,6 @@ objects:
   x: 32
   y: 11
 - object: GROUND_BROWN_UP
-  x: 30
-  y: 11
-- object: GROUND_BROWN_UP
   x: 38
   y: 7
 - object: GROUND_BROWN_UP
@@ -80,9 +77,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 31
-  y: 10
 - object: GROUND_BROWN_DOWN
   x: 26
   y: 11
@@ -130,13 +124,6 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 0
   y: 2
-- object: GROUND_GREEN_DOWN
-  x: 5
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 4
-  y: 0
-  repeat-y: 2
 - object: GROUND_BROWN_DOWN
   x: 3
   y: 2
@@ -212,12 +199,6 @@ objects:
   x: 28
   y: 9
 - object: GROUND_BROWN_DOWN
-  x: 30
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 12
-  y: 11
-- object: GROUND_BROWN_DOWN
   x: 8
   y: 11
 - object: GROUND_BROWN_DOWN
@@ -241,9 +222,6 @@ objects:
 - object: BUSH
   x: 4
   y: 5
-- object: BUSH
-  x: 33
-  y: 9
 - object: SIGNPOINT_RIGHT
   x: 36
   y: 9
@@ -269,10 +247,25 @@ objects:
   x: 37
   y: 2
   repeat-x: 2
+- object: TREE_3
+  x: 4
+  y: 0
+- object: TREE_3
+  x: 32
+  y: 9
+- object: TREE_3
+  x: 16
+  y: 10
+- object: BUSH
+  x: 12
+  y: 11
+- object: BUSH
+  x: 3
+  y: 1
 enemies:
 - enemy: strzyga
   x: 11
   y: 6
   strategy: vertical
   speed: medium
-  color: orange
+  color: yellow

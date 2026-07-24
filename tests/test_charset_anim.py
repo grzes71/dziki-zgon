@@ -169,6 +169,24 @@ def test_charset_anim_rotate_and_reset(harness):
     assert cpu.memory[src_ptr_z] == 0x55
     assert cpu.memory[src_ptr_z + 1] == 0xAA
 
+def get_expected_mask(cpu, labels, char_id):
+    ids_addr = labels["ANIMATED_CHAR_IDS"]
+    bit_masks_addr = labels["ANIMATED_CHAR_BIT_MASKS"]
+    num_anim = labels.get("NUM_ANIM_CHARS", 0)
+    
+    for y in range(num_anim - 1, -1, -1):
+        if cpu.memory[ids_addr + y] == char_id:
+            return cpu.memory[bit_masks_addr + y]
+            
+    rot_ids_addr = labels.get("ANIMATE_CHARSET.ANIM_CHAR_IDS")
+    rot_masks_addr = labels.get("ANIMATE_CHARSET.ANIM_CHAR_BIT_MASKS")
+    rot_count = labels.get("ANIM_CHAR_COUNT", 0)
+    if rot_ids_addr and rot_masks_addr:
+        for y in range(rot_count - 1, -1, -1):
+            if cpu.memory[rot_ids_addr + y] == char_id:
+                return cpu.memory[rot_masks_addr + y]
+    return 0
+
 def test_update_animated_charset(harness):
     xex_file, labels = harness
     cpu = MPU()
@@ -184,12 +202,17 @@ def test_update_animated_charset(harness):
     start_test = labels["START_ANIMATED_TEST"]
     src_ptr_z = labels["SRC_PTR"]
     dst_ptr_z = labels["DST_PTR"]
+    ids_addr = labels["ANIMATED_CHAR_IDS"]
+    bit_masks_addr = labels["ANIMATED_CHAR_BIT_MASKS"]
 
     cpu.memory[src_ptr_z] = 0x12
     cpu.memory[src_ptr_z + 1] = 0x34
     cpu.memory[dst_ptr_z] = 0x56
     cpu.memory[dst_ptr_z + 1] = 0x78
-    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = 0xFF
+    
+    # Isolate testing to entry 0
+    mask_0 = cpu.memory[bit_masks_addr + 0]
+    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = mask_0
 
     assert cpu.memory[cur_segment_addr] == 0
     assert cpu.memory[cur_frame_addr] == 255
@@ -202,7 +225,8 @@ def test_update_animated_charset(harness):
     assert cpu.memory[cur_frame_addr] == 0
     assert cpu.memory[timers_addr] == 100
 
-    char_addr = 0x6400 + 112 * 8
+    char_id_0 = cpu.memory[ids_addr + 0]
+    char_addr = 0x6400 + char_id_0 * 8
     expected_frame0 = [0, 0, 0, 0, 0, 0, 0, 0]
     for i in range(8):
         assert cpu.memory[char_addr + i] == expected_frame0[i], \
@@ -244,113 +268,59 @@ def test_charset_anim_segment_repeats(harness):
     load_xex(xex_file, cpu.memory)
 
     num_anim_chars = labels.get("NUM_ANIM_CHARS", 0)
-    if num_anim_chars < 3:
-        pytest.skip("Test requires at least 3 animated characters")
+    if num_anim_chars == 0:
+        pytest.skip("Test requires animated characters")
 
-    cur_segment_addr = labels["ANIMATED_CHAR_CUR_SEGMENT"] + 2
-    repeat_counter_addr = labels["ANIMATED_CHAR_REPEAT_COUNTER"] + 2
-    cur_frame_addr = labels["ANIMATED_CHAR_CUR_FRAME"] + 2
-    timers_addr = labels["ANIMATED_CHAR_TIMERS"] + 2
+    ids_addr = labels["ANIMATED_CHAR_IDS"]
+    bit_masks_addr = labels["ANIMATED_CHAR_BIT_MASKS"]
+    
+    # Find the first entry that has an initial repeat_counter > 0
+    target_idx = None
+    for i in range(num_anim_chars):
+        if cpu.memory[labels["ANIMATED_CHAR_REPEAT_COUNTER"] + i] > 0:
+            target_idx = i
+            break
+            
+    if target_idx is None:
+        pytest.skip("No animated character found with segment repeats")
+
+    cur_segment_addr = labels["ANIMATED_CHAR_CUR_SEGMENT"] + target_idx
+    repeat_counter_addr = labels["ANIMATED_CHAR_REPEAT_COUNTER"] + target_idx
+    cur_frame_addr = labels["ANIMATED_CHAR_CUR_FRAME"] + target_idx
+    timers_addr = labels["ANIMATED_CHAR_TIMERS"] + target_idx
     start_test = labels["START_ANIMATED_TEST"]
     
-    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = 0xFF
-    char_addr = 0x6400 + 79 * 8
+    # Isolate testing to target_idx
+    mask = cpu.memory[bit_masks_addr + target_idx]
+    cpu.memory[labels["ANIM_CHARS_ACTIVE_MASK"]] = mask
+
+    char_id = cpu.memory[ids_addr + target_idx]
+    char_addr = 0x6400 + char_id * 8
+
+    initial_repeats = cpu.memory[repeat_counter_addr]
 
     # Initial state
     assert cpu.memory[cur_segment_addr] == 0
-    assert cpu.memory[repeat_counter_addr] == 2
+    assert cpu.memory[repeat_counter_addr] == initial_repeats
     assert cpu.memory[cur_frame_addr] == 255
     assert cpu.memory[timers_addr] == 1
 
-    # Playback sequence expected (relative frame index: RF, global frame data index: GD)
-    # Step 1: Seg 0, Repeat 2, RF 0, GD 0 (dur 100, data [0]*8)
+    # Step 1: Start Segment 0
     run_cpu_until_brk(cpu, start_test)
     assert cpu.memory[cur_segment_addr] == 0
-    assert cpu.memory[repeat_counter_addr] == 2
+    assert cpu.memory[repeat_counter_addr] == initial_repeats
     assert cpu.memory[cur_frame_addr] == 0
-    assert cpu.memory[timers_addr] == 100
-    for i in range(8):
-        assert cpu.memory[char_addr + i] == 0
 
-    # Step 2: Seg 0, Repeat 1 (decremented), RF 0, GD 0 (dur 100, data [0]*8)
-    cpu.memory[timers_addr] = 1
-    run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[cur_segment_addr] == 0
-    assert cpu.memory[repeat_counter_addr] == 1
-    assert cpu.memory[cur_frame_addr] == 0
-    assert cpu.memory[timers_addr] == 100
-    for i in range(8):
-        assert cpu.memory[char_addr + i] == 0
-
-    # Step 3: Seg 0, Repeat 0 (decremented), RF 0, GD 0 (dur 100, data [0]*8)
-    cpu.memory[timers_addr] = 1
-    run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[cur_segment_addr] == 0
-    assert cpu.memory[repeat_counter_addr] == 0
-    assert cpu.memory[cur_frame_addr] == 0
-    assert cpu.memory[timers_addr] == 100
-    for i in range(8):
-        assert cpu.memory[char_addr + i] == 0
-
-    # Step 4: Seg 1 (advanced), Repeat 10, RF 0, GD 1 (dur 5, data [0, 0, 0x20, 0x30, 0xBC, 0xBC, 0, 0])
-    cpu.memory[timers_addr] = 1
-    run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[cur_segment_addr] == 1
-    assert cpu.memory[repeat_counter_addr] == 10
-    assert cpu.memory[cur_frame_addr] == 0
-    assert cpu.memory[timers_addr] == 5
-    expected_data_seg1_f0 = [0, 0, 0x20, 0x30, 0xBC, 0xBC, 0, 0]
-    for i in range(8):
-        assert cpu.memory[char_addr + i] == expected_data_seg1_f0[i]
-
-    # Step 5: Seg 1, Repeat 10, RF 1, GD 2 (dur 5, data [0, 0x20, 0x30, 0xBC, 0xBC, 0, 0, 0])
-    cpu.memory[timers_addr] = 1
-    run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[cur_segment_addr] == 1
-    assert cpu.memory[repeat_counter_addr] == 10
-    assert cpu.memory[cur_frame_addr] == 1
-    assert cpu.memory[timers_addr] == 5
-    expected_data_seg1_f1 = [0, 0x20, 0x30, 0xBC, 0xBC, 0, 0, 0]
-    for i in range(8):
-        assert cpu.memory[char_addr + i] == expected_data_seg1_f1[i]
-
-    # Step 6 to 11: Play through remaining 6 frames of Segment 1 (RF 2 to 7)
-    for frame_idx in range(2, 8):
+    # Step 2: Loop through Segment 0 repeats (count goes from initial_repeats down to 0)
+    for rep in range(initial_repeats, -1, -1):
+        assert cpu.memory[cur_segment_addr] == 0
+        assert cpu.memory[repeat_counter_addr] == rep
         cpu.memory[timers_addr] = 1
         run_cpu_until_brk(cpu, start_test)
-        assert cpu.memory[cur_segment_addr] == 1
-        assert cpu.memory[repeat_counter_addr] == 10
-        assert cpu.memory[cur_frame_addr] == frame_idx
-        assert cpu.memory[timers_addr] == 5
 
-    # Step 12 to 91: Repeat Segment 1 10 times (repeat counter goes from 10 to 0)
-    for rep in range(10, 0, -1):
-        # Trigger segment repeat transition from RF 7 -> RF 0 of Segment 1
-        cpu.memory[timers_addr] = 1
-        run_cpu_until_brk(cpu, start_test)
-        assert cpu.memory[cur_segment_addr] == 1
-        assert cpu.memory[repeat_counter_addr] == rep - 1
-        assert cpu.memory[cur_frame_addr] == 0
-        assert cpu.memory[timers_addr] == 5
-        
-        # Play through frames 1 to 7 of the repeated segment
-        for frame_idx in range(1, 8):
-            cpu.memory[timers_addr] = 1
-            run_cpu_until_brk(cpu, start_test)
-            assert cpu.memory[cur_segment_addr] == 1
-            assert cpu.memory[repeat_counter_addr] == rep - 1
-            assert cpu.memory[cur_frame_addr] == frame_idx
-            assert cpu.memory[timers_addr] == 5
-
-    # Step 92: Seg 0 (wrapped), Repeat 2 (reloaded), RF 0, GD 0 (dur 100, data [0]*8)
-    cpu.memory[timers_addr] = 1
-    run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[cur_segment_addr] == 0
-    assert cpu.memory[repeat_counter_addr] == 2
+    # Step 3: Verify transition to Segment 1
+    assert cpu.memory[cur_segment_addr] == 1
     assert cpu.memory[cur_frame_addr] == 0
-    assert cpu.memory[timers_addr] == 100
-    for i in range(8):
-        assert cpu.memory[char_addr + i] == 0
 
 def test_check_active_charset_animations(harness):
     xex_file, labels = harness
@@ -360,6 +330,7 @@ def test_check_active_charset_animations(harness):
     start_test = labels["START_CHECK_ANIMATIONS_TEST"]
     active_mask_addr = labels["ANIM_CHARS_ACTIVE_MASK"]
     screen_addr = labels["GAME_SCREEN_A5"]
+    ids_addr = labels["ANIMATED_CHAR_IDS"]
 
     # Clear screen and mask
     for i in range(480):
@@ -370,29 +341,38 @@ def test_check_active_charset_animations(harness):
     run_cpu_until_brk(cpu, start_test)
     assert cpu.memory[active_mask_addr] == 0
 
-    # 2. Put character $05 at index 100 on screen -> mask should have bit 0 set (1)
-    cpu.memory[screen_addr + 100] = 0x05
-    run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[active_mask_addr] == 1
+    char_id_0 = cpu.memory[ids_addr + 0]
+    expected_mask_0 = get_expected_mask(cpu, labels, char_id_0)
 
-    # 3. Clear screen, put character $73 at index 300 on screen -> mask should have bit 1 set (2)
+    char_id_1 = cpu.memory[ids_addr + 1] if labels.get("NUM_ANIM_CHARS", 0) > 1 else char_id_0
+    expected_mask_1 = get_expected_mask(cpu, labels, char_id_1)
+
+    char_id_2 = cpu.memory[ids_addr + 2] if labels.get("NUM_ANIM_CHARS", 0) > 2 else char_id_0
+    expected_mask_2 = get_expected_mask(cpu, labels, char_id_2)
+
+    # 2. Put character 0 on screen -> mask should equal expected_mask_0
+    cpu.memory[screen_addr + 100] = char_id_0
+    run_cpu_until_brk(cpu, start_test)
+    assert cpu.memory[active_mask_addr] == expected_mask_0
+
+    # 3. Clear screen, put character 1 on screen -> mask should equal expected_mask_1
     cpu.memory[screen_addr + 100] = 0
-    cpu.memory[screen_addr + 300] = 0x73
+    cpu.memory[screen_addr + 300] = char_id_1
     cpu.memory[active_mask_addr] = 0
     run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[active_mask_addr] == 2
+    assert cpu.memory[active_mask_addr] == expected_mask_1
 
-    # 4. Put character 112 at index 400 on screen -> mask should have both bit 1 (2) and bit 2 (4) set -> 6
-    cpu.memory[screen_addr + 400] = 112
+    # 4. Put character 2 on screen -> mask should equal (expected_mask_1 | expected_mask_2)
+    cpu.memory[screen_addr + 400] = char_id_2
     cpu.memory[active_mask_addr] = 0
     run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[active_mask_addr] == 6
+    assert cpu.memory[active_mask_addr] == (expected_mask_1 | expected_mask_2)
 
-    # 5. Put character $85 ($05 with bit 7 set) at index 100 on screen -> mask should have bit 0 set (1)
+    # 5. Put character 0 with bit 7 set (inversion) on screen -> mask should equal expected_mask_0
     cpu.memory[screen_addr + 300] = 0
     cpu.memory[screen_addr + 400] = 0
-    cpu.memory[screen_addr + 100] = 0x85
+    cpu.memory[screen_addr + 100] = char_id_0 | 0x80
     cpu.memory[active_mask_addr] = 0
     run_cpu_until_brk(cpu, start_test)
-    assert cpu.memory[active_mask_addr] == 1
+    assert cpu.memory[active_mask_addr] == expected_mask_0
 

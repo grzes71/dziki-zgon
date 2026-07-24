@@ -7,12 +7,6 @@ exits:
   east: CROSSROADS
   west: null
 objects:
-- object: THE_TAVERN
-  x: 20
-  y: 5
-- object: WELL
-  x: 27
-  y: 5
 - object: TREE_SMALL
   x: 32
   y: 5
@@ -51,12 +45,6 @@ objects:
   x: 38
   y: 1
   repeat-x: 2
-- object: GROUND_GREEN_UP
-  x: 36
-  y: 1
-- object: GROUND_GREEN_UP
-  x: 35
-  y: 0
 - object: GROUND_GREEN_UP
   x: 39
   y: 2
@@ -132,9 +120,6 @@ objects:
 - object: OUTHOUSE
   x: 9
   y: 5
-- object: TREE_3
-  x: 15
-  y: 5
 - object: GROUND_BROWN_DOWN
   x: 8
   y: 8
@@ -153,12 +138,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 8
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 33
-  y: 0
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 5
@@ -180,4 +159,22 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 3
   y: 8
+- object: THE_TAVERN
+  x: 18
+  y: 5
+- object: WELL
+  x: 33
+  y: 1
+- object: BARREL
+  x: 15
+  y: 6
+  repeat-x: 3
+- object: FENCE_5
+  x: 30
+  y: 6
+  repeat-x: 2
+- object: CLAW
+  x: 28
+  y: 9
+  repeat-x: 8
 enemies: []

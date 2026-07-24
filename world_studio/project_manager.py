@@ -236,13 +236,14 @@ class ProjectManager:
                     
         return current_list
 
-    def add_region(self, region_id: str, name: str, rows: int, columns: int) -> bool:
+    def add_region(self, region_id: str, name: str, rows: int, columns: int, damage: int = 10) -> bool:
         if region_id in self.regions:
             return False
             
         region_def = RegionDef(
             id=region_id,
             name=name,
+            damage=damage,
             layout={"rows": rows, "columns": columns},
             start_screen="START",
             music=region_id

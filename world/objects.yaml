@@ -33,12 +33,13 @@ objects:
   id: THE_TAVERN
   code: 4
   size:
-    width: 6
+    width: 12
     height: 2
   flags:
     blocking: true
     interactive: false
-  tiles: [129, 130, 131, 131, 130, 132, 163, 164, 87, 88, 163, 164]
+  tiles: [16, 3, 2, 3, 3, 3, 3, 3, 3, 2, 3, 18, 250, 163, 164, 163, 164, 87, 88, 163,
+    164, 163, 164, 251]
 - object: FENCE_1
   id: FENCE_1
   code: 5
@@ -160,16 +161,6 @@ objects:
     blocking: true
     interactive: false
   tiles: [46, 47]
-- object: PLOTKA
-  id: PLOTKA
-  code: 17
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: true
-    interactive: true
-  tiles: [75, 76]
 - object: SIGNPOINT_RIGHT
   id: SIGNPOINT_RIGHT
   code: 18
@@ -948,32 +939,12 @@ objects:
     width: 1
     height: 1
   flags:
-    blocking: true
-    interactive: false
-  tiles: [112]
-- object: CLAW_2
-  id: CLAW_2
-  code: 95
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-  tiles: [78]
-- object: CLAW_3
-  id: CLAW_3
-  code: 96
-  size:
-    width: 1
-    height: 1
-  flags:
     blocking: false
     interactive: false
   tiles: [241]
-- object: CLAW_4
-  id: CLAW_4
-  code: 97
+- object: CHAIN_3
+  id: CHAIN_3
+  code: 96
   size:
     width: 1
     height: 1
@@ -1002,3 +973,13 @@ objects:
     blocking: false
     interactive: false
   tiles: [153]
+- object: SWAMP
+  id: SWAMP
+  code: 100
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [203]

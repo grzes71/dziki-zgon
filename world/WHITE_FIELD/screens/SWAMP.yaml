@@ -77,9 +77,6 @@ objects:
 - object: WAVES
   x: 39
   y: 10
-- object: LAKE
-  x: 16
-  y: 2
 - object: WAVES
   x: 24
   y: 9
@@ -225,10 +222,55 @@ objects:
 - object: CROSS_2
   x: 8
   y: 9
+- object: SWAMP
+  x: 17
+  y: 2
+  repeat-x: 7
+- object: SWAMP
+  x: 18
+  y: 4
+  repeat-x: 6
+- object: SWAMP
+  x: 15
+  y: 2
+- object: SWAMP
+  x: 14
+  y: 4
+- object: SWAMP
+  x: 14
+  y: 3
+  repeat-x: 11
+- object: SWAMP
+  x: 25
+  y: 2
+- object: SWAMP
+  x: 22
+  y: 1
+- object: SWAMP
+  x: 18
+  y: 1
+- object: SWAMP
+  x: 20
+  y: 1
+- object: SWAMP
+  x: 21
+  y: 5
+- object: SWAMP
+  x: 24
+  y: 5
+- object: SWAMP
+  x: 17
+  y: 5
+- object: SWAMP
+  x: 16
+  y: 4
+- object: SWAMP
+  x: 12
+  y: 4
 enemies:
 - enemy: bazyliszek
   x: 13
   y: 6
   strategy: snake
   speed: medium
-  color: brown
+  color: blue

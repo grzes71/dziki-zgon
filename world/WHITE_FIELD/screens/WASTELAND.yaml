@@ -40,10 +40,6 @@ objects:
   x: 24
   y: 3
 - object: REED
-  x: 23
-  y: 2
-  repeat-x: 2
-- object: REED
   x: 28
   y: 0
 - object: REED
@@ -178,10 +174,6 @@ objects:
   y: 9
   repeat-x: 3
 - object: GROUND_BROWN_UP
-  x: 37
-  y: 0
-  repeat-x: 3
-- object: GROUND_BROWN_UP
   x: 39
   y: 1
 - object: GROUND_BROWN_UP
@@ -246,4 +238,4 @@ enemies:
   y: 5
   strategy: vertical
   speed: slow
-  color: orange
+  color: purple

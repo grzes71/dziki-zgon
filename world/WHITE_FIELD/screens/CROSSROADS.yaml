@@ -8,9 +8,6 @@ exits:
   west: TAVERN
 objects:
 - object: TREE_3
-  x: 27
-  y: 4
-- object: TREE_3
   x: 14
   y: 1
 - object: BUSH_2
@@ -26,17 +23,11 @@ objects:
   x: 29
   y: 1
 - object: TREE_2
-  x: 21
-  y: 1
-- object: TREE_2
   x: 24
   y: 1
 - object: HOUSE_MEDIUM_GREEN
   x: 19
   y: 4
-- object: GROUND_BROWN_UP
-  x: 25
-  y: 7
 - object: WATER
   x: 18
   y: 11
@@ -71,15 +62,8 @@ objects:
   x: 30
   y: 9
 - object: GROUND_BROWN_DOWN
-  x: 29
-  y: 8
-- object: GROUND_BROWN_DOWN
   x: 31
   y: 8
-- object: GROUND_BROWN_DOWN
-  x: 27
-  y: 9
-  repeat-x: 2
 - object: TREE_3
   x: 2
   y: 2
@@ -154,22 +138,7 @@ objects:
   x: 0
   y: 8
 - object: GROUND_GREEN_DOWN
-  x: 29
-  y: 9
-- object: GROUND_GREEN_DOWN
-  x: 26
-  y: 9
-- object: GROUND_GREEN_DOWN
-  x: 24
-  y: 9
-- object: GROUND_GREEN_DOWN
   x: 32
-  y: 8
-- object: GROUND_GREEN_DOWN
-  x: 30
-  y: 8
-- object: GROUND_GREEN_DOWN
-  x: 27
   y: 8
 - object: BARN_4
   x: 3
@@ -223,14 +192,16 @@ objects:
 - object: TREE_2
   x: 10
   y: 9
-- object: CLAW
-  x: 15
-  y: 7
-  repeat-x: 9
+- object: TREE_SMALL
+  x: 25
+  y: 8
+- object: TREE_2
+  x: 23
+  y: 8
 enemies:
 - enemy: sukkub
-  x: 25
-  y: 7
+  x: 27
+  y: 4
   strategy: pacing
   speed: medium
-  color: brown
+  color: gray

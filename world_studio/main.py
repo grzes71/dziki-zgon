@@ -161,6 +161,9 @@ class WorldStudioMainWindow(QMainWindow):
         
         edit_id = QLineEdit()
         edit_name = QLineEdit()
+        spin_damage = QSpinBox()
+        spin_damage.setRange(0, 255)
+        spin_damage.setValue(10)
         spin_rows = QSpinBox()
         spin_rows.setRange(1, 100)
         spin_cols = QSpinBox()
@@ -168,6 +171,7 @@ class WorldStudioMainWindow(QMainWindow):
         
         layout.addRow("Region ID (e.g. DARK_FOREST):", edit_id)
         layout.addRow("Name:", edit_name)
+        layout.addRow("Damage (PF3 per sec):", spin_damage)
         layout.addRow("Rows:", spin_rows)
         layout.addRow("Columns:", spin_cols)
         
@@ -182,7 +186,7 @@ class WorldStudioMainWindow(QMainWindow):
             if not r_id:
                 QMessageBox.warning(self, "Error", "Region ID cannot be empty.")
                 return
-            if self.project.add_region(r_id, r_name, spin_rows.value(), spin_cols.value()):
+            if self.project.add_region(r_id, r_name, spin_rows.value(), spin_cols.value(), spin_damage.value()):
                 self.region_tree.populate(self.project)
             else:
                 QMessageBox.warning(self, "Error", f"Region {r_id} already exists.")

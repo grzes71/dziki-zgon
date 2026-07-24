@@ -58,6 +58,7 @@ class RegionLayout(BaseModel):
 class RegionDef(BaseModel):
     id: str
     name: str
+    damage: int = 10
     layout: RegionLayout
     start_screen: str
     music: str

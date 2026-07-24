@@ -265,4 +265,4 @@ enemies:
   y: 1
   strategy: chaotic
   speed: medium
-  color: orange
+  color: red
