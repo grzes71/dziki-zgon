@@ -8,3 +8,6 @@ items:
 - id: 3
   description: Miecz na ludzi
   charset_position: 34
+- id: 4
+  description: Sznurek
+  charset_position: 41

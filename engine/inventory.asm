@@ -7,18 +7,22 @@ INVENTORY_EMPTY_CHAR   = 14  ; Kod Atari 14 dla kropki '.'
 INVENTORY_OPEN_BRACKET  = 59  ; Kod Atari 59 dla '['
 INVENTORY_CLOSE_BRACKET = 61  ; Kod Atari 61 dla ']'
 
+ITEM_SZNUREK_CHAR     = 41  ; Kod Atari 41 dla Sznurka (id: 4)
+
 inventory_count
-    dta 0
+    dta 1
 inventory_items
-    dta 14, 14, 14, 14, 14, 14, 14, 14
+    dta 41, 14, 14, 14, 14, 14, 14, 14
 
 ;==============================================================
-; inventory_init — czyści ekwipunek (8 pustych miejsc)
+; inventory_init — inicjalizuje ekwipunek (Sznurek na pozycji 0, 7 pustych miejsc)
 ;==============================================================
 .proc inventory_init
-    lda #0
+    lda #1
     sta inventory_count
-    ldx #0
+    lda #ITEM_SZNUREK_CHAR
+    sta inventory_items
+    ldx #1
     lda #INVENTORY_EMPTY_CHAR
 @loop
     sta inventory_items,x
