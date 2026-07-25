@@ -28,15 +28,15 @@ status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
 ;---- Kody znaków ozdobnych linii statusu (HUD) ----
-INFO_LINE_CHAR_L0 = 64+128    ; Info Line — pierwszy znak po lewej (indeks 0)
-INFO_LINE_CHAR_L1 = 65+128      ; Info Line — drugi znak po lewej (indeks 1)
-INFO_LINE_CHAR_R0 = 64+128      ; Info Line — pierwszy znak po prawej (indeks 38)
-INFO_LINE_CHAR_R1 = 65+128      ; Info Line — drugi znak po prawej (indeks 39)
+INFO_LINE_CHAR_L0 = 68    ; Info Line — pierwszy znak po lewej (indeks 0)
+INFO_LINE_CHAR_L1 = 70    ; Info Line — drugi znak po lewej (indeks 1)
+INFO_LINE_CHAR_R0 = 68    ; Info Line — pierwszy znak po prawej (indeks 38)
+INFO_LINE_CHAR_R1 = 70    ; Info Line — drugi znak po prawej (indeks 39)
 
-MSG_LINE_CHAR_L0  = 68+128   ; Message Line — pierwszy znak po lewej (indeks 40)
-MSG_LINE_CHAR_L1  = 67+128    ; Message Line — drugi znak po lewej (indeks 41)
-MSG_LINE_CHAR_R0  = 68+128       ; Message Line — pierwszy znak po prawej (indeks 78)
-MSG_LINE_CHAR_R1  = 67+128      ; Message Line — drugi znak po prawej (indeks 79)
+MSG_LINE_CHAR_L0  = 67    ; Message Line — pierwszy znak po lewej (indeks 40)
+MSG_LINE_CHAR_L1  = 69    ; Message Line — drugi znak po lewej (indeks 41)
+MSG_LINE_CHAR_R0  = 67    ; Message Line — pierwszy znak po prawej (indeks 78)
+MSG_LINE_CHAR_R1  = 69    ; Message Line — drugi znak po prawej (indeks 79)
 
 default_status_bar
     dta INFO_LINE_CHAR_L0, INFO_LINE_CHAR_L1

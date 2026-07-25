@@ -81,8 +81,11 @@ class ScreenCanvasWidget(QWidget):
                     self.project.world_config.start_position.x = int(x)
                     self.project.world_config.start_position.y = int(y)
                     self.screen_changed.emit()
-            elif self.active_tool and self.active_tool.startswith("ENEMY:"):
-                enemy_id = self.active_tool.split(":")[1]
+            elif self.active_tool and (self.active_tool == "ENEMY" or self.active_tool.startswith("ENEMY:")):
+                if self.active_tool.startswith("ENEMY:"):
+                    enemy_id = self.active_tool.split(":")[1]
+                else:
+                    enemy_id = self.project.enemy_defs[0].id if (self.project and self.project.enemy_defs) else "strzyga"
                 if len(self.screen_def.enemies) < 3:
                     # Create temporary enemy instance with default properties
                     new_enemy = EnemyInstance(

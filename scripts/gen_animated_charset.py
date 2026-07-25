@@ -226,7 +226,7 @@ def main():
                 # durations (flat across all segments)
                 durations = []
                 for seg in segments:
-                    durations.extend([str(frame["duration"]) for frame in seg.get("frames", [])])
+                    durations.extend([str(min(int(frame["duration"]), 255)) for frame in seg.get("frames", [])])
                 f.write(f"char{idx}_durations\n")
                 f.write(f"\tdta {', '.join(durations)}\n")
                 

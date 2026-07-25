@@ -23,9 +23,6 @@ objects:
 - object: TREE_2
   x: 24
   y: 0
-- object: BUSH_2
-  x: 28
-  y: 1
 - object: GROUND_GREEN_UP
   x: 10
   y: 3
@@ -59,9 +56,6 @@ objects:
   y: 2
 - object: GROUND_BROWN_UP
   x: 39
-  y: 3
-- object: BUSH
-  x: 29
   y: 3
 - object: GROUND_GREEN_UP
   x: 37
@@ -124,9 +118,6 @@ objects:
   x: 8
   y: 8
 - object: GROUND_BROWN_DOWN
-  x: 13
-  y: 8
-- object: GROUND_BROWN_DOWN
   x: 18
   y: 8
 - object: GROUND_BROWN_DOWN
@@ -148,9 +139,6 @@ objects:
   x: 38
   y: 4
 - object: GROUND_BROWN_DOWN
-  x: 31
-  y: 0
-- object: GROUND_BROWN_DOWN
   x: 1
   y: 3
 - object: GROUND_BROWN_DOWN
@@ -162,9 +150,6 @@ objects:
 - object: THE_TAVERN
   x: 18
   y: 5
-- object: WELL
-  x: 33
-  y: 1
 - object: BARREL
   x: 15
   y: 6
@@ -173,8 +158,10 @@ objects:
   x: 30
   y: 6
   repeat-x: 2
-- object: CLAW
+- object: HOUSE_SMALL_BLUE
   x: 28
-  y: 9
-  repeat-x: 8
+  y: 0
+- object: ROCK_GREEN
+  x: 34
+  y: 1
 enemies: []

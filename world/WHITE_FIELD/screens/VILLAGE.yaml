@@ -267,10 +267,6 @@ objects:
 - object: SIGNPOINT_RIGHT
   x: 31
   y: 1
-- object: CHAIN_1
-  x: 19
-  y: 6
-  repeat-y: 4
 enemies:
 - enemy: strzyga
   x: 12
