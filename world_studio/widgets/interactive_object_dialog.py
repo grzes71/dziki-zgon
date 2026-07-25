@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, 
-                               QLineEdit, QSpinBox, QDialogButtonBox, QMessageBox, QLabel)
+                               QLineEdit, QSpinBox, QCheckBox, QDialogButtonBox, QMessageBox, QLabel)
 from PySide6.QtCore import Qt
 from typing import Optional, List
 from world_studio.models import ObjectInstance
@@ -13,7 +13,7 @@ class InteractiveObjectPropertiesDialog(QDialog):
         self.obj_instance = obj_instance
         
         self.setWindowTitle(f"Interactive Object Properties - {obj_instance.object}")
-        self.resize(450, 300)
+        self.resize(450, 320)
         
         layout = QVBoxLayout(self)
         self.form = QFormLayout()
@@ -57,7 +57,14 @@ class InteractiveObjectPropertiesDialog(QDialog):
         self.label_items_provided = QLabel("Przedmioty otrzymane:")
         self.form.addRow(self.label_items_provided, self.edit_items_provided)
 
-        # 5. cost_of_travel (portal)
+        # 5. game_over (kwatera)
+        self.check_game_over = QCheckBox()
+        if obj_instance.game_over is True:
+            self.check_game_over.setChecked(True)
+        self.label_game_over = QLabel("Koniec Gry:")
+        self.form.addRow(self.label_game_over, self.check_game_over)
+
+        # 6. cost_of_travel (portal)
         self.spin_cost_of_travel = QSpinBox()
         self.spin_cost_of_travel.setRange(0, 999999)
         if obj_instance.cost_of_travel is not None:
@@ -85,11 +92,15 @@ class InteractiveObjectPropertiesDialog(QDialog):
         if obj_type == self.TYPE_KWATERA:
             self.label_items_provided.show()
             self.edit_items_provided.show()
+            self.label_game_over.show()
+            self.check_game_over.show()
             self.label_cost_of_travel.hide()
             self.spin_cost_of_travel.hide()
         elif obj_type == self.TYPE_PORTAL:
             self.label_items_provided.hide()
             self.edit_items_provided.hide()
+            self.label_game_over.hide()
+            self.check_game_over.hide()
             self.label_cost_of_travel.show()
             self.spin_cost_of_travel.show()
 
@@ -141,6 +152,7 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.obj_instance.conditions_unmet = cond_unmet
             self.obj_instance.items_required = items_req
             self.obj_instance.items_provided = items_prov
+            self.obj_instance.game_over = self.check_game_over.isChecked()
             self.obj_instance.cost_of_travel = None
 
         elif obj_type == self.TYPE_PORTAL:
@@ -150,6 +162,7 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.obj_instance.conditions_unmet = cond_unmet
             self.obj_instance.items_required = items_req
             self.obj_instance.items_provided = None
+            self.obj_instance.game_over = None
             self.obj_instance.cost_of_travel = cost
 
         self.accept()

@@ -43,6 +43,7 @@ class ObjectInstance(BaseModel):
     items_required: Optional[List[int]] = Field(default=None, alias="items_required")
     items_provided: Optional[List[int]] = Field(default=None, alias="items_provided")
     cost_of_travel: Optional[int] = Field(default=None, alias="cost_of_travel")
+    game_over: Optional[bool] = Field(default=None, alias="game_over")
 
 class ScreenExits(BaseModel):
     north: Optional[str]

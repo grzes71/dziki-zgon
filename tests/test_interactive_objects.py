@@ -113,7 +113,8 @@ def test_interactive_object_kwatera_properties():
         conditions_met="Masz klucz",
         conditions_unmet="Brak klucza",
         items_required=[1, 2],
-        items_provided=[3]
+        items_provided=[3],
+        game_over=True
     )
     data = inst.model_dump(by_alias=True, exclude_none=True)
     assert data["type"] == "kwatera"
@@ -121,6 +122,7 @@ def test_interactive_object_kwatera_properties():
     assert data["conditions_unmet"] == "Brak klucza"
     assert data["items_required"] == [1, 2]
     assert data["items_provided"] == [3]
+    assert data["game_over"] is True
     assert "cost_of_travel" not in data
 
 def test_interactive_object_portal_properties():
