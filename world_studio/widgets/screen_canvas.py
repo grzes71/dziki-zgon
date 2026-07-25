@@ -84,7 +84,8 @@ class ScreenCanvasWidget(QWidget):
                 h = odef.size.height * inst.repeat_y
                 if inst.x <= x < inst.x + w and inst.y <= y < inst.y + h:
                     from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
-                    dialog = InteractiveObjectPropertiesDialog(inst, self)
+                    inv_items = self.project.inventory_items if self.project else []
+                    dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, parent=self)
                     if dialog.exec() == QDialog.Accepted:
                         self.screen_changed.emit()
                         self.update()
@@ -156,7 +157,8 @@ class ScreenCanvasWidget(QWidget):
                     new_obj = ObjectInstance(object=self.active_tool, x=int(x), y=int(y), **{"repeat-x": 1, "repeat-y": 1})
                     if is_interactive:
                         from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
-                        dialog = InteractiveObjectPropertiesDialog(new_obj, self)
+                        inv_items = self.project.inventory_items if self.project else []
+                        dialog = InteractiveObjectPropertiesDialog(new_obj, inventory_items=inv_items, parent=self)
                         if dialog.exec() == QDialog.Accepted:
                             self.screen_def.objects.append(new_obj)
                             self.screen_changed.emit()

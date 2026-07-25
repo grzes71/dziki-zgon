@@ -151,9 +151,11 @@ objects:
   x: 18
   y: 5
   type: kwatera
-  conditions_met: "Dajesz fa\u0142szywe pieni\u0105dze Karczmarzowi.Ten z u\u015B\
-    miechem drze tw\xF3j rachunek :)"
-  conditions_unmet: "Dawaj pieni\u0105dze! - krzyczy Karczmarz"
+  conditions_met: Dajesz fałszywe pieniądze Karczmarzowi.Ten z uśmiechem drze twój
+    rachunek :)
+  conditions_unmet: Dawaj pieniądze! - krzyczy Karczmarz
+  items_required:
+  - 1
   game_over: true
 - object: BARREL
   x: 15

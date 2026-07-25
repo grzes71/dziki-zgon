@@ -27,16 +27,16 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$2000` – `$2002`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2003` – `$200A`** | 8 B | `disable_basic_loader` | Kod programu | Wyłączenie BASICa (obsługa ini). |
 | **`$200B` – `$2035`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$2036` – `$2D32`** | 3325 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$2D33` – `$304B`** | 793 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
-| **`$304C` – `$304C`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
-| **`$304D` – `$30BE`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$30BF` – `$30BF`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
-| **`$3280` – `$344E`** | 463 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
-| **`$344F` – `$344F`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$34B4` – `$357B`** | 200 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
-| **`$357C` – `$36FF`** | 388 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
-| **`$35AF` – `$36FF`** | 337 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
+| **`$2036` – `$2DB6`** | 3457 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$2DB7` – `$30CF`** | 793 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
+| **`$30D0` – `$30D0`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
+| **`$30D1` – `$3142`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
+| **`$3143` – `$3143`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
+| **`$3304` – `$34D5`** | 466 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
+| **`$34D6` – `$34D6`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
+| **`$353B` – `$3602`** | 200 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
+| **`$3603` – `$36FF`** | 253 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$3636` – `$36FF`** | 202 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
 | **`$3700` – `$370E`** | 15 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
 | **`$370F` – `$383C`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
 | **`$383D` – `$3866`** | 42 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
@@ -52,8 +52,8 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. Wskazywana przez `CHBASE = $64`. |
 | **`$6800` – `$7FFF`** | 6144 B | — | **WOLNY RAM** | Gigantyczny, ciągły blok wolnego RAM-u odzyskany dzięki VRAM_ARENA. |
 | **`$8000` – `$A02D`** | 8238 B | `ROM_DATA` | Dane (ROM) | Skompresowane grafiki w XEX (`title.rle` oraz `gameover.rle`). Rozpakowywane do `VRAM_ARENA`. |
-| **`$7B30` – `$7B98`** | 105 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
-| **`$7B99` – `$9FFF`** | 9319 B | `DUMMY_VBI` | Kod programu | Zapasowy handler VBI używany przez system audio (obszar zajęty, nie jest wolnym RAM-em). |
+| **`$7B25` – `$7B8D`** | 105 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
+| **`$7B8E` – `$9FFF`** | 9330 B | `DUMMY_VBI` | Kod programu | Zapasowy handler VBI używany przez system audio (obszar zajęty, nie jest wolnym RAM-em). |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |

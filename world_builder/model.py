@@ -5,6 +5,12 @@ class ObjectSize(BaseModel):
     width: int = Field(ge=1, le=16)
     height: int = Field(ge=1, le=16)
 
+class InventoryItemDef(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    id: int = Field(ge=1, le=255)
+    description: str
+    charset_position: int = Field(ge=0, le=255, alias="charset_position")
+
 class EnemyDef(BaseModel):
     id: str
     name: str
@@ -89,4 +95,5 @@ class GameWorld(BaseModel):
     objects: List[ObjectDefinition] = Field(default_factory=list)
     enemies: List[EnemyDef] = Field(default_factory=list)
     enemy_colors: dict = Field(default_factory=dict)
+    inventory_items: List[InventoryItemDef] = Field(default_factory=list)
     regions: List[RegionDef] = Field(default_factory=list)

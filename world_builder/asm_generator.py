@@ -177,12 +177,12 @@ class AsmGenerator:
         for i, r in enumerate(self.regions_sorted):
             out.append(f"    dta >REGION_NAME_{i}")
             
-        # Padded Region Names (31 bytes each)
-        out.append("\n; Padded Region Names (31 bytes each)")
+        # Padded Region Names (20 bytes each)
+        out.append("\n; Padded Region Names (20 bytes each)")
         for i, r in enumerate(self.regions_sorted):
             codes = to_screencodes(r.name)
-            # Pad to 31 bytes
-            codes = codes[:31] + [0] * (31 - len(codes))
+            # Pad to 20 bytes
+            codes = codes[:20] + [0] * (20 - len(codes))
             hex_bytes = ", ".join(f"${b:02X}" for b in codes)
             out.append(f"REGION_NAME_{i}")
             out.append(f"    dta {hex_bytes} ; \"{r.name}\"")

@@ -117,10 +117,12 @@ W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie prob
   - **ANTIC 5** (górne 10 linii), 40×10 znaków podwójnej wysokości, kolorowa plansza gry (używa czcionki kafelków pod $6400)
   - **ANTIC 2** (dolne linie), 40 znaków/linia, panel statusowy (używa systemowej czcionki pod $6000):
   - **Info Line** (górna linia statusowa): 
-    - Pozycje 0–1: zarezerwowane znaki (kody 1 i 3)
-    - Pozycje 2–32: nazwa regionu (przesunięta o 2 znaki w prawo, max 31 znaków)
-    - Pozycje 33–37: timer gry MM:SS (przesunięty o 2 znaki w lewo)
-    - Pozycje 38–39: zarezerwowane znaki (kody 5 i 6)
+    - Pozycje 0–1: zarezerwowane znaki ramki
+    - Pozycje 2–21: nazwa regionu (max 20 znaków)
+    - Pozycje 22–31: Inventory `[........]` (10 znaków: `[` kod 59, 8 slotów po kodzie 14, `]` kod 61)
+    - Pozycja 32: spacja (1 znak odstępu)
+    - Pozycje 33–37: timer gry MM:SS
+    - Pozycje 38–39: zarezerwowane znaki ramki
   - **Message Line** (dolna linia statusowa): 
     - Pozycje 0–1: zarezerwowane znaki (kody 4 i 8)
     - Pozycje 2–37: treść komunikatów i interakcji (max 36 znaków)

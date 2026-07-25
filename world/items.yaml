@@ -1,0 +1,10 @@
+items:
+- id: 1
+  description: Fałszywe pieniądze
+  charset_position: 35
+- id: 2
+  description: Miecz na potwory
+  charset_position: 33
+- id: 3
+  description: Miecz na ludzi
+  charset_position: 34

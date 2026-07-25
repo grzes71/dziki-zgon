@@ -40,7 +40,10 @@ MSG_LINE_CHAR_R1  = 69    ; Message Line — drugi znak po prawej (indeks 79)
 
 default_status_bar
     dta INFO_LINE_CHAR_L0, INFO_LINE_CHAR_L1
-    dta d'                                    '
+    dta d'                    '
+    dta 59, 14, 14, 14, 14, 14, 14, 14, 14, 61
+    dta d' '
+    dta d'12:00'
     dta INFO_LINE_CHAR_R0, INFO_LINE_CHAR_R1
     dta MSG_LINE_CHAR_L0, MSG_LINE_CHAR_L1
     dta d'                                    '
@@ -63,9 +66,8 @@ temp_sub
 
 
 ;==============================================================
-; draw_region_name — kopiuje 31-bajtową nazwę regionu do Info Line (górna linia statusowa)
-; Zarezerwowane pozycje: 0..1 (kody 1,3) oraz 38..39 (kody 5,6)
-; Nazwa regionu wyświetlana od indeksu 2 (31 znaków max)
+; draw_region_name — kopiuje 20-bajtową nazwę regionu do Info Line (górna linia statusowa)
+; Zarezerwowane pozycje: 0..1 (kody 68,70), nazwa regionu: 2..21 (20 znaków max)
 ;==============================================================
 .proc draw_region_name
     ldx game_stage
@@ -74,7 +76,7 @@ temp_sub
     lda REGION_NAMES_HI,x
     sta SRC_PTR+1
 
-    ldy #30
+    ldy #19
 @loop
     lda (SRC_PTR),y
     sta GAME_SCREEN_A2 + 2,y
@@ -435,6 +437,9 @@ temp_sub
 
     ; --- Narysuj zegar ---
     jsr draw_timer
+
+    ; --- Narysuj ekwipunek ---
+    jsr draw_inventory
 
     ; --- PMG: rozmiar normalny dla gracza, włącz PMG ---
     lda #$00

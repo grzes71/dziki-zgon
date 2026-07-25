@@ -1,7 +1,7 @@
 import yaml
 from pathlib import Path
 from typing import Dict, List, Any, Optional
-from world_studio.models import WorldConfig, ObjectDefinition, RegionDef, ScreenDef, EnemyDef
+from world_studio.models import WorldConfig, ObjectDefinition, RegionDef, ScreenDef, EnemyDef, InventoryItemDef
 
 class ProjectManager:
     def __init__(self):
@@ -13,6 +13,7 @@ class ProjectManager:
         self.objects: List[ObjectDefinition] = []
         self.enemy_defs: List[EnemyDef] = []
         self.enemy_colors: List[str] = []
+        self.inventory_items: List[InventoryItemDef] = []
         self.regions: Dict[str, RegionDef] = {}
         self.screens: Dict[str, Dict[str, ScreenDef]] = {}
         
@@ -25,7 +26,7 @@ class ProjectManager:
     def _save_yaml(self, path: Path, data: dict):
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, 'w', encoding='utf-8') as f:
-            yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+            yaml.dump(data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
 
     def load_project(self, world_dir: Path) -> bool:
         if not (world_dir / "world.yaml").exists():
@@ -55,6 +56,10 @@ class ProjectManager:
         e_data = self._load_yaml(world_dir / "enemies.yaml")
         self.enemy_defs = [EnemyDef.model_validate(e) for e in e_data.get("enemies", [])]
         self.enemy_colors = list(e_data.get("colors", {}).keys())
+        
+        # items.yaml
+        i_data = self._load_yaml(world_dir / "items.yaml")
+        self.inventory_items = [InventoryItemDef.model_validate(item) for item in i_data.get("items", [])]
         
         # regions
         self.regions.clear()
@@ -130,6 +135,9 @@ class ProjectManager:
             
         # save world.yaml
         self._save_yaml(self.world_dir / "world.yaml", {"world": self.world_config.model_dump()})
+        # save items.yaml
+        items_dump = [item.model_dump(by_alias=True) for item in self.inventory_items]
+        self._save_yaml(self.world_dir / "items.yaml", {"items": items_dump})
         # objects.yaml is loaded in read-only mode, so we don't save it.
         
         for region_id, region_def in self.regions.items():

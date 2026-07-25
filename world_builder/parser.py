@@ -103,11 +103,18 @@ def parse_world_dir(base_dir: Path) -> GameWorld:
         enemies_list = enemies_data.get("enemies", [])
         enemies_colors = enemies_data.get("colors", {})
 
+    items_path = base_dir / "items.yaml"
+    items_list = []
+    if items_path.exists():
+        items_data = load_yaml(items_path)
+        items_list = items_data.get("items", [])
+
     raw_data = {
         "world": world_data.get("world", {}),
         "objects": objects_data.get("objects", []),
         "enemies": enemies_list,
         "enemy_colors": enemies_colors,
+        "inventory_items": items_list,
         "regions": regions
     }
     

@@ -105,6 +105,20 @@ class WorldStudioMainWindow(QMainWindow):
         act_save.triggered.connect(self.action_save_project)
         file_menu.addAction(act_save)
 
+        tools_menu = menubar.addMenu("Tools")
+        act_items = QAction("Inventory Items...", self)
+        act_items.triggered.connect(self.action_edit_inventory_items)
+        tools_menu.addAction(act_items)
+
+    def action_edit_inventory_items(self):
+        if not self.project.world_dir:
+            QMessageBox.warning(self, "Error", "No project loaded.")
+            return
+        from world_studio.widgets.inventory_items_dialog import InventoryItemsDialog
+        dialog = InventoryItemsDialog(self.project, self)
+        if dialog.exec() == QDialog.Accepted:
+            self.statusBar().showMessage("Inventory items updated.")
+
     def action_open_world(self):
         folder = QFileDialog.getExistingDirectory(self, "Select world folder")
         if folder:

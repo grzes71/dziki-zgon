@@ -1,19 +1,21 @@
 from PySide6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, 
-                               QLineEdit, QSpinBox, QCheckBox, QDialogButtonBox, QMessageBox, QLabel)
+                               QLineEdit, QSpinBox, QCheckBox, QListWidget, QListWidgetItem,
+                               QDialogButtonBox, QMessageBox, QLabel)
 from PySide6.QtCore import Qt
 from typing import Optional, List
-from world_studio.models import ObjectInstance
+from world_studio.models import ObjectInstance, InventoryItemDef
 
 class InteractiveObjectPropertiesDialog(QDialog):
     TYPE_KWATERA = "kwatera"
     TYPE_PORTAL = "portal"
 
-    def __init__(self, obj_instance: ObjectInstance, parent=None):
+    def __init__(self, obj_instance: ObjectInstance, inventory_items: Optional[List[InventoryItemDef]] = None, parent=None):
         super().__init__(parent)
         self.obj_instance = obj_instance
+        self.inventory_items = inventory_items or []
         
         self.setWindowTitle(f"Interactive Object Properties - {obj_instance.object}")
-        self.resize(450, 320)
+        self.resize(480, 420)
         
         layout = QVBoxLayout(self)
         self.form = QFormLayout()
@@ -42,20 +44,14 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.edit_conditions_unmet.setText(obj_instance.conditions_unmet)
         self.form.addRow("Wymagania niespełnione:", self.edit_conditions_unmet)
 
-        # 3. items_required
-        self.edit_items_required = QLineEdit()
-        if obj_instance.items_required:
-            self.edit_items_required.setText(", ".join(str(i) for i in obj_instance.items_required))
-        self.edit_items_required.setPlaceholderText("np. 1, 2, 5 (opcjonalne)")
-        self.form.addRow("Przedmioty wymagane:", self.edit_items_required)
+        # 3. items_required (checkbox list from inventory_items)
+        self.list_items_required = self._create_item_selector(obj_instance.items_required)
+        self.form.addRow("Przedmioty wymagane:", self.list_items_required)
 
-        # 4. items_provided (kwatera)
-        self.edit_items_provided = QLineEdit()
-        if obj_instance.items_provided:
-            self.edit_items_provided.setText(", ".join(str(i) for i in obj_instance.items_provided))
-        self.edit_items_provided.setPlaceholderText("np. 3, 4 (opcjonalne)")
+        # 4. items_provided (kwatera, checkbox list from inventory_items)
+        self.list_items_provided = self._create_item_selector(obj_instance.items_provided)
         self.label_items_provided = QLabel("Przedmioty otrzymane:")
-        self.form.addRow(self.label_items_provided, self.edit_items_provided)
+        self.form.addRow(self.label_items_provided, self.list_items_provided)
 
         # 5. game_over (kwatera)
         self.check_game_over = QCheckBox()
@@ -84,6 +80,45 @@ class InteractiveObjectPropertiesDialog(QDialog):
 
         self._update_field_visibility()
 
+    def _create_item_selector(self, selected_ids: Optional[List[int]]) -> QListWidget:
+        list_widget = QListWidget()
+        list_widget.setMaximumHeight(90)
+        selected_ids_set = set(selected_ids or [])
+        
+        avail_items = {item.id: item for item in self.inventory_items}
+        all_ids = sorted(set(avail_items.keys()) | selected_ids_set)
+        
+        if not all_ids:
+            placeholder = QListWidgetItem("(Brak zdefiniowanych przedmiotów ekwipunku)")
+            placeholder.setFlags(Qt.NoItemFlags)
+            list_widget.addItem(placeholder)
+            return list_widget
+
+        for item_id in all_ids:
+            if item_id in avail_items:
+                item = avail_items[item_id]
+                label = f"#{item.id}: {item.description} (char: {item.charset_position})"
+            else:
+                label = f"#{item_id}: (Niezdefiniowany przedmiot)"
+                
+            widget_item = QListWidgetItem(label)
+            widget_item.setFlags(widget_item.flags() | Qt.ItemIsUserCheckable)
+            widget_item.setCheckState(Qt.Checked if item_id in selected_ids_set else Qt.Unchecked)
+            widget_item.setData(Qt.UserRole, item_id)
+            list_widget.addItem(widget_item)
+            
+        return list_widget
+
+    def _get_selected_item_ids(self, list_widget: QListWidget) -> Optional[List[int]]:
+        result = []
+        for i in range(list_widget.count()):
+            widget_item = list_widget.item(i)
+            if widget_item.checkState() == Qt.Checked:
+                item_id = widget_item.data(Qt.UserRole)
+                if item_id is not None:
+                    result.append(item_id)
+        return result if result else None
+
     def _on_type_changed(self, text):
         self._update_field_visibility()
 
@@ -91,31 +126,18 @@ class InteractiveObjectPropertiesDialog(QDialog):
         obj_type = self.combo_type.currentText()
         if obj_type == self.TYPE_KWATERA:
             self.label_items_provided.show()
-            self.edit_items_provided.show()
+            self.list_items_provided.show()
             self.label_game_over.show()
             self.check_game_over.show()
             self.label_cost_of_travel.hide()
             self.spin_cost_of_travel.hide()
         elif obj_type == self.TYPE_PORTAL:
             self.label_items_provided.hide()
-            self.edit_items_provided.hide()
+            self.list_items_provided.hide()
             self.label_game_over.hide()
             self.check_game_over.hide()
             self.label_cost_of_travel.show()
             self.spin_cost_of_travel.show()
-
-    def _parse_int_list(self, text: str) -> Optional[List[int]]:
-        text = text.strip()
-        if not text:
-            return None
-        parts = [p.strip() for p in text.split(",") if p.strip()]
-        result = []
-        for p in parts:
-            try:
-                result.append(int(p))
-            except ValueError:
-                raise ValueError(f"Wartość '{p}' nie jest liczbą całkowitą.")
-        return result if result else None
 
     def _on_accept(self):
         obj_type = self.combo_type.currentText()
@@ -132,21 +154,10 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.edit_conditions_unmet.setFocus()
             return
 
-        try:
-            items_req = self._parse_int_list(self.edit_items_required.text())
-        except ValueError as e:
-            QMessageBox.warning(self, "Błąd walidacji", f"Błąd w polu 'Przedmioty wymagane': {e}")
-            self.edit_items_required.setFocus()
-            return
+        items_req = self._get_selected_item_ids(self.list_items_required)
 
         if obj_type == self.TYPE_KWATERA:
-            try:
-                items_prov = self._parse_int_list(self.edit_items_provided.text())
-            except ValueError as e:
-                QMessageBox.warning(self, "Błąd walidacji", f"Błąd w polu 'Przedmioty otrzymane': {e}")
-                self.edit_items_provided.setFocus()
-                return
-
+            items_prov = self._get_selected_item_ids(self.list_items_provided)
             self.obj_instance.type = self.TYPE_KWATERA
             self.obj_instance.conditions_met = cond_met
             self.obj_instance.conditions_unmet = cond_unmet
