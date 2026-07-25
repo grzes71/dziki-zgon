@@ -20,11 +20,26 @@ class WorldValidator:
         
     def validate(self):
         self._check_duplicates()
+        self._check_interactive_objects()
         self._check_region_dirs()
         self._check_references()
         self._check_bounds()
         self._check_reachability()
         self._check_overlaps()
+
+    def _check_interactive_objects(self):
+        interactive_counts = {}
+        for region in self.world.regions:
+            for screen in region.screens:
+                for inst in screen.objects:
+                    obj_def = self.objects_by_id.get(inst.object)
+                    if obj_def and obj_def.flags and getattr(obj_def.flags, 'interactive', False):
+                        interactive_counts.setdefault(inst.object, []).append((region.id, screen.id, inst.x, inst.y))
+        
+        for obj_id, placements in interactive_counts.items():
+            if len(placements) > 1:
+                locs = [f"{r}/{s} (x={x}, y={y})" for r, s, x, y in placements]
+                raise ValidationError(f"Interactive object '{obj_id}' is placed multiple times in world: {', '.join(locs)}")
         
     def _check_duplicates(self):
         for obj in self.world.objects:

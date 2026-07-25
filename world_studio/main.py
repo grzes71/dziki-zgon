@@ -126,6 +126,12 @@ class WorldStudioMainWindow(QMainWindow):
                 QMessageBox.warning(self, "Error", "Failed to load charset (must be 1024 bytes).")
 
     def action_save_project(self):
+        errors = self.project.validate_interactive_objects()
+        if errors:
+            err_msg = "Cannot save project. The following interactive object(s) are placed more than once in the game world:\n\n" + "\n".join(errors) + "\n\nInteractive objects can only be placed once in the game world."
+            QMessageBox.warning(self, "Validation Error", err_msg)
+            return
+
         if self.project.save_project():
             self.statusBar().showMessage("Project saved successfully.")
             QMessageBox.information(self, "Saved", "Project saved successfully.")

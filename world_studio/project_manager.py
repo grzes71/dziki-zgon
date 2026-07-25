@@ -98,8 +98,34 @@ class ProjectManager:
                     
         return True
 
+    def get_interactive_object_ids(self) -> set:
+        return {o.id for o in self.objects if o.flags and getattr(o.flags, 'interactive', False)}
+
+    def find_object_instances(self, obj_id: str) -> List[tuple]:
+        results = []
+        for region_id, screens_dict in self.screens.items():
+            for screen_id, screen_def in screens_dict.items():
+                for inst in screen_def.objects:
+                    if inst.object == obj_id:
+                        results.append((region_id, screen_id, inst))
+        return results
+
+    def validate_interactive_objects(self) -> List[str]:
+        interactive_ids = self.get_interactive_object_ids()
+        errors = []
+        for obj_id in interactive_ids:
+            instances = self.find_object_instances(obj_id)
+            if len(instances) > 1:
+                locations = [f"{reg}/{scr} (at x={inst.x}, y={inst.y})" for reg, scr, inst in instances]
+                loc_str = ", ".join(locations)
+                errors.append(f"• Interactive object '{obj_id}' is placed {len(instances)} times: {loc_str}")
+        return errors
+
     def save_project(self) -> bool:
         if not self.world_dir or not self.world_config:
+            return False
+            
+        if self.validate_interactive_objects():
             return False
             
         # save world.yaml

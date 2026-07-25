@@ -106,6 +106,18 @@ class ScreenCanvasWidget(QWidget):
                 if not active_obj_def:
                     return
                     
+                if active_obj_def.flags and getattr(active_obj_def.flags, 'interactive', False):
+                    existing = self.project.find_object_instances(active_obj_def.id)
+                    if existing:
+                        reg_id, scr_id, _ = existing[0]
+                        from PySide6.QtWidgets import QMessageBox
+                        QMessageBox.warning(
+                            self,
+                            "Cannot Place Interactive Object",
+                            f"Interactive object '{active_obj_def.id}' is already placed in screen '{scr_id}' of region '{reg_id}'.\n\nInteractive objects can only be placed once in the game world."
+                        )
+                        return
+
                 new_w = active_obj_def.size.width
                 new_h = active_obj_def.size.height
                 

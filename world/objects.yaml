@@ -27,7 +27,7 @@ objects:
     height: 2
   flags:
     blocking: true
-    interactive: true
+    interactive: false
   tiles: [30, 31, 62, 63]
 - object: THE_TAVERN
   id: THE_TAVERN
@@ -37,7 +37,7 @@ objects:
     height: 2
   flags:
     blocking: true
-    interactive: false
+    interactive: true
   tiles: [16, 3, 2, 3, 3, 3, 3, 3, 3, 2, 3, 18, 250, 163, 164, 163, 164, 87, 88, 163,
     164, 163, 164, 251]
 - object: FENCE_1
@@ -309,8 +309,8 @@ objects:
     height: 2
   flags:
     blocking: true
-    interactive: true
-  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 27, 28, 234, 233]
+    interactive: false
+  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 227, 34, 234, 233]
 - object: PYRAMID_BIG
   id: PYRAMID_BIG
   code: 33
@@ -319,7 +319,7 @@ objects:
     height: 3
   flags:
     blocking: true
-    interactive: false
+    interactive: true
   tiles: [0, 0, 0, 0, 232, 233, 0, 0, 0, 0, 0, 0, 232, 231, 227, 34, 234, 233, 0,
     0, 232, 231, 227, 227, 155, 156, 34, 34, 234, 233]
 - object: PALM_TREE
@@ -360,7 +360,7 @@ objects:
     height: 1
   flags:
     blocking: true
-    interactive: true
+    interactive: false
   tiles: [49]
 - object: BARN_SMALL
   id: BARN_SMALL
@@ -453,7 +453,7 @@ objects:
     height: 7
   flags:
     blocking: true
-    interactive: false
+    interactive: true
   tiles: [0, 46, 47, 0, 0, 103, 106, 0, 0, 185, 56, 0, 0, 61, 189, 0, 16, 33, 33,
     18, 33, 163, 164, 33, 33, 27, 28, 33]
 - object: BUSH
@@ -624,7 +624,7 @@ objects:
     height: 3
   flags:
     blocking: true
-    interactive: false
+    interactive: true
   tiles: [96, 17, 17, 17, 17, 17, 17, 17, 17, 97, 250, 34, 163, 164, 33, 33, 163,
     164, 34, 251, 250, 29, 29, 29, 27, 28, 29, 29, 29, 251]
 - object: STONE_BIG
