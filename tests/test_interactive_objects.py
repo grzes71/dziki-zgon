@@ -104,3 +104,39 @@ def test_world_builder_interactive_object_validation(tmp_path):
         validator.validate()
         
     assert "Interactive object 'KEY' is placed multiple times" in str(exc_info.value)
+
+def test_interactive_object_kwatera_properties():
+    inst = ObjectInstance(
+        object="INN",
+        x=5, y=5,
+        type="kwatera",
+        conditions_met="Masz klucz",
+        conditions_unmet="Brak klucza",
+        items_required=[1, 2],
+        items_provided=[3]
+    )
+    data = inst.model_dump(by_alias=True, exclude_none=True)
+    assert data["type"] == "kwatera"
+    assert data["conditions_met"] == "Masz klucz"
+    assert data["conditions_unmet"] == "Brak klucza"
+    assert data["items_required"] == [1, 2]
+    assert data["items_provided"] == [3]
+    assert "cost_of_travel" not in data
+
+def test_interactive_object_portal_properties():
+    inst = ObjectInstance(
+        object="TELEPORT",
+        x=10, y=8,
+        type="portal",
+        conditions_met="Portal aktywny",
+        conditions_unmet="Brak aktywacji",
+        items_required=[5],
+        cost_of_travel=50
+    )
+    data = inst.model_dump(by_alias=True, exclude_none=True)
+    assert data["type"] == "portal"
+    assert data["conditions_met"] == "Portal aktywny"
+    assert data["conditions_unmet"] == "Brak aktywacji"
+    assert data["items_required"] == [5]
+    assert data["cost_of_travel"] == 50
+    assert "items_provided" not in data

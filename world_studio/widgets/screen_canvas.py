@@ -74,6 +74,22 @@ class ScreenCanvasWidget(QWidget):
                     self.update()
                 return
 
+            # 1.5 Check if there is an existing interactive object at this coordinate to edit
+            obj_dict = {o.id: o for o in self.project.objects}
+            for inst in self.screen_def.objects:
+                odef = obj_dict.get(inst.object)
+                if not odef or not (odef.flags and getattr(odef.flags, 'interactive', False)):
+                    continue
+                w = odef.size.width * inst.repeat_x
+                h = odef.size.height * inst.repeat_y
+                if inst.x <= x < inst.x + w and inst.y <= y < inst.y + h:
+                    from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
+                    dialog = InteractiveObjectPropertiesDialog(inst, self)
+                    if dialog.exec() == QDialog.Accepted:
+                        self.screen_changed.emit()
+                        self.update()
+                    return
+
             # 2. Add new entity/object if clicking empty space
             if self.active_tool == "PLAYER_START":
                 if self.project.world_config:
@@ -106,7 +122,8 @@ class ScreenCanvasWidget(QWidget):
                 if not active_obj_def:
                     return
                     
-                if active_obj_def.flags and getattr(active_obj_def.flags, 'interactive', False):
+                is_interactive = active_obj_def.flags and getattr(active_obj_def.flags, 'interactive', False)
+                if is_interactive:
                     existing = self.project.find_object_instances(active_obj_def.id)
                     if existing:
                         reg_id, scr_id, _ = existing[0]
@@ -137,8 +154,15 @@ class ScreenCanvasWidget(QWidget):
                         
                 if not overlap:
                     new_obj = ObjectInstance(object=self.active_tool, x=int(x), y=int(y), **{"repeat-x": 1, "repeat-y": 1})
-                    self.screen_def.objects.append(new_obj)
-                    self.screen_changed.emit()
+                    if is_interactive:
+                        from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
+                        dialog = InteractiveObjectPropertiesDialog(new_obj, self)
+                        if dialog.exec() == QDialog.Accepted:
+                            self.screen_def.objects.append(new_obj)
+                            self.screen_changed.emit()
+                    else:
+                        self.screen_def.objects.append(new_obj)
+                        self.screen_changed.emit()
                 
         elif event.button() == Qt.RightButton:
             # Delete enemy at this pos

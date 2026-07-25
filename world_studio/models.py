@@ -36,6 +36,13 @@ class ObjectInstance(BaseModel):
     y: int = Field(ge=0, le=11)
     repeat_x: int = Field(default=1, alias="repeat-x")
     repeat_y: int = Field(default=1, alias="repeat-y")
+    
+    type: Optional[str] = None
+    conditions_met: Optional[str] = Field(default=None, alias="conditions_met")
+    conditions_unmet: Optional[str] = Field(default=None, alias="conditions_unmet")
+    items_required: Optional[List[int]] = Field(default=None, alias="items_required")
+    items_provided: Optional[List[int]] = Field(default=None, alias="items_provided")
+    cost_of_travel: Optional[int] = Field(default=None, alias="cost_of_travel")
 
 class ScreenExits(BaseModel):
     north: Optional[str] = None
