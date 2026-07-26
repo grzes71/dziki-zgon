@@ -15,7 +15,9 @@
     jsr animate_charset
     jsr update_animated_charset
     jsr update_timer
+    jsr msg_update
 @skip_anim
+
 
     ; 2. Sygnał dla pętli głównej
     inc FrameCounter

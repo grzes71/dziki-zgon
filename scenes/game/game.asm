@@ -4,8 +4,8 @@
 
 ;---- Adresy pamięci dla gry (współdzielone z main.asm przez .global) ----
 GAME_SCREEN_A5 = SCREEN      ; mapa 40×12 (ANTIC 5) = 480 bajtów
-GAME_SCREEN_A2 = SCREEN+480  ; mapa 40×2 (ANTIC 2) = 80 bajtów
 GAME_CHARSET  = $A800       ; charset gry — kafelki terenu (1 KB, CHBASE=$A8)
+
 
 ;---- Zmienne lokalne sceny ----
 game_fire_released
@@ -48,6 +48,12 @@ default_status_bar
     dta MSG_LINE_CHAR_L0, MSG_LINE_CHAR_L1
     dta d'                                    '
     dta MSG_LINE_CHAR_R0, MSG_LINE_CHAR_R1
+
+MSG_START_GAME
+    dta c'cholera, zaczynamy od nowa...', 0
+
+
+
 
 timer_minutes
     dta 12
@@ -418,6 +424,12 @@ temp_sub
     inx
     cpx #80
     bne @fill_status
+
+    ; --- Wyświetl komunikat początkowy na Message Line ---
+    lda #<MSG_START_GAME
+    ldy #>MSG_START_GAME
+    jsr msg_show
+
 
     ; --- Inicjalizacja czasu i regionu ---
     lda #12

@@ -18,4 +18,6 @@
     icl "audio.asm"
     icl "render.asm"
     icl "charset_anim.asm"
+    icl "msg_line.asm"
+
 
