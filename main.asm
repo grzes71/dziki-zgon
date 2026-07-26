@@ -315,6 +315,7 @@ GO_TEXT = FOOTER_ADDR
     icl "gen/world/regions.asm"
     icl "gen/world/screens.asm"
     icl "gen/world/exits.asm"
+    icl "gen/world/interactive_objects.asm"
 
 ; --- Muzyka i odtwarzacz ($8800) ---
     icl "music/title_audio.asm"

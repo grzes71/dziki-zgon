@@ -10,6 +10,14 @@ objects:
 - object: CHURCH
   x: 18
   y: 2
+  type: kwatera
+  conditions_met: dziękujemy za sznurek! oto kasa.
+  conditions_unmet: nie masz czasem sznurka?
+  items_required:
+  - 4
+  items_provided:
+  - 1
+  game_over: false
 - object: CROSS_2
   x: 26
   y: 8

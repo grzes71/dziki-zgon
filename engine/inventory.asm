@@ -7,23 +7,23 @@ INVENTORY_EMPTY_CHAR   = 14  ; Kod Atari 14 dla kropki '.'
 INVENTORY_OPEN_BRACKET  = 59  ; Kod Atari 59 dla '['
 INVENTORY_CLOSE_BRACKET = 61  ; Kod Atari 61 dla ']'
 
-ITEM_SZNUREK_CHAR     = 41  ; Kod Atari 41 dla Sznurka (id: 4)
+ITEM_SZNUREK_ID       = 4   ; ID dla Sznurka (id: 4)
 
 inventory_count
     dta 1
 inventory_items
-    dta 41, 14, 14, 14, 14, 14, 14, 14
+    dta ITEM_SZNUREK_ID, 0, 0, 0, 0, 0, 0, 0
 
 ;==============================================================
-; inventory_init — inicjalizuje ekwipunek (Sznurek na pozycji 0, 7 pustych miejsc)
+; inventory_init — inicjalizuje ekwipunek (Sznurek ID 4 na pozycji 0, 7 pustych miejsc)
 ;==============================================================
 .proc inventory_init
     lda #1
     sta inventory_count
-    lda #ITEM_SZNUREK_CHAR
+    lda #ITEM_SZNUREK_ID
     sta inventory_items
     ldx #1
-    lda #INVENTORY_EMPTY_CHAR
+    lda #0
 @loop
     sta inventory_items,x
     inx
@@ -44,7 +44,14 @@ inventory_items
     ; 8 slotów ekwipunku (indeksy 23..30)
     ldx #0
 @loop
-    lda inventory_items,x
+    cpx inventory_count
+    bcs @empty
+    ldy inventory_items,x
+    lda ITEM_CHARSET_POS,y
+    jmp @store
+@empty
+    lda #INVENTORY_EMPTY_CHAR
+@store
     sta GAME_SCREEN_A2 + 23,x
     inx
     cpx #MAX_INVENTORY_ITEMS
@@ -63,7 +70,7 @@ inventory_items
 
 ;==============================================================
 ; inventory_add_item — dodaje przedmiot do ekwipunku
-; Wejście: A = kod znaku przedmiotu
+; Wejście: A = ID przedmiotu
 ; Wyjście: C=0 (sukces), C=1 (ekwipunek pełny)
 ;==============================================================
 .proc inventory_add_item
@@ -83,7 +90,7 @@ inventory_items
 
 ;==============================================================
 ; inventory_has_item — sprawdza obecność przedmiotu w ekwipunku
-; Wejście: A = kod znaku przedmiotu
+; Wejście: A = ID przedmiotu
 ; Wyjście: C=0 (znaleziono, X=indeks slotu), C=1 (brak)
 ;==============================================================
 .proc inventory_has_item
@@ -105,7 +112,7 @@ inventory_items
 
 ;==============================================================
 ; inventory_remove_item — usuwa przedmiot z ekwipunku
-; Wejście: A = kod znaku przedmiotu
+; Wejście: A = ID przedmiotu
 ; Wyjście: C=0 (usunięto), C=1 (nie było w ekwipunku)
 ;==============================================================
 .proc inventory_remove_item
@@ -123,7 +130,7 @@ inventory_items
 @shifted
     dec inventory_count
     ldx inventory_count
-    lda #INVENTORY_EMPTY_CHAR
+    lda #0
     sta inventory_items,x
 
     jsr draw_inventory
@@ -135,3 +142,4 @@ inventory_items
 .proc Inventory_Update
     rts
 .endp
+

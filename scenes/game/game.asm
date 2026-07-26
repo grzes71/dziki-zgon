@@ -28,7 +28,7 @@ status_palette
     dta $0E, $0E, $0E, $0E, $00, $0F, $00, $00, $00
 
 ;---- Kody znaków ozdobnych linii statusu (HUD) ----
-INFO_LINE_CHAR_L0 = 1    ; Info Line — pierwszy znak po lewej (indeks 0)
+INFO_LINE_CHAR_L0 = 76   ; Info Line — pierwszy znak po lewej (indeks 0)
 INFO_LINE_CHAR_L1 = 3    ; Info Line — drugi znak po lewej (indeks 1)
 INFO_LINE_CHAR_R0 = 5    ; Info Line — pierwszy znak po prawej (indeks 38)
 INFO_LINE_CHAR_R1 = 6    ; Info Line — drugi znak po prawej (indeks 39)
@@ -265,6 +265,8 @@ temp_sub
     sta timer_minutes
     sta timer_seconds
     jsr draw_timer
+    lda #2
+    sta GAME_RESULT_STATUS
     lda #1
     sta Engine_RequestStageAdvance
 
@@ -323,6 +325,7 @@ temp_sub
     sta DMACTL
     sta NMIEN
     sta game_fire_released  ; zresetuj stan przycisku FIRE
+    sta GAME_RESULT_STATUS  ; zresetuj status gry (0 = w trakcie)
     
     ; Wyzeruj wszystkich aktorów
     ldx #MAX_ACTORS - 1

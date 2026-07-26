@@ -53,6 +53,7 @@ class AsmGenerator:
         self._generate_regions()
         self._generate_exits()
         self._generate_screens()
+        self._generate_interactive_objects()
         self._generate_world_inc()
         
     def _generate_objects(self):
@@ -273,4 +274,112 @@ class AsmGenerator:
         out.append(f"START_POS_Y = {self.world.world.start_position.y}")
         
         with open(self.out_dir / "world.inc", "w", encoding="utf-8") as f:
+            f.write("\n".join(out) + "\n")
+
+    def _generate_interactive_objects(self):
+        out = ["; Interactive Objects Data & Item Charset Table"]
+        
+        # Item Charset Position Table
+        max_item_id = max((item.id for item in self.world.inventory_items), default=0)
+        item_pos_map = {item.id: item.charset_position for item in self.world.inventory_items}
+        
+        out.append("ITEM_CHARSET_POS")
+        out.append("    dta 14 ; ID 0 (Empty slot)")
+        for item_id in range(1, max_item_id + 1):
+            pos = item_pos_map.get(item_id, 14)
+            out.append(f"    dta {pos} ; Item ID {item_id}")
+            
+        out.append("\n; Interactive Objects Table (Indexed by ScreenId)")
+        objects_by_id = {obj.id: obj for obj in self.world.objects}
+        
+        interactive_data = []
+        for s in self.screens_sorted:
+            inter_inst = None
+            for inst in s.objects:
+                obj_def = objects_by_id.get(inst.object)
+                if obj_def and obj_def.flags.interactive:
+                    inter_inst = (inst, obj_def)
+                    break
+            interactive_data.append(inter_inst)
+
+        # INTERACTIVE_OBJ_PRESENT
+        out.append("INTERACTIVE_OBJ_PRESENT")
+        out.append("    dta " + ", ".join("1" if d else "0" for d in interactive_data))
+
+        # INTERACTIVE_OBJ_X
+        out.append("INTERACTIVE_OBJ_X")
+        out.append("    dta " + ", ".join(str(d[0].x) if d else "0" for d in interactive_data))
+
+        # INTERACTIVE_OBJ_Y
+        out.append("INTERACTIVE_OBJ_Y")
+        out.append("    dta " + ", ".join(str(d[0].y) if d else "0" for d in interactive_data))
+
+        # INTERACTIVE_OBJ_W
+        out.append("INTERACTIVE_OBJ_W")
+        out.append("    dta " + ", ".join(str(d[1].size.width) if d else "0" for d in interactive_data))
+
+        # INTERACTIVE_OBJ_H
+        out.append("INTERACTIVE_OBJ_H")
+        out.append("    dta " + ", ".join(str(d[1].size.height) if d else "0" for d in interactive_data))
+
+        # Reqs and Provs and Msgs
+        out.append("INTERACTIVE_OBJ_REQ_COUNT")
+        out.append("    dta " + ", ".join(str(len(d[0].items_required or [])) if d else "0" for d in interactive_data))
+
+        out.append("INTERACTIVE_OBJ_REQ_PTR_LO")
+        out.append("    dta " + ", ".join(f"<(REQ_ITEMS_SCR_{i})" if (d and d[0].items_required) else "<(EMPTY_ITEM_LIST)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_REQ_PTR_HI")
+        out.append("    dta " + ", ".join(f">(REQ_ITEMS_SCR_{i})" if (d and d[0].items_required) else ">(EMPTY_ITEM_LIST)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_PROV_COUNT")
+        out.append("    dta " + ", ".join(str(len(d[0].items_provided or [])) if d else "0" for d in interactive_data))
+
+        out.append("INTERACTIVE_OBJ_PROV_PTR_LO")
+        out.append("    dta " + ", ".join(f"<(PROV_ITEMS_SCR_{i})" if (d and d[0].items_provided) else "<(EMPTY_ITEM_LIST)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_PROV_PTR_HI")
+        out.append("    dta " + ", ".join(f">(PROV_ITEMS_SCR_{i})" if (d and d[0].items_provided) else ">(EMPTY_ITEM_LIST)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_MSG_MET_LO")
+        out.append("    dta " + ", ".join(f"<(MSG_MET_SCR_{i})" if (d and d[0].conditions_met) else "<(EMPTY_MSG_STRING)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_MSG_MET_HI")
+        out.append("    dta " + ", ".join(f">(MSG_MET_SCR_{i})" if (d and d[0].conditions_met) else ">(EMPTY_MSG_STRING)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_MSG_UNMET_LO")
+        out.append("    dta " + ", ".join(f"<(MSG_UNMET_SCR_{i})" if (d and d[0].conditions_unmet) else "<(EMPTY_MSG_STRING)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_MSG_UNMET_HI")
+        out.append("    dta " + ", ".join(f">(MSG_UNMET_SCR_{i})" if (d and d[0].conditions_unmet) else ">(EMPTY_MSG_STRING)" for i, d in enumerate(interactive_data)))
+
+        out.append("\n; Dummy Data Labels")
+        out.append("EMPTY_ITEM_LIST")
+        out.append("    dta 0")
+        out.append("EMPTY_MSG_STRING")
+        out.append("    dta 0")
+
+        out.append("\n; Screen Specific Interactive Object Data")
+        for i, d in enumerate(interactive_data):
+            if not d:
+                continue
+            inst, _ = d
+            if inst.items_required:
+                items_str = ", ".join(str(item_id) for item_id in inst.items_required)
+                out.append(f"REQ_ITEMS_SCR_{i}")
+                out.append(f"    dta {items_str}")
+            if inst.items_provided:
+                items_str = ", ".join(str(item_id) for item_id in inst.items_provided)
+                out.append(f"PROV_ITEMS_SCR_{i}")
+                out.append(f"    dta {items_str}")
+            if inst.conditions_met:
+                bytes_str = ", ".join(str(b) for b in inst.conditions_met.encode("utf-8") + b"\x00")
+                out.append(f"MSG_MET_SCR_{i}")
+                out.append(f"    dta {bytes_str}")
+            if inst.conditions_unmet:
+                bytes_str = ", ".join(str(b) for b in inst.conditions_unmet.encode("utf-8") + b"\x00")
+                out.append(f"MSG_UNMET_SCR_{i}")
+                out.append(f"    dta {bytes_str}")
+
+        with open(self.out_dir / "interactive_objects.asm", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")
