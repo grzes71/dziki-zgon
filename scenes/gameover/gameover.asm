@@ -110,24 +110,32 @@ GoRainbow
 
     ; --- Display List (ANTIC D + tekst) ---
     lda #<DLIST_GAMEOVER
+    sta SDLSTL
     sta DLISTL
     lda #>DLIST_GAMEOVER
+    sta SDLSTH
     sta DLISTH
 
     ; --- Charset (własny font $6000) ---
     lda #$60
+    sta CHBAS
     sta CHBASE
 
     ; --- Kolory z wygenerowanego pliku ---
     lda #GAMEOVER_COLBK
+    sta COLOR4
     sta COLBK
     lda #GAMEOVER_COLPF0
+    sta COLOR0
     sta COLPF0
     lda #GAMEOVER_COLPF1
+    sta COLOR1
     sta COLPF1
     lda #GAMEOVER_COLPF2
+    sta COLOR2
     sta COLPF2
     lda #$00
+    sta COLOR3
     sta COLPF3            ; 5th player — nieużywany
 
     ; --- DLI: wektor + enable ---
@@ -140,11 +148,13 @@ GoRainbow
 
     ; --- DMA ON (narrow playfield — 128 pikseli, bez PMG) ---
     lda #$21
+    sta SDMCTL
     sta DMACTL
 
     jsr title_audio_init
     rts
 .endp
+
 
 .proc gameover_run
     lda gameover_fire_released

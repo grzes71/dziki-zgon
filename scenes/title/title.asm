@@ -158,8 +158,10 @@ title_fire_released
 
     ; --- Display List ---
     lda #<DLIST_TITLE
+    sta SDLSTL
     sta DLISTL
     lda #>DLIST_TITLE
+    sta SDLSTH
     sta DLISTH
 
     ; --- Kolory tła (generowane; plik w katalogu gen/) ---
@@ -170,11 +172,14 @@ title_fire_released
 
     ; --- DMA ON ---
     lda #DMA_PMG_ON
+    sta SDMCTL
     sta DMACTL
 
     ; Charset — własna czcionka ($6000)
     lda #$60
+    sta CHBAS
     sta CHBASE
+
 
     ; --- DLI: wektor + włączenie na ostatniej pustej linii ---
     lda #<DLI_Handler

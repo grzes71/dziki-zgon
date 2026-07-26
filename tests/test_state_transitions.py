@@ -199,3 +199,25 @@ def test_story_does_not_advance_when_fire_is_held(game_binary) -> None:
         assert mem[game_state] == state_story
 
     assert mem[game_state] != state_game
+
+
+def test_gameover_init_sets_shadow_registers(game_binary) -> None:
+    """Verifies that GAMEOVER_INIT sets OS shadow registers (SDLSTL, SDLSTH, SDMCTL, CHBAS) so Engine_FrameHandler renders DLIST_GAMEOVER correctly."""
+    xex_file, labels = game_binary
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    # Call GAMEOVER_INIT
+    run_subroutine(cpu, labels["GAMEOVER_INIT"], max_steps=100000)
+
+    # Check shadow registers
+    dlist_gameover = labels["DLIST_GAMEOVER"]
+    dlist_lo = dlist_gameover & 0xFF
+    dlist_hi = (dlist_gameover >> 8) & 0xFF
+
+    assert mem[labels["SDLSTL"]] == dlist_lo
+    assert mem[labels["SDLSTH"]] == dlist_hi
+    assert mem[labels["SDMCTL"]] == 0x21
+    assert mem[labels["CHBAS"]] == 0x60
+
