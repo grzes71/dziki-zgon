@@ -29,7 +29,9 @@ class ProjectManager:
             yaml.dump(data, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
 
     def load_project(self, world_dir: Path) -> bool:
+        self.load_error = None
         if not (world_dir / "world.yaml").exists():
+            self.load_error = f"Missing world.yaml in {world_dir}"
             return False
             
         self.world_dir = world_dir
@@ -100,7 +102,12 @@ class ProjectManager:
             # Zapewnienie, że wszystkie wczytane regiony mają grid_x i grid_y
             for rid in self.regions.keys():
                 self._ensure_grid_coordinates(rid)
-                    
+
+        errors = self.validate_interactive_objects()
+        if errors:
+            self.load_error = "\n".join(errors)
+            return False
+
         return True
 
     def get_interactive_object_ids(self) -> set:
@@ -118,12 +125,23 @@ class ProjectManager:
     def validate_interactive_objects(self) -> List[str]:
         interactive_ids = self.get_interactive_object_ids()
         errors = []
+        
+        # 1. Check duplicate placements of the same interactive object definition
         for obj_id in interactive_ids:
             instances = self.find_object_instances(obj_id)
             if len(instances) > 1:
                 locations = [f"{reg}/{scr} (at x={inst.x}, y={inst.y})" for reg, scr, inst in instances]
                 loc_str = ", ".join(locations)
                 errors.append(f"• Interactive object '{obj_id}' is placed {len(instances)} times: {loc_str}")
+
+        # 2. Check screen interactive object count (at most 1 per screen)
+        for region_id, screens_dict in self.screens.items():
+            for screen_id, screen_def in screens_dict.items():
+                screen_interactive = [inst for inst in screen_def.objects if inst.object in interactive_ids]
+                if len(screen_interactive) > 1:
+                    objs_str = ", ".join(f"'{inst.object}'" for inst in screen_interactive)
+                    errors.append(f"• Screen '{screen_id}' in region '{region_id}' has {len(screen_interactive)} interactive objects ({objs_str}). Maximum 1 interactive object per screen is allowed.")
+
         return errors
 
     def save_project(self) -> bool:

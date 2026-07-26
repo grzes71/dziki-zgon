@@ -127,7 +127,11 @@ class WorldStudioMainWindow(QMainWindow):
                 self.object_palette.populate(self.project, self.charset, self.current_region_id)
                 self.statusBar().showMessage(f"World loaded: {folder}")
             else:
-                QMessageBox.warning(self, "Error", "Invalid world folder (missing world.yaml).")
+                load_err = getattr(self.project, 'load_error', None)
+                if load_err:
+                    QMessageBox.warning(self, "Error Reading World", f"Could not load world due to validation error:\n\n{load_err}")
+                else:
+                    QMessageBox.warning(self, "Error", "Invalid world folder (missing world.yaml).")
 
     def action_load_charset(self):
         path, _ = QFileDialog.getOpenFileName(self, "Load Charset", "", "Atari Font (*.fnt);;All Files (*)")
@@ -142,7 +146,7 @@ class WorldStudioMainWindow(QMainWindow):
     def action_save_project(self):
         errors = self.project.validate_interactive_objects()
         if errors:
-            err_msg = "Cannot save project. The following interactive object(s) are placed more than once in the game world:\n\n" + "\n".join(errors) + "\n\nInteractive objects can only be placed once in the game world."
+            err_msg = "Cannot save project. Interactive object validation failed:\n\n" + "\n".join(errors)
             QMessageBox.warning(self, "Validation Error", err_msg)
             return
 

@@ -11,3 +11,6 @@ items:
 - id: 4
   description: Sznurek
   charset_position: 41
+- id: 5
+  description: Podarty rachunek
+  charset_position: 74

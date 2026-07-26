@@ -156,6 +156,8 @@ objects:
   conditions_unmet: Dawaj pieniądze! - krzyczy Karczmarz
   items_required:
   - 1
+  items_provided:
+  - 5
   game_over: true
 - object: BARREL
   x: 15

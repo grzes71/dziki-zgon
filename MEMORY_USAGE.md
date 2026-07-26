@@ -22,7 +22,12 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$0088` – `$0089`** | 2 B | `TILE_PTR` | Zero Page | Wskaźnik na kafelki obiektu (World Builder). |
 | **`$008A` – `$008A`** | 1 B | `GAME_SCREEN_ID` | Zero Page | Globalny ID aktualnego ekranu mapy. |
 | **`$008B` – `$0091`** | 7 B | Zmienne renderera | Zero Page | Rejestry iteracyjne pętli renderującej (X, Y, W, H, CODE, TMP_X, TMP_Y). |
+| **`$0092` – `$0095`** | 4 B | Zmienne silnika | Zero Page | `FrameCounter`, `InputState_Joy`, `InputState_Trig`, `Engine_RequestStageAdvance`. |
+| **`$0096` – `$009A`** | 5 B | Zmienne aktorów | Zero Page | `PMG_PTR`, `ACTOR_TMP_X`, `ACTOR_TMP_Y`, `ACTOR_TMP_HEIGHT`. |
+| **`$009C` – `$00A1`** | 6 B | Zmienne ekranu/aktorów | Zero Page | `REQ_SCREEN_TRANSITION`, `NEW_SCREEN_ID`, `NEW_ACTOR_X/Y`, `CURRENT_ACTOR`. |
+| **`$00A2` – `$00A2`** | 1 B | `MSG_STATE` | Zero Page | Stan linii komunikatów (0=brak, 1=wyświetlanie, 2=1s do końca). |
 | **`$00CB` – `$00DD`** | 19 B | `p_tis` .. `tmp` | Zero Page | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera). |
+
 | **`$0200` – `$0201`** | 2 B | `VDSLST` | OS RAM | Wektor przerwania DLI (Display List Interrupt) w pamięci cieni OS. |
 | **`$2000` – `$2002`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2003` – `$200A`** | 8 B | `disable_basic_loader` | Kod programu | Wyłączenie BASICa (obsługa ini). |

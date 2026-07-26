@@ -136,6 +136,19 @@ class ScreenCanvasWidget(QWidget):
                         )
                         return
 
+                    interactive_ids = self.project.get_interactive_object_ids()
+                    existing_screen_interactive = [
+                        inst for inst in self.screen_def.objects if inst.object in interactive_ids
+                    ]
+                    if existing_screen_interactive:
+                        from PySide6.QtWidgets import QMessageBox
+                        QMessageBox.warning(
+                            self,
+                            "Cannot Place Interactive Object",
+                            f"Screen '{self.screen_def.id}' already contains an interactive object ('{existing_screen_interactive[0].object}').\n\nThere can be at most one interactive object per screen."
+                        )
+                        return
+
                 new_w = active_obj_def.size.width
                 new_h = active_obj_def.size.height
                 
