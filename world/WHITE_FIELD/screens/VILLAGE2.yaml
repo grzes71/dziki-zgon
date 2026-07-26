@@ -2,7 +2,7 @@ id: VILLAGE2
 grid_x: 1
 grid_y: 1
 exits:
-  north: CROSSROADS
+  north: null
   south: null
   east: WASTELAND
   west: VILLAGE
