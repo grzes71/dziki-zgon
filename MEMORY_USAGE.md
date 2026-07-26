@@ -44,9 +44,9 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$39ED` – `$3AFF`** | 275 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
 | **`$3B00` – `$3B0E`** | 15 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
 | **`$3B0F` – `$3C3C`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
-| **`$3C3D` – `$3C66`** | 42 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
-| **`$3C67` – `$3CFB`** | 149 B | `DzikizgonData` | Dane (Sprites) | Skompresowane RLE dane graficzne logo "Dziki Zgon". |
-| **`$3CFC` – `$3D5D`** | 98 B | `MoonData` | Dane (Sprites) | Skompresowane RLE dane graficzne księżyca. |
+| **`$3C3D` – `$B610`** | 31188 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
+| **`$B611` – `$B6A5`** | 149 B | `DzikizgonData` | Dane (Sprites) | Skompresowane RLE dane graficzne logo "Dziki Zgon". |
+| **`$B6A6` – `$B707`** | 98 B | `MoonData` | Dane (Sprites) | Skompresowane RLE dane graficzne księżyca. |
 | **`$3D5E` – `$3E7F`** | 290 B | — | **WOLNY RAM** | Główny, ciągły obszar wolnej pamięci w dolnym RAM-ie na logikę gry / silnik. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry (Title, Story, Game, GameOver). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
