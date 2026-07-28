@@ -133,3 +133,67 @@ def test_iis_interaction_met_and_success(game_binary) -> None:
 
     # MSG_STATE should be 1 (showing message)
     assert mem[labels["MSG_STATE"]] == 1
+
+
+def test_iis_complete_flag_initialization(game_binary) -> None:
+    """Verifies that INTERACTIVE_OBJ_COMPLETE is initialized based on items_required."""
+    xex_file, labels = game_binary
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
+
+    complete_base = labels["INTERACTIVE_OBJ_COMPLETE"]
+    # TAVERN has required items -> complete flag 1
+    assert mem[complete_base + labels["SCREEN_ID_TAVERN"]] == 1
+    # HARBOUR (portal, no req items) -> complete flag 0
+    assert mem[complete_base + labels["SCREEN_ID_HARBOUR"]] == 0
+
+
+def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
+    """Verifies portal interaction: 1st press displays message_travel, 2nd press triggers screen transition."""
+    xex_file, labels = game_binary
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
+
+    # Set active screen to HARBOUR
+    mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_HARBOUR"]
+
+    # In HARBOUR.yaml, PORT is at grid x=25, y=6 (w=1, h=1).
+    # Position Gerwalt above PORT at grid x=25, y=5 (pixel x = 25*4+48 = 148, pixel y = 5*16+32 = 112)
+    # Facing DOWN (ACTOR_DIR = 3)
+    mem[labels["ACTOR_X"]] = 148
+    mem[labels["ACTOR_Y"]] = 112
+    mem[labels["ACTOR_HEIGHT"]] = 16
+    mem[labels["ACTOR_DIR"]] = 3
+
+    mem[labels["REQ_SCREEN_TRANSITION"]] = 0
+    mem[labels["MSG_STATE"]] = 0
+
+    # 1st press: Fire button
+    mem[labels["INPUTSTATE_TRIG"]] = 0
+    mem[labels["IIS_FIRE_WAS_PRESSED"]] = 0
+    run_subroutine(cpu, labels["IIS_UPDATE"])
+
+    # 1st press result: message_travel shown (MSG_STATE=1), no transition yet
+    assert mem[labels["MSG_STATE"]] == 1
+    assert mem[labels["REQ_SCREEN_TRANSITION"]] == 0
+
+    # Release Fire button
+    mem[labels["INPUTSTATE_TRIG"]] = 1
+    run_subroutine(cpu, labels["IIS_UPDATE"])
+
+    # 2nd press: Fire button while MSG_STATE is 1
+    mem[labels["INPUTSTATE_TRIG"]] = 0
+    run_subroutine(cpu, labels["IIS_UPDATE"])
+
+    # 2nd press result: REQ_SCREEN_TRANSITION=1, targeting FOREST_0_0 (26*4+48=152, 4*16+32=96)
+    assert mem[labels["REQ_SCREEN_TRANSITION"]] == 1
+    assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_FOREST_0_0"]
+    assert mem[labels["NEW_ACTOR_X"]] == 152
+    assert mem[labels["NEW_ACTOR_Y"]] == 96
+

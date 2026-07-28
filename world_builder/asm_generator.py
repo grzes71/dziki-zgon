@@ -322,6 +322,14 @@ class AsmGenerator:
         out.append("INTERACTIVE_OBJ_H")
         out.append("    dta " + ", ".join(str(d[1].size.height) if d else "0" for d in interactive_data))
 
+        # INTERACTIVE_OBJ_COMPLETE_INIT
+        out.append("INTERACTIVE_OBJ_COMPLETE_INIT")
+        out.append("    dta " + ", ".join("1" if (d and d[0].items_required and len(d[0].items_required) > 0) else "0" for d in interactive_data))
+
+        # INTERACTIVE_OBJ_TYPE (0=kwatera, 1=portal)
+        out.append("INTERACTIVE_OBJ_TYPE")
+        out.append("    dta " + ", ".join("1" if (d and d[0].type == "portal") else "0" for d in interactive_data))
+
         # Reqs and Provs and Msgs
         out.append("INTERACTIVE_OBJ_REQ_COUNT")
         out.append("    dta " + ", ".join(str(len(d[0].items_required or [])) if d else "0" for d in interactive_data))
@@ -353,6 +361,50 @@ class AsmGenerator:
         out.append("INTERACTIVE_OBJ_MSG_UNMET_HI")
         out.append("    dta " + ", ".join(f">(MSG_UNMET_SCR_{i})" if (d and d[0].conditions_unmet) else ">(EMPTY_MSG_STRING)" for i, d in enumerate(interactive_data)))
 
+        out.append("INTERACTIVE_OBJ_MSG_TRAVEL_LO")
+        out.append("    dta " + ", ".join(f"<(MSG_TRAVEL_SCR_{i})" if (d and d[0].message_travel) else "<(EMPTY_MSG_STRING)" for i, d in enumerate(interactive_data)))
+
+        out.append("INTERACTIVE_OBJ_MSG_TRAVEL_HI")
+        out.append("    dta " + ", ".join(f">(MSG_TRAVEL_SCR_{i})" if (d and d[0].message_travel) else ">(EMPTY_MSG_STRING)" for i, d in enumerate(interactive_data)))
+
+        # Portal Target resolution: ScreenId, Target Pixel X, Target Pixel Y
+        regions_by_id = {r.id: r for r in self.world.regions}
+        screen_region_map = {}
+        for r in self.world.regions:
+            for sc in r.screens:
+                screen_region_map[sc.id] = r
+
+        portal_screen_list = []
+        portal_x_list = []
+        portal_y_list = []
+
+        for s, d in zip(self.screens_sorted, interactive_data):
+            if d and d[0].type == "portal" and d[0].target_region:
+                source_region = screen_region_map.get(s.id)
+                target_region_obj = regions_by_id.get(d[0].target_region)
+                p_entry = target_region_obj.portal_entries.get(source_region.id) if (target_region_obj and source_region) else None
+                if p_entry and p_entry.screen in self.screen_idx:
+                    portal_screen_list.append(f"${self.screen_idx[p_entry.screen]:02X}")
+                    portal_x_list.append(str(p_entry.x * 4 + 48))
+                    portal_y_list.append(str(p_entry.y * 16 + 32))
+                else:
+                    portal_screen_list.append("$FF")
+                    portal_x_list.append("0")
+                    portal_y_list.append("0")
+            else:
+                portal_screen_list.append("$FF")
+                portal_x_list.append("0")
+                portal_y_list.append("0")
+
+        out.append("INTERACTIVE_OBJ_PORTAL_SCREEN")
+        out.append("    dta " + ", ".join(portal_screen_list))
+
+        out.append("INTERACTIVE_OBJ_PORTAL_X")
+        out.append("    dta " + ", ".join(portal_x_list))
+
+        out.append("INTERACTIVE_OBJ_PORTAL_Y")
+        out.append("    dta " + ", ".join(portal_y_list))
+
         out.append("\n; Dummy Data Labels")
         out.append("EMPTY_ITEM_LIST")
         out.append("    dta 0")
@@ -379,6 +431,10 @@ class AsmGenerator:
             if inst.conditions_unmet:
                 bytes_str = ", ".join(str(b) for b in inst.conditions_unmet.encode("utf-8") + b"\x00")
                 out.append(f"MSG_UNMET_SCR_{i}")
+                out.append(f"    dta {bytes_str}")
+            if inst.message_travel:
+                bytes_str = ", ".join(str(b) for b in inst.message_travel.encode("utf-8") + b"\x00")
+                out.append(f"MSG_TRAVEL_SCR_{i}")
                 out.append(f"    dta {bytes_str}")
 
         with open(self.out_dir / "interactive_objects.asm", "w", encoding="utf-8") as f:

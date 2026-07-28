@@ -12,6 +12,18 @@ iis_obj_x2          dta $00
 iis_obj_y1          dta $00
 iis_obj_y2          dta $00
 
+INTERACTIVE_OBJ_COMPLETE .ds SCREEN_COUNT
+
+.proc iis_init
+    ldx #SCREEN_COUNT-1
+@loop
+    lda INTERACTIVE_OBJ_COMPLETE_INIT,x
+    sta INTERACTIVE_OBJ_COMPLETE,x
+    dex
+    bpl @loop
+    rts
+.endp
+
 .proc IIS_Update
     ; 1. Fire button edge trigger check (TRIG0 = 0 when pressed, 1 when released)
     lda InputState_Trig
@@ -204,8 +216,14 @@ iis_obj_y2          dta $00
     rts
 
 @proximity_ok
-    ; 6. Gerwalt is in front of interactive object! Check required items.
+    ; 6. Gerwalt is in front of interactive object! Check INTERACTIVE_OBJ_COMPLETE flag.
     ldx GAME_SCREEN_ID
+    lda INTERACTIVE_OBJ_COMPLETE,x
+    bne @do_interaction_incomplete
+    jmp @interaction_already_complete
+
+@do_interaction_incomplete
+    ; INTERACTION_COMPLETE == 1: object expects required items interaction
     lda INTERACTIVE_OBJ_REQ_COUNT,x
     beq @has_all_reqs           ; 0 items required -> conditions met
 
@@ -228,6 +246,9 @@ iis_obj_y2          dta $00
 @has_all_reqs
     ; 7. Conditions Met! Remove required items, add provided items
     ldx GAME_SCREEN_ID
+    lda #0
+    sta INTERACTIVE_OBJ_COMPLETE,x   ; Mark interaction complete!
+
     lda INTERACTIVE_OBJ_REQ_COUNT,x
     beq @add_provided
 
@@ -295,5 +316,52 @@ iis_obj_y2          dta $00
     lda INTERACTIVE_OBJ_MSG_UNMET_LO,x
     ldy INTERACTIVE_OBJ_MSG_UNMET_HI,x
     jsr msg_show
+    rts
+
+@interaction_already_complete
+    ; INTERACTION_COMPLETE == 0: check object type
+    ldx GAME_SCREEN_ID
+    lda INTERACTIVE_OBJ_TYPE,x
+    beq @type_kwatera          ; 0 = kwatera -> do nothing
+    cmp #1
+    beq @type_portal           ; 1 = portal
+    rts
+
+@type_kwatera
+    rts
+
+@type_portal
+    ; Check if message_travel is already being displayed (MSG_STATE != 0)
+    lda MSG_STATE
+    bne @do_portal_transition
+
+    ; MSG_STATE == 0: 1st press -> show message_travel
+    ldx GAME_SCREEN_ID
+    lda INTERACTIVE_OBJ_MSG_TRAVEL_LO,x
+    ldy INTERACTIVE_OBJ_MSG_TRAVEL_HI,x
+    jsr msg_show
+    rts
+
+@do_portal_transition
+    ; MSG_STATE != 0: 2nd press -> clear message & execute portal transition
+    jsr clear_msg_line_display
+    lda #0
+    sta MSG_STATE
+
+    ldx GAME_SCREEN_ID
+    lda INTERACTIVE_OBJ_PORTAL_SCREEN,x
+    cmp #$FF
+    beq @portal_err            ; invalid portal target
+
+    sta NEW_SCREEN_ID
+    lda INTERACTIVE_OBJ_PORTAL_X,x
+    sta NEW_ACTOR_X
+    lda INTERACTIVE_OBJ_PORTAL_Y,x
+    sta NEW_ACTOR_Y
+
+    lda #1
+    sta REQ_SCREEN_TRANSITION
+
+@portal_err
     rts
 .endp

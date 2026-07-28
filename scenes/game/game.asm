@@ -457,6 +457,9 @@ temp_sub
     jsr inventory_init
     jsr draw_inventory
 
+    ; --- Inicjalizacja obiektów interaktywnych (INTERACTION_COMPLETE) ---
+    jsr iis_init
+
     ; --- PMG: rozmiar normalny dla gracza, włącz PMG ---
     lda #$00
     sta SIZEP0
