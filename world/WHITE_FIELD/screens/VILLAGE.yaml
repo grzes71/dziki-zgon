@@ -13,20 +13,11 @@ objects:
 - object: HOUSE_SMALL
   x: 2
   y: 4
-- object: TREE_SMALL
-  x: 34
-  y: 7
 - object: ROCK_GREEN
   x: 34
   y: 5
 - object: ROCK_GREEN
   x: 0
-  y: 8
-- object: BUSH_2
-  x: 30
-  y: 8
-- object: BUSH_2
-  x: 5
   y: 8
 - object: TREE_SMALL
   x: 34
@@ -37,12 +28,6 @@ objects:
 - object: TREE_SMALL
   x: 6
   y: 2
-- object: TREE_3
-  x: 28
-  y: 7
-- object: TREE_3
-  x: 7
-  y: 7
 - object: TREE_2
   x: 24
   y: 8
@@ -79,16 +64,7 @@ objects:
   x: 39
   y: 3
 - object: REED
-  x: 15
-  y: 10
-- object: REED
-  x: 17
-  y: 10
-- object: REED
   x: 14
-  y: 11
-- object: REED
-  x: 16
   y: 11
 - object: GROUND_GREEN_DOWN
   x: 0
@@ -136,14 +112,8 @@ objects:
   x: 11
   y: 0
 - object: GROUND_GREEN_DOWN
-  x: 23
-  y: 11
-- object: GROUND_GREEN_DOWN
   x: 25
   y: 11
-- object: GROUND_GREEN_DOWN
-  x: 31
-  y: 6
 - object: GROUND_GREEN_DOWN
   x: 7
   y: 0
@@ -153,32 +123,15 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 3
   y: 10
-- object: GROUND_BROWN_DOWN
-  x: 32
-  y: 10
 - object: BARREL
   x: 1
   y: 5
-- object: FENCE_5
-  x: 6
-  y: 5
-  repeat-x: 2
 - object: OUTHOUSE
   x: 8
   y: 4
-- object: FENCE_4
-  x: 22
-  y: 5
-  repeat-x: 2
 - object: REED
   x: 13
   y: 10
-- object: REED
-  x: 20
-  y: 10
-- object: BUSH
-  x: 16
-  y: 5
 - object: BUSH_2
   x: 34
   y: 10
@@ -188,9 +141,6 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 31
   y: 11
-- object: GROUND_GREEN_DOWN
-  x: 30
-  y: 10
 - object: GROUND_GREEN_DOWN
   x: 36
   y: 11
@@ -237,9 +187,6 @@ objects:
 - object: GROUND_BROWN_UP
   x: 27
   y: 0
-- object: STONE_BIG
-  x: 29
-  y: 3
 - object: GROUND_BROWN_UP
   x: 39
   y: 0
@@ -267,10 +214,72 @@ objects:
 - object: SIGNPOINT_RIGHT
   x: 31
   y: 1
+- object: ROCK_1
+  x: 11
+  y: 11
+- object: TREE_SMALL
+  x: 9
+  y: 8
+- object: TREE_SMALL
+  x: 30
+  y: 5
+- object: TREE_SMALL
+  x: 29
+  y: 9
+- object: TREE_2
+  x: 16
+  y: 4
+- object: TREASURE
+  x: 6
+  y: 5
+  repeat-x: 2
+- object: TREASURE
+  x: 22
+  y: 5
+  repeat-x: 2
+- object: ROCK_BIG
+  x: 17
+  y: 9
+- object: CROSS_2
+  x: 36
+  y: 8
+- object: BUSH_2
+  x: 15
+  y: 9
+- object: BUSH_2
+  x: 20
+  y: 7
+- object: BUSH_2
+  x: 5
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 32
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 26
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 18
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 11
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 3
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 2
 enemies:
 - enemy: strzyga
-  x: 12
-  y: 5
-  strategy: homing
-  speed: slow
+  x: 14
+  y: 7
+  strategy: random
+  speed: medium
   color: magenta
