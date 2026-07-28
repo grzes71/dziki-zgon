@@ -16,9 +16,6 @@ objects:
 - object: TREE_2
   x: 34
   y: 2
-- object: TREE_2
-  x: 17
-  y: 1
 - object: BUSH_2
   x: 18
   y: 5
@@ -147,18 +144,9 @@ objects:
 - object: ROCK_GREEN
   x: 37
   y: 5
-- object: TREE_SMALL
-  x: 14
-  y: 1
 - object: SIGNPOINT_LEFT
   x: 6
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 8
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 11
-  y: 1
 - object: GROUND_BROWN_DOWN
   x: 21
   y: 1
@@ -190,6 +178,15 @@ objects:
 - object: SHIP
   x: 12
   y: 7
+- object: TREE_2
+  x: 19
+  y: 1
+- object: TREE_3
+  x: 12
+  y: 1
+- object: ROCK_GREEN
+  x: 6
+  y: 1
 enemies:
 - enemy: strzyga
   x: 16

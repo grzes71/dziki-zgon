@@ -81,9 +81,6 @@ objects:
   x: 18
   y: 8
   repeat-x: 7
-- object: BUSH_2
-  x: 33
-  y: 4
 - object: GROUND_GREEN_UP
   x: 37
   y: 9
@@ -236,9 +233,6 @@ objects:
   x: 12
   y: 4
 - object: TREE_SMALL
-  x: 8
-  y: 6
-- object: TREE_SMALL
   x: 12
   y: 8
 - object: CROSS_1
@@ -339,10 +333,32 @@ objects:
 - object: ROCK_1
   x: 2
   y: 9
+- object: BUSH_2
+  x: 31
+  y: 4
+  repeat-x: 2
+- object: BUSH
+  x: 7
+  y: 7
+- object: BUSH
+  x: 32
+  y: 2
+- object: CROSS_1
+  x: 20
+  y: 0
+- object: CROSS_1
+  x: 25
+  y: 1
+- object: CROSS_2
+  x: 16
+  y: 1
+- object: CROSS_2
+  x: 26
+  y: 3
 enemies:
 - enemy: kikimora
-  x: 31
-  y: 3
+  x: 10
+  y: 6
   strategy: random
   speed: medium
   color: blue
