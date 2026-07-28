@@ -41,11 +41,12 @@ def render_object_pixmap(obj_def, charset: Charset, colors_dict: dict, zoom=2) -
     return QPixmap.fromImage(img).scaled(px_w * zoom, px_h * zoom, Qt.KeepAspectRatio, Qt.FastTransformation)
 
 class ObjectPaletteWidget(QWidget):
-    object_selected = Signal(str) # object_id, "PLAYER_START", or "ENEMY"
+    object_selected = Signal(str) # object_id, "PLAYER_START", "ENEMY", or "PORTAL_ENTRY"
 
     ACTION_ADD_ENEMY = "Add Enemy"
     ACTION_ADD_OBJECT = "Add Object"
     ACTION_SET_PLAYER_START = "Set Player Start"
+    ACTION_SET_PORTAL_ENTRY = "Set Portal Entry"
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -59,7 +60,8 @@ class ObjectPaletteWidget(QWidget):
         self.action_combo.addItems([
             self.ACTION_ADD_ENEMY,
             self.ACTION_ADD_OBJECT,
-            self.ACTION_SET_PLAYER_START
+            self.ACTION_SET_PLAYER_START,
+            self.ACTION_SET_PORTAL_ENTRY
         ])
         action_layout.addWidget(self.action_combo)
         layout.addLayout(action_layout)
@@ -72,6 +74,9 @@ class ObjectPaletteWidget(QWidget):
 
         self.action_combo.currentTextChanged.connect(self._on_action_changed)
 
+    def set_available_regions(self, regions: List[str], current_region_id: str = None):
+        pass
+
     def populate(self, project: ProjectManager, charset: Charset, region_id: str = None):
         self.list_widget.blockSignals(True)
         self.list_widget.clear()
@@ -79,9 +84,7 @@ class ObjectPaletteWidget(QWidget):
         if not project:
             return
             
-        colors_dict = project.region_colors.get(region_id, project.colors) if region_id else project.colors
-        if not colors_dict and project.region_colors:
-            colors_dict = list(project.region_colors.values())[0]
+        colors_dict = project.get_region_colors(region_id) if project else {}
             
         for obj in project.objects:
             pixmap = render_object_pixmap(obj, charset, colors_dict, zoom=3)
@@ -107,6 +110,11 @@ class ObjectPaletteWidget(QWidget):
             self.list_widget.clearSelection()
             self.list_widget.blockSignals(False)
             self.object_selected.emit("PLAYER_START")
+        elif action == self.ACTION_SET_PORTAL_ENTRY:
+            self.list_widget.blockSignals(True)
+            self.list_widget.clearSelection()
+            self.list_widget.blockSignals(False)
+            self.object_selected.emit("PORTAL_ENTRY")
         elif action == self.ACTION_ADD_OBJECT:
             items = self.list_widget.selectedItems()
             if items:

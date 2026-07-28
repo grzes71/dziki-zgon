@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 class ObjectSize(BaseModel):
     width: int = Field(ge=1, le=16)
@@ -68,6 +68,11 @@ class RegionLayout(BaseModel):
     rows: int
     columns: int
 
+class PortalEntry(BaseModel):
+    screen: str
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=11)
+
 class RegionDef(BaseModel):
     id: str
     name: str
@@ -75,6 +80,7 @@ class RegionDef(BaseModel):
     start_screen: str
     music: str
     damage: int = 10
+    portal_entries: Dict[str, PortalEntry] = Field(default_factory=dict)
     screens: List[ScreenDef] = Field(default_factory=list)
     palette: dict = Field(default_factory=dict)
     # the directory name for matching validation

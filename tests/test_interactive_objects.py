@@ -34,7 +34,7 @@ def test_project_manager_interactive_object_validation(tmp_path):
     errors = pm.validate_interactive_objects()
     assert len(errors) == 0
     
-    # Add second KEY instance to screen2
+    # Add second KEY instance to screen2 (different screen -> should pass validation)
     screen2 = ScreenDef(
         id="SCR2",
         objects=[
@@ -43,11 +43,9 @@ def test_project_manager_interactive_object_validation(tmp_path):
     )
     pm.screens["REG1"]["SCR2"] = screen2
     
-    # 2 instances of KEY -> should fail validation
+    # 2 instances of KEY on different screens -> should pass validation
     errors = pm.validate_interactive_objects()
-    assert len(errors) == 1
-    assert "KEY" in errors[0]
-    assert "placed 2 times" in errors[0]
+    assert len(errors) == 0
 
 def test_world_builder_interactive_object_validation(tmp_path):
     world_dir = tmp_path / "world"
@@ -100,10 +98,8 @@ def test_world_builder_interactive_object_validation(tmp_path):
     game_world = parse_world_dir(world_dir)
     validator = WorldValidator(game_world)
     
-    with pytest.raises(ValidationError) as exc_info:
-        validator.validate()
-        
-    assert "Interactive object 'KEY' is placed multiple times" in str(exc_info.value)
+    # Placed on separate screens -> validator should pass without error
+    validator.validate()
 
 def test_screen_multiple_interactive_objects_validation():
     pm = ProjectManager()

@@ -12,7 +12,7 @@ def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Chars
     px_h = h_tiles * 8
     
     img = QImage(px_w, px_h, QImage.Format_RGB32)
-    colors_dict = project.region_colors.get(region_id, project.colors) if region_id else project.colors
+    colors_dict = project.get_region_colors(region_id) if project else {}
     img.fill(QColor(*colors_dict.get("BACKGROUND", (0,0,0))))
     
     if not charset:
@@ -78,6 +78,20 @@ def render_screen(screen_def: ScreenDef, project: ProjectManager, charset: Chars
         p.setBrush(QColor(255, 0, 0, 128))
         p.drawRect(sx * 4, sy * 8, 4, 8)
         p.end()
+
+    if mark_start_pos and region_id and project and region_id in project.regions:
+        region = project.regions[region_id]
+        if getattr(region, 'portal_entries', None):
+            p = QPainter(img)
+            for from_reg, entry in region.portal_entries.items():
+                entry_screen = getattr(entry, 'screen', None) if not isinstance(entry, dict) else entry.get('screen')
+                ex = getattr(entry, 'x', None) if not isinstance(entry, dict) else entry.get('x')
+                ey = getattr(entry, 'y', None) if not isinstance(entry, dict) else entry.get('y')
+                if entry_screen == screen_def.id and ex is not None and ey is not None:
+                    p.setPen(QColor(0, 255, 255))
+                    p.setBrush(QColor(0, 255, 255, 128))
+                    p.drawRect(ex * 4, ey * 8, 4, 8)
+            p.end()
         
     if screen_def.enemies:
         p = QPainter(img)

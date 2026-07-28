@@ -8,6 +8,7 @@ class RegionTreeWidget(QTreeWidget):
     screen_double_clicked = Signal(str, str) # region_id, screen_id
     region_selected = Signal(str) # region_id
     request_add_region = Signal()
+    request_edit_region_colors = Signal(str) # region_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -67,5 +68,9 @@ class RegionTreeWidget(QTreeWidget):
             
             if item_type == "REGION":
                 menu.addAction(act_add_region)
+                if region_id:
+                    act_edit_colors = QAction("Edit Region Colors...", self)
+                    act_edit_colors.triggered.connect(lambda _, r=region_id: self.request_edit_region_colors.emit(r))
+                    menu.addAction(act_edit_colors)
 
         menu.exec_(self.viewport().mapToGlobal(pos))

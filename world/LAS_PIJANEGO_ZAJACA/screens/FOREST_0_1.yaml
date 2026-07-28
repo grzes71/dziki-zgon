@@ -1,0 +1,10 @@
+id: FOREST_0_1
+grid_x: 0
+grid_y: 1
+exits:
+  north: FOREST_0_0
+  south: FOREST_0_2
+  east: null
+  west: null
+objects: []
+enemies: []

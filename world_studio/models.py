@@ -69,6 +69,11 @@ class RegionLayout(BaseModel):
     rows: int
     columns: int
 
+class PortalEntry(BaseModel):
+    screen: str
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=11)
+
 class RegionDef(BaseModel):
     id: str
     name: str
@@ -76,6 +81,7 @@ class RegionDef(BaseModel):
     layout: RegionLayout
     start_screen: str
     music: str
+    portal_entries: Dict[str, PortalEntry] = Field(default_factory=dict)
 
 class StartPosition(BaseModel):
     x: int = Field(ge=0, le=39)

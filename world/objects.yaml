@@ -983,3 +983,25 @@ objects:
     blocking: false
     interactive: false
   tiles: [203]
+- object: PORT_2
+  id: PORT_2
+  code: 101
+  size:
+    width: 10
+    height: 3
+  flags:
+    blocking: true
+    interactive: true
+  tiles: [144, 145, 145, 145, 145, 145, 145, 145, 145, 146, 250, 33, 33, 33, 33, 33,
+    33, 33, 33, 251, 250, 255, 255, 255, 87, 216, 255, 255, 255, 251]
+- object: PORTAL_2
+  id: PORTAL_2
+  code: 102
+  size:
+    width: 7
+    height: 3
+  flags:
+    blocking: false
+    interactive: false
+  tiles: [0, 0, 13, 14, 15, 0, 0, 0, 13, 14, 74, 74, 15, 0, 13, 14, 74, 155, 156,
+    74, 15]

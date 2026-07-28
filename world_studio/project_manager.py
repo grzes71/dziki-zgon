@@ -3,6 +3,14 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional
 from world_studio.models import WorldConfig, ObjectDefinition, RegionDef, ScreenDef, EnemyDef, InventoryItemDef
 
+DEFAULT_REGION_COLORS = {
+    "BACKGROUND": (0, 0, 0),
+    "PF0": (132, 59, 0),
+    "PF1": (193, 120, 29),
+    "PF2": (3, 80, 0),
+    "PF3_INV": (0, 48, 139),
+}
+
 class ProjectManager:
     def __init__(self):
         self.world_dir: Optional[Path] = None
@@ -16,6 +24,40 @@ class ProjectManager:
         self.inventory_items: List[InventoryItemDef] = []
         self.regions: Dict[str, RegionDef] = {}
         self.screens: Dict[str, Dict[str, ScreenDef]] = {}
+
+    def get_region_colors(self, region_id: Optional[str] = None) -> Dict[str, tuple]:
+        if region_id and region_id in self.region_colors and self.region_colors[region_id]:
+            res = dict(DEFAULT_REGION_COLORS)
+            res.update(self.region_colors[region_id])
+            return res
+        for r_cols in self.region_colors.values():
+            if r_cols:
+                res = dict(DEFAULT_REGION_COLORS)
+                res.update(r_cols)
+                return res
+        if self.colors:
+            res = dict(DEFAULT_REGION_COLORS)
+            res.update(self.colors)
+            return res
+        return dict(DEFAULT_REGION_COLORS)
+
+    def set_region_colors(self, region_id: str, colors: Dict[str, tuple]):
+        self.region_colors[region_id] = dict(colors)
+        if region_id not in self.region_atari_colors:
+            self.region_atari_colors[region_id] = {}
+        
+        import sys
+        scripts_path = str(Path(__file__).parent.parent / "scripts")
+        if scripts_path not in sys.path:
+            sys.path.append(scripts_path)
+        try:
+            from img2asm import rgb_to_atari
+        except ImportError:
+            rgb_to_atari = lambda r, g, b: 0
+            
+        for k, v in colors.items():
+            r, g, b = v
+            self.region_atari_colors[region_id][k] = rgb_to_atari(r, g, b)
         
     def _load_yaml(self, path: Path) -> dict:
         if not path.exists():
@@ -87,8 +129,14 @@ class ProjectManager:
                                 r_atari[k] = v["atari"]
                         elif isinstance(v, list) and len(v) == 3:
                             r_colors[k] = tuple(v)
-                    self.region_colors[item.name] = r_colors
-                    self.region_atari_colors[item.name] = r_atari
+                    
+                    # Fallback if region has no colors
+                    if not r_colors:
+                        r_colors = self.get_region_colors(None)
+                    
+                    self.set_region_colors(item.name, r_colors)
+                    if r_atari:
+                        self.region_atari_colors[item.name].update(r_atari)
                     
                     screens_dir = item / "screens"
                     if screens_dir.exists():
@@ -126,15 +174,7 @@ class ProjectManager:
         interactive_ids = self.get_interactive_object_ids()
         errors = []
         
-        # 1. Check duplicate placements of the same interactive object definition
-        for obj_id in interactive_ids:
-            instances = self.find_object_instances(obj_id)
-            if len(instances) > 1:
-                locations = [f"{reg}/{scr} (at x={inst.x}, y={inst.y})" for reg, scr, inst in instances]
-                loc_str = ", ".join(locations)
-                errors.append(f"• Interactive object '{obj_id}' is placed {len(instances)} times: {loc_str}")
-
-        # 2. Check screen interactive object count (at most 1 per screen)
+        # Check screen interactive object count (at most 1 per screen)
         for region_id, screens_dict in self.screens.items():
             for screen_id, screen_def in screens_dict.items():
                 screen_interactive = [inst for inst in screen_def.objects if inst.object in interactive_ids]
@@ -298,7 +338,7 @@ class ProjectManager:
                     
         return current_list
 
-    def add_region(self, region_id: str, name: str, rows: int, columns: int, damage: int = 10) -> bool:
+    def add_region(self, region_id: str, name: str, rows: int, columns: int, damage: int = 10, colors: Dict[str, tuple] = None) -> bool:
         if region_id in self.regions:
             return False
             
@@ -312,6 +352,11 @@ class ProjectManager:
         )
         self.regions[region_id] = region_def
         self.screens[region_id] = {}
+        
+        if not colors:
+            colors = self.get_region_colors(None)
+            
+        self.set_region_colors(region_id, colors)
         return True
 
     def _ensure_grid_coordinates(self, region_id: str):
