@@ -78,14 +78,16 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 
 Dostępne wolne obszary RAM (zgodne z tabelą powyżej):
 
-1.  **`$2B5B` – `$3E7F` (4 901 B)**: Główny, ciągły blok wolnej pamięci w dolnym RAM-ie na logikę gry.
-2.  **`$3FE8` – `$3FFF` (24 B)**: Mały bufor pomiędzy Display Listami a areną VRAM.
-3.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionkami.
-4.  **`$6800` – `$7FFF` (6 144 B)**: Największy wolny blok w dolnym RAM-ie, dobry na duże struktury danych.
-5.  **`$B242` – `$B2FF` (190 B)**: Wolny obszar pomiędzy kodem playera RMT a modułem muzycznym.
-6.  **`$B611` – `$BFFF` (2 543 B)**: Wolna pamięć pod ROM-em BASIC-a za modułem muzycznym.
+1.  **`$1F2C` – `$1FFF` (212 B)**: Wolny bufor w niskiej pamięci za sprite'ami księżyca.
+2.  **`$3D5E` – `$3E7F` (290 B)**: Wolny bufor w dolnym RAM-ie za tekstami stopki.
+3.  **`$3FE8` – `$3FFF` (24 B)**: Mały bufor pomiędzy Display Listami a areną VRAM.
+4.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionkami.
+5.  **`$8E3A` – `$9FFF` (4 550 B)**: **Główny, gigantyczny ciągły blok wolnej pamięci RAM** dostępny na rozbudowę danych świata, logiki i ekranów.
+6.  **`$A800` – `$A9DF` (480 B)**: Wolny bufor przed zmiennymi odtwarzacza RMT.
+7.  **`$B242` – `$B2FF` (190 B)**: Wolny obszar pomiędzy kodem playera RMT a modułem muzycznym.
+8.  **`$BEF9` – `$BFFF` (263 B)**: Wolna pamięć pod ROM-em BASIC-a za sprite'ami postaci.
 
-Łącznie wolny RAM z tych bloków to **891 B**.
+Łącznie czysty, bezpośrednio dostępny wolny RAM w tej chwili to **6 185 B** (z czego sam blok pod `$8E3A–$9FFF` to aż **4.55 KB**).
 
 ---
 
