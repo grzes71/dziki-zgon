@@ -1,4 +1,7 @@
-from PySide6.QtWidgets import QWidget, QDialog
+from PySide6.QtWidgets import (
+    QWidget, QDialog, QVBoxLayout, QFormLayout, QComboBox, 
+    QDialogButtonBox, QMessageBox
+)
 from PySide6.QtGui import QPainter, QPen, QColor, QMouseEvent
 from PySide6.QtCore import Qt, Signal
 from world_studio.models import ScreenDef, ObjectInstance, EnemyInstance
@@ -121,11 +124,9 @@ class ScreenCanvasWidget(QWidget):
             elif self.active_tool and self.active_tool.startswith("PORTAL_ENTRY"):
                 avail_regions = [r for r in self.project.regions.keys() if r != self.region_id]
                 if not avail_regions:
-                    from PySide6.QtWidgets import QMessageBox
                     QMessageBox.warning(self, "Brak regionów", "Brak innych regionów w projekcie do wyboru.")
                     return
 
-                from PySide6.QtWidgets import QDialog, QVBoxLayout, QFormLayout, QComboBox, QDialogButtonBox
                 dialog = QDialog(self)
                 dialog.setWindowTitle("Set Portal Entry")
                 d_layout = QVBoxLayout(dialog)
@@ -163,7 +164,6 @@ class ScreenCanvasWidget(QWidget):
                         inst for inst in self.screen_def.objects if inst.object in interactive_ids
                     ]
                     if existing_screen_interactive:
-                        from PySide6.QtWidgets import QMessageBox
                         QMessageBox.warning(
                             self,
                             "Cannot Place Interactive Object",
@@ -197,9 +197,11 @@ class ScreenCanvasWidget(QWidget):
                         if dialog.exec() == QDialog.Accepted:
                             self.screen_def.objects.append(new_obj)
                             self.screen_changed.emit()
+                            self.update()
                     else:
                         self.screen_def.objects.append(new_obj)
                         self.screen_changed.emit()
+                        self.update()
                 
         elif event.button() == Qt.RightButton:
             # Delete portal entry at this pos if matching

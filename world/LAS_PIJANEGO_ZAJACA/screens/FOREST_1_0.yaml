@@ -7,9 +7,6 @@ exits:
   east: null
   west: null
 objects:
-- object: PORTAL_2
-  x: 18
-  y: 0
 - object: TREE_SMALL
   x: 6
   y: 4

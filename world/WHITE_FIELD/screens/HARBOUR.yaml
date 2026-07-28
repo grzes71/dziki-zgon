@@ -32,8 +32,7 @@ objects:
   x: 25
   y: 6
   type: portal
-  conditions_met: podróż do białe pole - 10 pacierzy
-  conditions_unmet: brak
+  message_travel: las pijanego zająca - 10 pacierzy
   cost_of_travel: 10
 - object: WAVES
   x: 21

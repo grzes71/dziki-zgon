@@ -28,6 +28,11 @@ class InteractiveObjectPropertiesDialog(QDialog):
         self.combo_type.addItems([self.TYPE_KWATERA, self.TYPE_PORTAL])
         if obj_instance.type in [self.TYPE_KWATERA, self.TYPE_PORTAL]:
             self.combo_type.setCurrentText(obj_instance.type)
+        elif any(kw in obj_instance.object.upper() for kw in ["PORT", "GATE", "TELEPORT", "BOAT"]):
+            self.combo_type.setCurrentText(self.TYPE_PORTAL)
+        else:
+            self.combo_type.setCurrentText(self.TYPE_KWATERA)
+
         self.combo_type.currentTextChanged.connect(self._on_type_changed)
         self.form.addRow("Object Type:", self.combo_type)
 
@@ -69,6 +74,13 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.spin_cost_of_travel.setValue(10)
         self.label_cost_of_travel = QLabel("Koszt podróży:")
         self.form.addRow(self.label_cost_of_travel, self.spin_cost_of_travel)
+
+        # 7. message_travel (portal)
+        self.edit_message_travel = QLineEdit()
+        if obj_instance.message_travel:
+            self.edit_message_travel.setText(obj_instance.message_travel)
+        self.label_message_travel = QLabel("Komunikat podróży (message_travel):")
+        self.form.addRow(self.label_message_travel, self.edit_message_travel)
 
         layout.addLayout(self.form)
         
@@ -131,6 +143,8 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.check_game_over.show()
             self.label_cost_of_travel.hide()
             self.spin_cost_of_travel.hide()
+            self.label_message_travel.hide()
+            self.edit_message_travel.hide()
         elif obj_type == self.TYPE_PORTAL:
             self.label_items_provided.hide()
             self.list_items_provided.hide()
@@ -138,39 +152,57 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.check_game_over.hide()
             self.label_cost_of_travel.show()
             self.spin_cost_of_travel.show()
+            self.label_message_travel.show()
+            self.edit_message_travel.show()
 
     def _on_accept(self):
         obj_type = self.combo_type.currentText()
-
         cond_met = self.edit_conditions_met.text().strip()
-        if not cond_met:
-            QMessageBox.warning(self, "Błąd walidacji", "Pole 'Wymagania spełnione' jest wymagane.")
-            self.edit_conditions_met.setFocus()
-            return
-
         cond_unmet = self.edit_conditions_unmet.text().strip()
-        if not cond_unmet:
-            QMessageBox.warning(self, "Błąd walidacji", "Pole 'Wymagania niespełnione' jest wymagane.")
-            self.edit_conditions_unmet.setFocus()
-            return
-
         items_req = self._get_selected_item_ids(self.list_items_required)
 
         if obj_type == self.TYPE_KWATERA:
+            if not cond_met:
+                QMessageBox.warning(self, "Błąd walidacji", "Pole 'Wymagania spełnione' jest wymagane dla kwatery.")
+                self.edit_conditions_met.setFocus()
+                return
+            if not cond_unmet:
+                QMessageBox.warning(self, "Błąd walidacji", "Pole 'Wymagania niespełnione' jest wymagane dla kwatery.")
+                self.edit_conditions_unmet.setFocus()
+                return
+
             items_prov = self._get_selected_item_ids(self.list_items_provided)
             self.obj_instance.type = self.TYPE_KWATERA
             self.obj_instance.conditions_met = cond_met
             self.obj_instance.conditions_unmet = cond_unmet
+            self.obj_instance.message_travel = None
             self.obj_instance.items_required = items_req
             self.obj_instance.items_provided = items_prov
             self.obj_instance.game_over = self.check_game_over.isChecked()
             self.obj_instance.cost_of_travel = None
 
         elif obj_type == self.TYPE_PORTAL:
+            msg_travel = self.edit_message_travel.text().strip()
+            if not msg_travel:
+                QMessageBox.warning(self, "Błąd walidacji", "Pole 'Komunikat podróży (message_travel)' jest wymagane dla portalu.")
+                self.edit_message_travel.setFocus()
+                return
+
+            if items_req:
+                if not cond_met:
+                    QMessageBox.warning(self, "Błąd walidacji", "Pole 'Wymagania spełnione' jest wymagane dla portalu gdy zdefiniowano przedmioty wymagane.")
+                    self.edit_conditions_met.setFocus()
+                    return
+                if not cond_unmet:
+                    QMessageBox.warning(self, "Błąd walidacji", "Pole 'Wymagania niespełnione' jest wymagane dla portalu gdy zdefiniowano przedmioty wymagane.")
+                    self.edit_conditions_unmet.setFocus()
+                    return
+
             cost = self.spin_cost_of_travel.value()
             self.obj_instance.type = self.TYPE_PORTAL
-            self.obj_instance.conditions_met = cond_met
-            self.obj_instance.conditions_unmet = cond_unmet
+            self.obj_instance.conditions_met = cond_met if cond_met else None
+            self.obj_instance.conditions_unmet = cond_unmet if cond_unmet else None
+            self.obj_instance.message_travel = msg_travel
             self.obj_instance.items_required = items_req
             self.obj_instance.items_provided = None
             self.obj_instance.game_over = None

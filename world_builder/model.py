@@ -46,6 +46,7 @@ class ObjectInstance(BaseModel):
     type: Optional[str] = None
     conditions_met: Optional[str] = Field(default=None, alias="conditions_met")
     conditions_unmet: Optional[str] = Field(default=None, alias="conditions_unmet")
+    message_travel: Optional[str] = Field(default=None, alias="message_travel")
     items_required: Optional[List[int]] = Field(default=None, alias="items_required")
     items_provided: Optional[List[int]] = Field(default=None, alias="items_provided")
     cost_of_travel: Optional[int] = Field(default=None, alias="cost_of_travel")

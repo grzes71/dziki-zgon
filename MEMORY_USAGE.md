@@ -56,9 +56,9 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. Wskazywana przez `CHBASE = $64`. |
 | **`$6800` – `$7FFF`** | 6144 B | — | **WOLNY RAM** | Gigantyczny, ciągły blok wolnego RAM-u odzyskany dzięki VRAM_ARENA. |
-| **`$8000` – `$A02D`** | 8238 B | `ROM_DATA` | Dane (ROM) | Skompresowane grafiki w XEX (`title.rle` oraz `gameover.rle`). Rozpakowywane do `VRAM_ARENA`. |
-| **`$7CDA` – `$7D42`** | 105 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
-| **`$7D43` – `$9FFF`** | 8893 B | `DUMMY_VBI` | Kod programu | Zapasowy handler VBI używany przez system audio (obszar zajęty, nie jest wolnym RAM-em). |
+| **`$8000` – `$839B`** | 924 B | `ROM_DATA` | Dane (ROM) | Skompresowane grafiki w XEX (`title.rle` oraz `gameover.rle`). Rozpakowywane do `VRAM_ARENA`. |
+| **`$839C` – `$8404`** | 105 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY (przesunięty z `$AC00`). |
+| **`$8405` – `$9FFF`** | 7163 B | `DUMMY_VBI` | Kod programu | Zapasowy handler VBI używany przez system audio (obszar zajęty, nie jest wolnym RAM-em). |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |
