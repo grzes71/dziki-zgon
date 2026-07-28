@@ -28,9 +28,6 @@ objects:
 - object: TREE_SMALL
   x: 6
   y: 2
-- object: TREE_2
-  x: 24
-  y: 8
 - object: ROCK_GREEN
   x: 2
   y: 9
@@ -112,9 +109,6 @@ objects:
   x: 11
   y: 0
 - object: GROUND_GREEN_DOWN
-  x: 25
-  y: 11
-- object: GROUND_GREEN_DOWN
   x: 7
   y: 0
 - object: GROUND_GREEN_DOWN
@@ -131,24 +125,6 @@ objects:
   y: 4
 - object: REED
   x: 13
-  y: 10
-- object: BUSH_2
-  x: 34
-  y: 10
-- object: GROUND_GREEN_DOWN
-  x: 28
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 31
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 36
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 38
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 37
   y: 10
 - object: GROUND_GREEN_DOWN
   x: 1
@@ -220,9 +196,6 @@ objects:
 - object: TREE_SMALL
   x: 30
   y: 5
-- object: TREE_SMALL
-  x: 29
-  y: 9
 - object: TREE_2
   x: 16
   y: 4
@@ -234,9 +207,6 @@ objects:
   x: 22
   y: 5
   repeat-x: 2
-- object: CROSS_2
-  x: 36
-  y: 8
 - object: BUSH_2
   x: 15
   y: 9
@@ -270,19 +240,27 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 14
   y: 2
-- object: WELL
-  x: 19
+- object: ROCK_BIG
+  x: 32
   y: 9
-- object: BARREL
+- object: TREE_3
+  x: 26
+  y: 9
+- object: TREE_2
+  x: 29
+  y: 10
+- object: ROCK_1
+  x: 24
+  y: 11
+- object: TREE_3
+  x: 22
+  y: 8
+- object: TREE_3
   x: 21
   y: 10
-  repeat-x: 2
-- object: CROSS_1
-  x: 35
-  y: 7
-- object: CROSS_1
-  x: 38
-  y: 9
+- object: MUSHROOM
+  x: 19
+  y: 11
 enemies:
 - enemy: strzyga
   x: 14

@@ -28,14 +28,8 @@ objects:
   x: 38
   y: 3
 - object: TREE_SMALL
-  x: 32
-  y: 7
-- object: TREE_SMALL
   x: 11
   y: 2
-- object: TREE_2
-  x: 27
-  y: 7
 - object: WAVES
   x: 37
   y: 7
@@ -132,9 +126,6 @@ objects:
   y: 9
   repeat-x: 5
 - object: REED
-  x: 15
-  y: 9
-- object: REED
   x: 29
   y: 11
 - object: REED
@@ -181,12 +172,6 @@ objects:
   x: 0
   y: 11
   repeat-x: 27
-- object: ROCK_GREEN
-  x: 4
-  y: 9
-- object: CROSS_2
-  x: 8
-  y: 9
 - object: SWAMP
   x: 17
   y: 2
@@ -232,9 +217,6 @@ objects:
 - object: SWAMP
   x: 12
   y: 4
-- object: TREE_SMALL
-  x: 12
-  y: 8
 - object: CROSS_1
   x: 19
   y: 5
@@ -333,13 +315,6 @@ objects:
 - object: ROCK_1
   x: 2
   y: 9
-- object: BUSH_2
-  x: 31
-  y: 4
-  repeat-x: 2
-- object: BUSH
-  x: 7
-  y: 7
 - object: BUSH
   x: 32
   y: 2
@@ -355,6 +330,24 @@ objects:
 - object: CROSS_2
   x: 26
   y: 3
+- object: ROCK_GREEN
+  x: 31
+  y: 8
+- object: BUSH_2
+  x: 31
+  y: 4
+- object: ROCK_1
+  x: 27
+  y: 9
+- object: ROCK_1
+  x: 5
+  y: 8
+- object: TREE_SMALL
+  x: 14
+  y: 7
+- object: TREE_2
+  x: 10
+  y: 8
 enemies:
 - enemy: kikimora
   x: 10

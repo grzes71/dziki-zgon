@@ -25,13 +25,6 @@ objects:
 - object: HOUSE_MEDIUM_GREEN
   x: 19
   y: 4
-- object: WATER
-  x: 18
-  y: 11
-  repeat-x: 22
-- object: WAVES
-  x: 17
-  y: 11
 - object: WAVES
   x: 17
   y: 10
@@ -49,10 +42,6 @@ objects:
   x: 39
   y: 6
 - object: GROUND_BROWN_DOWN
-  x: 38
-  y: 7
-  repeat-y: 2
-- object: GROUND_BROWN_DOWN
   x: 32
   y: 9
 - object: GROUND_BROWN_DOWN
@@ -64,20 +53,8 @@ objects:
 - object: TREE_3
   x: 2
   y: 2
-- object: TREE_SMALL
-  x: 5
-  y: 2
-- object: ROCK_GREEN
-  x: 33
-  y: 1
-- object: ROCK_GREEN
-  x: 17
-  y: 8
 - object: BUSH_2
   x: 12
-  y: 7
-- object: TREE_3
-  x: 35
   y: 7
 - object: GROUND_BROWN_DOWN
   x: 2
@@ -104,9 +81,6 @@ objects:
   x: 36
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 38
-  y: 1
-- object: GROUND_BROWN_DOWN
   x: 0
   y: 4
 - object: FENCE_5
@@ -116,21 +90,12 @@ objects:
 - object: OUTHOUSE
   x: 15
   y: 4
-- object: BARREL
-  x: 14
-  y: 5
 - object: GROUND_GREEN_DOWN
   x: 0
   y: 10
 - object: GROUND_GREEN_DOWN
   x: 1
   y: 11
-- object: GROUND_GREEN_DOWN
-  x: 1
-  y: 9
-- object: GROUND_GREEN_DOWN
-  x: 0
-  y: 8
 - object: GROUND_GREEN_DOWN
   x: 32
   y: 8
@@ -144,15 +109,8 @@ objects:
   x: 4
   y: 0
 - object: GROUND_BROWN_UP
-  x: 37
-  y: 9
-  repeat-x: 3
-- object: GROUND_BROWN_UP
   x: 35
   y: 9
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 8
 - object: GROUND_BROWN_DOWN
   x: 36
   y: 9
@@ -171,14 +129,8 @@ objects:
 - object: TREE_SMALL
   x: 9
   y: 4
-- object: TREE_2
-  x: 10
-  y: 9
 - object: TREE_SMALL
   x: 25
-  y: 8
-- object: TREE_2
-  x: 23
   y: 8
 - object: SHED
   x: 2
@@ -187,9 +139,6 @@ objects:
   x: 5
   y: 8
   repeat-x: 4
-- object: OUTHOUSE_2
-  x: 9
-  y: 1
 - object: BARN_3
   x: 35
   y: 4
@@ -202,37 +151,6 @@ objects:
 - object: BUSH_2
   x: 5
   y: 6
-- object: REED
-  x: 14
-  y: 11
-  repeat-x: 3
-- object: REED
-  x: 16
-  y: 10
-- object: REED
-  x: 12
-  y: 11
-- object: REED
-  x: 13
-  y: 10
-- object: GROUND_BROWN_DOWN
-  x: 14
-  y: 8
-- object: GROUND_BROWN_DOWN
-  x: 16
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 19
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 21
-  y: 8
-- object: GROUND_BROWN_DOWN
-  x: 22
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 25
-  y: 7
 - object: GROUND_BROWN_DOWN
   x: 29
   y: 6
@@ -262,9 +180,6 @@ objects:
   x: 39
   y: 1
   repeat-y: 2
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 2
 - object: GROUND_BROWN_UP
   x: 38
   y: 3
@@ -307,11 +222,61 @@ objects:
   x: 11
   y: 8
 - object: GROUND_BROWN_DOWN
-  x: 8
-  y: 7
-- object: GROUND_BROWN_DOWN
   x: 3
   y: 5
+- object: TREE_SMALL
+  x: 9
+  y: 9
+- object: TREE_SMALL
+  x: 13
+  y: 9
+- object: WAVES
+  x: 17
+  y: 11
+- object: WATER_TL
+  x: 16
+  y: 10
+- object: WATER_ANIM
+  x: 18
+  y: 11
+  repeat-x: 22
+- object: TREE_3
+  x: 38
+  y: 8
+- object: TREE_3
+  x: 34
+  y: 7
+- object: TREE_2
+  x: 34
+  y: 0
+- object: ROCK_GREEN
+  x: 19
+  y: 8
+- object: WAVES_LEFT
+  x: 16
+  y: 11
+- object: HOUSE_SMALL_BLUE
+  x: 8
+  y: 0
+- object: BARREL
+  x: 7
+  y: 1
+- object: BARREL
+  x: 13
+  y: 5
+- object: ROCK_1
+  x: 16
+  y: 7
+- object: REED
+  x: 22
+  y: 9
+  repeat-x: 2
+- object: REED
+  x: 37
+  y: 9
+- object: REED
+  x: 15
+  y: 11
 enemies:
 - enemy: sukkub
   x: 27

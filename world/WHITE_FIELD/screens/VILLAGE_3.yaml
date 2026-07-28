@@ -25,9 +25,6 @@ objects:
 - object: TREE_3
   x: 25
   y: 4
-- object: TREE_3
-  x: 3
-  y: 2
 - object: CROSS_2
   x: 5
   y: 9
@@ -71,9 +68,6 @@ objects:
   repeat-x: 40
 - object: GROUND_BROWN_UP
   x: 0
-  y: 3
-- object: GROUND_BROWN_UP
-  x: 0
   y: 4
   repeat-x: 2
 - object: GROUND_BROWN_UP
@@ -85,10 +79,6 @@ objects:
 - object: GROUND_BROWN_UP
   x: 12
   y: 0
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 1
-  repeat-x: 2
 - object: GROUND_BROWN_UP
   x: 39
   y: 2
@@ -116,13 +106,6 @@ objects:
   x: 0
   y: 6
 - object: GROUND_BROWN_DOWN
-  x: 0
-  y: 0
-  repeat-x: 2
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 1
-- object: GROUND_BROWN_DOWN
   x: 3
   y: 0
 - object: GROUND_BROWN_DOWN
@@ -136,17 +119,11 @@ objects:
   y: 9
   repeat-x: 2
 - object: BARREL
-  x: 5
-  y: 3
-- object: BARREL
   x: 10
   y: 9
 - object: OUTHOUSE
   x: 35
   y: 4
-- object: TREE_SMALL
-  x: 35
-  y: 1
 - object: TREE_2
   x: 25
   y: 1
@@ -196,6 +173,24 @@ objects:
 - object: TREE_3
   x: 28
   y: 1
+- object: ROCK_2
+  x: 0
+  y: 0
+- object: TREE_3
+  x: 0
+  y: 1
+- object: TREE_3
+  x: 5
+  y: 1
+- object: TREE_3
+  x: 34
+  y: 0
+- object: TREE_3
+  x: 36
+  y: 2
+- object: TREE_3
+  x: 28
+  y: 8
 enemies:
 - enemy: kikimora
   x: 22

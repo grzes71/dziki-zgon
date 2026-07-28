@@ -16,15 +16,6 @@ objects:
 - object: TREE_2
   x: 34
   y: 2
-- object: BUSH_2
-  x: 18
-  y: 5
-- object: BUSH_2
-  x: 22
-  y: 3
-- object: GROUND_BROWN_UP
-  x: 14
-  y: 5
 - object: PORT
   x: 25
   y: 6
@@ -148,15 +139,6 @@ objects:
   x: 6
   y: 4
 - object: GROUND_BROWN_DOWN
-  x: 21
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 24
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 28
-  y: 1
-- object: GROUND_BROWN_DOWN
   x: 35
   y: 5
 - object: GROUND_BROWN_DOWN
@@ -170,23 +152,63 @@ objects:
   x: 3
   y: 8
 - object: REED
-  x: 9
-  y: 8
-- object: REED
   x: 11
   y: 8
 - object: SHIP
   x: 12
   y: 7
-- object: TREE_2
-  x: 19
-  y: 1
 - object: TREE_3
   x: 12
   y: 1
 - object: ROCK_GREEN
   x: 6
   y: 1
+- object: TREE_3
+  x: 9
+  y: 7
+- object: BUSH_2
+  x: 13
+  y: 6
+- object: ROCK_GREEN
+  x: 18
+  y: 3
+- object: MUSHROOM
+  x: 28
+  y: 1
+- object: TREE_3
+  x: 17
+  y: 0
+- object: TREE_3
+  x: 22
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 1
+  repeat-y: 2
+- object: GROUND_BROWN_DOWN
+  x: 21
+  y: 3
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 21
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 22
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 19
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 25
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 17
+  y: 5
 enemies:
 - enemy: strzyga
   x: 16

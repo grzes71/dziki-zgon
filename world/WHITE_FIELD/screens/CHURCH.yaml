@@ -21,9 +21,6 @@ objects:
 - object: CROSS_2
   x: 26
   y: 8
-- object: TREE_SMALL
-  x: 24
-  y: 2
 - object: TREE_3
   x: 12
   y: 3
@@ -111,22 +108,6 @@ objects:
   x: 36
   y: 2
 - object: GROUND_GREEN_UP
-  x: 39
-  y: 0
-- object: GROUND_GREEN_UP
-  x: 37
-  y: 0
-- object: GROUND_GREEN_UP
-  x: 35
-  y: 0
-- object: GROUND_GREEN_UP
-  x: 38
-  y: 1
-  repeat-x: 2
-- object: GROUND_GREEN_UP
-  x: 39
-  y: 2
-- object: GROUND_GREEN_UP
   x: 0
   y: 0
   repeat-x: 4
@@ -180,9 +161,6 @@ objects:
 - object: BUSH
   x: 37
   y: 8
-- object: BUSH
-  x: 30
-  y: 1
 - object: TREE_2
   x: 4
   y: 2
@@ -229,12 +207,6 @@ objects:
   x: 14
   y: 2
 - object: GROUND_BROWN_DOWN
-  x: 19
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 23
-  y: 0
-- object: GROUND_BROWN_DOWN
   x: 10
   y: 1
 - object: GROUND_BROWN_DOWN
@@ -256,17 +228,57 @@ objects:
   x: 39
   y: 7
 - object: GROUND_BROWN_DOWN
-  x: 38
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 36
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 33
-  y: 0
-- object: GROUND_BROWN_DOWN
   x: 7
   y: 1
+- object: ROCK_GREEN
+  x: 37
+  y: 0
+- object: STONE_BIG
+  x: 28
+  y: 0
+  repeat-x: 2
+- object: ROCK_GREEN
+  x: 21
+  y: 0
+- object: ROCK_1
+  x: 19
+  y: 0
+- object: ROCK_1
+  x: 25
+  y: 0
+- object: ROCK_1
+  x: 38
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 35
+  y: 1
+  repeat-x: 3
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 2
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN
+  x: 33
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 3
+  repeat-x: 3
+- object: GROUND_BROWN_DOWN
+  x: 31
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 4
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 8
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 9
 enemies:
 - enemy: bazyliszek
   x: 16
