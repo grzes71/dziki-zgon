@@ -8,14 +8,8 @@ exits:
   west: CROSSROADS
 objects:
 - object: TREE_3
-  x: 15
-  y: 6
-- object: TREE_3
   x: 6
   y: 1
-- object: TREE_3
-  x: 27
-  y: 0
 - object: WAVES
   x: 26
   y: 4
@@ -34,27 +28,14 @@ objects:
   x: 38
   y: 3
 - object: TREE_SMALL
-  x: 11
-  y: 8
-- object: TREE_SMALL
   x: 32
   y: 7
 - object: TREE_SMALL
   x: 11
   y: 2
-- object: TREE_SMALL
-  x: 4
-  y: 5
 - object: TREE_2
   x: 27
   y: 7
-- object: TREE_2
-  x: 10
-  y: 5
-- object: ROCK_1
-  x: 20
-  y: 6
-  repeat-x: 2
 - object: WAVES
   x: 37
   y: 7
@@ -158,10 +139,6 @@ objects:
   y: 9
 - object: REED
   x: 29
-  y: 10
-  repeat-x: 2
-- object: REED
-  x: 29
   y: 11
 - object: REED
   x: 31
@@ -199,9 +176,6 @@ objects:
 - object: REED
   x: 11
   y: 0
-- object: BUSH_2
-  x: 7
-  y: 6
 - object: WAVES
   x: 0
   y: 10
@@ -213,12 +187,6 @@ objects:
 - object: ROCK_GREEN
   x: 4
   y: 9
-- object: ROCK_GREEN
-  x: 30
-  y: 1
-- object: ROCK_1
-  x: 33
-  y: 11
 - object: CROSS_2
   x: 8
   y: 9
@@ -267,10 +235,114 @@ objects:
 - object: SWAMP
   x: 12
   y: 4
-enemies:
-- enemy: bazyliszek
-  x: 13
+- object: TREE_SMALL
+  x: 8
   y: 6
-  strategy: snake
+- object: TREE_SMALL
+  x: 12
+  y: 8
+- object: CROSS_1
+  x: 19
+  y: 5
+- object: CROSS_1
+  x: 22
+  y: 5
+- object: TREE_3
+  x: 3
+  y: 4
+- object: REED
+  x: 20
+  y: 7
+  repeat-x: 2
+- object: REED
+  x: 17
+  y: 4
+- object: REED
+  x: 18
+  y: 5
+- object: REED
+  x: 21
+  y: 1
+- object: REED
+  x: 19
+  y: 1
+- object: REED
+  x: 24
+  y: 2
+- object: REED
+  x: 16
+  y: 2
+- object: REED
+  x: 15
+  y: 4
+- object: REED
+  x: 24
+  y: 4
+- object: REED
+  x: 14
+  y: 2
+- object: REED
+  x: 13
+  y: 4
+- object: REED
+  x: 28
+  y: 10
+- object: REED
+  x: 36
+  y: 6
+  repeat-y: 2
+- object: REED
+  x: 36
+  y: 1
+- object: REED
+  x: 34
+  y: 0
+- object: GROUND_GREEN_UP
+  x: 30
+  y: 11
+- object: GROUND_GREEN_UP
+  x: 26
+  y: 9
+- object: GROUND_GREEN_UP
+  x: 25
+  y: 8
+- object: GROUND_GREEN_UP
+  x: 25
+  y: 3
+- object: GROUND_GREEN_UP
+  x: 14
+  y: 0
+- object: GROUND_GREEN_UP
+  x: 12
+  y: 0
+- object: GROUND_GREEN_UP
+  x: 17
+  y: 0
+- object: GROUND_GREEN_UP
+  x: 10
+  y: 0
+- object: GROUND_GREEN_UP
+  x: 35
+  y: 1
+- object: GROUND_GREEN_UP
+  x: 33
+  y: 0
+- object: BUSH
+  x: 27
+  y: 2
+- object: TREE_3
+  x: 28
+  y: 1
+- object: ROCK_1
+  x: 23
+  y: 1
+- object: ROCK_1
+  x: 2
+  y: 9
+enemies:
+- enemy: kikimora
+  x: 31
+  y: 3
+  strategy: random
   speed: medium
   color: blue

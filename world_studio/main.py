@@ -3,8 +3,9 @@ from pathlib import Path
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QHBoxLayout, 
                               QVBoxLayout, QMenuBar, QMenu, QFileDialog, QMessageBox,
                               QSplitter, QTabWidget, QScrollArea, QInputDialog, QDialog,
-                              QFormLayout, QLineEdit, QSpinBox, QDialogButtonBox, QComboBox)
-from PySide6.QtGui import QAction
+                              QFormLayout, QLineEdit, QSpinBox, QDialogButtonBox, QComboBox,
+                              QPushButton, QLabel, QGroupBox, QColorDialog)
+from PySide6.QtGui import QAction, QColor
 from PySide6.QtCore import Qt
 
 from world_studio.project_manager import ProjectManager
@@ -50,7 +51,7 @@ class WorldStudioMainWindow(QMainWindow):
         self.region_tree.region_selected.connect(self._on_region_selected)
         self.region_tree.screen_double_clicked.connect(self._on_screen_double_clicked)
         self.region_tree.request_add_region.connect(self._on_add_region)
-        self.region_tree.request_add_region.connect(self._on_add_region)
+        self.region_tree.request_edit_region_colors.connect(self._on_edit_region_colors)
         left_layout.addWidget(self.region_tree, 1)
         
         self.object_palette = ObjectPaletteWidget()
@@ -165,6 +166,7 @@ class WorldStudioMainWindow(QMainWindow):
     def _on_screen_double_clicked(self, region_id, screen_id):
         self.current_region_id = region_id
         self.current_screen_id = screen_id
+        self.object_palette.set_available_regions(list(self.project.regions.keys()), region_id)
         
         screen_def = self.project.screens.get(region_id, {}).get(screen_id)
         if screen_def:
@@ -174,6 +176,61 @@ class WorldStudioMainWindow(QMainWindow):
     def _on_object_selected(self, object_id):
         self.canvas_view.active_tool = object_id
 
+    def _create_color_config_box(self, initial_colors: dict, dialog: QDialog):
+        group = QGroupBox("Region Playfield Colors")
+        layout = QVBoxLayout(group)
+        
+        form = QFormLayout()
+        combo_preset = QComboBox()
+        combo_preset.addItem("Default (Atari)")
+        for r_id in sorted(self.project.regions.keys()):
+            combo_preset.addItem(f"Copy from {r_id}", r_id)
+        form.addRow("Preset:", combo_preset)
+        
+        color_keys = ["PF0", "PF1", "PF2", "PF3_INV", "BACKGROUND"]
+        colors_dict = dict(initial_colors)
+        buttons = {}
+        
+        def update_btn(key):
+            rgb = colors_dict[key]
+            lum = (rgb[0]*299 + rgb[1]*587 + rgb[2]*114)/1000
+            text_color = "black" if lum > 128 else "white"
+            buttons[key].setStyleSheet(f"background-color: rgb({rgb[0]},{rgb[1]},{rgb[2]}); color: {text_color}; font-weight: bold; border: 1px solid gray;")
+            buttons[key].setText(f"RGB{list(rgb)}")
+            
+        for k in color_keys:
+            btn = QPushButton()
+            buttons[k] = btn
+            update_btn(k)
+            
+            def make_click_handler(key):
+                def handler():
+                    c = QColorDialog.getColor(QColor(*colors_dict[key]), dialog, f"Select Color for {key}")
+                    if c.isValid():
+                        colors_dict[key] = (c.red(), c.green(), c.blue())
+                        update_btn(key)
+                return handler
+                
+            btn.clicked.connect(make_click_handler(k))
+            form.addRow(f"{k}:", btn)
+            
+        def on_preset_changed(idx):
+            data = combo_preset.itemData(idx)
+            if data and data in self.project.regions:
+                preset_colors = self.project.get_region_colors(data)
+            else:
+                from world_studio.project_manager import DEFAULT_REGION_COLORS
+                preset_colors = DEFAULT_REGION_COLORS
+                
+            for k in color_keys:
+                if k in preset_colors:
+                    colors_dict[k] = preset_colors[k]
+                    update_btn(k)
+                    
+        combo_preset.currentIndexChanged.connect(on_preset_changed)
+        layout.addLayout(form)
+        return group, colors_dict
+
     def _on_add_region(self):
         if not self.project.world_dir:
             QMessageBox.warning(self, "Error", "No project loaded.")
@@ -181,8 +238,9 @@ class WorldStudioMainWindow(QMainWindow):
 
         dialog = QDialog(self)
         dialog.setWindowTitle("Add Region")
-        layout = QFormLayout(dialog)
+        main_layout = QVBoxLayout(dialog)
         
+        form_layout = QFormLayout()
         edit_id = QLineEdit()
         edit_name = QLineEdit()
         spin_damage = QSpinBox()
@@ -190,19 +248,26 @@ class WorldStudioMainWindow(QMainWindow):
         spin_damage.setValue(10)
         spin_rows = QSpinBox()
         spin_rows.setRange(1, 100)
+        spin_rows.setValue(3)
         spin_cols = QSpinBox()
         spin_cols.setRange(1, 100)
+        spin_cols.setValue(3)
         
-        layout.addRow("Region ID (e.g. DARK_FOREST):", edit_id)
-        layout.addRow("Name:", edit_name)
-        layout.addRow("Damage (PF3 per sec):", spin_damage)
-        layout.addRow("Rows:", spin_rows)
-        layout.addRow("Columns:", spin_cols)
+        form_layout.addRow("Region ID (e.g. DARK_FOREST):", edit_id)
+        form_layout.addRow("Name:", edit_name)
+        form_layout.addRow("Damage (PF3 per sec):", spin_damage)
+        form_layout.addRow("Rows:", spin_rows)
+        form_layout.addRow("Columns:", spin_cols)
+        main_layout.addLayout(form_layout)
+        
+        initial_cols = self.project.get_region_colors(None)
+        color_box, colors_dict = self._create_color_config_box(initial_cols, dialog)
+        main_layout.addWidget(color_box)
         
         btns = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         btns.accepted.connect(dialog.accept)
         btns.rejected.connect(dialog.reject)
-        layout.addRow(btns)
+        main_layout.addWidget(btns)
         
         if dialog.exec() == QDialog.Accepted:
             r_id = edit_id.text().strip().upper()
@@ -210,10 +275,33 @@ class WorldStudioMainWindow(QMainWindow):
             if not r_id:
                 QMessageBox.warning(self, "Error", "Region ID cannot be empty.")
                 return
-            if self.project.add_region(r_id, r_name, spin_rows.value(), spin_cols.value(), spin_damage.value()):
+            if self.project.add_region(r_id, r_name, spin_rows.value(), spin_cols.value(), spin_damage.value(), colors=colors_dict):
                 self.region_tree.populate(self.project)
+                self._on_region_selected(r_id)
             else:
                 QMessageBox.warning(self, "Error", f"Region {r_id} already exists.")
+
+    def _on_edit_region_colors(self, region_id: str):
+        if not self.project or region_id not in self.project.regions:
+            return
+            
+        dialog = QDialog(self)
+        dialog.setWindowTitle(f"Edit Region Colors - {region_id}")
+        main_layout = QVBoxLayout(dialog)
+        
+        current_cols = self.project.get_region_colors(region_id)
+        color_box, colors_dict = self._create_color_config_box(current_cols, dialog)
+        main_layout.addWidget(color_box)
+        
+        btns = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        btns.accepted.connect(dialog.accept)
+        btns.rejected.connect(dialog.reject)
+        main_layout.addWidget(btns)
+        
+        if dialog.exec() == QDialog.Accepted:
+            self.project.set_region_colors(region_id, colors_dict)
+            self._refresh_views()
+            self.statusBar().showMessage(f"Updated colors for region {region_id}")
 
     def _on_empty_cell_add_requested(self, region_id, col, row):
         text, ok = QInputDialog.getText(self, f"Add Screen at {col},{row}", "Screen ID (e.g. START):")

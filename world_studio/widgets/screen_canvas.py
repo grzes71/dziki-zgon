@@ -1,4 +1,7 @@
-from PySide6.QtWidgets import QWidget, QDialog
+from PySide6.QtWidgets import (
+    QWidget, QDialog, QVBoxLayout, QFormLayout, QComboBox, 
+    QDialogButtonBox, QMessageBox
+)
 from PySide6.QtGui import QPainter, QPen, QColor, QMouseEvent
 from PySide6.QtCore import Qt, Signal
 from world_studio.models import ScreenDef, ObjectInstance, EnemyInstance
@@ -85,7 +88,8 @@ class ScreenCanvasWidget(QWidget):
                 if inst.x <= x < inst.x + w and inst.y <= y < inst.y + h:
                     from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
                     inv_items = self.project.inventory_items if self.project else []
-                    dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, parent=self)
+                    regs = self.project.regions if self.project else {}
+                    dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
                     if dialog.exec() == QDialog.Accepted:
                         self.screen_changed.emit()
                         self.update()
@@ -118,6 +122,43 @@ class ScreenCanvasWidget(QWidget):
                     if dialog.exec() == QDialog.Accepted:
                         self.screen_def.enemies.append(new_enemy)
                         self.screen_changed.emit()
+            elif self.active_tool and self.active_tool.startswith("PORTAL_ENTRY"):
+                region = self.project.regions.get(self.region_id) if (self.project and self.region_id) else None
+                existing_from_regions = set(region.portal_entries.keys()) if (region and getattr(region, 'portal_entries', None)) else set()
+                avail_regions = [r for r in self.project.regions.keys() if r != self.region_id and r not in existing_from_regions]
+                if not avail_regions:
+                    QMessageBox.warning(
+                        self,
+                        "Brak dostępnych regionów",
+                        "Brak dostępnych regionów do wyboru.\nWszystkie inne regiony posiadają już Portal Entry w tym regionie lub brak innych regionów w projekcie."
+                    )
+                    return
+
+                dialog = QDialog(self)
+                dialog.setWindowTitle("Set Portal Entry")
+                d_layout = QVBoxLayout(dialog)
+
+                form = QFormLayout()
+                combo_region = QComboBox()
+                combo_region.addItems(sorted(avail_regions))
+                form.addRow("Region źródłowy (From Region):", combo_region)
+                d_layout.addLayout(form)
+
+                btns = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+                btns.accepted.connect(dialog.accept)
+                btns.rejected.connect(dialog.reject)
+                d_layout.addWidget(btns)
+
+                if dialog.exec() == QDialog.Accepted:
+                    selected_region = combo_region.currentText().strip()
+                    if selected_region:
+                        region = self.project.regions.get(self.region_id)
+                        if region:
+                            from world_studio.models import PortalEntry
+                            region.portal_entries[selected_region] = PortalEntry(screen=self.screen_def.id, x=int(x), y=int(y))
+                            self.screen_changed.emit()
+                            self.update()
+                return
             elif self.active_tool:
                 active_obj_def = next((o for o in self.project.objects if o.id == self.active_tool), None)
                 if not active_obj_def:
@@ -125,23 +166,11 @@ class ScreenCanvasWidget(QWidget):
                     
                 is_interactive = active_obj_def.flags and getattr(active_obj_def.flags, 'interactive', False)
                 if is_interactive:
-                    existing = self.project.find_object_instances(active_obj_def.id)
-                    if existing:
-                        reg_id, scr_id, _ = existing[0]
-                        from PySide6.QtWidgets import QMessageBox
-                        QMessageBox.warning(
-                            self,
-                            "Cannot Place Interactive Object",
-                            f"Interactive object '{active_obj_def.id}' is already placed in screen '{scr_id}' of region '{reg_id}'.\n\nInteractive objects can only be placed once in the game world."
-                        )
-                        return
-
                     interactive_ids = self.project.get_interactive_object_ids()
                     existing_screen_interactive = [
                         inst for inst in self.screen_def.objects if inst.object in interactive_ids
                     ]
                     if existing_screen_interactive:
-                        from PySide6.QtWidgets import QMessageBox
                         QMessageBox.warning(
                             self,
                             "Cannot Place Interactive Object",
@@ -171,15 +200,35 @@ class ScreenCanvasWidget(QWidget):
                     if is_interactive:
                         from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
                         inv_items = self.project.inventory_items if self.project else []
-                        dialog = InteractiveObjectPropertiesDialog(new_obj, inventory_items=inv_items, parent=self)
+                        regs = self.project.regions if self.project else {}
+                        dialog = InteractiveObjectPropertiesDialog(new_obj, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
                         if dialog.exec() == QDialog.Accepted:
                             self.screen_def.objects.append(new_obj)
                             self.screen_changed.emit()
+                            self.update()
                     else:
                         self.screen_def.objects.append(new_obj)
                         self.screen_changed.emit()
+                        self.update()
                 
         elif event.button() == Qt.RightButton:
+            # Delete portal entry at this pos if matching
+            if self.region_id and self.project and self.region_id in self.project.regions:
+                region = self.project.regions[self.region_id]
+                portal_to_remove = None
+                for from_reg, entry in region.portal_entries.items():
+                    es = getattr(entry, 'screen', None) if not isinstance(entry, dict) else entry.get('screen')
+                    ex = getattr(entry, 'x', None) if not isinstance(entry, dict) else entry.get('x')
+                    ey = getattr(entry, 'y', None) if not isinstance(entry, dict) else entry.get('y')
+                    if es == self.screen_def.id and ex == x and ey == y:
+                        portal_to_remove = from_reg
+                        break
+                if portal_to_remove:
+                    del region.portal_entries[portal_to_remove]
+                    self.screen_changed.emit()
+                    self.update()
+                    return
+
             # Delete enemy at this pos
             enemy_to_remove = None
             for i, e in enumerate(self.screen_def.enemies):

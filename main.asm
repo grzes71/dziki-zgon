@@ -198,14 +198,6 @@ TitleFooterROM = text_title
 
 SpriteData = DzikizgonData
 
-    icl "gen/dziki-zgon.asm"
-    icl "gen/moon.asm"
-    icl "gen/gerwalt.sprite.asm"
-    icl "gen/bazyliszek.sprite.asm"
-    icl "gen/kikimora.sprite.asm"
-    icl "gen/strzyga.sprite.asm"
-    icl "gen/sukkub.sprite.asm"
-
 ; ===================================================================
 ; 6. Display Listy ($3000)
 ; ===================================================================
@@ -315,8 +307,18 @@ GO_TEXT = FOOTER_ADDR
     icl "gen/world/regions.asm"
     icl "gen/world/screens.asm"
     icl "gen/world/exits.asm"
+    icl "gen/world/interactive_objects.asm"
 
 ; --- Muzyka i odtwarzacz ($8800) ---
     icl "music/title_audio.asm"
+
+; --- Dane Duszków / Sprite'ów ---
+    icl "gen/dziki-zgon.asm"
+    icl "gen/moon.asm"
+    icl "gen/gerwalt.sprite.asm"
+    icl "gen/bazyliszek.sprite.asm"
+    icl "gen/kikimora.sprite.asm"
+    icl "gen/strzyga.sprite.asm"
+    icl "gen/sukkub.sprite.asm"
 
     run start

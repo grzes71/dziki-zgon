@@ -151,9 +151,9 @@ objects:
   x: 18
   y: 5
   type: kwatera
-  conditions_met: Dajesz fałszywe pieniądze Karczmarzowi.Ten z uśmiechem drze twój
+  conditions_met: dajesz fałszywe pieniądze karczmarzowi&ten z uśmiechem drze twój
     rachunek :)
-  conditions_unmet: Dawaj pieniądze! - krzyczy Karczmarz
+  conditions_unmet: dawaj pieniądze! krzyczy karczmarz
   items_required:
   - 1
   items_provided:

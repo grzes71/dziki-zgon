@@ -8,6 +8,7 @@
     jsr Player_Update
     jsr NPC_Update
     jsr Collision_Update
+    jsr IIS_Update
     jsr Inventory_Update
     jsr Dialogue_Update
     jsr Quest_Update

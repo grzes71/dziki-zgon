@@ -46,6 +46,8 @@ class ObjectInstance(BaseModel):
     type: Optional[str] = None
     conditions_met: Optional[str] = Field(default=None, alias="conditions_met")
     conditions_unmet: Optional[str] = Field(default=None, alias="conditions_unmet")
+    message_travel: Optional[str] = Field(default=None, alias="message_travel")
+    target_region: Optional[str] = Field(default=None, alias="target_region")
     items_required: Optional[List[int]] = Field(default=None, alias="items_required")
     items_provided: Optional[List[int]] = Field(default=None, alias="items_provided")
     cost_of_travel: Optional[int] = Field(default=None, alias="cost_of_travel")
@@ -69,6 +71,11 @@ class RegionLayout(BaseModel):
     rows: int
     columns: int
 
+class PortalEntry(BaseModel):
+    screen: str
+    x: int = Field(ge=0, le=39)
+    y: int = Field(ge=0, le=11)
+
 class RegionDef(BaseModel):
     id: str
     name: str
@@ -76,6 +83,7 @@ class RegionDef(BaseModel):
     layout: RegionLayout
     start_screen: str
     music: str
+    portal_entries: Dict[str, PortalEntry] = Field(default_factory=dict)
 
 class StartPosition(BaseModel):
     x: int = Field(ge=0, le=39)

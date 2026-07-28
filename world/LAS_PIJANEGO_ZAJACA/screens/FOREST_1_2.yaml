@@ -1,0 +1,44 @@
+id: FOREST_1_2
+grid_x: 1
+grid_y: 2
+exits:
+  north: FOREST_1_1
+  south: null
+  east: null
+  west: FOREST_0_2
+objects:
+- object: WAVES
+  x: 31
+  y: 0
+  repeat-x: 9
+- object: REED
+  x: 37
+  y: 1
+  repeat-x: 3
+- object: REED
+  x: 34
+  y: 1
+  repeat-x: 2
+- object: REED
+  x: 36
+  y: 2
+- object: REED
+  x: 33
+  y: 2
+- object: REED
+  x: 30
+  y: 0
+- object: REED
+  x: 31
+  y: 1
+  repeat-x: 2
+- object: REED
+  x: 30
+  y: 2
+- object: REED
+  x: 29
+  y: 1
+- object: REED
+  x: 39
+  y: 2
+enemies: []

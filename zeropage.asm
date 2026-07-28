@@ -39,4 +39,6 @@ NEW_ACTOR_Y           equ $9F ; Nowa pozycja gracza na nowym ekranie
 ENEMY_COUNT_TMP       equ $A0 ; Tymczasowa liczba przeciwników na ekranie
 CURRENT_ACTOR         equ $A1 ; Indeks aktualnie ładowanego aktora (1..3)
 MSG_STATE             equ $A2 ; Stan linii komunikatów (0=brak, 1=wyświetlanie, 2=1s do końca)
+GAME_RESULT_STATUS    equ $A3 ; Status zakończenia gry: 0=w trakcie, 1=sukces (rachunek), 2=upływ czasu
+
 

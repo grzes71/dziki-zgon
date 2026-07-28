@@ -1,17 +1,23 @@
-id: WHITE_FIELD
-name: białe pole
+id: LAS_PIJANEGO_ZAJACA
+name: las pijanego zająca
 damage: 10
 layout:
   rows: 3
-  columns: 3
-start_screen: TAVERN
-music: WHITE_FIELD
+  columns: 2
+start_screen: FOREST_0_0
+music: LAS_PIJANEGO_ZAJACA
 portal_entries:
-  LAS_PIJANEGO_ZAJACA:
-    screen: HARBOUR
-    x: 22
-    y: 7
+  WHITE_FIELD:
+    screen: FOREST_0_0
+    x: 26
+    y: 4
 colors:
+  BACKGROUND:
+    rgb:
+    - 0
+    - 0
+    - 0
+    atari: 0
   PF0:
     rgb:
     - 132
@@ -36,9 +42,3 @@ colors:
     - 48
     - 139
     atari: 128
-  BACKGROUND:
-    rgb:
-    - 0
-    - 0
-    - 0
-    atari: 0

@@ -31,9 +31,10 @@ objects:
 - object: PORT
   x: 25
   y: 6
-- object: SHIP
-  x: 12
-  y: 7
+  type: portal
+  message_travel: las pijanego zająca - 10 pacierzy
+  target_region: LAS_PIJANEGO_ZAJACA
+  cost_of_travel: 10
 - object: WAVES
   x: 21
   y: 9
@@ -88,10 +89,6 @@ objects:
   x: 13
   y: 10
   repeat-x: 9
-- object: BARREL
-  x: 22
-  y: 8
-  repeat-x: 3
 - object: FENCE_2
   x: 35
   y: 8
@@ -190,6 +187,9 @@ objects:
 - object: REED
   x: 11
   y: 8
+- object: SHIP
+  x: 12
+  y: 7
 enemies:
 - enemy: strzyga
   x: 16
