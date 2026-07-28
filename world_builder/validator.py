@@ -21,11 +21,27 @@ class WorldValidator:
     def validate(self):
         self._check_duplicates()
         self._check_interactive_objects()
+        self._check_portal_integrity()
         self._check_region_dirs()
         self._check_references()
         self._check_bounds()
         self._check_reachability()
         self._check_overlaps()
+
+    def _check_portal_integrity(self):
+        regions_by_id = {r.id: r for r in self.world.regions}
+        for region in self.world.regions:
+            for screen in region.screens:
+                for inst in screen.objects:
+                    if inst.type == "portal":
+                        if not inst.target_region:
+                            raise ValidationError(f"Screen '{screen.id}' in region '{region.id}' has a portal object without 'target_region'")
+                        if inst.target_region not in regions_by_id:
+                            raise ValidationError(f"Screen '{screen.id}' in region '{region.id}' has a portal object targeting non-existent region '{inst.target_region}'")
+                        target_region_obj = regions_by_id[inst.target_region]
+                        portal_entries = getattr(target_region_obj, 'portal_entries', {}) or {}
+                        if region.id not in portal_entries:
+                            raise ValidationError(f"Screen '{screen.id}' in region '{region.id}' has a portal object targeting region '{inst.target_region}', but region '{inst.target_region}' does not have a PORTAL ENTRY for region '{region.id}'")
 
     def _check_interactive_objects(self):
         for region in self.world.regions:

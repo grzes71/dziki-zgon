@@ -88,7 +88,7 @@ class ScreenCanvasWidget(QWidget):
                 if inst.x <= x < inst.x + w and inst.y <= y < inst.y + h:
                     from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
                     inv_items = self.project.inventory_items if self.project else []
-                    regs = list(self.project.regions.keys()) if self.project else []
+                    regs = self.project.regions if self.project else {}
                     dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
                     if dialog.exec() == QDialog.Accepted:
                         self.screen_changed.emit()
@@ -123,9 +123,15 @@ class ScreenCanvasWidget(QWidget):
                         self.screen_def.enemies.append(new_enemy)
                         self.screen_changed.emit()
             elif self.active_tool and self.active_tool.startswith("PORTAL_ENTRY"):
-                avail_regions = [r for r in self.project.regions.keys() if r != self.region_id]
+                region = self.project.regions.get(self.region_id) if (self.project and self.region_id) else None
+                existing_from_regions = set(region.portal_entries.keys()) if (region and getattr(region, 'portal_entries', None)) else set()
+                avail_regions = [r for r in self.project.regions.keys() if r != self.region_id and r not in existing_from_regions]
                 if not avail_regions:
-                    QMessageBox.warning(self, "Brak regionów", "Brak innych regionów w projekcie do wyboru.")
+                    QMessageBox.warning(
+                        self,
+                        "Brak dostępnych regionów",
+                        "Brak dostępnych regionów do wyboru.\nWszystkie inne regiony posiadają już Portal Entry w tym regionie lub brak innych regionów w projekcie."
+                    )
                     return
 
                 dialog = QDialog(self)
@@ -194,7 +200,7 @@ class ScreenCanvasWidget(QWidget):
                     if is_interactive:
                         from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
                         inv_items = self.project.inventory_items if self.project else []
-                        regs = list(self.project.regions.keys()) if self.project else []
+                        regs = self.project.regions if self.project else {}
                         dialog = InteractiveObjectPropertiesDialog(new_obj, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
                         if dialog.exec() == QDialog.Accepted:
                             self.screen_def.objects.append(new_obj)

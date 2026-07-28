@@ -9,7 +9,7 @@ music: LAS_PIJANEGO_ZAJACA
 portal_entries:
   WHITE_FIELD:
     screen: FOREST_0_0
-    x: 27
+    x: 26
     y: 4
 colors:
   BACKGROUND:

@@ -100,3 +100,55 @@ def test_world_sprites_integrity():
                 
     assert not errors, "World sprite integrity check failed! Issues with enemies in screens:\n" + "\n".join(errors)
 
+
+def test_world_portal_entries_integrity():
+    root_dir = Path(__file__).parent.parent
+    world_dir = root_dir / "world"
+    
+    # Load all regions and their portal_entries
+    region_files = list(world_dir.glob("*/region.yaml"))
+    assert len(region_files) > 0, "No region files found under world/*/region.yaml"
+    
+    regions_portal_entries = {}
+    for r_file in region_files:
+        with open(r_file, 'r', encoding='utf-8') as f:
+            r_data = yaml.safe_load(f) or {}
+        r_id = r_data.get("id")
+        if r_id:
+            p_entries = r_data.get("portal_entries", {}) or {}
+            regions_portal_entries[r_id] = p_entries
+
+    screen_files = list(world_dir.glob("*/screens/*.yaml"))
+    errors = []
+    for screen_file in screen_files:
+        with open(screen_file, 'r', encoding='utf-8') as f:
+            screen_data = yaml.safe_load(f) or {}
+        
+        screen_id = screen_data.get("id", screen_file.stem)
+        source_region = screen_file.parent.parent.name
+        screen_objects = screen_data.get("objects", [])
+        if not isinstance(screen_objects, list):
+            continue
+            
+        for obj_inst in screen_objects:
+            if not isinstance(obj_inst, dict):
+                continue
+            if obj_inst.get("type") == "portal":
+                target_region = obj_inst.get("target_region")
+                relative_path = screen_file.relative_to(root_dir)
+                if not target_region:
+                    errors.append(f"Screen '{screen_id}' in '{relative_path}' has a portal object without 'target_region'")
+                    continue
+                if target_region not in regions_portal_entries:
+                    errors.append(f"Screen '{screen_id}' in '{relative_path}' has portal object targeting unknown region '{target_region}'")
+                    continue
+                
+                target_entries = regions_portal_entries[target_region]
+                if source_region not in target_entries:
+                    errors.append(
+                        f"Screen '{screen_id}' in '{relative_path}' has portal targeting region '{target_region}', but '{target_region}' has no PORTAL ENTRY defined for '{source_region}'"
+                    )
+
+    assert not errors, "World portal integrity check failed! Issues with portals in screens:\n" + "\n".join(errors)
+
+

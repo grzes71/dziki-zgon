@@ -86,13 +86,20 @@ class InteractiveObjectPropertiesDialog(QDialog):
 
         # 8. target_region (portal)
         self.combo_target_region = QComboBox()
-        avail_target_regions = [r for r in self.regions if r != self.current_region_id]
+        if isinstance(self.regions, dict):
+            avail_target_regions = [
+                r_id for r_id, r_def in self.regions.items()
+                if r_id != self.current_region_id and self.current_region_id in (getattr(r_def, 'portal_entries', {}) or {})
+            ]
+        else:
+            avail_target_regions = [r for r in self.regions if r != self.current_region_id]
+
         if avail_target_regions:
             self.combo_target_region.addItems(sorted(avail_target_regions))
             if obj_instance.target_region and obj_instance.target_region in avail_target_regions:
                 self.combo_target_region.setCurrentText(obj_instance.target_region)
         else:
-            self.combo_target_region.addItem("(Brak innych regionów)")
+            self.combo_target_region.addItem("(Brak regionów z PORTAL ENTRY dla tego regionu)")
         self.label_target_region = QLabel("Region docelowy (target_region):")
         self.form.addRow(self.label_target_region, self.combo_target_region)
 
@@ -208,8 +215,8 @@ class InteractiveObjectPropertiesDialog(QDialog):
                 return
 
             target_reg = self.combo_target_region.currentText().strip()
-            if not target_reg or target_reg == "(Brak innych regionów)":
-                QMessageBox.warning(self, "Błąd walidacji", "Musisz wybrać region docelowy (target_region) dla portalu.")
+            if not target_reg or target_reg.startswith("("):
+                QMessageBox.warning(self, "Błąd walidacji", "Musisz wybrać prawidłowy region docelowy (target_region) z wyjściem portalowym dla portalu.")
                 self.combo_target_region.setFocus()
                 return
 
