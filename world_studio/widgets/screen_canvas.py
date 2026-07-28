@@ -88,7 +88,8 @@ class ScreenCanvasWidget(QWidget):
                 if inst.x <= x < inst.x + w and inst.y <= y < inst.y + h:
                     from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
                     inv_items = self.project.inventory_items if self.project else []
-                    dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, parent=self)
+                    regs = list(self.project.regions.keys()) if self.project else []
+                    dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
                     if dialog.exec() == QDialog.Accepted:
                         self.screen_changed.emit()
                         self.update()
@@ -193,7 +194,8 @@ class ScreenCanvasWidget(QWidget):
                     if is_interactive:
                         from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
                         inv_items = self.project.inventory_items if self.project else []
-                        dialog = InteractiveObjectPropertiesDialog(new_obj, inventory_items=inv_items, parent=self)
+                        regs = list(self.project.regions.keys()) if self.project else []
+                        dialog = InteractiveObjectPropertiesDialog(new_obj, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
                         if dialog.exec() == QDialog.Accepted:
                             self.screen_def.objects.append(new_obj)
                             self.screen_changed.emit()

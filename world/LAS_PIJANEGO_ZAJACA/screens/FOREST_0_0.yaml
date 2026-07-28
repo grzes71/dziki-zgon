@@ -14,14 +14,8 @@ objects:
   x: 10
   y: 6
 - object: TREE_2
-  x: 8
-  y: 10
-- object: TREE_2
   x: 34
   y: 0
-- object: TREE_2
-  x: 32
-  y: 10
 - object: WATER_ANIM
   x: 0
   y: 0
@@ -34,14 +28,6 @@ objects:
 - object: SHIP
   x: 12
   y: 0
-- object: WAVES
-  x: 0
-  y: 3
-  repeat-x: 23
-- object: WAVES
-  x: 21
-  y: 2
-  repeat-x: 2
 - object: TREE_SMALL
   x: 23
   y: 4
@@ -49,20 +35,11 @@ objects:
   x: 17
   y: 5
 - object: TREE_SMALL
-  x: 17
-  y: 9
-- object: TREE_SMALL
-  x: 27
-  y: 9
-- object: TREE_SMALL
   x: 6
   y: 4
 - object: TREE_SMALL
   x: 3
   y: 7
-- object: TREE_3
-  x: 0
-  y: 10
 - object: TREE_3
   x: 0
   y: 4
@@ -96,12 +73,6 @@ objects:
   y: 9
 - object: SWAMP
   x: 13
-  y: 10
-- object: SWAMP
-  x: 36
-  y: 11
-- object: SWAMP
-  x: 37
   y: 10
 - object: SWAMP
   x: 4
@@ -170,20 +141,8 @@ objects:
   x: 32
   y: 4
 - object: BUSH
-  x: 29
-  y: 11
-- object: BUSH
-  x: 12
-  y: 11
-- object: BUSH
-  x: 16
-  y: 8
-- object: BUSH
   x: 13
   y: 6
-- object: BUSH
-  x: 33
-  y: 8
 - object: BUSH
   x: 39
   y: 1
@@ -200,9 +159,6 @@ objects:
   x: 4
   y: 9
   repeat-x: 2
-- object: WAVE_UP
-  x: 5
-  y: 11
 - object: WAVE_UP
   x: 13
   y: 9
@@ -237,9 +193,6 @@ objects:
 - object: WAVE_UP
   x: 15
   y: 9
-- object: WAVE_UP
-  x: 37
-  y: 11
 - object: SWAMP
   x: 39
   y: 5
@@ -255,14 +208,12 @@ objects:
 - object: WAVE_UP
   x: 28
   y: 8
-- object: ROCK_GREEN
-  x: 21
-  y: 11
 - object: PORT_2
   x: 23
   y: 0
   type: portal
   message_travel: białe pole za 10 pacierzy
+  target_region: WHITE_FIELD
   cost_of_travel: 10
 - object: GROUND_GREEN_UP
   x: 23
@@ -282,4 +233,69 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 27
   y: 5
-enemies: []
+- object: SWAMP
+  x: 15
+  y: 10
+- object: SWAMP
+  x: 15
+  y: 8
+- object: SWAMP
+  x: 26
+  y: 9
+- object: BUSH
+  x: 20
+  y: 4
+- object: BUSH
+  x: 7
+  y: 7
+- object: BUSH
+  x: 0
+  y: 7
+- object: BUSH
+  x: 39
+  y: 9
+- object: TREE_SMALL
+  x: 0
+  y: 9
+- object: TREE_SMALL
+  x: 28
+  y: 9
+- object: TREE_SMALL
+  x: 17
+  y: 8
+- object: TREE_2
+  x: 9
+  y: 9
+- object: CROSS_1
+  x: 32
+  y: 10
+  repeat-x: 2
+- object: CROSS_1
+  x: 33
+  y: 9
+- object: BUSH_2
+  x: 21
+  y: 6
+- object: WATER_ANIM
+  x: 13
+  y: 3
+  repeat-x: 8
+- object: WAVES
+  x: 21
+  y: 3
+  repeat-x: 2
+- object: WAVES
+  x: 21
+  y: 0
+  repeat-y: 3
+- object: WAVES
+  x: 0
+  y: 3
+  repeat-x: 13
+enemies:
+- enemy: kikimora
+  x: 20
+  y: 10
+  strategy: random
+  speed: medium
+  color: green

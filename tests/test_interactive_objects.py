@@ -270,11 +270,13 @@ def test_interactive_object_portal_properties():
         x=10, y=8,
         type="portal",
         message_travel="Podróżujesz do sąsiedniego krainy",
+        target_region="LAS_PIJANEGO_ZAJACA",
         cost_of_travel=50
     )
     data = inst.model_dump(by_alias=True, exclude_none=True)
     assert data["type"] == "portal"
     assert data["message_travel"] == "Podróżujesz do sąsiedniego krainy"
+    assert data["target_region"] == "LAS_PIJANEGO_ZAJACA"
     assert data["cost_of_travel"] == 50
     assert "conditions_met" not in data
     assert "conditions_unmet" not in data

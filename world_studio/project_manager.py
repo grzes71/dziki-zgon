@@ -242,7 +242,7 @@ class ProjectManager:
                         del obj["repeat-x"]
                     if obj.get("repeat-y") == 1:
                         del obj["repeat-y"]
-                    for field in ["type", "conditions_met", "conditions_unmet", "message_travel", "items_required", "items_provided", "cost_of_travel", "game_over"]:
+                    for field in ["type", "conditions_met", "conditions_unmet", "message_travel", "target_region", "items_required", "items_provided", "cost_of_travel", "game_over"]:
                         if field in obj and obj[field] is None:
                             del obj[field]
                 
@@ -270,6 +270,7 @@ class ProjectManager:
                 conditions_met=getattr(o, 'conditions_met', None),
                 conditions_unmet=getattr(o, 'conditions_unmet', None),
                 message_travel=getattr(o, 'message_travel', None),
+                target_region=getattr(o, 'target_region', None),
                 items_required=getattr(o, 'items_required', None),
                 items_provided=getattr(o, 'items_provided', None),
                 cost_of_travel=getattr(o, 'cost_of_travel', None),

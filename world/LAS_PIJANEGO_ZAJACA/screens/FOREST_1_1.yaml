@@ -324,4 +324,10 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 4
   y: 0
-enemies: []
+enemies:
+- enemy: sukkub
+  x: 14
+  y: 8
+  strategy: patrol
+  speed: medium
+  color: brown

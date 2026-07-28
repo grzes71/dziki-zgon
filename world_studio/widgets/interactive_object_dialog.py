@@ -9,13 +9,15 @@ class InteractiveObjectPropertiesDialog(QDialog):
     TYPE_KWATERA = "kwatera"
     TYPE_PORTAL = "portal"
 
-    def __init__(self, obj_instance: ObjectInstance, inventory_items: Optional[List[InventoryItemDef]] = None, parent=None):
+    def __init__(self, obj_instance: ObjectInstance, inventory_items: Optional[List[InventoryItemDef]] = None, regions: Optional[List[str]] = None, current_region_id: Optional[str] = None, parent=None):
         super().__init__(parent)
         self.obj_instance = obj_instance
         self.inventory_items = inventory_items or []
+        self.regions = regions or []
+        self.current_region_id = current_region_id
         
         self.setWindowTitle(f"Interactive Object Properties - {obj_instance.object}")
-        self.resize(480, 420)
+        self.resize(480, 460)
         
         layout = QVBoxLayout(self)
         self.form = QFormLayout()
@@ -82,6 +84,18 @@ class InteractiveObjectPropertiesDialog(QDialog):
         self.label_message_travel = QLabel("Komunikat podróży (message_travel):")
         self.form.addRow(self.label_message_travel, self.edit_message_travel)
 
+        # 8. target_region (portal)
+        self.combo_target_region = QComboBox()
+        avail_target_regions = [r for r in self.regions if r != self.current_region_id]
+        if avail_target_regions:
+            self.combo_target_region.addItems(sorted(avail_target_regions))
+            if obj_instance.target_region and obj_instance.target_region in avail_target_regions:
+                self.combo_target_region.setCurrentText(obj_instance.target_region)
+        else:
+            self.combo_target_region.addItem("(Brak innych regionów)")
+        self.label_target_region = QLabel("Region docelowy (target_region):")
+        self.form.addRow(self.label_target_region, self.combo_target_region)
+
         layout.addLayout(self.form)
         
         # Dialog buttons
@@ -145,6 +159,8 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.spin_cost_of_travel.hide()
             self.label_message_travel.hide()
             self.edit_message_travel.hide()
+            self.label_target_region.hide()
+            self.combo_target_region.hide()
         elif obj_type == self.TYPE_PORTAL:
             self.label_items_provided.hide()
             self.list_items_provided.hide()
@@ -154,6 +170,8 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.spin_cost_of_travel.show()
             self.label_message_travel.show()
             self.edit_message_travel.show()
+            self.label_target_region.show()
+            self.combo_target_region.show()
 
     def _on_accept(self):
         obj_type = self.combo_type.currentText()
@@ -176,6 +194,7 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.obj_instance.conditions_met = cond_met
             self.obj_instance.conditions_unmet = cond_unmet
             self.obj_instance.message_travel = None
+            self.obj_instance.target_region = None
             self.obj_instance.items_required = items_req
             self.obj_instance.items_provided = items_prov
             self.obj_instance.game_over = self.check_game_over.isChecked()
@@ -186,6 +205,12 @@ class InteractiveObjectPropertiesDialog(QDialog):
             if not msg_travel:
                 QMessageBox.warning(self, "Błąd walidacji", "Pole 'Komunikat podróży (message_travel)' jest wymagane dla portalu.")
                 self.edit_message_travel.setFocus()
+                return
+
+            target_reg = self.combo_target_region.currentText().strip()
+            if not target_reg or target_reg == "(Brak innych regionów)":
+                QMessageBox.warning(self, "Błąd walidacji", "Musisz wybrać region docelowy (target_region) dla portalu.")
+                self.combo_target_region.setFocus()
                 return
 
             if items_req:
@@ -203,6 +228,7 @@ class InteractiveObjectPropertiesDialog(QDialog):
             self.obj_instance.conditions_met = cond_met if cond_met else None
             self.obj_instance.conditions_unmet = cond_unmet if cond_unmet else None
             self.obj_instance.message_travel = msg_travel
+            self.obj_instance.target_region = target_reg
             self.obj_instance.items_required = items_req
             self.obj_instance.items_provided = None
             self.obj_instance.game_over = None

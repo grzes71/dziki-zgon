@@ -33,6 +33,7 @@ objects:
   y: 6
   type: portal
   message_travel: las pijanego zająca - 10 pacierzy
+  target_region: LAS_PIJANEGO_ZAJACA
   cost_of_travel: 10
 - object: WAVES
   x: 21
