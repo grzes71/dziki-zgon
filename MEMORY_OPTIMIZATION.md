@@ -329,3 +329,25 @@ Zysk juz zrealizowany historycznie:
 - Etap 4: OTWARTY (PMG pracuje w single-line; brak wdrozenia wariantu double-line).
 - Etap 5: OTWARTY (flagi FIRE nadal rozproszone per scena).
 - Etap 6: OTWARTY (brak loadera overlay i wspolnego slotu kodu scen).
+
+---
+
+## 7) Lessons Learned — Kluczowe Zasady i Ograniczenia Pamięci Atari
+
+### A. Ścisła granica OS ROM ($C000+)
+- **Wdrożenie**: Gdy w systemie włączony jest OS ROM (`PORTB` bit 0 = 1), pamięć `$C000`–`$CFFF` (jądro OS ROM) oraz `$D000`–`$DFFF` (rejestry sprzętowe) jest **niedostępna jako RAM**.
+- **Reguła**: Żadne dane (dane RLE, sprite'y, tablice świata, kod) **nie mogą przekraczać adresu `$BFFF`**. Zapis lub odczyt z obszarów powyżej `$BFFF` spowoduje odczyt instrukcji ROM systemowego Atari zamiast danych gry i zniszczy rejestry GTIA/ANTIC.
+
+### B. Izolacja Odtwarzacza i Muzyki RMT ($A9E0 – $B610)
+- **Wdrożenie**: Odtwarzacz RMT (`gen/rmtplayr.asm`) używa sztywnych adresów `org`:
+  - `$A9E0` – `$ACFF`: Zmienne i tabele częstotliwości/głośności (`track_variables`, `frqtab`, `volumetab`).
+  - `$AD00` – `$B241`: Kod wykonywalny `RASTERMUSICTRACKER`.
+  - `$B300` – `$B610`: Moduł muzyczny `MODUL` (`title_music.asm`).
+- **Reguła**: Zakres **`$A9E0` – `$B610`** jest w 100% zarezerwowany pod audio. Niedopuszczalne jest umieszczanie jakichkolwiek sprite'ów, obrazków czy kodu gry w tym obszarze.
+
+### C. Sekwencyjność instrukcji `org` w `main.asm` (Brak backtracking)
+- **Reguła**: Instrukcje `org` w `main.asm` muszą być ułożone w ściśle rosnącej kolejności fizycznej. Użycie `org` cofającego się do niższych adresów powoduje wygenerowanie przez Mad Assemblera bloków XEX, które podczas wczytywania przez Atari DOS/OS nadpisują wcześniej wczytane dane w RAM.
+
+### D. Bezpieczne bufory tymczasowe (Scratchpad)
+- **Reguła**: Nie wolno używać sztywnych adresów kodowych (np. `$3000`) jako buforów tymczasowych dekompresji (np. w `mRLE_Depack`), ponieważ rozbudowa kody silnika zniszczy bufor. Należy używać wyznaczonych buforów w RAM (np. `FOOTER_ADDR` = `$5E10`).
+

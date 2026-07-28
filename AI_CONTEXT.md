@@ -287,6 +287,20 @@ Format RLE (PackBits + marker EOF):
 - `$80`     → znacznik końca danych (EOF)
 - `$81–$FF` → powtórzenie kolejnego bajtu `(cmd & $7F) + 1` razy (2..128)
 
+## Zasady Zarządzania Pamięcią (Lessons Learned)
+
+1. **Bezwzględna granica OS ROM ($C000+)**:
+   - Pamięć od `$C000` do `$FFFF` przy włączonym OS ROM (`PORTB` bit 0 = 1) mieści OS Kernel oraz rejestry sprzętowe `$D000`–`$DFFF`.
+   - **Wszystkie dane, tablice, obrazki RLE i sprite'y MUSZĄ kończyć się najpóźniej na `$BFFF`**.
+2. **Rezerwacja Odtwarzacza RMT ($A9E0 – $B610)**:
+   - Zakres `$A9E0`–`$B610` mieści zmienne, tabele częstotliwości/głośności, kod playera `$AD00` oraz moduł `$B300`. Zabronione jest umieszczanie w tym zakresie jakichkolwiek sprite'ów lub danych gry.
+3. **Brak backtracking instrukcji `org` w `main.asm`**:
+   - Dyrektywy `org` muszą tworzyć ciąg rosnący. Cofanie `org` powoduje nadpisywanie bloków w pliku binary XEX podczas ładowania przez Atari DOS.
+4. **Rozdzielenie stref pamięci RAM**:
+   - Niski RAM `$0700`–`$1FFF`: `TitleScreen_Data` ($0700), logo/moon sprites ($1E36).
+   - Wysoki RAM `$8570`–`$9FFF`: `GameOverScreen_Data` ($8570).
+   - RAM pod BASIC ROM `$B611`–`$BFFF`: Sprite'y postaci ($B611).
+
 ## Testowanie z Py65
 
 Projekt używa [py65](https://github.com/mnaberez/py65) — emulatora 6502 w Pythonie — do testowania kodu asemblerowego bez uruchamiania pełnego emulatora Atari.

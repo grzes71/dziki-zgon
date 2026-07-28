@@ -132,7 +132,7 @@ STATE_GAME  = 2
 STATE_OVER  = 3
 
 ; ---- Development — indeks etapu startowego (0=title, 1=story, 2=game, 3=gameover) ----
-DEV_START_STAGE = 2         ; zmień, by wystartować od innego etapu podczas developmentu
+DEV_START_STAGE = 0         ; zmień, by wystartować od innego etapu podczas developmentu
 
 ; ---- Limity i współrzędne spawnu przy przejściu między ekranami ----
 SCREEN_LIMIT_LEFT   = 48   ; Lewa granica chodzenia. Ruch poniżej wyzwala transition na zachód.

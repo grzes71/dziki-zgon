@@ -12,6 +12,17 @@
     icl "zeropage.asm"
 
 ; ===================================================================
+; 1.5. Grafiki tytułowe w wolnym niskim RAM-ie ($0700)
+; ===================================================================
+    org $0700
+TitleScreen_Data
+    ins "gen/title.rle"
+
+; --- Dane Duszków / Sprite'ów (Logo & Księżyc) ---
+    icl "gen/dziki-zgon.asm"
+    icl "gen/moon.asm"
+
+; ===================================================================
 ; 2. Kod programu ($2000)
 ; ===================================================================
     org $2000
@@ -285,19 +296,7 @@ GO_SCREEN = VRAM_ARENA
 ; Gameover grafika jest kompresowana i wypakowywana w gameover_init.
 
 ; ===================================================================
-; 12. Dane skompresowane w darmowym RAM-ie ($8000)
-; ===================================================================
-    org $8000
-TitleScreen_Data
-    ins "gen/title.rle"
-GameOverScreen_Data
-    ins "gen/gameover.rle"
-
-; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
-GO_TEXT = FOOTER_ADDR
-
-; ===================================================================
-; 13. Dane świata i odtwarzacz muzyki (w bezpiecznym darmowym RAM-ie)
+; 12. Dane świata, sterownik audio, GameOver i sprite'y ($6800)
 ; ===================================================================
     org $6800
 
@@ -309,16 +308,23 @@ GO_TEXT = FOOTER_ADDR
     icl "gen/world/exits.asm"
     icl "gen/world/interactive_objects.asm"
 
-; --- Muzyka i odtwarzacz ($8800) ---
+; --- Muzyka i sterownik ($8506 / $A9E0 / $AD00 / $B300) ---
     icl "music/title_audio.asm"
 
-; --- Dane Duszków / Sprite'ów ---
-    icl "gen/dziki-zgon.asm"
-    icl "gen/moon.asm"
+; --- Skompresowany obrazek GameOver ($8570) ---
+    org $8570
+GameOverScreen_Data
+    ins "gen/gameover.rle"
+
+; --- Aktorzy / Przeciwnicy (pod ROM BASIC od $B611) ---
+    org $B611
     icl "gen/gerwalt.sprite.asm"
     icl "gen/bazyliszek.sprite.asm"
     icl "gen/kikimora.sprite.asm"
     icl "gen/strzyga.sprite.asm"
     icl "gen/sukkub.sprite.asm"
+
+; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
+GO_TEXT = FOOTER_ADDR
 
     run start

@@ -10,9 +10,6 @@ objects:
 - object: TREE_3
   x: 14
   y: 1
-- object: BUSH_2
-  x: 33
-  y: 5
 - object: SIGNPOINT_RIGHT
   x: 30
   y: 5
@@ -79,9 +76,6 @@ objects:
 - object: BUSH_2
   x: 12
   y: 7
-- object: BUSH_2
-  x: 36
-  y: 3
 - object: TREE_3
   x: 35
   y: 7
@@ -140,9 +134,6 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 32
   y: 8
-- object: BARN_4
-  x: 3
-  y: 6
 - object: BUSH
   x: 32
   y: 3
@@ -177,15 +168,6 @@ objects:
 - object: BUSH_2
   x: 6
   y: 10
-- object: BUSH_2
-  x: 15
-  y: 11
-- object: FENCE_5
-  x: 6
-  y: 7
-- object: BARREL
-  x: 7
-  y: 7
 - object: TREE_SMALL
   x: 9
   y: 4
@@ -198,10 +180,142 @@ objects:
 - object: TREE_2
   x: 23
   y: 8
+- object: SHED
+  x: 2
+  y: 7
+- object: FENCE_5
+  x: 5
+  y: 8
+  repeat-x: 4
+- object: OUTHOUSE_2
+  x: 9
+  y: 1
+- object: BARN_3
+  x: 35
+  y: 4
+- object: BUSH_2
+  x: 33
+  y: 5
+- object: BUSH_2
+  x: 28
+  y: 9
+- object: BUSH_2
+  x: 5
+  y: 6
+- object: REED
+  x: 14
+  y: 11
+  repeat-x: 3
+- object: REED
+  x: 16
+  y: 10
+- object: REED
+  x: 12
+  y: 11
+- object: REED
+  x: 13
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 19
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 21
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 22
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 25
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 29
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 33
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 28
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 27
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 28
+  y: 3
+- object: GROUND_BROWN_DOWN
+  x: 27
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 27
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 0
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 1
+  repeat-y: 2
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 2
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 4
+- object: GROUND_BROWN_UP
+  x: 19
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 21
+  y: 0
+  repeat-x: 3
+- object: GROUND_BROWN_UP
+  x: 20
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 17
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 22
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 21
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 25
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 26
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 28
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 27
+  y: 8
+  repeat-y: 2
+- object: GROUND_BROWN_DOWN
+  x: 11
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 8
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 3
+  y: 5
 enemies:
 - enemy: sukkub
   x: 27
-  y: 4
+  y: 6
   strategy: pacing
   speed: medium
-  color: gray
+  color: yellow

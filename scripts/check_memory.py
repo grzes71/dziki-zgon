@@ -141,7 +141,8 @@ def update_memory_usage(lab_file, md_file):
         "align padding": ("MAIN_LOOP", ("before", "GO_TEXT_DATA")),
         "go_text_data": ("GO_TEXT_DATA", ("before", "STORYTEXT_DATA")),
         "storytext_data": ("STORYTEXT_DATA", ("before", "TITLEFOOTERROM")),
-        "titlefooterrom": ("TITLEFOOTERROM", ("before", "DZIKIZGONDATA")),
+        "titlefooterrom": ("TITLEFOOTERROM", ("size", 289)),
+        "titlescreen_data": ("TITLESCREEN_DATA", ("before", "DZIKIZGONDATA")),
         "dzikizgondata": ("DZIKIZGONDATA", ("before", "MOONDATA")),
         "moondata": ("MOONDATA", ("size", 98)),
         "display lists": ("DLIST_TITLE", ("size", 360)),
@@ -149,9 +150,9 @@ def update_memory_usage(lab_file, md_file):
         "footer_addr": ("FOOTER_ADDR", ("size", 320)),
         "font.asm": ("FONTDATA", ("size", 1024)),
         "game_font.asm": ("GAMEFONTDATA", ("size", 1024)),
-        "rom_data": ("TITLESCREEN_DATA", ("before", "TITLE_AUDIO_INIT")),
-        "title_audio.asm": ("TITLE_AUDIO_INIT", ("before", "DUMMY_VBI")),
-        "dummy_vbi": ("DUMMY_VBI", ("before", "PMBASE_ADDR")),
+        "world builder data": ("OBJ_SIZE", ("before", "TITLE_AUDIO_INIT")),
+        "title_audio.asm": ("TITLE_AUDIO_INIT", ("before", "GAMEOVERSCREEN_DATA")),
+        "gameoverscreen_data": ("GAMEOVERSCREEN_DATA", ("size", 2250)),
         "missiles": ("MISSILES", ("before", "PLAYER0")),
         "player0": ("PLAYER0", ("before", "PLAYER1")),
         "player1": ("PLAYER1", ("before", "PLAYER2")),
@@ -161,6 +162,7 @@ def update_memory_usage(lab_file, md_file):
         "rmtplayr_vars": ("TRACK_VARIABLES", ("before", "PLAYER")),
         "rmtplayr.asm": ("PLAYER", "RMTPLAYEREND"),
         "title_music.asm": ("MODUL", "TITLE_MUSIC_END"),
+        "gerwalt_right_frame_0": ("GERWALT_RIGHT_FRAME_0", ("size", 2296)),
     }
 
     missing_symbols = set()

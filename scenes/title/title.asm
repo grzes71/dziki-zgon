@@ -30,8 +30,8 @@ title_fire_released
     ; Format źródłowy: [P0,P1,P2,P3,M5th] × 37 wierszy
     ; Format PMG:       per-player, ciągiem 128 B, offset TOP_MARGIN
     
-    ; Rozpakuj SpriteData (logo) do bufora tymczasowego $3000
-    mRLE_Depack SpriteData $3000
+    ; Rozpakuj SpriteData (logo) do bufora tymczasowego FOOTER_ADDR
+    mRLE_Depack SpriteData FOOTER_ADDR
 
     ldx #SPRITE_ROWS-1
 
@@ -45,19 +45,19 @@ title_fire_released
     adc SRC_TMP          ; +1 → *5
     tay                  ; Y = offset w źródle
 
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER0+TOP_MARGIN,x
     iny
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER1+TOP_MARGIN,x
     iny
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER2+TOP_MARGIN,x
     iny
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER3+TOP_MARGIN,x
     iny
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta MISSILES+TOP_MARGIN,x
 
     dex
@@ -71,8 +71,8 @@ title_fire_released
     dex
     bpl @mclear
 
-    ; Rozpakuj MoonData (księżyc) do bufora tymczasowego $3000
-    mRLE_Depack MoonData $3000
+    ; Rozpakuj MoonData (księżyc) do bufora tymczasowego FOOTER_ADDR
+    mRLE_Depack MoonData FOOTER_ADDR
 
     ldx #MOON_ROWS-1
 @moon_loop
@@ -80,16 +80,16 @@ title_fire_released
     asl @
     asl @               ; X * 4
     tay
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER0+MOON_TOP,x
     iny
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER1+MOON_TOP,x
     iny
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER2+MOON_TOP,x
     iny
-    lda $3000,y
+    lda FOOTER_ADDR,y
     sta PLAYER3+MOON_TOP,x
     pointer_dummy = *
     dex
