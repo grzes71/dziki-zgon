@@ -96,11 +96,18 @@ def main():
         while len(raw_bytes) < 320:
             raw_bytes.append(0) # spacja to 0 w screencodes
     elif basename.startswith("gameover"):
-        # Game Over oczekuje dokładnie 40 znaków (tryb ANTIC 2, 40 kolumn)
-        text = "".join(lines).replace("\r", "").replace("\n", "")
-        text = text.ljust(40)[:40]
-        for c in text:
-            raw_bytes.append(to_atari_screencode(c))
+        # Game Over (ANTIC 2, 40 kolumn na linię, obsługa wielu linii)
+        valid_lines = [l.rstrip("\r\n") for l in lines if l.rstrip("\r\n")]
+        line_count = len(valid_lines)
+        if line_count == 0:
+            valid_lines = [" " * 40]
+            line_count = 1
+        for idx, line in enumerate(valid_lines):
+            if len(line) != 40:
+                print(f"Uwaga: Plik {input_file} linia {idx+1} ma długość {len(line)} zamiast 40 znaków.", file=sys.stderr)
+            line = line.ljust(40)[:40]
+            for c in line:
+                raw_bytes.append(to_atari_screencode(c))
 
     else:
         # Ogólne przetwarzanie plików tekstowych
@@ -117,6 +124,8 @@ def main():
     with open(args.output, "w", encoding="utf-8") as f:
         f.write("; Plik wygenerowany automatycznie przez rle_compress_text.py\n")
         f.write(f"; Oryginalny rozmiar: {len(raw_bytes)} B, Skompresowany: {len(compressed)} B\n\n")
+        if basename.startswith("gameover"):
+            f.write(f"{label_name}_lines\n    .byte {line_count}\n")
         f.write(f"{label_name}\n")
         
         # Zapisz bajty w liniach po 8

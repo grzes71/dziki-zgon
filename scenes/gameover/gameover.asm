@@ -16,6 +16,57 @@ gameover_fire_released
     dta $00
 go_dli_state
     dta $00
+go_timer_frames
+    dta $00
+go_current_line
+    dta $00
+go_text_max_lines
+    dta $00
+
+; Adresy początkowe linii tekstu w buforze FOOTER_ADDR ($5E10..$5F4F)
+GoLineAddrLo
+    dta <$5E10, <$5E38, <$5E60, <$5E88, <$5EB0, <$5ED8, <$5F00, <$5F28
+GoLineAddrHi
+    dta >$5E10, >$5E38, >$5E60, >$5E88, >$5EB0, >$5ED8, >$5F00, >$5F28
+
+;==============================================================
+; gameover_vbi — Obsługa Immediate VBI dla ekranu Game Over
+; - Odtwarza muzykę RMT
+; - Liczy klatki i co 5 sekund (250 klatek przy 50 Hz) cyklicznie przełącza linię tekstu
+;==============================================================
+.proc gameover_vbi
+    jsr RASTERMUSICTRACKER+3 ; Odtwórz 1 klatkę muzyki RMT
+
+    inc go_timer_frames
+    lda go_timer_frames
+    cmp #250                ; 5.0 s = 250 klatek przy 50 Hz (PAL)
+    bcc @done
+
+    lda #0
+    sta go_timer_frames
+
+    lda go_text_max_lines
+    cmp #2
+    bcc @done               ; Jeśli jest 1 linia lub mniej, nie przełączaj
+
+    inc go_current_line
+    lda go_current_line
+    cmp go_text_max_lines
+    bcc @apply_line
+
+    lda #0
+    sta go_current_line
+
+@apply_line
+    ldx go_current_line
+    lda GoLineAddrLo,x
+    sta GO_TEXT_LMS+1
+    lda GoLineAddrHi,x
+    sta GO_TEXT_LMS+2
+
+@done
+    jmp SYSVBV
+.endp
 
 ;==============================================================
 ; DLI_Gameover — 2-etapowa obsługa DLI:
@@ -152,6 +203,16 @@ GoRainbow
     sta DMACTL
 
     jsr title_audio_init
+
+    ; --- Podepnij własny VBI handler (wywołuje tracker + odliczanie klatek) ---
+    lda #0
+    sta NMIEN
+    lda #<gameover_vbi
+    sta $0222
+    lda #>gameover_vbi
+    sta $0223
+    lda #$C0
+    sta NMIEN
     rts
 .endp
 
@@ -181,15 +242,28 @@ GoRainbow
 ; copy_gameover_text — Kopiuje tekst GAME OVER (porażka/sukces) z ROM do RAM ($5E10)
 ;==============================================================
 .proc copy_gameover_text
+    lda #0
+    sta go_timer_frames
+    sta go_current_line
+
+    lda #<$5E10
+    sta GO_TEXT_LMS+1
+    lda #>$5E10
+    sta GO_TEXT_LMS+2
+
     lda GAME_RESULT_STATUS
     cmp #1                  ; 1 = Sukces
     beq @do_success
 
 @do_fail
     mRLE_Depack text_gameover_fail FOOTER_ADDR
+    lda text_gameover_fail_lines
+    sta go_text_max_lines
     rts
 
 @do_success
     mRLE_Depack text_gameover_success FOOTER_ADDR
+    lda text_gameover_success_lines
+    sta go_text_max_lines
     rts
 .endp

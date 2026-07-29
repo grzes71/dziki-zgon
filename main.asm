@@ -264,6 +264,7 @@ DLIST_GAMEOVER
     dta $04                     ; ANTIC 4 (linie 2-23)
     .endr
     dta $90                     ; 1 pusta linia + DLI
+GO_TEXT_LMS
     dta $42,a(GO_TEXT)          ; LMS + ANTIC mode 2 (40 znaków z czcionki font.asm $6000 na $5E10)
     dta $41,a(DLIST_GAMEOVER)   ; JVB — powrót na początek DL
 
