@@ -40,5 +40,7 @@ ENEMY_COUNT_TMP       equ $A0 ; Tymczasowa liczba przeciwników na ekranie
 CURRENT_ACTOR         equ $A1 ; Indeks aktualnie ładowanego aktora (1..3)
 MSG_STATE             equ $A2 ; Stan linii komunikatów (0=brak, 1=wyświetlanie, 2=1s do końca)
 GAME_RESULT_STATUS    equ $A3 ; Status zakończenia gry: 0=w trakcie, 1=sukces (rachunek), 2=upływ czasu
+GO_RAINBOW_PTR        equ $A4 ; Wskaźnik na tablicę kolorów tęczy Game Over (2 bajty, $A4-$A5)
+
 
 

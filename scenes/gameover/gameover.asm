@@ -102,17 +102,17 @@ GoLineAddrHi
     lda #$60            ; DLI #2 (dół): czcionka systemowa ($6000) dla dolnej linii tekstu
     sta CHBASE
 
-    ldx #0
-    stx COLPF0    
-    stx COLPF1
-    stx COLBK
+    ldy #0
+    sty COLPF0    
+    sty COLPF1
+    sty COLBK
 
 @rainbow_loop
-    lda GoRainbow,x
+    lda (GO_RAINBOW_PTR),y
     sta WSYNC
     sta COLPF2
-    inx
-    cpx #10
+    iny
+    cpy #10
     bne @rainbow_loop
 
     lda #0
@@ -123,9 +123,10 @@ GoLineAddrHi
 
 ; Tablica kolorów tła dla paska tęczy (10 linii skanowania)
 GoRainbow
-    dta $00, $94, $96, $98, $9A, $9A, $98, $96, $94, $00
+    dta $94, $96, $98, $9A, $9C, $9A, $98, $96, $94, $00
 
-
+GoRainbow_Failure
+    dta $34, $36, $38, $3A, $3C, $3A, $38, $36, $34, $00
 
 .proc gameover_init
     lda #0
@@ -143,6 +144,11 @@ GoRainbow
     beq @do_success
 
 @do_fail
+    lda #<GoRainbow_Failure
+    sta GO_RAINBOW_PTR
+    lda #>GoRainbow_Failure
+    sta GO_RAINBOW_PTR+1
+
     ldx #0
 @loop_fail
     lda GameOverFail_Data,x
@@ -158,6 +164,11 @@ GoRainbow
     jmp @screen_done
 
 @do_success
+    lda #<GoRainbow
+    sta GO_RAINBOW_PTR
+    lda #>GoRainbow
+    sta GO_RAINBOW_PTR+1
+
     ldx #0
 @loop_succ
     lda GameOverSuccess_Data,x

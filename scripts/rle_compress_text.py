@@ -85,8 +85,8 @@ def main():
 
     # Przygotuj dane wejściowe
     raw_bytes = bytearray()
-    if basename in ["story", "title"]:
-        # Story i Title oczekują 8 linii po dokładnie 40 znaków
+    if basename == "story":
+        # Story oczekuje 8 linii po dokładnie 40 znaków
         for line in lines[:8]:
             line = line.rstrip("\r\n")
             line = line.ljust(40)[:40]
@@ -95,8 +95,8 @@ def main():
         # Upewnij się, że mamy dokładnie 320 bajtów
         while len(raw_bytes) < 320:
             raw_bytes.append(0) # spacja to 0 w screencodes
-    elif basename.startswith("gameover"):
-        # Game Over (ANTIC 2, 40 kolumn na linię, obsługa wielu linii)
+    elif basename == "title" or basename.startswith("gameover"):
+        # Title oraz Game Over (ANTIC 2, 40 kolumn na linię, obsługa wielu linii)
         valid_lines = [l.rstrip("\r\n") for l in lines if l.rstrip("\r\n")]
         line_count = len(valid_lines)
         if line_count == 0:
@@ -124,7 +124,7 @@ def main():
     with open(args.output, "w", encoding="utf-8") as f:
         f.write("; Plik wygenerowany automatycznie przez rle_compress_text.py\n")
         f.write(f"; Oryginalny rozmiar: {len(raw_bytes)} B, Skompresowany: {len(compressed)} B\n\n")
-        if basename.startswith("gameover"):
+        if basename == "title" or basename.startswith("gameover"):
             f.write(f"{label_name}_lines\n    .byte {line_count}\n")
         f.write(f"{label_name}\n")
         

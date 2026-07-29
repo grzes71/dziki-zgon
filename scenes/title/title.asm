@@ -9,6 +9,57 @@
 ;---- Zmienne lokalne sceny ----
 title_fire_released
     dta $00
+title_timer_frames
+    dta $00
+title_current_line
+    dta $00
+title_text_max_lines
+    dta $00
+
+; Adresy początkowe linii tekstu w buforze FOOTER_ADDR ($5E10..$5F4F)
+TitleLineAddrLo
+    dta <$5E10, <$5E38, <$5E60, <$5E88, <$5EB0, <$5ED8, <$5F00, <$5F28
+TitleLineAddrHi
+    dta >$5E10, >$5E38, >$5E60, >$5E88, >$5EB0, >$5ED8, >$5F00, >$5F28
+
+;==============================================================
+; title_vbi — Obsługa Immediate VBI dla ekranu tytułowego
+; - Odtwarza muzykę RMT
+; - Liczy klatki i co 5 sekund (250 klatek przy 50 Hz) cyklicznie przełącza linię tekstu
+;==============================================================
+.proc title_vbi
+    jsr RASTERMUSICTRACKER+3 ; Odtwórz 1 klatkę muzyki RMT
+
+    inc title_timer_frames
+    lda title_timer_frames
+    cmp #250                ; 5.0 s = 250 klatek przy 50 Hz (PAL)
+    bcc @done
+
+    lda #0
+    sta title_timer_frames
+
+    lda title_text_max_lines
+    cmp #2
+    bcc @done               ; Jeśli jest 1 linia lub mniej, nie przełączaj
+
+    inc title_current_line
+    lda title_current_line
+    cmp title_text_max_lines
+    bcc @apply_line
+
+    lda #0
+    sta title_current_line
+
+@apply_line
+    ldx title_current_line
+    lda TitleLineAddrLo,x
+    sta TITLE_TEXT_LMS+1
+    lda TitleLineAddrHi,x
+    sta TITLE_TEXT_LMS+2
+
+@done
+    jmp SYSVBV
+.endp
 
 ;==============================================================
 ; title_init — Konfiguracja ekranu tytułowego
@@ -195,6 +246,16 @@ title_fire_released
     sta NMIEN
 
     jsr title_audio_init
+
+    ; --- Podepnij własny VBI handler (wywołuje tracker + odliczanie klatek) ---
+    lda #0
+    sta NMIEN
+    lda #<title_vbi
+    sta $0222
+    lda #>title_vbi
+    sta $0223
+    lda #$C0
+    sta NMIEN
     rts
 .endp
 
@@ -388,15 +449,12 @@ TEXT_DLI
     lda #$00
     sta GRACTL
 
-    ldx #$9E
-    sta WSYNC
-    stx COLPF2
     sta COLPF0
     sta COLPF1
     sta COLBK
 
     ; Efekt tęczy (8 linii skanowania znaku)
-    ldy #7
+    ldy #8
 @tloop
     lda TextColors,y
     sta WSYNC
@@ -434,10 +492,10 @@ TEXT_DLI
     rti
 
 ;==============================================================
-; Tabela kolorów tęczy — stopka tekstowa (8 pozycji)
+; Tabela kolorów tęczy — stopka tekstowa (9 pozycji)
 ;==============================================================
 TextColors
-    dta $90,$92,$94,$96,$98,$9A,$9C,$9E
+    dta $00,$12,$14,$16,$18,$CA,$C8,$C6,$C4
 
 ;==============================================================
 ; DLI_Nop — Pusty handler DLI (używany przy przejściach między stanami)
@@ -447,10 +505,21 @@ DLI_Nop
 
 ;==============================================================
 ; copy_title_footer — Przywraca tekst stopki tytułu ($5E10)
-; Kopiuje 320 bajtów z TitleFooterROM → FOOTER_ADDR
+; Kopiuje dane z TitleFooterROM → FOOTER_ADDR i zeruje timery przełączania
 ; Niszczy: A, X, Y
 ;==============================================================
 .proc copy_title_footer
+    lda #0
+    sta title_timer_frames
+    sta title_current_line
+
+    lda #<$5E10
+    sta TITLE_TEXT_LMS+1
+    lda #>$5E10
+    sta TITLE_TEXT_LMS+2
+
     mRLE_Depack TitleFooterROM FOOTER_ADDR
+    lda text_title_lines
+    sta title_text_max_lines
     rts
 .endp

@@ -35,19 +35,19 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$2000` – `$2002`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2003` – `$200A`** | 8 B | `disable_basic_loader` | Kod programu | Wyłączenie BASICa (obsługa ini). |
 | **`$200B` – `$2035`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$2036` – `$31A6`** | 4465 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$31A7` – `$34CB`** | 805 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
-| **`$34CC` – `$34CC`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
-| **`$34CD` – `$353E`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$353F` – `$353F`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
-| **`$3722` – `$38EE`** | 461 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
-| **`$38EF` – `$38EF`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$3997` – `$3AC7`** | 305 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
-| **`$3AC8` – `$3C00`** | 313 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
-| **`$3AFB` – `$3C00`** | 262 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
+| **`$2036` – `$31F4`** | 4543 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$31F5` – `$353E`** | 842 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
+| **`$353F` – `$353F`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
+| **`$3540` – `$35B1`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
+| **`$35B2` – `$35B2`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
+| **`$3795` – `$3961`** | 461 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
+| **`$3962` – `$3962`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
+| **`$3A13` – `$3B53`** | 321 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
+| **`$3B54` – `$3C00`** | 173 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$3B87` – `$3C00`** | 122 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
 | **`$3C01` – `$3C97`** | 151 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
-| **`$3C98` – `$3DC5`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
-| **`$3DC6` – `$3EE6`** | 289 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
+| **`$3C98` – `$3DC6`** | 303 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
+| **`$3DC7` – `$3EE7`** | 289 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
 | **`$3DA0` – `$3E7F`** | 224 B | — | **WOLNY RAM** | Bufor wolnej pamięci w dolnym RAM-ie. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry (Title, Story, Game, GameOver). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
