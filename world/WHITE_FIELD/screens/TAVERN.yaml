@@ -130,9 +130,6 @@ objects:
   x: 39
   y: 8
 - object: GROUND_BROWN_DOWN
-  x: 39
-  y: 5
-- object: GROUND_BROWN_DOWN
   x: 37
   y: 3
 - object: GROUND_BROWN_DOWN
@@ -173,4 +170,7 @@ objects:
 - object: ROCK_GREEN
   x: 34
   y: 1
+- object: TREE_SMALL
+  x: 38
+  y: 5
 enemies: []

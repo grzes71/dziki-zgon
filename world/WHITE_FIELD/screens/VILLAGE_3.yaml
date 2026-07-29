@@ -25,60 +25,22 @@ objects:
 - object: TREE_3
   x: 25
   y: 4
-- object: CROSS_2
-  x: 5
-  y: 9
 - object: ROCK_2
   x: 10
-  y: 6
-- object: ROCK_1
-  x: 15
   y: 6
 - object: BUSH
   x: 24
   y: 5
-- object: WELL
-  x: 12
-  y: 2
 - object: FENCE_1
   x: 33
   y: 5
 - object: GROUND_GREEN_UP
-  x: 16
-  y: 0
-- object: GROUND_GREEN_UP
-  x: 17
-  y: 1
-  repeat-x: 2
-- object: GROUND_GREEN_UP
-  x: 19
-  y: 0
-- object: GROUND_GREEN_UP
-  x: 15
-  y: 1
-- object: GROUND_GREEN_UP
   x: 8
-  y: 0
-- object: GROUND_GREEN_UP
-  x: 5
   y: 0
 - object: WAVES
   x: 0
   y: 11
   repeat-x: 40
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 4
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 17
-  y: 0
-- object: GROUND_BROWN_UP
-  x: 14
-  y: 0
-- object: GROUND_BROWN_UP
-  x: 12
-  y: 0
 - object: GROUND_BROWN_UP
   x: 39
   y: 2
@@ -105,15 +67,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 6
-- object: GROUND_BROWN_DOWN
-  x: 3
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 2
-  y: 1
-- object: TREE_2
-  x: 4
-  y: 5
 - object: FENCE_5
   x: 16
   y: 9
@@ -127,9 +80,6 @@ objects:
 - object: TREE_2
   x: 25
   y: 1
-- object: MUSHROOM
-  x: 30
-  y: 2
 - object: ROCK_GREEN
   x: 31
   y: 9
@@ -137,14 +87,8 @@ objects:
   x: 39
   y: 0
 - object: BUSH
-  x: 8
-  y: 6
-- object: BUSH
   x: 30
   y: 0
-- object: BUSH_2
-  x: 17
-  y: 3
 - object: BARREL
   x: 27
   y: 5
@@ -154,33 +98,11 @@ objects:
 - object: BUSH_2
   x: 23
   y: 9
-- object: SIGNPOINT_LEFT
-  x: 3
-  y: 8
 - object: TREE_SMALL
   x: 38
   y: 9
-- object: SIGNPOINT_RIGHT
-  x: 34
-  y: 8
-- object: CROSS_1
-  x: 20
-  y: 1
-- object: CROSS_1
-  x: 21
-  y: 0
-  repeat-x: 2
 - object: TREE_3
   x: 28
-  y: 1
-- object: ROCK_2
-  x: 0
-  y: 0
-- object: TREE_3
-  x: 0
-  y: 1
-- object: TREE_3
-  x: 5
   y: 1
 - object: TREE_3
   x: 34
@@ -191,6 +113,97 @@ objects:
 - object: TREE_3
   x: 28
   y: 8
+- object: TREE_3
+  x: 2
+  y: 7
+- object: TREE_3
+  x: 3
+  y: 3
+- object: TREE_3
+  x: 0
+  y: 0
+- object: TREE_3
+  x: 18
+  y: 1
+- object: TREE_3
+  x: 36
+  y: 7
+- object: TREE_3
+  x: 15
+  y: 4
+- object: ROCK_1
+  x: 14
+  y: 1
+- object: SIGNPOINT_LEFT
+  x: 4
+  y: 0
+- object: BUSH_2
+  x: 6
+  y: 6
+- object: BUSH_2
+  x: 22
+  y: 3
+- object: BUSH_2
+  x: 32
+  y: 7
+- object: BUSH
+  x: 5
+  y: 8
+- object: BUSH
+  x: 1
+  y: 4
+- object: BUSH
+  x: 20
+  y: 2
+- object: BUSH
+  x: 33
+  y: 2
+- object: BUSH
+  x: 39
+  y: 6
+- object: SIGNPOINT_RIGHT
+  x: 30
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 13
+  y: 3
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 3
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 7
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 23
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 9
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 5
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 9
+  y: 0
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 7
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 12
+  y: 0
+- object: BARREL
+  x: 11
+  y: 3
 enemies:
 - enemy: kikimora
   x: 22

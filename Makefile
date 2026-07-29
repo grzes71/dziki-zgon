@@ -4,7 +4,6 @@
 # ---- Narzędzia ----
 MADS    := c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
 PYTHON  := $(CURDIR)/.venv/Scripts/python.exe
-ATARI_CHARSET_TRAINER  := $(CURDIR)/.venv/Scripts/atari-charset-trainer.exe
 ASAPCONV  := C:/Apps/ASAP/asapconv.exe
 RMT2ATASM := C:/Apps/rmt2atasm.exe
 
@@ -143,9 +142,9 @@ go: $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN)
 $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN): $(GO_FAIL_IMG) $(GO_SUCCESS_IMG)
 	-@mkdir $(GO_GEN_DIR)
 	@echo "=== Generowanie charsetu i ekranów Game Over (atari-charset-trainer) ==="
-	$(ATARI_CHARSET_TRAINER) train img/gameover $(GO_GEN_DIR) --glyphs 128  --algorithm kmedoids --optimize
-	$(ATARI_CHARSET_TRAINER) export $(GO_GEN_DIR)
-	$(ATARI_CHARSET_TRAINER) simulate img/gameover $(GO_GEN_DIR)/charset.model $(GO_GEN_DIR)
+	$(PYTHON) -m atari_charset_trainer train img/gameover $(GO_GEN_DIR) --glyphs 128  --algorithm kmedoids --optimize
+	$(PYTHON) -m atari_charset_trainer export $(GO_GEN_DIR)
+	$(PYTHON) -m atari_charset_trainer simulate img/gameover $(GO_GEN_DIR)/charset.model $(GO_GEN_DIR)
 
 # Generowanie czcionek
 fonts: $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM)

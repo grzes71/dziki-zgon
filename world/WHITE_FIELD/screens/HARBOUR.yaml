@@ -166,9 +166,6 @@ objects:
 - object: TREE_3
   x: 9
   y: 7
-- object: BUSH_2
-  x: 13
-  y: 6
 - object: ROCK_GREEN
   x: 18
   y: 3
@@ -192,13 +189,7 @@ objects:
   x: 20
   y: 4
 - object: GROUND_BROWN_DOWN
-  x: 21
-  y: 5
-- object: GROUND_BROWN_DOWN
   x: 20
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 22
   y: 6
 - object: GROUND_BROWN_DOWN
   x: 19
@@ -209,6 +200,9 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 17
   y: 5
+- object: MUSHROOM
+  x: 13
+  y: 6
 enemies:
 - enemy: strzyga
   x: 16

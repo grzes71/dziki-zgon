@@ -88,22 +88,12 @@ objects:
 - object: HOUSE_BIGGER_2
   x: 24
   y: 8
-- object: HOUSE_BIGGER_2
-  x: 12
-  y: 4
-- object: BARN_4
-  x: 19
-  y: 5
 - object: OUTHOUSE_2
   x: 20
   y: 9
 - object: FENCE_2
   x: 22
   y: 10
-  repeat-x: 2
-- object: FENCE_2
-  x: 17
-  y: 6
   repeat-x: 2
 - object: REED
   x: 29
@@ -117,9 +107,6 @@ objects:
 - object: ROCK_1
   x: 5
   y: 8
-- object: ROCK_2
-  x: 7
-  y: 9
 - object: CROSS_1
   x: 33
   y: 9
@@ -140,16 +127,10 @@ objects:
   y: 11
   repeat-x: 2
 - object: GROUND_GREEN_DOWN
-  x: 34
-  y: 11
-- object: GROUND_GREEN_DOWN
   x: 37
   y: 10
 - object: GROUND_GREEN_DOWN
   x: 39
-  y: 10
-- object: GROUND_GREEN_DOWN
-  x: 35
   y: 10
 - object: GROUND_BROWN_UP
   x: 38
@@ -158,21 +139,8 @@ objects:
   x: 37
   y: 11
 - object: GROUND_BROWN_UP
-  x: 36
-  y: 10
-- object: GROUND_BROWN_UP
   x: 35
   y: 11
-- object: GROUND_BROWN_UP
-  x: 33
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 31
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 9
-  repeat-x: 3
 - object: GROUND_BROWN_UP
   x: 39
   y: 1
@@ -180,15 +148,9 @@ objects:
   x: 35
   y: 0
 - object: GROUND_BROWN_UP
-  x: 0
-  y: 11
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 10
-- object: GROUND_BROWN_UP
   x: 3
   y: 11
+  repeat-x: 2
 - object: GROUND_BROWN_UP
   x: 0
   y: 2
@@ -197,14 +159,8 @@ objects:
   x: 0
   y: 3
 - object: GROUND_BROWN_DOWN
-  x: 11
-  y: 8
-- object: GROUND_BROWN_DOWN
   x: 18
   y: 8
-- object: GROUND_BROWN_DOWN
-  x: 25
-  y: 6
 - object: GROUND_BROWN_DOWN
   x: 28
   y: 5
@@ -215,23 +171,80 @@ objects:
   x: 17
   y: 3
 - object: GROUND_BROWN_DOWN
-  x: 11
-  y: 11
-- object: GROUND_BROWN_DOWN
   x: 8
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 14
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 16
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 6
   y: 11
 - object: BARREL
   x: 19
   y: 10
+- object: TREE_2
+  x: 0
+  y: 10
+- object: ROCK_2
+  x: 31
+  y: 11
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 35
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 21
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 9
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 9
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 9
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 7
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 11
+  repeat-x: 3
+- object: GROUND_BROWN_DOWN
+  x: 5
+  y: 11
+  repeat-x: 2
+- object: HOUSE_MEDIUM_GREEN
+  x: 16
+  y: 4
+- object: ROCK_GREEN
+  x: 11
+  y: 7
+- object: TREE_3
+  x: 23
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 7
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 9
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 8
+  y: 10
+- object: WATER_UP
+  x: 36
+  y: 5
+  repeat-x: 3
+- object: WATER_BR
+  x: 39
+  y: 5
+- object: WATER_BL
+  x: 35
+  y: 5
 enemies:
 - enemy: strzyga
   x: 8

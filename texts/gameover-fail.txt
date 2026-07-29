@@ -1,2 +1,3 @@
-   trafiłeś do więzienia, koniec gry!   
+   twój czas się skończył, koniec gry!  
+   niestety trafiłeś do więzienia ...   
      spróbuj szczęścia jeszcze raz!     

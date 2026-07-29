@@ -495,7 +495,7 @@ TEXT_DLI
 ; Tabela kolorów tęczy — stopka tekstowa (9 pozycji)
 ;==============================================================
 TextColors
-    dta $00,$12,$14,$16,$18,$CA,$C8,$C6,$C4
+    dta $00,$12,$14,$16,$18,$1A,$EA,$EC,$EE
 
 ;==============================================================
 ; DLI_Nop — Pusty handler DLI (używany przy przejściach między stanami)

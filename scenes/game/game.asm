@@ -387,6 +387,13 @@ temp_sub
     sta ACTOR_Y_OLD,x
     sta ACTOR_INTENT_Y,x
 
+    ; --- Inicjalizacja pierwszej mapy i regionu ---
+    lda #START_SCREEN_ID
+    sta GAME_SCREEN_ID
+    tax
+    lda SCREEN_REGION,x
+    sta game_stage
+
     ; --- Inicjalizacja kolorów wybranego etapu ---
     jsr update_stage_colors
 
@@ -407,10 +414,6 @@ temp_sub
     ; --- Kolory (początkowe, bezpieczne) ---
     lda #$00
     sta COLOR4
-
-    ; --- Inicjalizacja pierwszej mapy ---
-    lda #START_SCREEN_ID
-    sta GAME_SCREEN_ID
 
     ; --- Wypełnij mapę (ANTIC 5 i ANTIC 2) ---
     jsr clear_game_screens
@@ -441,11 +444,6 @@ temp_sub
     sta timer_seconds
     lda #50
     sta timer_frames
-
-    ; --- Zaktualizuj region w oparciu o startowy ekran ---
-    ldx GAME_SCREEN_ID
-    lda SCREEN_REGION,x
-    sta game_stage
 
     ; --- Narysuj nazwę regionu ---
     jsr draw_region_name
