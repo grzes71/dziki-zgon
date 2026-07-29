@@ -611,6 +611,7 @@ def generate_asm_displaylist(
     if footer_addr is not None:
         lines.append("\t; --- Stopka: 1 pusta linia + DLI → ANTIC mode 2 ---")
         lines.append("\tdta $80\t; 1 pusta linia + DLI")
+        lines.append(f"{label_prefix.upper()}_TEXT_LMS")
         lines.append(f"\tdta $42, a(${footer_addr:04X})")
         lines.append("")
 

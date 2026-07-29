@@ -218,6 +218,110 @@ def test_gameover_init_sets_shadow_registers(game_binary) -> None:
 
     assert mem[labels["SDLSTL"]] == dlist_lo
     assert mem[labels["SDLSTH"]] == dlist_hi
-    assert mem[labels["SDMCTL"]] == 0x21
-    assert mem[labels["CHBAS"]] == 0x60
+    assert mem[labels["SDMCTL"]] == 0x22
+    assert mem[labels["CHBAS"]] == 0x90
+
+
+def test_gameover_text_selection_by_result_status(game_binary) -> None:
+    """Verifies that GAMEOVER_INIT depacks failure text when status=0 and success text when status=1."""
+    xex_file, labels = game_binary
+
+    # 1. Test Failure text (status = 0)
+    cpu1 = MPU()
+    load_xex(xex_file, cpu1.memory)
+    cpu1.memory[labels["GAME_RESULT_STATUS"]] = 0
+    run_subroutine(cpu1, labels["GAMEOVER_INIT"], max_steps=100000)
+    footer_addr = labels["FOOTER_ADDR"]
+    fail_bytes = bytes(cpu1.memory[footer_addr : footer_addr + 40])
+
+    # 2. Test Success text (status = 1)
+    cpu2 = MPU()
+    load_xex(xex_file, cpu2.memory)
+    cpu2.memory[labels["GAME_RESULT_STATUS"]] = 1
+    run_subroutine(cpu2, labels["GAMEOVER_INIT"], max_steps=100000)
+    success_bytes = bytes(cpu2.memory[footer_addr : footer_addr + 40])
+
+    assert fail_bytes != success_bytes
+    assert any(b != 0 for b in fail_bytes)
+    assert any(b != 0 for b in success_bytes)
+
+
+def test_gameover_vbi_multi_line_cycling(game_binary) -> None:
+    """Verifies that GAMEOVER_VBI cycles through text lines every 250 VBI frames."""
+    xex_file, labels = game_binary
+
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    # Stub OS SYSVBV vector to RTS so JMP SYSVBV returns to test harness
+    mem[0xE45F] = 0x60  # RTS
+
+    # Init gameover scene for status=1 (success, 2 lines)
+    mem[labels["GAME_RESULT_STATUS"]] = 1
+    run_subroutine(cpu, labels["GAMEOVER_INIT"], max_steps=100000)
+
+    lms_addr = labels["GO_TEXT_LMS"] + 1
+    initial_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert initial_lms == 0x5E10, f"Expected initial LMS $5E10, got ${initial_lms:04X}"
+
+    # Run VBI for 249 frames -> line should not change yet
+    for _ in range(249):
+        run_subroutine(cpu, labels["GAMEOVER_VBI"], max_steps=1000)
+
+    mid_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert mid_lms == 0x5E10, f"LMS changed prematurely at frame 249 to ${mid_lms:04X}"
+
+    # 250th frame -> line switches to line 1 ($5E38)
+    run_subroutine(cpu, labels["GAMEOVER_VBI"], max_steps=1000)
+    switched_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert switched_lms == 0x5E38, f"Expected LMS $5E38 on frame 250, got ${switched_lms:04X}"
+
+    # Another 250 frames -> wraps back to line 0 ($5E10)
+    for _ in range(250):
+        run_subroutine(cpu, labels["GAMEOVER_VBI"], max_steps=1000)
+
+    wrapped_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert wrapped_lms == 0x5E10, f"Expected LMS $5E10 on frame 500, got ${wrapped_lms:04X}"
+
+
+def test_title_vbi_multi_line_cycling(game_binary) -> None:
+    """Verifies that TITLE_VBI cycles through title footer text lines every 250 VBI frames."""
+    xex_file, labels = game_binary
+
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    # Stub OS SYSVBV vector to RTS so JMP SYSVBV returns to test harness
+    mem[0xE45F] = 0x60  # RTS
+
+    # Init title scene
+    run_subroutine(cpu, labels["TITLE_INIT"], max_steps=100000)
+
+    lms_addr = labels["TITLE_TEXT_LMS"] + 1
+    initial_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert initial_lms == 0x5E10, f"Expected initial LMS $5E10, got ${initial_lms:04X}"
+
+    # Run VBI for 249 frames -> line should not change yet
+    for _ in range(249):
+        run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
+
+    mid_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert mid_lms == 0x5E10, f"LMS changed prematurely at frame 249 to ${mid_lms:04X}"
+
+    # 250th frame -> line switches to line 1 ($5E38)
+    run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
+    switched_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert switched_lms == 0x5E38, f"Expected LMS $5E38 on frame 250, got ${switched_lms:04X}"
+
+    # Another 250 frames -> wraps back to line 0 ($5E10)
+    for _ in range(250):
+        run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
+
+    wrapped_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+    assert wrapped_lms == 0x5E10, f"Expected LMS $5E10 on frame 500, got ${wrapped_lms:04X}"
+
+
+
 

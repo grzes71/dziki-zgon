@@ -4,6 +4,7 @@
 # ---- Narzędzia ----
 MADS    := c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
 PYTHON  := $(CURDIR)/.venv/Scripts/python.exe
+ATARI_CHARSET_TRAINER  := $(CURDIR)/.venv/Scripts/atari-charset-trainer.exe
 ASAPCONV  := C:/Apps/ASAP/asapconv.exe
 RMT2ATASM := C:/Apps/rmt2atasm.exe
 
@@ -32,13 +33,14 @@ BG_ASM      := $(GEN_DIR)/$(BG_PREFIX).asm
 BG_COLORS   := $(GEN_DIR)/$(BG_PREFIX)_colors.asm
 BG_DL       := $(GEN_DIR)/$(BG_PREFIX)_displaylist.asm
 
-# Game Over screen
-GO_PREFIX   := gameover
-GO_IMG      := img/game-over.png
-GO_BIN      := $(GEN_DIR)/$(GO_PREFIX).bin
-GO_ASM      := $(GEN_DIR)/$(GO_PREFIX).asm
-GO_COLORS   := $(GEN_DIR)/$(GO_PREFIX)_colors.asm
-GO_DL       := $(GEN_DIR)/$(GO_PREFIX)_displaylist.asm
+# Game Over screen (ANTIC 4, 128-glyph charset, 23 lines x 40 chars)
+GO_GEN_DIR        := $(GEN_DIR)/gameover
+GO_CHARSET_BIN    := $(GO_GEN_DIR)/charset.bin
+GO_FAIL_SCREEN    := $(GO_GEN_DIR)/game_over-fail_screen.bin
+GO_SUCCESS_SCREEN := $(GO_GEN_DIR)/game_over-success_screen.bin
+GO_FAIL_IMG       := img/gameover/game_over-fail.png
+GO_SUCCESS_IMG    := img/gameover/game_over-success.png
+
 
 # Sprite'y
 MOON_ASM    := $(GEN_DIR)/moon.asm
@@ -84,7 +86,7 @@ WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 all: texts sprites bg go fonts music world test xex
 
 # Updated Makefile rules
-xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
+xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
 	@echo "=== Weryfikacja mapy pamięci ==="
@@ -135,13 +137,15 @@ $(TITLE_ASM): $(TITLE_IMG) scripts/img2asm.py
 	@echo "=== Konwersja $(TITLE_IMG) → $(TITLE_ASM) ==="
 	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(TITLE_IMG) 1 --asm -o dziki-zgon.asm -l 5 -c rle
 
-# Game Over screen (ANTIC D, 160×96, 4 kolory)
-go: $(GO_BIN)
+# Game Over screen (ANTIC 4, 128-glyph charset + screen maps)
+go: $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN)
 
-$(GO_BIN): $(GO_IMG) scripts/img2asm.py
-	-@mkdir $(GEN_DIR)
-	@echo "=== Konwersja $(GO_IMG) → $(GO_PREFIX).* ==="
-	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(GO_IMG) 2 --all -o $(GO_PREFIX) --screen-base 0x4000 -c rle
+$(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN): $(GO_FAIL_IMG) $(GO_SUCCESS_IMG)
+	-@mkdir $(GO_GEN_DIR)
+	@echo "=== Generowanie charsetu i ekranów Game Over (atari-charset-trainer) ==="
+	$(ATARI_CHARSET_TRAINER) train img/gameover $(GO_GEN_DIR) --glyphs 128  --algorithm kmedoids --optimize
+	$(ATARI_CHARSET_TRAINER) export $(GO_GEN_DIR)
+	$(ATARI_CHARSET_TRAINER) simulate img/gameover $(GO_GEN_DIR)/charset.model $(GO_GEN_DIR)
 
 # Generowanie czcionek
 fonts: $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM)
