@@ -59,7 +59,8 @@ witcher-atari-game/
 ├── sprites/                     # Definicje i klatki sprite'ów postaci w formacie JSON
 ├── texts/
 │   ├── story.txt                # Źródłowy tekst fabuły (ASCII)
-│   └── gameover.txt             # Źródłowy tekst końca gry (ASCII)
+│   ├── gameover-fail.txt        # Tekst końca gry przy porażce (ASCII)
+│   └── gameover-success.txt     # Tekst końca gry przy sukcesie (ASCII)
 ├── fonts/
 │   └── font.asm                 # Własna czcionka 128 znaków (1 KB, $6000)
 ├── scripts/

@@ -199,7 +199,9 @@ main_loop
 StoryText_RAM = FOOTER_ADDR
 
 StoryText_Data = text_story
-GO_TEXT_Data = text_gameover
+GO_TEXT_FAIL_Data = text_gameover_fail
+GO_TEXT_SUCCESS_Data = text_gameover_success
+GO_TEXT_Data = text_gameover_fail
 TitleFooterROM = text_title
 
     ; Wyrównaj dane tekstowe do granicy strony, aby uniknąć kar

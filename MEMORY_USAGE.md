@@ -42,13 +42,13 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$353F` – `$353F`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
 | **`$3722` – `$38EE`** | 461 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
 | **`$38EF` – `$38EF`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$3930` – `$3A3C`** | 269 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
-| **`$3A3D` – `$3AFF`** | 195 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
-| **`$3A70` – `$3AFF`** | 144 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
-| **`$3B00` – `$3B0E`** | 15 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
-| **`$3B0F` – `$3C3C`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
-| **`$3C3D` – `$3D5D`** | 289 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
-| **`$3D5E` – `$3E7F`** | 290 B | — | **WOLNY RAM** | Bufor wolnej pamięci w dolnym RAM-ie. |
+| **`$3949` – `$3A47`** | 255 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
+| **`$3A48` – `$3AFF`** | 184 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$3A7B` – `$3AFF`** | 133 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
+| **`$3B00` – `$3B50`** | 81 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
+| **`$3B51` – `$3C7E`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
+| **`$3C7F` – `$3D9F`** | 289 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
+| **`$3DA0` – `$3E7F`** | 224 B | — | **WOLNY RAM** | Bufor wolnej pamięci w dolnym RAM-ie. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry (Title, Story, Game, GameOver). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
 | **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). Rozpakowywana w runtime. |

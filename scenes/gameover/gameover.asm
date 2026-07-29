@@ -50,15 +50,30 @@ go_dli_state
 @bottom_text
     lda #$60            ; DLI #2 (dół): czcionka systemowa ($6000) dla dolnej linii tekstu
     sta CHBASE
-    lda #$0F            ; kolor tekstu (biały dla ANTIC 2)
-    sta COLPF1
-    lda #$00            ; tło (czarne)
-    sta COLBK
+
+    ldx #0
+    stx COLPF0    
+    stx COLPF1
+    stx COLBK
+
+@rainbow_loop
+    lda GoRainbow,x
+    sta WSYNC
+    sta COLPF2
+    inx
+    cpx #10
+    bne @rainbow_loop
+
     lda #0
     sta go_dli_state
     pla
     rti
 .endp
+
+; Tablica kolorów tła dla paska tęczy (10 linii skanowania)
+GoRainbow
+    dta $00, $94, $96, $98, $9A, $9A, $98, $96, $94, $00
+
 
 
 .proc gameover_init
@@ -122,24 +137,8 @@ go_dli_state
     sta CHBAS
     sta CHBASE
 
-    ; --- Kolory palety Game Over ---
-    lda #GO_COLBK
-    sta COLOR4
-    sta COLBK
-    lda #GO_COLPF0
-    sta COLOR0
-    sta COLPF0
-    lda #GO_COLPF1
-    sta COLOR1
-    sta COLPF1
-    lda #GO_COLPF2
-    sta COLOR2
-    sta COLPF2
-    lda #GO_COLPF3
-    sta COLOR3
-    sta COLPF3
-
     ; --- DLI: wektor + enable ---
+
     lda #<DLI_Gameover
     sta VDSLST
     lda #>DLI_Gameover
@@ -179,9 +178,18 @@ go_dli_state
 .endp
 
 ;==============================================================
-; copy_gameover_text — Kopiuje tekst GAME OVER z ROM do RAM ($5E10)
+; copy_gameover_text — Kopiuje tekst GAME OVER (porażka/sukces) z ROM do RAM ($5E10)
 ;==============================================================
 .proc copy_gameover_text
-    mRLE_Depack GO_TEXT_Data FOOTER_ADDR
+    lda GAME_RESULT_STATUS
+    cmp #1                  ; 1 = Sukces
+    beq @do_success
+
+@do_fail
+    mRLE_Depack text_gameover_fail FOOTER_ADDR
+    rts
+
+@do_success
+    mRLE_Depack text_gameover_success FOOTER_ADDR
     rts
 .endp

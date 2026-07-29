@@ -221,3 +221,28 @@ def test_gameover_init_sets_shadow_registers(game_binary) -> None:
     assert mem[labels["SDMCTL"]] == 0x22
     assert mem[labels["CHBAS"]] == 0x90
 
+
+def test_gameover_text_selection_by_result_status(game_binary) -> None:
+    """Verifies that GAMEOVER_INIT depacks failure text when status=0 and success text when status=1."""
+    xex_file, labels = game_binary
+
+    # 1. Test Failure text (status = 0)
+    cpu1 = MPU()
+    load_xex(xex_file, cpu1.memory)
+    cpu1.memory[labels["GAME_RESULT_STATUS"]] = 0
+    run_subroutine(cpu1, labels["GAMEOVER_INIT"], max_steps=100000)
+    footer_addr = labels["FOOTER_ADDR"]
+    fail_bytes = bytes(cpu1.memory[footer_addr : footer_addr + 40])
+
+    # 2. Test Success text (status = 1)
+    cpu2 = MPU()
+    load_xex(xex_file, cpu2.memory)
+    cpu2.memory[labels["GAME_RESULT_STATUS"]] = 1
+    run_subroutine(cpu2, labels["GAMEOVER_INIT"], max_steps=100000)
+    success_bytes = bytes(cpu2.memory[footer_addr : footer_addr + 40])
+
+    assert fail_bytes != success_bytes
+    assert any(b != 0 for b in fail_bytes)
+    assert any(b != 0 for b in success_bytes)
+
+

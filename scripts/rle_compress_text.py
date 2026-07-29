@@ -95,12 +95,13 @@ def main():
         # Upewnij się, że mamy dokładnie 320 bajtów
         while len(raw_bytes) < 320:
             raw_bytes.append(0) # spacja to 0 w screencodes
-    elif basename == "gameover":
-        # Game Over oczekuje dokładnie 32 znaków
+    elif basename.startswith("gameover"):
+        # Game Over oczekuje dokładnie 40 znaków (tryb ANTIC 2, 40 kolumn)
         text = "".join(lines).replace("\r", "").replace("\n", "")
-        text = text.ljust(32)[:32]
+        text = text.ljust(40)[:40]
         for c in text:
             raw_bytes.append(to_atari_screencode(c))
+
     else:
         # Ogólne przetwarzanie plików tekstowych
         text = "".join(lines)
@@ -112,10 +113,11 @@ def main():
 
     # Zapisz jako plik .asm
     os.makedirs(os.path.dirname(args.output), exist_ok=True)
+    label_name = f"text_{basename.replace('-', '_')}"
     with open(args.output, "w", encoding="utf-8") as f:
         f.write("; Plik wygenerowany automatycznie przez rle_compress_text.py\n")
         f.write(f"; Oryginalny rozmiar: {len(raw_bytes)} B, Skompresowany: {len(compressed)} B\n\n")
-        f.write(f"text_{basename}\n")
+        f.write(f"{label_name}\n")
         
         # Zapisz bajty w liniach po 8
         for idx in range(0, len(compressed), 8):
