@@ -1,114 +1,115 @@
 ;----------------------------------------
 ; scenes/gameover/gameover.asm — Ekran końca gry
-; ANTIC D (128×96, 4 kolory, narrow playfield) + tekst GAME OVER
+; ANTIC 4 (40×23 znaków) + tekst GAME OVER (ANTIC 2)
 ;----------------------------------------
 
-; --- Kolory (generowane z obrazka) ---
-    icl "../../gen/gameover_colors.asm"
+; --- Palette Equates (rezerwowane komórki palety) ---
+GO_COLBK  = $00     ; Tło (indeks 0: #000000 -> czarny)
+GO_COLPF0 = $F2     ; Kolor PF0 (indeks 1: #8F6B29 -> ciemny brąz/złoto)
+GO_COLPF1 = $F4     ; Kolor PF1 (indeks 2: #C3985D -> jasny brąz/pomarańcz)
+GO_COLPF2 = $0F     ; Kolor PF2 (indeks 3: #FFFFFF -> biały)
+GO_COLPF3 = $00     ; Kolor PF3 (nieużywany / zarezerwowany)
+
 
 ;---- Zmienne lokalne sceny ----
 gameover_fire_released
     dta $00
+go_dli_state
+    dta $00
 
 ;==============================================================
-; DLI_Gameover — Obrazek + płynne migotanie tekstu (ANTIC mode 3)
-; (1) pierwsza linia DL ($F0) — przywraca kolory obrazka
-; (2) blank przed tekstem ($F0) — ustawia COLPF2 na kolor z tabeli
-; Kolor zmienia się co klatkę (10 klatek = pełny cykl)
+; DLI_Gameover — 2-etapowa obsługa DLI:
+; DLI #1 (góra): ustawia charset obrazka ($9000 -> CHBASE=$90)
+; DLI #2 (dół): ustawia czcionkę systemową ($6000 -> CHBASE=$60)
 ;==============================================================
-RAINBOW_LEN = 10
-
 .proc DLI_Gameover
     pha
-    txa
-    pha
+    lda go_dli_state
+    bne @bottom_text
 
-    lda go_dli_toggle
-    bne @blink
+@top_image
+    lda #$90            ; DLI #1 (góra): wygenerowany charset Game Over ($9000)
+    sta CHBASE
 
-@restore
-    ; --- Obrazek: przywróć COLPF0–2 z palety ---
-    lda #GAMEOVER_COLPF0
+    ; --- Kolory obrazka (wpis bezpośrednio do rejestrów sprzętowych GTIA) ---
+    lda #GO_COLBK
+    sta COLBK
+    lda #GO_COLPF0
     sta COLPF0
-    lda #GAMEOVER_COLPF1
+    lda #GO_COLPF1
     sta COLPF1
-    lda #GAMEOVER_COLPF2
+    lda #GO_COLPF2
     sta COLPF2
-    lda #1
-    sta go_dli_toggle
-    jmp @done
+    lda #GO_COLPF3
+    sta COLPF3
 
-@blink
-    ; --- Migotanie: ustaw COLPF2 na bieżący kolor z tabeli ---
-    lda #0
-    sta COLPF0            ; nieużywane (standardowe znaki)
-    sta COLPF2
-    ldx go_pulse_idx
-    lda GoRainbow,x
-    sta COLPF1            ; kolor tekstu dla tej klatki
-
-    ; Spowolnienie ×2: inkrementuj go_pulse_idx co 2 klatki
-    inc go_subframe
-    lda go_subframe
-    cmp #2
-    bne @reset_done
-    lda #0
-    sta go_subframe
-    inc go_pulse_idx
-    lda go_pulse_idx
-    cmp #RAINBOW_LEN
-    bne @reset_done
-    lda #0
-    sta go_pulse_idx      ; wrap do 0 po pełnym cyklu
-@reset_done
-    lda #0
-    sta go_dli_toggle
-
-@done
+    inc go_dli_state
     pla
-    tax
+    rti
+
+@bottom_text
+    lda #$60            ; DLI #2 (dół): czcionka systemowa ($6000) dla dolnej linii tekstu
+    sta CHBASE
+    lda #$0F            ; kolor tekstu (biały dla ANTIC 2)
+    sta COLPF1
+    lda #$00            ; tło (czarne)
+    sta COLBK
+    lda #0
+    sta go_dli_state
     pla
     rti
 .endp
 
-go_dli_toggle
-    dta $00
-go_pulse_idx
-    dta $00
-go_subframe
-    dta $00
-
-; Kolory migotania dla COLPF2 — 10 kolorów, zmiana co klatkę
-GoRainbow
-    dta $30     ; 0: ciemny pomarańcz
-    dta $32     ; 1
-    dta $34     ; 2
-    dta $36     ; 3: czerwony
-    dta $38     ; 4
-    dta $3A     ; 5
-    dta $3C     ; 6
-    dta $3C     ; 7
-    dta $3E     ; 8
-    dta $3E     ; 9: jasny pomarańcz
 
 .proc gameover_init
     lda #0
     sta DMACTL
     sta NMIEN
     sta GRACTL              ; wyłącz PMG DMA (GTIA)
-    sta GPRIOR               ; reset priorytetów
+    sta GPRIOR              ; reset priorytetów
     sta gameover_fire_released ; zresetuj stan przycisku FIRE
+    sta go_dli_state        ; zresetuj stan 2-etapowego DLI
 
-    ; --- Rozpakuj grafikę GameOver (RLE) do VRAM_ARENA ---
-    mRLE_Depack GameOverScreen_Data VRAM_ARENA
-    sta go_dli_toggle       ; DLI toggle: 0 = obrazek
-    sta go_pulse_idx        ; indeks migotania: 0
-    sta go_subframe         ; spowolnienie ×2: 0
 
+    ; --- Kopiuj właściwy bufor ekranu (920 B) do VRAM_ARENA ($4000) ---
+    lda GAME_RESULT_STATUS
+    cmp #1                  ; 1 = Sukces
+    beq @do_success
+
+@do_fail
+    ldx #0
+@loop_fail
+    lda GameOverFail_Data,x
+    sta VRAM_ARENA,x
+    lda GameOverFail_Data+$100,x
+    sta VRAM_ARENA+$100,x
+    lda GameOverFail_Data+$200,x
+    sta VRAM_ARENA+$200,x
+    lda GameOverFail_Data+$298,x
+    sta VRAM_ARENA+$298,x
+    inx
+    bne @loop_fail
+    jmp @screen_done
+
+@do_success
+    ldx #0
+@loop_succ
+    lda GameOverSuccess_Data,x
+    sta VRAM_ARENA,x
+    lda GameOverSuccess_Data+$100,x
+    sta VRAM_ARENA+$100,x
+    lda GameOverSuccess_Data+$200,x
+    sta VRAM_ARENA+$200,x
+    lda GameOverSuccess_Data+$298,x
+    sta VRAM_ARENA+$298,x
+    inx
+    bne @loop_succ
+
+@screen_done
     jsr pmg_clear_all
     jsr copy_gameover_text
 
-    ; --- Display List (ANTIC D + tekst) ---
+    ; --- Display List (ANTIC 4 + tekst ANTIC 2) ---
     lda #<DLIST_GAMEOVER
     sta SDLSTL
     sta DLISTL
@@ -116,27 +117,27 @@ GoRainbow
     sta SDLSTH
     sta DLISTH
 
-    ; --- Charset (własny font $6000) ---
-    lda #$60
+    ; --- Charset Game Over ($9000 -> CHBAS = $90) ---
+    lda #$90
     sta CHBAS
     sta CHBASE
 
-    ; --- Kolory z wygenerowanego pliku ---
-    lda #GAMEOVER_COLBK
+    ; --- Kolory palety Game Over ---
+    lda #GO_COLBK
     sta COLOR4
     sta COLBK
-    lda #GAMEOVER_COLPF0
+    lda #GO_COLPF0
     sta COLOR0
     sta COLPF0
-    lda #GAMEOVER_COLPF1
+    lda #GO_COLPF1
     sta COLOR1
     sta COLPF1
-    lda #GAMEOVER_COLPF2
+    lda #GO_COLPF2
     sta COLOR2
     sta COLPF2
-    lda #$00
+    lda #GO_COLPF3
     sta COLOR3
-    sta COLPF3            ; 5th player — nieużywany
+    sta COLPF3
 
     ; --- DLI: wektor + enable ---
     lda #<DLI_Gameover
@@ -146,8 +147,8 @@ GoRainbow
     lda #$C0              ; DLI on, VBI on (music required)
     sta NMIEN
 
-    ; --- DMA ON (narrow playfield — 128 pikseli, bez PMG) ---
-    lda #$21
+    ; --- DMA ON (normal playfield — 40 znaków, bez PMG) ---
+    lda #$22
     sta SDMCTL
     sta DMACTL
 
@@ -178,7 +179,7 @@ GoRainbow
 .endp
 
 ;==============================================================
-; copy_gameover_text — Kopiuje tekst GAME OVER (32 B) z ROM do RAM ($5E10)
+; copy_gameover_text — Kopiuje tekst GAME OVER z ROM do RAM ($5E10)
 ;==============================================================
 .proc copy_gameover_text
     mRLE_Depack GO_TEXT_Data FOOTER_ADDR

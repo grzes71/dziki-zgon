@@ -151,8 +151,11 @@ def update_memory_usage(lab_file, md_file):
         "font.asm": ("FONTDATA", ("size", 1024)),
         "game_font.asm": ("GAMEFONTDATA", ("size", 1024)),
         "world builder data": ("OBJ_SIZE", ("before", "TITLE_AUDIO_INIT")),
-        "title_audio.asm": ("TITLE_AUDIO_INIT", ("before", "GAMEOVERSCREEN_DATA")),
-        "gameoverscreen_data": ("GAMEOVERSCREEN_DATA", ("size", 2250)),
+        "title_audio.asm": ("TITLE_AUDIO_INIT", ("before", "GO_CHARSET")),
+        "go_charset": ("GO_CHARSET", ("size", 1024)),
+        "gameoverfail_data": ("GAMEOVERFAIL_DATA", ("size", 920)),
+        "gameoversuccess_data": ("GAMEOVERSUCCESS_DATA", ("size", 920)),
+
         "missiles": ("MISSILES", ("before", "PLAYER0")),
         "player0": ("PLAYER0", ("before", "PLAYER1")),
         "player1": ("PLAYER1", ("before", "PLAYER2")),

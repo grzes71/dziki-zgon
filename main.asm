@@ -253,21 +253,19 @@ DLIST_GAME
     dta $82                ; Kolejna 1 linia ANTIC 2 (Message Line) + DLI dla Message Line
     dta $41,a(DLIST_GAME)  ; JVB
 
-; --- DL game over (ANTIC D, narrow, 128×96, 4 kolory) ---
-GameoverData = GO_SCREEN
-    icl "gen/gameover_displaylist.asm"    ; definiuje DLIST_GAMEOVER
-
-JVB_OFFSET = * - DLIST_GAMEOVER - 3
-
-    ; DLI na pierwszej pustej linii — przywraca kolory obrazka (COLPF1)
-    org DLIST_GAMEOVER
-    dta $F0                     ; blank + DLI (było $70)
-
-    ; Nadpisz JVB: blank + DLI + ANTIC 3 (tekst "GAME OVER", tęcza co klatkę)
-    org DLIST_GAMEOVER + JVB_OFFSET
-    dta $F0                     ; 1 pusta linia + DLI (przełącza COLPF1 na tęczę)
-    dta $43,a(GO_TEXT)          ; LMS + ANTIC mode 3 (8×10 znaków, narrow: 32 znaki)
+; --- DL game over (ANTIC 4, 40×23 znaków + ANTIC 2 40×1 linia tekstu) ---
+DLIST_GAMEOVER
+    dta $70,$70,$70             ; 16 blank lines (górny margines)
+    dta $F0                     ; 8 blank lines + DLI
+    dta $44,a(VRAM_ARENA)       ; LMS + ANTIC 4 (linia 1)
+    .rept 22
+    dta $04                     ; ANTIC 4 (linie 2-23)
+    .endr
+    dta $90                     ; 1 pusta linia + DLI
+    dta $42,a(GO_TEXT)          ; LMS + ANTIC mode 2 (40 znaków z czcionki font.asm $6000 na $5E10)
     dta $41,a(DLIST_GAMEOVER)   ; JVB — powrót na początek DL
+
+
 
 ; ===================================================================
 ; 7. Współdzielona Arena VRAM ($4000)
@@ -311,10 +309,19 @@ GO_SCREEN = VRAM_ARENA
 ; --- Muzyka i sterownik ($8506 / $A9E0 / $AD00 / $B300) ---
     icl "music/title_audio.asm"
 
-; --- Skompresowany obrazek GameOver ($8570) ---
-    org $8570
-GameOverScreen_Data
-    ins "gen/gameover.rle"
+; --- Charset i dane ekranów GameOver ($9000) ---
+    org $9000
+GO_CHARSET
+    ins "gen/gameover/charset.bin"
+
+    org $9400
+GameOverFail_Data
+    ins "gen/gameover/game_over-fail_screen.bin"
+
+    org $97A0
+GameOverSuccess_Data
+    ins "gen/gameover/game_over-success_screen.bin"
+
 
 ; --- Aktorzy / Przeciwnicy (pod ROM BASIC od $B611) ---
     org $B611

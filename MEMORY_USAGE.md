@@ -40,11 +40,11 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$34CC` – `$34CC`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
 | **`$34CD` – `$353E`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
 | **`$353F` – `$353F`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
-| **`$3722` – `$3902`** | 481 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
-| **`$3903` – `$3903`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$3968` – `$3A4A`** | 227 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
-| **`$3A4B` – `$3AFF`** | 181 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
-| **`$3A7E` – `$3AFF`** | 130 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
+| **`$3722` – `$38EE`** | 461 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
+| **`$38EF` – `$38EF`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
+| **`$3930` – `$3A3C`** | 269 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
+| **`$3A3D` – `$3AFF`** | 195 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$3A70` – `$3AFF`** | 144 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
 | **`$3B00` – `$3B0E`** | 15 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
 | **`$3B0F` – `$3C3C`** | 302 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
 | **`$3C3D` – `$3D5D`** | 289 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
@@ -57,8 +57,9 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. Wskazywana przez `CHBASE = $64`. |
 | **`$6800` – `$84DE`** | 7391 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia, obiekty interaktywne). |
-| **`$84DF` – `$856F`** | 145 B | `title_audio.asm` | Kod programu | Inicjalizacja dźwięku, handler Immediate VBI, wyciszanie POKEY. |
-| **`$8570` – `$8E39`** | 2250 B | `GameOverScreen_Data` | Dane (ROM) | Skompresowany obrazek GameOver (`gameover.rle`). |
+| **`$9000` – `$93FF`** | 1024 B | `GO_CHARSET` | Dane (Charset) | Właśnie wygenerowany zestaw znaków Game Over (1 KB). |
+| **`$9400` – `$9797`** | 920 B | `GameOverFail_Data` | Dane (Screen) | Mapa ekranu Game Over Porażka (40×23 znaków). |
+| **`$97A0` – `$9B37`** | 920 B | `GameOverSuccess_Data` | Dane (Screen) | Mapa ekranu Game Over Sukces (40×23 znaków). |
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |
