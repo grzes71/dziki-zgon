@@ -223,9 +223,10 @@ DLI_Travel = DLI_Travel_Top
     cmp #250
     bcc @wait_loop
 
-    ; 9. Wyłącz DLI/VBI przed wyjściem
-    lda #0
+    ; 9. Wyłącz DLI ekranu podróży, zachowując VBI ($40) dla muzyki i klatek
+    lda #$40
     sta NMIEN
     rts
+
 .endp
 

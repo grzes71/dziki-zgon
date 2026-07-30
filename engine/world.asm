@@ -12,6 +12,10 @@
     lda #0
     sta REQ_SCREEN_TRANSITION
 
+    ; Wyłącz DMA (wygaś ekran do czerni), aby zniwelować rwanie i miganie palety/VRAM podczas przerysowywania
+    sta SDMCTL
+    sta DMACTL
+
     ; Jeśli to przejście przez portal, wyświetl 5-sekundowy ekran podróży
     lda IS_PORTAL_TRANSITION
     beq @skip_travel
@@ -52,7 +56,6 @@
     jsr update_stage_colors
     jsr redraw_status_bar
 
-
     ; Wyczyść pamięć PMG oraz fałszywe kolizje sprzętowe GTIA powstałe podczas rysowania
     jsr pmg_clear_all
     jsr init_game_missiles
@@ -76,6 +79,12 @@
     lda #>game_dli
     sta VDSLST+1
 
+    lda #$C0                ; DLI ON, VBI ON
+    sta NMIEN
+
+    ; Poczekaj na VBLANK przed włączeniem DMA, aby nowy ekran rozpoczął się czysto od góry
+    jsr Engine_WaitFrame
+
     lda #DMA_PMG_ON         ; $2E (normal playfield + PMG DMA)
     sta SDMCTL
     sta DMACTL
@@ -83,8 +92,10 @@
     lda #3
     sta GRACTL              ; włącz PMG w GTIA
 
+
     lda #$C0                ; DLI ON, VBI ON
     sta NMIEN
+
 
 @done
     rts

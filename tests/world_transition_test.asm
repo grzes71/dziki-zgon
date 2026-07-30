@@ -86,4 +86,7 @@ pmg_clear_all
     rts
 init_game_missiles
     rts
+Engine_WaitFrame
+    rts
+
 
