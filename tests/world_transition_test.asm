@@ -23,9 +23,29 @@ NEW_SCREEN_ID         .ds 1
 NEW_ACTOR_X           .ds 1
 NEW_ACTOR_Y           .ds 1
 game_stage            .ds 1
+IS_PORTAL_TRANSITION  .ds 1
 
 HPOSP0 = $D000
 HITCLR = $D01E
+SDMCTL = $022F
+DMACTL = $D400
+GRACTL = $D01D
+NMIEN  = $D40E
+CHBAS  = $02F4
+CHBASE = $D409
+VDSLST = $0200
+SDLSTL = $0230
+SDLSTH = $0231
+DLISTL = $D402
+DLISTH = $D403
+DMA_PMG_ON = $2E
+DLIST_GAME = $3E80
+
+game_dli
+    rts
+
+travel_screen_show
+    rts
 
 ; --- Entry Point ---
     org $2000
@@ -59,7 +79,11 @@ update_stage_colors
     rts
 draw_region_name
     rts
+redraw_status_bar
+    rts
 pmg_clear_all
+
     rts
 init_game_missiles
     rts
+

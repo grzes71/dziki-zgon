@@ -79,8 +79,9 @@ GoLineAddrHi
     bne @bottom_text
 
 @top_image
-    lda #$90            ; DLI #1 (góra): wygenerowany charset Game Over ($9000)
+    lda #$90            ; DLI #1 (góra): wspólny wygenerowany charset Game Over/Travel ($9000)
     sta CHBASE
+
 
     ; --- Kolory obrazka (wpis bezpośrednio do rejestrów sprzętowych GTIA) ---
     lda #GO_COLBK
@@ -157,8 +158,8 @@ GoRainbow_Failure
     sta VRAM_ARENA+$100,x
     lda GameOverFail_Data+$200,x
     sta VRAM_ARENA+$200,x
-    lda GameOverFail_Data+$298,x
-    sta VRAM_ARENA+$298,x
+    lda GameOverFail_Data+$300,x
+    sta VRAM_ARENA+$300,x
     inx
     bne @loop_fail
     jmp @screen_done
@@ -177,10 +178,11 @@ GoRainbow_Failure
     sta VRAM_ARENA+$100,x
     lda GameOverSuccess_Data+$200,x
     sta VRAM_ARENA+$200,x
-    lda GameOverSuccess_Data+$298,x
-    sta VRAM_ARENA+$298,x
+    lda GameOverSuccess_Data+$300,x
+    sta VRAM_ARENA+$300,x
     inx
     bne @loop_succ
+
 
 @screen_done
     jsr pmg_clear_all
@@ -198,6 +200,7 @@ GoRainbow_Failure
     lda #$90
     sta CHBAS
     sta CHBASE
+
 
     ; --- DLI: wektor + enable ---
 

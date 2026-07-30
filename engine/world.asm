@@ -4,14 +4,25 @@
 
 .proc World_Update
     lda REQ_SCREEN_TRANSITION
-    beq @done
+    bne @do_update
+    rts
 
+@do_update
     ; Wyczyść flagę
     lda #0
     sta REQ_SCREEN_TRANSITION
 
+    ; Jeśli to przejście przez portal, wyświetl 5-sekundowy ekran podróży
+    lda IS_PORTAL_TRANSITION
+    beq @skip_travel
+    lda #0
+    sta IS_PORTAL_TRANSITION
+    jsr travel_screen_show
+
+@skip_travel
     ; Ukryj duszka gracza (HPOSP0 = 0) oraz wyczyść PMG przed rysowaniem nowego ekranu,
     ; aby uniknąć fałszywych kolizji GTIA (P0PF) ze starymi współrzędnymi gracza
+    lda #0
     sta HPOSP0
     jsr pmg_clear_all
 
@@ -39,13 +50,41 @@
     lda SCREEN_REGION,x
     sta game_stage
     jsr update_stage_colors
-    jsr draw_region_name
+    jsr redraw_status_bar
+
 
     ; Wyczyść pamięć PMG oraz fałszywe kolizje sprzętowe GTIA powstałe podczas rysowania
     jsr pmg_clear_all
     jsr init_game_missiles
     lda #0
     sta HITCLR
+
+    ; Przywróć Display List, charset i rejestry dla trybu gry
+    lda #<DLIST_GAME
+    sta SDLSTL
+    sta DLISTL
+    lda #>DLIST_GAME
+    sta SDLSTH
+    sta DLISTH
+
+    lda #$64
+    sta CHBAS
+    sta CHBASE
+
+    lda #<game_dli
+    sta VDSLST
+    lda #>game_dli
+    sta VDSLST+1
+
+    lda #DMA_PMG_ON         ; $2E (normal playfield + PMG DMA)
+    sta SDMCTL
+    sta DMACTL
+
+    lda #3
+    sta GRACTL              ; włącz PMG w GTIA
+
+    lda #$C0                ; DLI ON, VBI ON
+    sta NMIEN
 
 @done
     rts

@@ -126,7 +126,26 @@ temp_sub
     rts
 .endp
 
+;==============================================================
+; redraw_status_bar — czyści i odświeża cały pasek statusu (80 B)
+;==============================================================
+.proc redraw_status_bar
+    ldx #0
+@fill_status
+    lda default_status_bar,x
+    sta GAME_SCREEN_A2,x
+    inx
+    cpx #80
+    bne @fill_status
+
+    jsr draw_region_name
+    jsr draw_timer
+    jsr draw_inventory
+    rts
+.endp
+
 .proc get_digits
+
     ldx #0
 @loop
     cmp #10
@@ -423,15 +442,10 @@ temp_sub
     jsr check_active_charset_animations
 
     ; --- Wypełnij pasek statusu domyślnym tekstem ---
-    ldx #0
-@fill_status
-    lda default_status_bar,x
-    sta GAME_SCREEN_A2,x
-    inx
-    cpx #80
-    bne @fill_status
+    jsr redraw_status_bar
 
     ; --- Wyświetl komunikat początkowy na Message Line ---
+
     lda #<MSG_START_GAME
     ldy #>MSG_START_GAME
     jsr msg_show

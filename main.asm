@@ -44,6 +44,7 @@ disable_basic_loader
     
     ; --- Silnik gry ---
     icl "engine/engine.asm"
+    icl "engine/travel_screen.asm"
 
     ; --- Sceny (każda eksportuje _init i _run) ---
     icl "scenes/title/title.asm"
@@ -195,25 +196,10 @@ main_loop
     jsr title_audio_stop          ; Stop the music on state exit
     jmp main_loop
 
-; --- Dane tekstów (kopiowane do RAM w czasie wykonania) ---
-StoryText_RAM = FOOTER_ADDR
-
-StoryText_Data = text_story
-GO_TEXT_FAIL_Data = text_gameover_fail
-GO_TEXT_SUCCESS_Data = text_gameover_success
-GO_TEXT_Data = text_gameover_fail
-TitleFooterROM = text_title
-
-    ; Wyrównaj dane tekstowe do granicy strony, aby uniknąć kar
-    ; za przekraczanie stron w pętli dekodera RLE.
-    .align $0100
-    icl "gen/all_texts.asm"
-
-SpriteData = DzikizgonData
-
 ; ===================================================================
-; 6. Display Listy ($3000)
+; 6. Display Listy ($3800)
 ; ===================================================================
+
     org DLIST_ADDR
 
 ; --- DL tytułu (pełna, z LMS i stopką) ---
@@ -268,6 +254,19 @@ GO_TEXT_LMS
     dta $42,a(GO_TEXT)          ; LMS + ANTIC mode 2 (40 znaków z czcionki font.asm $6000 na $5E10)
     dta $41,a(DLIST_GAMEOVER)   ; JVB — powrót na początek DL
 
+; --- DL travel screen (ANTIC 4, 40×23 znaków + ANTIC 2 40×1 linia tekstu) ---
+DLIST_TRAVEL
+    dta $70,$70,$70             ; 16 blank lines (górny margines)
+    dta $F0                     ; 8 blank lines + DLI
+    dta $44,a(VRAM_ARENA)       ; LMS + ANTIC 4 (linia 1)
+    .rept 22
+    dta $04                     ; ANTIC 4 (linie 2-23)
+    .endr
+    dta $90                     ; 1 pusta linia + DLI
+TRAVEL_TEXT_LMS
+    dta $42,a(FOOTER_ADDR)      ; LMS + ANTIC mode 2 (40 znaków z czcionki font.asm $6000 na $5E10)
+    dta $41,a(DLIST_TRAVEL)     ; JVB — powrót na początek DL
+
 
 
 ; ===================================================================
@@ -312,18 +311,38 @@ GO_SCREEN = VRAM_ARENA
 ; --- Muzyka i sterownik ($8506 / $A9E0 / $AD00 / $B300) ---
     icl "music/title_audio.asm"
 
-; --- Charset i dane ekranów GameOver ($9000) ---
+; --- Dane tekstów (w górnym RAM-ie na $8920) ---
+    org $8920
+    icl "gen/all_texts.asm"
+
+StoryText_RAM = FOOTER_ADDR
+StoryText_Data = text_story
+GO_TEXT_FAIL_Data = text_gameover_fail
+GO_TEXT_SUCCESS_Data = text_gameover_success
+GO_TEXT_Data = text_gameover_fail
+TitleFooterROM = text_title
+SpriteData = DzikizgonData
+
+; --- Wspólny Charset dla GameOver & Travel ($9000, 1 KB aligned -> CHBASE=$90) ---
     org $9000
 GO_CHARSET
-    ins "gen/gameover/charset.bin"
+    ins "gen/screens/charset.bin"
 
     org $9400
 GameOverFail_Data
-    ins "gen/gameover/game_over-fail_screen.bin"
+    ins "gen/screens/game_over-fail_screen.bin"
 
     org $97A0
 GameOverSuccess_Data
-    ins "gen/gameover/game_over-success_screen.bin"
+    ins "gen/screens/game_over-success_screen.bin"
+
+; --- Dane ekranu Travel ($9B40) ---
+    org $9B40
+TravelScreen_Data
+    ins "gen/screens/travel_screen.bin"
+
+
+
 
 
 ; --- Aktorzy / Przeciwnicy (pod ROM BASIC od $B611) ---

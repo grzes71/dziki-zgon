@@ -219,7 +219,7 @@ def test_gameover_init_sets_shadow_registers(game_binary) -> None:
     assert mem[labels["SDLSTL"]] == dlist_lo
     assert mem[labels["SDLSTH"]] == dlist_hi
     assert mem[labels["SDMCTL"]] == 0x22
-    assert mem[labels["CHBAS"]] == 0x90
+    assert mem[labels["CHBAS"]] == (labels["GO_CHARSET"] >> 8)
 
 
 def test_gameover_text_selection_by_result_status(game_binary) -> None:

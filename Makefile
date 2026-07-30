@@ -32,13 +32,19 @@ BG_ASM      := $(GEN_DIR)/$(BG_PREFIX).asm
 BG_COLORS   := $(GEN_DIR)/$(BG_PREFIX)_colors.asm
 BG_DL       := $(GEN_DIR)/$(BG_PREFIX)_displaylist.asm
 
-# Game Over screen (ANTIC 4, 128-glyph charset, 23 lines x 40 chars)
-GO_GEN_DIR        := $(GEN_DIR)/gameover
-GO_CHARSET_BIN    := $(GO_GEN_DIR)/charset.bin
-GO_FAIL_SCREEN    := $(GO_GEN_DIR)/game_over-fail_screen.bin
-GO_SUCCESS_SCREEN := $(GO_GEN_DIR)/game_over-success_screen.bin
-GO_FAIL_IMG       := img/gameover/game_over-fail.png
-GO_SUCCESS_IMG    := img/gameover/game_over-success.png
+# Shared Screens (ANTIC 4, 128-glyph shared charset, 23 lines x 40 chars for Game Over & Travel)
+SCREENS_GEN_DIR   := $(GEN_DIR)/screens
+GO_CHARSET_BIN    := $(SCREENS_GEN_DIR)/charset.bin
+GO_FAIL_SCREEN    := $(SCREENS_GEN_DIR)/game_over-fail_screen.bin
+GO_SUCCESS_SCREEN := $(SCREENS_GEN_DIR)/game_over-success_screen.bin
+TRAVEL_SCREEN_BIN := $(SCREENS_GEN_DIR)/travel_screen.bin
+
+SCREENS_DIR       := img/screens
+GO_FAIL_IMG       := $(SCREENS_DIR)/game_over-fail.png
+GO_SUCCESS_IMG    := $(SCREENS_DIR)/game_over-success.png
+TRAVEL_IMG        := $(SCREENS_DIR)/travel.png
+
+
 
 
 # Sprite'y
@@ -80,12 +86,12 @@ WORLD_YAMLS := $(wildcard $(WORLD_DIR)/*.yaml) $(wildcard $(WORLD_DIR)/*/*.yaml)
 WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 
 # ---- Cele ----
-.PHONY: all xex bg go sprites texts fonts music world clean run smoke-test test
+.PHONY: all xex bg go travel sprites texts fonts music world clean run smoke-test test
 
-all: texts sprites bg go fonts music world test xex
+all: texts sprites bg go travel fonts music world test xex
 
 # Updated Makefile rules
-xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
+xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN) $(TRAVEL_SCREEN_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
 	@echo "=== Weryfikacja mapy pamięci ==="
@@ -136,15 +142,19 @@ $(TITLE_ASM): $(TITLE_IMG) scripts/img2asm.py
 	@echo "=== Konwersja $(TITLE_IMG) → $(TITLE_ASM) ==="
 	cd $(GEN_DIR) && $(PYTHON) ../scripts/img2asm.py ../$(TITLE_IMG) 1 --asm -o dziki-zgon.asm -l 5 -c rle
 
-# Game Over screen (ANTIC 4, 128-glyph charset + screen maps)
-go: $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN)
+# Shared Screens (ANTIC 4, 128-glyph shared charset + screen maps)
+go: $(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN) $(TRAVEL_SCREEN_BIN)
+travel: go
 
-$(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN): $(GO_FAIL_IMG) $(GO_SUCCESS_IMG)
-	-@mkdir $(GO_GEN_DIR)
-	@echo "=== Generowanie charsetu i ekranów Game Over (atari-charset-trainer) ==="
-	$(PYTHON) -m atari_charset_trainer train img/gameover $(GO_GEN_DIR) --glyphs 128  --algorithm kmedoids --optimize
-	$(PYTHON) -m atari_charset_trainer export $(GO_GEN_DIR)
-	$(PYTHON) -m atari_charset_trainer simulate img/gameover $(GO_GEN_DIR)/charset.model $(GO_GEN_DIR)
+$(GO_CHARSET_BIN) $(GO_FAIL_SCREEN) $(GO_SUCCESS_SCREEN) $(TRAVEL_SCREEN_BIN): $(GO_FAIL_IMG) $(GO_SUCCESS_IMG) $(TRAVEL_IMG)
+	@echo "=== Konwersja ekranów graficznych (atari-charset-trainer: game_over-fail, game_over-success, travel) ==="
+	$(PYTHON) -c "import os; os.makedirs('$(SCREENS_GEN_DIR)', exist_ok=True)"
+	$(PYTHON) -m atari_charset_trainer train $(SCREENS_DIR) $(SCREENS_GEN_DIR) --glyphs 128 --algorithm kmedoids --optimize
+	$(PYTHON) -m atari_charset_trainer export $(SCREENS_GEN_DIR)
+	$(PYTHON) -m atari_charset_trainer simulate $(SCREENS_DIR) $(SCREENS_GEN_DIR)/charset.model $(SCREENS_GEN_DIR)
+
+
+
 
 # Generowanie czcionek
 fonts: $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM)

@@ -26,6 +26,8 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$0096` – `$009A`** | 5 B | Zmienne aktorów | Zero Page | `PMG_PTR`, `ACTOR_TMP_X`, `ACTOR_TMP_Y`, `ACTOR_TMP_HEIGHT`. |
 | **`$009C` – `$00A1`** | 6 B | Zmienne ekranu/aktorów | Zero Page | `REQ_SCREEN_TRANSITION`, `NEW_SCREEN_ID`, `NEW_ACTOR_X/Y`, `CURRENT_ACTOR`. |
 | **`$00A2` – `$00A2`** | 1 B | `MSG_STATE` | Zero Page | Stan linii komunikatów (0=brak, 1=wyświetlanie, 2=1s do końca). |
+| **`$00A6` – `$00A6`** | 1 B | `IS_PORTAL_TRANSITION` | Zero Page | Flaga przejścia przez portal (0=zwykłe wyjście, 1=ekran podróży). |
+
 | **`$00CB` – `$00DD`** | 19 B | `p_tis` .. `tmp` | Zero Page | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera). |
 | **`$0200` – `$0201`** | 2 B | `VDSLST` | OS RAM | Wektor przerwania DLI (Display List Interrupt) w pamięci cieni OS. |
 | **`$0700` – `$1E35`** | 5942 B | `TitleScreen_Data` | Dane (ROM) | Skompresowany obrazek tytułowy (`title.rle`). |
@@ -35,19 +37,19 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$2000` – `$2002`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2003` – `$200A`** | 8 B | `disable_basic_loader` | Kod programu | Wyłączenie BASICa (obsługa ini). |
 | **`$200B` – `$2035`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$2036` – `$31F4`** | 4543 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$31F5` – `$353E`** | 842 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
-| **`$353F` – `$353F`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
-| **`$3540` – `$35B1`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$35B2` – `$35B2`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
-| **`$3795` – `$3960`** | 460 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
-| **`$3961` – `$3961`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
-| **`$3A12` – `$3B52`** | 321 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
-| **`$3B53` – `$3C00`** | 174 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
-| **`$3B86` – `$3C00`** | 123 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
-| **`$3C01` – `$3CBC`** | 188 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
-| **`$3CBD` – `$3DEB`** | 303 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
-| **`$3DEC` – `$3F0C`** | 289 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
+| **`$2036` – `$337D`** | 4936 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$337E` – `$36C7`** | 842 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, zmienna, kolory, procedury DLI. |
+| **`$36C8` – `$36C8`** | 1 B | `fire_released_flag` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Story*. |
+| **`$36C9` – `$373A`** | 114 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
+| **`$373B` – `$373B`** | 1 B | `game_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *Game*. |
+| **`$3935` – `$3AF6`** | 450 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch graczem, testowa mapa). |
+| **`$3AF7` – `$3AF7`** | 1 B | `gameover_fire_released` | Zmienna (RAM) | Flaga puszczenia przycisku FIRE w scenie *GameOver*. |
+| **`$3BA8` – `$3CE8`** | 321 B | `gameover.asm` | Kod programu | Logika, inicjalizacja, DLI handler, tęcza oraz dekompresja tekstu. |
+| **`$3CE9` – `$3E7F`** | 407 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$3CDC` – `$3E00`** | 293 B | `align padding` | Padding | Wyrównanie do granicy strony przed tekstami. |
+| **`$8921` – `$89DC`** | 188 B | `GO_TEXT_Data` | Dane (Tekst) | Skompresowany RLE tekst "GAME OVER". |
+| **`$89DD` – `$8B0B`** | 303 B | `StoryText_Data` | Dane (Tekst) | Skompresowane RLE dane tekstu fabularnego (rozpakowywane do `$5E10`). |
+| **`$8B0C` – `$8C2C`** | 289 B | `TitleFooterROM` | Dane (Tekst) | Skompresowany tekst stopki tytułowej. |
 | **`$3DA0` – `$3E7F`** | 224 B | — | **WOLNY RAM** | Bufor wolnej pamięci w dolnym RAM-ie. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry (Title, Story, Game, GameOver). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
@@ -60,6 +62,8 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$9000` – `$93FF`** | 1024 B | `GO_CHARSET` | Dane (Charset) | Właśnie wygenerowany zestaw znaków Game Over (1 KB). |
 | **`$9400` – `$9797`** | 920 B | `GameOverFail_Data` | Dane (Screen) | Mapa ekranu Game Over Porażka (40×23 znaków). |
 | **`$97A0` – `$9B37`** | 920 B | `GameOverSuccess_Data` | Dane (Screen) | Mapa ekranu Game Over Sukces (40×23 znaków). |
+| **`$9B40` – `$9ED7`** | 920 B | `TravelScreen_Data` | Dane (Screen) | Mapa ekranu Podróży (40×23 znaków). |
+
 | **`$A000` – `$A2FF`** | 768 B | PMG Padding | PMG Reserved | Wyrównanie pamięci PMG do granicy 2 KB. Nieużywane bezpośrednio. |
 | **`$A300` – `$A3FF`** | 256 B | `MISSILES` | Pamięć PMG | Pozycje pionowe pocisków (M0–M3) w rozdzielczości jednoliniowej. |
 | **`$A400` – `$A4FF`** | 256 B | `PLAYER0` | Pamięć PMG | Klatka/obraz gracza P0. |
@@ -79,16 +83,17 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 
 Dostępne wolne obszary RAM (zgodne z tabelą powyżej):
 
-1.  **`$1F2C` – `$1FFF` (212 B)**: Wolny bufor w niskiej pamięci za sprite'ami księżyca.
-2.  **`$3D5E` – `$3E7F` (290 B)**: Wolny bufor w dolnym RAM-ie za tekstami stopki.
+1.  **`$1F2D` – `$1FFF` (211 B)**: Wolny bufor w niskiej pamięci za sprite'ami księżyca.
+2.  **`$3DA0` – `$3E7F` (224 B)**: Wolny bufor w dolnym RAM-ie przed Display Listami.
 3.  **`$3FE8` – `$3FFF` (24 B)**: Mały bufor pomiędzy Display Listami a areną VRAM.
 4.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionkami.
-5.  **`$8E3A` – `$9FFF` (4 550 B)**: **Główny, gigantyczny ciągły blok wolnej pamięci RAM** dostępny na rozbudowę danych świata, logiki i ekranów.
+5.  **`$84F4` – `$8FFF` (2 828 B)** & **`$9ED8` – `$9FFF` (296 B)**: **Obszar wolnej pamięci RAM** w bloku `$8000–$9FFF` dostępny na rozbudowę danych świata, logiki i ekranów.
 6.  **`$A800` – `$A9DF` (480 B)**: Wolny bufor przed zmiennymi odtwarzacza RMT.
 7.  **`$B242` – `$B2FF` (190 B)**: Wolny obszar pomiędzy kodem playera RMT a modułem muzycznym.
 8.  **`$BEF9` – `$BFFF` (263 B)**: Wolna pamięć pod ROM-em BASIC-a za sprite'ami postaci.
 
-Łącznie czysty, bezpośrednio dostępny wolny RAM w tej chwili to **6 185 B** (z czego sam blok pod `$8E3A–$9FFF` to aż **4.55 KB**).
+Łącznie czysty, bezpośrednio dostępny wolny RAM w tej chwili to **5 265 B**.
+
 
 ---
 

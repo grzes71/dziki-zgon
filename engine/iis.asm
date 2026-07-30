@@ -361,6 +361,7 @@ INTERACTIVE_OBJ_COMPLETE .ds SCREEN_COUNT
 
     lda #1
     sta REQ_SCREEN_TRANSITION
+    sta IS_PORTAL_TRANSITION
 
 @portal_err
     rts
