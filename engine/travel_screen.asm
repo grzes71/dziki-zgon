@@ -10,6 +10,9 @@ travel_frame_count
     dta $00
 travel_regname_len
     dta $00
+travel_screen_active
+    dta $00
+
 
 
 ; Tablica kolorów tła/tekstu dla paska tęczy (10 linii skanowania)
@@ -84,13 +87,19 @@ DLI_Travel = DLI_Travel_Top
 ; travel_screen_show — Wyświetla 5-sekundowy ekran podróży
 ;==============================================================
 .proc travel_screen_show
-    ; 1. Wyłącz DMA i PMG na czas przygotowania ekranu
+    ; Ustaw flagę aktywności ekranu podróży i wyłącz wyliczanie animacji charsetu
+    lda #1
+    sta travel_screen_active
     lda #0
+    sta anim_chars_active_mask
+
+    ; 1. Wyłącz DMA i PMG na czas przygotowania ekranu
     sta DMACTL
     sta SDMCTL
     sta NMIEN
     sta GRACTL              ; wyłącz PMG DMA w GTIA
     sta GPRIOR
+
 
     ; 2. Kopiuj obrazek TravelScreen_Data (920 B) do VRAM_ARENA ($4000)
 
@@ -224,9 +233,12 @@ DLI_Travel = DLI_Travel_Top
     bcc @wait_loop
 
     ; 9. Wyłącz DLI ekranu podróży, zachowując VBI ($40) dla muzyki i klatek
+    lda #0
+    sta travel_screen_active
     lda #$40
     sta NMIEN
     rts
+
 
 .endp
 

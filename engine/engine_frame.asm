@@ -12,11 +12,16 @@
     lda GAME_STATE
     cmp #STATE_GAME
     bne @skip_anim
+    lda IS_PORTAL_TRANSITION
+    bne @skip_anim
+    lda travel_screen_active
+    bne @skip_anim
     jsr animate_charset
     jsr update_animated_charset
     jsr update_timer
     jsr msg_update
 @skip_anim
+
 
 
     ; 2. Sygnał dla pętli głównej

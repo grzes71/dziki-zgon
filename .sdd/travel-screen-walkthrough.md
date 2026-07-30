@@ -30,10 +30,19 @@ Implemented the 5-second **Travel Screen** interlude shown when Geralt travels b
    - Checked `IS_PORTAL_TRANSITION` in `World_Update` (`engine/world.asm`) to trigger `travel_screen_show` before rendering destination screen.
    - Added `redraw_status_bar` in `scenes/game/game.asm` called by `World_Update` to completely wipe out leftover travel image bytes from `GAME_SCREEN_A2` ($41E0–$422F) and redraw default status line, region name, timer, and inventory icons.
 
-4. **Memory Optimization & Fix**:
-   - Relocated RLE text data (`all_texts.asm`) to `$8920` in upper free RAM (`$8500`–`$9FFF`), completely eliminating spillage over `$4000` (`VRAM_ARENA`).
-   - Placed shared `GO_CHARSET` at `$9100` (`CHBASE = $91`), `GameOverFail_Data` at `$9500`, `GameOverSuccess_Data` at `$98A0`, and `TravelScreen_Data` at `$9C40`.
-   - Kept `DLIST_ADDR = $3E80` in lower RAM without any memory collisions.
+5. **Smooth VBLANK Screen Transitions & Post-Travel VBI Fix**:
+   - Resolved screen flickering/mignięcie when transitioning between screens (e.g. `TAVERN` <-> `CROSSROADS`).
+   - `World_Update` (`engine/world.asm`) now immediately blanks display DMA (`SDMCTL = 0`, `DMACTL = 0`) at start of transition.
+   - Fixed CPU freeze after Travel Screen: `travel_screen_show` previously set `NMIEN = 0`, disabling VBI interrupts and causing `Engine_WaitFrame` to deadlock. `travel_screen_show` now leaves `NMIEN = $40` (VBI active), and `World_Update` restores `NMIEN = $C0` before `Engine_WaitFrame`.
+   - Rebuilds VRAM, updates GTIA stage color registers (`update_stage_colors`), and updates PMG while DMA is off.
+6. **Charset Animation Suppression During Travel**:
+   - Added `travel_screen_active` flag in `engine/travel_screen.asm` set to 1 at start of `travel_screen_show` and 0 at exit.
+   - Clears `anim_chars_active_mask = 0` during travel screen preparation.
+   - Updated `Engine_FrameHandler` (`engine/engine_frame.asm`) to check `IS_PORTAL_TRANSITION` and `travel_screen_active` and bypass `animate_charset` and `update_animated_charset` during travel interludes.
+   - Prevents background VBI routines from mutating font byte memory at `$6400` while `GO_CHARSET` ($9000) is being displayed.
+
+
+
 
 
 
