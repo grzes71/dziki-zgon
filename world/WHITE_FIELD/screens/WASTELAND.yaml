@@ -273,6 +273,9 @@ objects:
 - object: OUTHOUSE_2
   x: 11
   y: 3
+- object: TREE_3
+  x: 0
+  y: 6
 enemies:
 - enemy: strzyga
   x: 8

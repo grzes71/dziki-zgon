@@ -31,9 +31,6 @@ objects:
   x: 21
   y: 9
   repeat-x: 19
-- object: STONE_BIG
-  x: 3
-  y: 2
 - object: TREE_3
   x: 30
   y: 3
@@ -127,9 +124,6 @@ objects:
 - object: ROCK_GREEN
   x: 37
   y: 5
-- object: SIGNPOINT_LEFT
-  x: 6
-  y: 4
 - object: GROUND_BROWN_DOWN
   x: 35
   y: 5
@@ -140,9 +134,6 @@ objects:
   x: 0
   y: 8
   repeat-x: 2
-- object: REED
-  x: 3
-  y: 8
 - object: REED
   x: 11
   y: 8
@@ -198,6 +189,24 @@ objects:
 - object: TREE_3
   x: 0
   y: 0
+- object: BUSH_2
+  x: 13
+  y: 4
+- object: BUSH_2
+  x: 3
+  y: 8
+- object: BUSH_2
+  x: 1
+  y: 3
+- object: TREE_3
+  x: 3
+  y: 2
+- object: SIGNPOINT_LEFT
+  x: 10
+  y: 0
+- object: TREE_3
+  x: 7
+  y: 3
 enemies:
 - enemy: strzyga
   x: 16

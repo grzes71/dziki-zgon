@@ -27,9 +27,6 @@ objects:
   x: 10
   y: 3
 - object: GROUND_GREEN_UP
-  x: 14
-  y: 3
-- object: GROUND_GREEN_UP
   x: 18
   y: 3
 - object: GROUND_GREEN_UP
@@ -115,9 +112,6 @@ objects:
   x: 9
   y: 5
 - object: GROUND_BROWN_DOWN
-  x: 8
-  y: 8
-- object: GROUND_BROWN_DOWN
   x: 18
   y: 8
 - object: GROUND_BROWN_DOWN
@@ -132,15 +126,10 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 37
   y: 3
+  repeat-x: 2
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 1
-  y: 3
-- object: GROUND_BROWN_DOWN
-  x: 4
-  y: 3
 - object: GROUND_BROWN_DOWN
   x: 3
   y: 8
@@ -173,4 +162,106 @@ objects:
 - object: TREE_SMALL
   x: 38
   y: 5
+- object: ROCK_1
+  x: 12
+  y: 8
+- object: ROCK_1
+  x: 14
+  y: 4
+- object: ROCK_1
+  x: 30
+  y: 3
+- object: ROCK_1
+  x: 29
+  y: 9
+- object: GROUND_GREEN_UP
+  x: 29
+  y: 10
+- object: GROUND_GREEN_UP
+  x: 30
+  y: 4
+- object: GROUND_GREEN_UP
+  x: 14
+  y: 5
+- object: GROUND_GREEN_UP
+  x: 12
+  y: 9
+- object: GROUND_GREEN_UP
+  x: 34
+  y: 2
+- object: GROUND_GREEN_UP
+  x: 1
+  y: 2
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 1
+  y: 0
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 1
+  repeat-y: 3
+- object: GROUND_BROWN_DOWN
+  x: 4
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 3
+- object: GROUND_BROWN_DOWN
+  x: 34
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 5
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 7
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 9
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 1
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 21
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 31
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 26
+  y: 8
+- object: GROUND_GREEN_DOWN
+  x: 23
+  y: 1
+- object: GROUND_GREEN_DOWN
+  x: 35
+  y: 0
+- object: GROUND_GREEN_DOWN
+  x: 33
+  y: 1
+- object: GROUND_GREEN_DOWN
+  x: 35
+  y: 2
+  repeat-x: 2
+- object: GROUND_GREEN_DOWN
+  x: 39
+  y: 4
+- object: GROUND_GREEN_DOWN
+  x: 3
+  y: 0
 enemies: []

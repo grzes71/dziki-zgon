@@ -44,6 +44,10 @@
    - Whenever you make changes that affect code/data size, `make all` automatically executes `scripts/check_memory.py`.
    - Never manually edit memory addresses in `MEMORY_USAGE.md`; `check_memory.py` is the single source of truth.
 
+6. **Display List 1 KB Boundary**:
+   - The ANTIC graphics processor requires that no Display List crosses a 1 KB (`$0400`) page boundary. Crossing a boundary wraps ANTIC's internal instruction counter, corrupting display output and causing flicker.
+   - All Display Lists must be allocated at a dedicated address (e.g., `DLIST_ADDR` = `$3E80`) and fit entirely before the VRAM buffer (`$4000`).
+
 ---
 
 ## 4. PROJECT STRUCTURE & CONVENTIONS
