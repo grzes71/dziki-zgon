@@ -26,6 +26,7 @@ class EnemyInstance(BaseModel):
 class ObjectFlags(BaseModel):
     blocking: bool = False
     interactive: bool = False
+    secret: bool = False
 
 class ObjectDefinition(BaseModel):
     id: str

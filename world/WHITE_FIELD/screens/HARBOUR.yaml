@@ -2,7 +2,7 @@ id: HARBOUR
 grid_x: 2
 grid_y: 2
 exits:
-  north: WASTELAND
+  north: null
   south: null
   east: null
   west: VILLAGE_3
@@ -20,8 +20,12 @@ objects:
   x: 25
   y: 6
   type: portal
+  conditions_met: pięknie, płyniemy!
+  conditions_unmet: bez wioseł nie popłyniemy
   message_travel: las pijanego zająca - 10 pacierzy
   target_region: LAS_PIJANEGO_ZAJACA
+  items_required:
+  - 6
   cost_of_travel: 10
 - object: WAVES
   x: 21
@@ -107,23 +111,11 @@ objects:
   x: 39
   y: 3
 - object: GROUND_BROWN_UP
-  x: 1
-  y: 0
-- object: GROUND_BROWN_UP
   x: 2
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 0
   y: 1
 - object: GROUND_BROWN_UP
   x: 1
   y: 2
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 1
-  y: 1
 - object: GROUND_BROWN_DOWN
   x: 2
   y: 0
@@ -203,6 +195,9 @@ objects:
 - object: MUSHROOM
   x: 13
   y: 6
+- object: TREE_3
+  x: 0
+  y: 0
 enemies:
 - enemy: strzyga
   x: 16

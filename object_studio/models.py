@@ -10,6 +10,7 @@ class ObjectSize:
 class ObjectFlags:
     blocking: bool = False
     interactive: bool = False
+    secret: bool = False
 
 @dataclass
 class ObjectDefinition:

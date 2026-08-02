@@ -83,12 +83,6 @@ objects:
 - object: ROCK_GREEN
   x: 31
   y: 9
-- object: BUSH
-  x: 39
-  y: 0
-- object: BUSH
-  x: 30
-  y: 0
 - object: BARREL
   x: 27
   y: 5
@@ -105,12 +99,6 @@ objects:
   x: 28
   y: 1
 - object: TREE_3
-  x: 34
-  y: 0
-- object: TREE_3
-  x: 36
-  y: 2
-- object: TREE_3
   x: 28
   y: 8
 - object: TREE_3
@@ -120,17 +108,8 @@ objects:
   x: 3
   y: 3
 - object: TREE_3
-  x: 0
-  y: 0
-- object: TREE_3
-  x: 18
-  y: 1
-- object: TREE_3
   x: 36
   y: 7
-- object: TREE_3
-  x: 15
-  y: 4
 - object: ROCK_1
   x: 14
   y: 1
@@ -153,9 +132,6 @@ objects:
   x: 1
   y: 4
 - object: BUSH
-  x: 20
-  y: 2
-- object: BUSH
   x: 33
   y: 2
 - object: BUSH
@@ -173,9 +149,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 12
   y: 2
-- object: GROUND_BROWN_DOWN
-  x: 3
-  y: 1
 - object: GROUND_BROWN_DOWN
   x: 7
   y: 1
@@ -204,6 +177,32 @@ objects:
 - object: BARREL
   x: 11
   y: 3
+- object: WATER_ANIM
+  x: 0
+  y: 0
+  repeat-x: 2
+- object: WAVES_RIGHT
+  x: 2
+  y: 0
+- object: WATER_BR
+  x: 2
+  y: 1
+- object: WAVES_DOWN
+  x: 0
+  y: 1
+  repeat-x: 2
+- object: TREE_3
+  x: 38
+  y: 0
+- object: TREE_3
+  x: 15
+  y: 3
+- object: TREE_3
+  x: 19
+  y: 1
+- object: TREE_3
+  x: 35
+  y: 1
 enemies:
 - enemy: kikimora
   x: 22

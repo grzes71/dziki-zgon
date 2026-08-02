@@ -196,20 +196,9 @@ objects:
 - object: TREE_2
   x: 16
   y: 4
-- object: TREASURE
-  x: 6
-  y: 5
-  repeat-x: 2
-- object: TREASURE
-  x: 22
-  y: 5
-  repeat-x: 2
 - object: BUSH_2
   x: 15
   y: 9
-- object: BUSH_2
-  x: 20
-  y: 7
 - object: BUSH_2
   x: 5
   y: 7
@@ -218,9 +207,6 @@ objects:
   y: 7
 - object: GROUND_BROWN_DOWN
   x: 39
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 26
   y: 7
 - object: GROUND_BROWN_DOWN
   x: 18
@@ -237,27 +223,9 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 14
   y: 2
-- object: ROCK_BIG
-  x: 32
-  y: 9
-- object: TREE_3
-  x: 26
-  y: 9
-- object: TREE_2
-  x: 29
-  y: 10
-- object: ROCK_1
-  x: 24
-  y: 11
 - object: TREE_3
   x: 22
   y: 8
-- object: TREE_3
-  x: 21
-  y: 10
-- object: MUSHROOM
-  x: 19
-  y: 11
 - object: ROCK_2
   x: 35
   y: 7
@@ -267,9 +235,49 @@ objects:
 - object: ROCK_1
   x: 25
   y: 2
-- object: ROCK_1
-  x: 16
+- object: WATER_TL
+  x: 19
+  y: 10
+- object: WAVES_LEFT
+  x: 19
   y: 11
+- object: WAVES_UP
+  x: 20
+  y: 10
+  repeat-x: 20
+- object: WATER_ANIM
+  x: 20
+  y: 11
+  repeat-x: 20
+- object: BARN_SMALL
+  x: 26
+  y: 8
+- object: REED
+  x: 32
+  y: 9
+- object: REED
+  x: 36
+  y: 9
+- object: REED
+  x: 34
+  y: 9
+- object: REED
+  x: 38
+  y: 9
+- object: REED
+  x: 18
+  y: 11
+- object: REED
+  x: 19
+  y: 9
+- object: BRICKS_2
+  x: 22
+  y: 5
+  repeat-x: 2
+- object: BRICKS_2
+  x: 6
+  y: 5
+  repeat-x: 2
 enemies:
 - enemy: strzyga
   x: 14

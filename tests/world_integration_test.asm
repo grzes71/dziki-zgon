@@ -28,6 +28,9 @@ COLLISION_GRID     .ds 60
     icl "../gen/world/regions.asm"
     icl "../gen/world/screens.asm"
     icl "../gen/world/exits.asm"
+    icl "../gen/world/secret_objects.asm"
+
+SECRET_COLLECTED_FLAGS .ds 256
 
 ; --- Entry Point ---
     org $7000

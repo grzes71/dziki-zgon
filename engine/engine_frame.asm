@@ -3,8 +3,6 @@
 ;----------------------------------------
 
 .proc Engine_FrameHandler
-    inc $D01A               ; PANIC FLASH: Miganie COLBK
-
     ; 1. Odtwarzacz muzyki/dźwięku
     jsr Audio_Update
 
@@ -16,13 +14,17 @@
     bne @skip_anim
     lda travel_screen_active
     bne @skip_anim
+    
+    lda #<game_dli
+    sta VDSLST
+    lda #>game_dli
+    sta VDSLST+1
+
     jsr animate_charset
     jsr update_animated_charset
     jsr update_timer
     jsr msg_update
 @skip_anim
-
-
 
     ; 2. Sygnał dla pętli głównej
     inc FrameCounter
@@ -55,8 +57,8 @@
     lda COLOR4
     sta COLBK
 
-    ; 4. Przejście do odłożonego VBLANK (klawiatura, timery) pomijając SYSVBV
-    jmp (VVBLKI)
+    ; 4. Powrót do systemu operacyjnego (SYSVBV)
+    jmp SYSVBV
 .endp
 
 .proc Engine_WaitFrame

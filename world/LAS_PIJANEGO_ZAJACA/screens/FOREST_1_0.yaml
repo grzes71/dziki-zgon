@@ -11,9 +11,6 @@ objects:
   x: 6
   y: 4
 - object: TREE_SMALL
-  x: 29
-  y: 6
-- object: TREE_SMALL
   x: 17
   y: 8
 - object: TREE_SMALL
@@ -38,12 +35,6 @@ objects:
   x: 29
   y: 0
 - object: TREE_2
-  x: 38
-  y: 0
-- object: TREE_2
-  x: 36
-  y: 4
-- object: TREE_2
   x: 6
   y: 8
 - object: TREE_2
@@ -55,9 +46,6 @@ objects:
 - object: ROCK_1
   x: 17
   y: 5
-- object: ROCK_1
-  x: 15
-  y: 0
 - object: STONE_BIG
   x: 24
   y: 9
@@ -109,9 +97,6 @@ objects:
 - object: BUSH_2
   x: 3
   y: 0
-- object: BUSH_2
-  x: 38
-  y: 3
 - object: REED
   x: 35
   y: 11
@@ -207,9 +192,6 @@ objects:
   x: 7
   y: 11
 - object: GROUND_BROWN_DOWN
-  x: 39
-  y: 5
-- object: GROUND_BROWN_DOWN
   x: 35
   y: 0
 - object: GROUND_BROWN_DOWN
@@ -259,4 +241,11 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 22
   y: 11
+- object: PORTAL_2
+  x: 32
+  y: 3
+  type: portal
+  message_travel: stara wyżyma - 15 pacierzy
+  target_region: OLD_WYZIMA
+  cost_of_travel: 15
 enemies: []

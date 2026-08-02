@@ -12,6 +12,18 @@
     icl "zeropage.asm"
 
 ; ===================================================================
+; 1.2. Wymuś wyłączenie BASIC ROM na samym początku ładowania XEX
+; ===================================================================
+    org $2000
+disable_basic_loader
+    pha
+    lda #$FF
+    sta PORTB
+    pla
+    rts
+    ini disable_basic_loader
+
+; ===================================================================
 ; 1.5. Grafiki tytułowe w wolnym niskim RAM-ie ($0700)
 ; ===================================================================
     org $0700
@@ -27,16 +39,6 @@ TitleScreen_Data
 ; ===================================================================
     org $2000
 
-    jmp start              ; jawny skok do inicjalizacji
-
-disable_basic_loader
-    pha
-    lda #$FF
-    sta PORTB
-    pla
-    rts
-    ini disable_basic_loader
-
     ; --- Biblioteki (procedury wielokrotnego użytku) ---
     icl "lib/pmg.asm"
     icl "lib/rle.asm"
@@ -44,13 +46,11 @@ disable_basic_loader
     
     ; --- Silnik gry ---
     icl "engine/engine.asm"
-    icl "engine/travel_screen.asm"
 
     ; --- Sceny (każda eksportuje _init i _run) ---
     icl "scenes/title/title.asm"
     icl "scenes/story/story.asm"
     icl "scenes/game/game.asm"
-    icl "scenes/gameover/gameover.asm"
 
 ; ===================================================================
 ; Tablica kolejności etapów (development: zmień DEV_START_STAGE w hardware.asm)
@@ -117,6 +117,12 @@ STAGE_COUNT = * - stage_order
 
     lda #$FF                ; %11111111: bit 0=1 (OS ROM ON), bit 1=1 (BASIC OFF)
     sta PORTB               ; odsłoń RAM spod BASIC ROM ($A000–$BFFF)
+
+    ; Inicjalizacja wektora odłożonego VBI ($0224/$0225) na bezpieczny powrót OS XITVBV ($E462)
+    lda #<XITVBV
+    sta $0224
+    lda #>XITVBV
+    sta $0225
     rts
 .endp
 
@@ -197,9 +203,8 @@ main_loop
     jmp main_loop
 
 ; ===================================================================
-; 6. Display Listy ($3800)
+; 6. Display Listy (dla zachowania granic 1 KB umieszczane na DLIST_ADDR=$3E80)
 ; ===================================================================
-
     org DLIST_ADDR
 
 ; --- DL tytułu (pełna, z LMS i stopką) ---
@@ -307,13 +312,13 @@ GO_SCREEN = VRAM_ARENA
     icl "gen/world/screens.asm"
     icl "gen/world/exits.asm"
     icl "gen/world/interactive_objects.asm"
+    icl "gen/world/secret_objects.asm"
+
+; --- Dane tekstów ---
+    icl "gen/all_texts.asm"
 
 ; --- Muzyka i sterownik ($8506 / $A9E0 / $AD00 / $B300) ---
     icl "music/title_audio.asm"
-
-; --- Dane tekstów (w górnym RAM-ie na $8920) ---
-    org $8920
-    icl "gen/all_texts.asm"
 
 StoryText_RAM = FOOTER_ADDR
 StoryText_Data = text_story
@@ -322,6 +327,7 @@ GO_TEXT_SUCCESS_Data = text_gameover_success
 GO_TEXT_Data = text_gameover_fail
 TitleFooterROM = text_title
 SpriteData = DzikizgonData
+
 
 ; --- Wspólny Charset dla GameOver & Travel ($9000, 1 KB aligned -> CHBASE=$90) ---
     org $9000
@@ -345,6 +351,10 @@ TravelScreen_Data
 
 
 
+; --- RMT Tracker Player & Module ($A9E0 - $B610) ---
+    org $A9E0
+    icl "music/title_audio_player.asm"
+
 ; --- Aktorzy / Przeciwnicy (pod ROM BASIC od $B611) ---
     org $B611
     icl "gen/gerwalt.sprite.asm"
@@ -352,6 +362,11 @@ TravelScreen_Data
     icl "gen/kikimora.sprite.asm"
     icl "gen/strzyga.sprite.asm"
     icl "gen/sukkub.sprite.asm"
+
+; --- Procedury scen (pod ROM BASIC na $B7A0) ---
+    org $B7A0
+    icl "engine/travel_screen.asm"
+    icl "scenes/gameover/gameover.asm"
 
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR

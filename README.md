@@ -13,7 +13,7 @@ Po wielodniowej imprezie w karczmie "Pod Trzema Kuflami" wiedźmin **Gerwant** b
 
 ## Development z AI agentami
 
-Agent AI powinien przeczytać oraz postępować wg zasad umieszczonych w pliku [AGENTS.md](..agents/AGENTS.md).
+Agent AI powinien przeczytać oraz postępować wg zasad umieszczonych w pliku [AGENTS.md](.agents/AGENTS.md).
 
 Kontekst techniczny jest także zawarty w pliku [AI_CONTEXT.md](AI_CONTEXT.md).
 

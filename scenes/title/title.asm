@@ -221,16 +221,10 @@ TitleLineAddrHi
     ; --- Przywróć tekst stopki (nadpisywany przez story/gameover) ---
     jsr copy_title_footer
 
-    ; --- DMA ON ---
-    lda #DMA_PMG_ON
-    sta SDMCTL
-    sta DMACTL
-
     ; Charset — własna czcionka ($6000)
     lda #$60
     sta CHBAS
     sta CHBASE
-
 
     ; --- DLI: wektor + włączenie na ostatniej pustej linii ---
     lda #<DLI_Handler
@@ -242,18 +236,20 @@ TitleLineAddrHi
     ora #$80
     sta DLIST_TITLE+2
 
-    lda #$C0             ; DLI on, VBI on (required for music)
-    sta NMIEN
-
     jsr title_audio_init
 
     ; --- Podepnij własny VBI handler (wywołuje tracker + odliczanie klatek) ---
-    lda #0
-    sta NMIEN
     lda #<title_vbi
     sta $0222
     lda #>title_vbi
     sta $0223
+
+    ; --- DMA ON ---
+    lda #DMA_PMG_ON
+    sta SDMCTL
+    sta DMACTL
+
+    ; --- VBI & DLI ON ---
     lda #$C0
     sta NMIEN
     rts

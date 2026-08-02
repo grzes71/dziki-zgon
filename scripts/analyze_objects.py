@@ -5,6 +5,9 @@ from pathlib import Path
 import yaml
 
 def main():
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+        
     # Find base directory (world/)
     base_dir = Path(__file__).resolve().parent.parent / "world"
     if not base_dir.exists():
@@ -19,6 +22,11 @@ def main():
         "--region", "-r",
         type=str,
         help="Limit the analysis to a specific region (e.g., WHITE_FIELD)"
+    )
+    parser.add_argument(
+        "--unused-charset", "--charset", "-c",
+        action="store_true",
+        help="Report unused charset codes (0-127) not present in objects"
     )
     args = parser.parse_args()
         
@@ -47,11 +55,13 @@ def main():
         objects_data = yaml.safe_load(f)
         
     defined_objects = []
+    object_tiles = {}
     if objects_data and "objects" in objects_data:
         for obj in objects_data["objects"]:
             obj_id = obj.get("id") or obj.get("object")
             if obj_id:
                 defined_objects.append(obj_id)
+                object_tiles[obj_id] = obj.get("tiles", [])
                 
     # Initialize data structures
     object_counts = {obj_id: 0 for obj_id in defined_objects}
@@ -123,6 +133,37 @@ def main():
             locs = sorted(list(undefined_objects_locations[oid]))
             locs_str = ", ".join(locs)
             print(f"{oid}: [{locs_str}] {count}")
+
+    if args.unused_charset:
+        print("\n=== NIEUŻYWANE KODY CHARSETU (0-127) ===")
+        
+        all_defined_tiles = set()
+        for tiles in object_tiles.values():
+            for t in tiles:
+                if isinstance(t, int):
+                    all_defined_tiles.add(t % 128)
+                    
+        unused_defined = sorted(set(range(128)) - all_defined_tiles)
+        print(f"Nieużywane w definicjach objects.yaml ({len(unused_defined)}/128):")
+        if unused_defined:
+            print("  " + ", ".join(map(str, unused_defined)))
+        else:
+            print("  (Brak - wszystkie kody 0-127 są użyte w definicjach obiektów)")
+            
+        placed_tiles = set()
+        for oid, count in object_counts.items():
+            if count > 0 and oid in object_tiles:
+                for t in object_tiles[oid]:
+                    if isinstance(t, int):
+                        placed_tiles.add(t % 128)
+                        
+        unused_placed = sorted(set(range(128)) - placed_tiles)
+        region_str = f" [region: {target_region}]" if target_region else ""
+        print(f"\nNieużywane w obiektach umieszczonych na planszach{region_str} ({len(unused_placed)}/128):")
+        if unused_placed:
+            print("  " + ", ".join(map(str, unused_placed)))
+        else:
+            print("  (Brak - wszystkie kody 0-127 są użyte na planszach)")
 
 if __name__ == '__main__':
     main()

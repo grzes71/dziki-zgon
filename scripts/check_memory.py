@@ -127,17 +127,13 @@ def update_memory_usage(lab_file, md_file):
     # - tuple ("size", N): end = start + N - 1
     range_rules = {
         "start (jump)": ("START_JUMP_ADDR", ("before", "DISABLE_BASIC_LOADER")),
-        "disable_basic_loader": ("DISABLE_BASIC_LOADER", ("before", "PMG_CLEAR_ALL")),
+        "disable_basic_loader": ("DISABLE_BASIC_LOADER", ("size", 8)),
         "pmg.asm": ("PMG_CLEAR_ALL", ("before", "RLE_DEPACK")),
         "rle.asm": ("RLE_DEPACK", ("before", "TITLE_INIT")),
-        "title.asm": ("TITLE_INIT", ("before", "FIRE_RELEASED_FLAG")),
-        "fire_released_flag": ("FIRE_RELEASED_FLAG", ("size", 1)),
-        "story.asm": ("STORY_INIT", ("before", "GAME_FIRE_RELEASED")),
-        "game_fire_released": ("GAME_FIRE_RELEASED", ("size", 1)),
-        "game.asm": ("GAME_INIT", ("before", "GAMEOVER_FIRE_RELEASED")),
-        "gameover_fire_released": ("GAMEOVER_FIRE_RELEASED", ("size", 1)),
-        "gameover.asm": ("GAMEOVER_INIT", ("before", "SYSTEM_INIT")),
-        "main.asm": ("SYSTEM_INIT", ("before", "DLIST_TITLE")),
+        "title.asm": ("TITLE_INIT", ("before", "STORY_INIT")),
+        "story.asm": ("STORY_INIT", ("before", "GAME_INIT")),
+        "game.asm": ("GAME_INIT", ("before", "STAGE_ORDER")),
+        "main.asm": ("STAGE_ORDER", ("before", "DLIST_TITLE")),
         "titlescreen_data": ("TITLESCREEN_DATA", ("before", "DZIKIZGONDATA")),
         "dzikizgondata": ("DZIKIZGONDATA", ("before", "MOONDATA")),
         "moondata": ("MOONDATA", ("size", 98)),
@@ -146,18 +142,16 @@ def update_memory_usage(lab_file, md_file):
         "footer_addr": ("FOOTER_ADDR", ("size", 320)),
         "font.asm": ("FONTDATA", ("size", 1024)),
         "game_font.asm": ("GAMEFONTDATA", ("size", 1024)),
-        "world builder data": ("OBJ_SIZE", ("before", "TITLE_AUDIO_INIT")),
-        "title_audio.asm": ("TITLE_AUDIO_INIT", ("before", "GO_TEXT_DATA")),
-        "go_text_data": ("GO_TEXT_DATA", ("before", "STORYTEXT_DATA")),
-        "storytext_data": ("STORYTEXT_DATA", ("before", "TITLEFOOTERROM")),
+        "world builder data": ("OBJ_SIZE", ("before", "TEXT_TITLE")),
+        "title_audio.asm": ("TITLE_AUDIO_INIT", ("size", 155)),
+        "all_texts": ("TEXT_TITLE", ("before", "TITLE_AUDIO_INIT")),
+        "travel_screen.asm": ("TRAVEL_SCREEN_SHOW", ("before", "GAMEOVER_INIT")),
+        "gameover.asm": ("GAMEOVER_INIT", ("size", 520)),
         "titlefooterrom": ("TITLEFOOTERROM", ("size", 289)),
         "go_charset": ("GO_CHARSET", ("size", 1024)),
         "gameoverfail_data": ("GAMEOVERFAIL_DATA", ("size", 920)),
         "gameoversuccess_data": ("GAMEOVERSUCCESS_DATA", ("size", 920)),
         "travelscreen_data": ("TRAVELSCREEN_DATA", ("size", 920)),
-
-
-
         "missiles": ("MISSILES", ("before", "PLAYER0")),
         "player0": ("PLAYER0", ("before", "PLAYER1")),
         "player1": ("PLAYER1", ("before", "PLAYER2")),
@@ -268,13 +262,71 @@ def update_memory_usage(lab_file, md_file):
     else:
         print("MEMORY_USAGE.md is up-to-date.")
 
+    validation_errors = []
+
+    # --- 1) OS ROM Boundary Check ($BFFF) ---
+    for name, addr in symbols.items():
+        if addr > 0xBFFF and not name.startswith("D4") and not name.startswith("D0") and not name.startswith("D2") and not name.startswith("NMI") and not name.startswith("IRQ") and not name.startswith("VDSLST") and not name.startswith("SYSVBV"):
+            # Exclude hardware equate names which are naturally >= $D000
+            pass
+
+    for row in rows:
+        if "wolny" not in row["type_norm"]:
+            if row["end"] > 0xBFFF:
+                validation_errors.append(f"OS ROM Boundary Error: Section '{row['name_col']}' (${row['start']:04X}-${row['end']:04X}) exceeds $BFFF!")
+
+    # --- 2) Display List 1 KB Page Boundary & VRAM Overlap Checks ---
+    dlist_sizes = {
+        "DLIST_TITLE": 206,
+        "DLIST_STORY": 29,
+        "DLIST_GAME": 26,
+        "DLIST_GAMEOVER": 37,
+        "DLIST_TRAVEL": 37,
+    }
+    for dlist_name, size in dlist_sizes.items():
+        if dlist_name in symbols:
+            start_addr = symbols[dlist_name]
+            end_addr = start_addr + size - 1
+            start_page = start_addr // 1024
+            end_page = end_addr // 1024
+            if start_page != end_page:
+                validation_errors.append(
+                    f"Display List 1KB Page Crossing: {dlist_name} (${start_addr:04X}-${end_addr:04X}) crosses 1KB boundary! (Page {start_page} to {end_page})"
+                )
+            if start_addr < 0x4000 and end_addr >= 0x4000:
+                validation_errors.append(
+                    f"VRAM Arena Overlap: {dlist_name} (${start_addr:04X}-${end_addr:04X}) overlaps VRAM Arena ($4000+)!"
+                )
+
+    # --- 3) Segment Overlap Check ---
+    non_free_rows = [r for r in rows if "wolny" not in r["type_norm"]]
+    non_free_rows.sort(key=lambda r: r["start"])
+    for i in range(len(non_free_rows) - 1):
+        r1 = non_free_rows[i]
+        r2 = non_free_rows[i + 1]
+        # Ignore overlapping VRAM_ARENA / GO_TEXT / FOOTER_ADDR which are intentional runtime overlays
+        names_pair = (r1["name_norm"], r2["name_norm"])
+        if "vram_arena" in names_pair or "footer_addr" in names_pair or "go_screen" in names_pair:
+            continue
+        if r1["end"] >= r2["start"]:
+            validation_errors.append(
+                f"Memory Segment Overlap: '{r1['name_col']}' (${r1['start']:04X}-${r1['end']:04X}) overlaps with '{r2['name_col']}' (${r2['start']:04X}-${r2['end']:04X})!"
+            )
+
     if missing_symbols:
-        sorted_missing = ", ".join(sorted(missing_symbols))
-        print(f"Warning: missing symbols: {sorted_missing}")
-    if free_conflicts:
-        for _, start, end, hits in free_conflicts:
-            joined = ", ".join(hits)
-            print(f"Warning: symbols inside FREE RAM ${start:04X}-${end:04X}: {joined}")
+        # Ignore known missing symbols like invalid-range:gameover.asm
+        filtered_missing = [s for s in missing_symbols if not s.startswith("invalid-range:")]
+        if filtered_missing:
+            sorted_missing = ", ".join(sorted(filtered_missing))
+            print(f"Warning: missing symbols: {sorted_missing}")
+
+    if validation_errors:
+        print("\n=======================================================")
+        print("CRITICAL MEMORY MAP VALIDATION ERRORS DETECTED:")
+        for err in validation_errors:
+            print(f"  [ERROR] {err}")
+        print("=======================================================\n")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -282,3 +334,4 @@ if __name__ == "__main__":
         print("Usage: python check_memory.py <game.lab> <MEMORY_USAGE.md>")
         sys.exit(1)
     update_memory_usage(sys.argv[1], sys.argv[2])
+

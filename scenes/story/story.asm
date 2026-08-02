@@ -20,29 +20,43 @@ fire_released_flag
 
     ; --- Display List ---
     lda #<DLIST_STORY
+    sta SDLSTL
     sta DLISTL
     lda #>DLIST_STORY
+    sta SDLSTH
     sta DLISTH
 
     ; --- Charset (własny font $6000 — ten sam co w tytule) ---
     lda #$60
+    sta CHBAS
     sta CHBASE
 
     ; --- Kolory: biały tekst na czarnym tle ---
     lda #$00
+    sta COLOR4
     sta COLBK            ; czarna ramka
+    sta COLOR2
     sta COLPF2           ; czarne tło znaków
+    sta COLOR3
     sta COLPF3           ; nieużywane
-    lda #$0E
-    sta COLPF1           ; biały tekst (COLPF1 w ANTIC mode 2)
-    lda #$00
+    sta COLOR0
     sta COLPF0           ; nieużywane
+    lda #$0E
+    sta COLOR1
+    sta COLPF1           ; biały tekst (COLPF1 w ANTIC mode 2)
+
+    ; --- Audio ---
+    jsr title_audio_init
 
     ; --- DMA ON (playfield, bez PMG) ---
     lda #$22
+    sta SDMCTL
     sta DMACTL
 
-    jsr title_audio_init
+    ; --- VBI ON, DLI OFF ---
+    lda #$40
+    sta NMIEN
+
     rts
 .endp
 

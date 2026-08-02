@@ -68,6 +68,30 @@ row_offsets_hi
     txa
     pha                         ; Zapisz licznik obiektów
 
+    ; Sprawdź czy ten obiekt to zebrany obiekt Secret na obecnym screenie
+    ldy GAME_SCREEN_ID
+    lda SECRET_OBJ_PRESENT,y
+    beq @not_secret_collected
+    lda SECRET_COLLECTED_FLAGS,y
+    beq @not_secret_collected
+    lda OBJ_CODE
+    cmp SECRET_OBJ_CODE,y
+    bne @not_secret_collected
+    lda OBJ_X
+    cmp SECRET_OBJ_X,y
+    bne @not_secret_collected
+    lda OBJ_Y
+    cmp SECRET_OBJ_Y,y
+    bne @not_secret_collected
+
+    ; Jest to zebrany obiekt Secret -> pomiń rysowanie i kolizje!
+    pla
+    tax
+    dex
+    beq @end
+    jmp @object_loop
+
+@not_secret_collected
     ; Wypakuj rozmiar
     ldx OBJ_CODE
     lda OBJ_SIZE,x

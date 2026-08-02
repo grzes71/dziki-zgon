@@ -54,6 +54,7 @@ class AsmGenerator:
         self._generate_exits()
         self._generate_screens()
         self._generate_interactive_objects()
+        self._generate_secret_objects()
         self._generate_world_inc()
         
     def _generate_objects(self):
@@ -77,7 +78,7 @@ class AsmGenerator:
             else:
                 out.append(f"    dta $00 ; Code {code} (Empty/Reserved)")
                 
-        out.append("\n; PackedFlags (Bit 7: blocking, Bit 6: interactive)")
+        out.append("\n; PackedFlags (Bit 7: blocking, Bit 6: interactive, Bit 5: secret)")
         out.append("OBJ_FLAGS")
         for code in range(max_code + 1):
             if code in objects_by_code:
@@ -85,6 +86,7 @@ class AsmGenerator:
                 flags = 0
                 if obj.flags.blocking: flags |= 0x80
                 if obj.flags.interactive: flags |= 0x40
+                if getattr(obj.flags, 'secret', False): flags |= 0x20
                 out.append(f"    dta ${flags:02X} ; Code {code} ({obj.id})")
             else:
                 out.append(f"    dta $00 ; Code {code} (Empty/Reserved)")
@@ -438,4 +440,88 @@ class AsmGenerator:
                 out.append(f"    dta {bytes_str}")
 
         with open(self.out_dir / "interactive_objects.asm", "w", encoding="utf-8") as f:
+            f.write("\n".join(out) + "\n")
+
+    def _generate_secret_objects(self):
+        out = ["; Secret Objects Table (Indexed by ScreenId)"]
+        objects_by_id = {obj.id: obj for obj in self.world.objects}
+        
+        secret_data = []
+        for s in self.screens_sorted:
+            sec_inst = None
+            for inst in s.objects:
+                obj_def = objects_by_id.get(inst.object)
+                if obj_def and obj_def.flags and getattr(obj_def.flags, 'secret', False):
+                    sec_inst = (inst, obj_def)
+                    break
+            secret_data.append(sec_inst)
+
+        # SECRET_OBJ_PRESENT
+        out.append("SECRET_OBJ_PRESENT")
+        out.append("    dta " + ", ".join("1" if d else "0" for d in secret_data))
+
+        # SECRET_OBJ_X
+        out.append("SECRET_OBJ_X")
+        out.append("    dta " + ", ".join(str(d[0].x) if d else "0" for d in secret_data))
+
+        # SECRET_OBJ_Y
+        out.append("SECRET_OBJ_Y")
+        out.append("    dta " + ", ".join(str(d[0].y) if d else "0" for d in secret_data))
+
+        # SECRET_OBJ_W
+        out.append("SECRET_OBJ_W")
+        out.append("    dta " + ", ".join(str(d[1].size.width) if d else "0" for d in secret_data))
+
+        # SECRET_OBJ_H
+        out.append("SECRET_OBJ_H")
+        out.append("    dta " + ", ".join(str(d[1].size.height) if d else "0" for d in secret_data))
+
+        # SECRET_OBJ_CODE
+        out.append("SECRET_OBJ_CODE")
+        out.append("    dta " + ", ".join(str(d[1].code) if d else "0" for d in secret_data))
+
+        # SECRET_OBJ_ITEM (Item ID to provide)
+        out.append("SECRET_OBJ_ITEM")
+        item_ids = []
+        for d in secret_data:
+            if d and d[0].items_provided and len(d[0].items_provided) > 0:
+                item_ids.append(str(d[0].items_provided[0]))
+            else:
+                item_ids.append("0")
+        out.append("    dta " + ", ".join(item_ids))
+
+        # ITEM_NAME_LO/HI — Item name pointers (indexed by Item ID)
+        # Only item names are stored; the "znalazłeś " prefix is in 6502 code
+        item_desc_map = {item.id: item.description for item in self.world.inventory_items}
+        max_item_id = max((item.id for item in self.world.inventory_items), default=0)
+
+        out.append("ITEM_NAME_LO")
+        parts_lo = ["<(ITEM_NAME_EMPTY)"]  # ID 0 = no item
+        for item_id in range(1, max_item_id + 1):
+            if item_id in item_desc_map:
+                parts_lo.append(f"<(ITEM_NAME_{item_id})")
+            else:
+                parts_lo.append("<(ITEM_NAME_EMPTY)")
+        out.append("    dta " + ", ".join(parts_lo))
+
+        out.append("ITEM_NAME_HI")
+        parts_hi = [">(ITEM_NAME_EMPTY)"]  # ID 0 = no item
+        for item_id in range(1, max_item_id + 1):
+            if item_id in item_desc_map:
+                parts_hi.append(f">(ITEM_NAME_{item_id})")
+            else:
+                parts_hi.append(">(ITEM_NAME_EMPTY)")
+        out.append("    dta " + ", ".join(parts_hi))
+
+        out.append("ITEM_NAME_EMPTY")
+        out.append("    dta 0")
+
+        for item_id in range(1, max_item_id + 1):
+            if item_id in item_desc_map:
+                name = item_desc_map[item_id]
+                bytes_str = ", ".join(str(b) for b in name.encode("utf-8") + b"\x00")
+                out.append(f"ITEM_NAME_{item_id}")
+                out.append(f"    dta {bytes_str} ; \"{name}\"")
+
+        with open(self.out_dir / "secret_objects.asm", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")

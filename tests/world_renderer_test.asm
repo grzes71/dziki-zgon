@@ -36,6 +36,11 @@ OBJ_FLAGS          .ds 256
 COLLISION_GRID     .ds 60
 OBJ_TILES_LO       .ds 256
 OBJ_TILES_HI       .ds 256
+SECRET_OBJ_PRESENT     .ds 256
+SECRET_COLLECTED_FLAGS .ds 256
+SECRET_OBJ_CODE        .ds 256
+SECRET_OBJ_X           .ds 256
+SECRET_OBJ_Y           .ds 256
 
 ; --- Wirtualny VRAM (ANTIC 5 to 40x10) ---
     org $4000

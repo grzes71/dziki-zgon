@@ -1,0 +1,13 @@
+id: START
+grid_x: 0
+grid_y: 1
+exits:
+  north: null
+  south: null
+  east: null
+  west: null
+objects:
+- object: HOUSE_TALL
+  x: 13
+  y: 4
+enemies: []

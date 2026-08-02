@@ -20,5 +20,6 @@
     icl "charset_anim.asm"
     icl "msg_line.asm"
     icl "iis.asm"
+    icl "secret_object.asm"
 
 

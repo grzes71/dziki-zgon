@@ -41,9 +41,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 31
   y: 8
-- object: TREE_3
-  x: 2
-  y: 2
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 11
@@ -81,9 +78,6 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 32
   y: 8
-- object: BUSH
-  x: 4
-  y: 4
 - object: BUSH
   x: 4
   y: 0
@@ -127,13 +121,6 @@ objects:
   x: 37
   y: 0
   repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 1
-  repeat-y: 2
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 3
 - object: GROUND_BROWN_UP
   x: 19
   y: 0
@@ -182,9 +169,6 @@ objects:
 - object: TREE_2
   x: 34
   y: 0
-- object: ROCK_GREEN
-  x: 19
-  y: 8
 - object: WAVES_LEFT
   x: 16
   y: 11
@@ -194,55 +178,24 @@ objects:
 - object: BARREL
   x: 7
   y: 1
-- object: BARREL
-  x: 13
-  y: 5
-- object: ROCK_1
-  x: 16
-  y: 7
-- object: REED
-  x: 22
-  y: 9
-  repeat-x: 2
-- object: REED
-  x: 37
-  y: 9
 - object: REED
   x: 15
   y: 11
 - object: TREE_SMALL
   x: 0
   y: 5
-- object: TREE_SMALL
-  x: 4
-  y: 7
 - object: SIGNPOINT_LEFT
   x: 3
   y: 11
 - object: TREE_3
-  x: 38
-  y: 8
-- object: TREE_3
-  x: 38
-  y: 4
-- object: TREE_3
   x: 34
   y: 6
-- object: TREE_3
-  x: 24
-  y: 8
-- object: TREE_3
-  x: 12
-  y: 8
 - object: TREE_3
   x: 8
   y: 9
 - object: BUSH_2
   x: 11
   y: 11
-- object: BUSH_2
-  x: 9
-  y: 7
 - object: BUSH_2
   x: 34
   y: 4
@@ -253,14 +206,65 @@ objects:
   x: 25
   y: 4
 - object: BUSH
-  x: 38
-  y: 1
-- object: BUSH
   x: 32
   y: 0
-- object: MUSHROOM
-  x: 7
+- object: TREE_SMALL
+  x: 3
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 2
+- object: GROUND_GREEN_UP
+  x: 39
+  y: 1
+- object: TREE_3
+  x: 23
+  y: 7
+- object: STONE_BIG
+  x: 17
+  y: 9
+- object: TREE_3
+  x: 15
+  y: 8
+- object: TREE_SMALL
+  x: 12
   y: 5
+- object: TREE_SMALL
+  x: 1
+  y: 1
+- object: TREE_SMALL
+  x: 4
+  y: 2
+- object: ROCK_1
+  x: 5
+  y: 5
+- object: CROSS_1
+  x: 8
+  y: 7
+- object: CROSS_1
+  x: 10
+  y: 8
+- object: CROSS_1
+  x: 6
+  y: 8
+- object: CROSS_2
+  x: 21
+  y: 9
+- object: CROSS_2
+  x: 18
+  y: 7
+- object: CROSS_2
+  x: 37
+  y: 2
+- object: TREE_2
+  x: 38
+  y: 5
+- object: ROCK_2
+  x: 37
+  y: 9
 enemies:
 - enemy: sukkub
   x: 27

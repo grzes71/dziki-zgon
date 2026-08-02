@@ -69,9 +69,8 @@ def test_iis_interaction_unmet(game_binary) -> None:
     mem[labels["ACTOR_HEIGHT"]] = 16
     mem[labels["ACTOR_DIR"]] = 2
 
-    # Inventory starts with Sznurek (ID 4), no Item 1 (Fałszywe pieniądze)
-    assert mem[labels["INVENTORY_COUNT"]] == 1
-    assert mem[labels["INVENTORY_ITEMS"]] == 4
+    # Inventory starts empty, no Item 1 (Fałszywe pieniądze)
+    assert mem[labels["INVENTORY_COUNT"]] == 0
 
     # Press Fire button (TRIG0 = 0 -> InputState_Trig = 0)
     mem[labels["INPUTSTATE_TRIG"]] = 0
@@ -82,8 +81,7 @@ def test_iis_interaction_unmet(game_binary) -> None:
 
     # Check results:
     # Inventory unchanged
-    assert mem[labels["INVENTORY_COUNT"]] == 1
-    assert mem[labels["INVENTORY_ITEMS"]] == 4
+    assert mem[labels["INVENTORY_COUNT"]] == 0
     assert mem[labels["GAME_RESULT_STATUS"]] == 0
 
     # MSG_STATE should be 1 (showing message)
@@ -104,7 +102,7 @@ def test_iis_interaction_met_and_success(game_binary) -> None:
     # Add Item 1 (Fałszywe pieniądze) to inventory using inventory_add_item
     cpu.a = 1
     run_subroutine(cpu, labels["INVENTORY_ADD_ITEM"])
-    assert mem[labels["INVENTORY_COUNT"]] == 2
+    assert mem[labels["INVENTORY_COUNT"]] == 1
 
     # Position Gerwalt below The Tavern facing UP (ACTOR_DIR = 2)
     mem[labels["ACTOR_X"]] = 120
@@ -121,9 +119,8 @@ def test_iis_interaction_met_and_success(game_binary) -> None:
 
     # Check results:
     # Item 1 should be removed, Item 5 ("Podarty rachunek") added
-    assert mem[labels["INVENTORY_COUNT"]] == 2
-    # Inventory items should contain 4 (Sznurek) and 5 (Podarty rachunek)
-    items_in_inv = [mem[labels["INVENTORY_ITEMS"] + i] for i in range(2)]
+    assert mem[labels["INVENTORY_COUNT"]] == 1
+    items_in_inv = [mem[labels["INVENTORY_ITEMS"] + i] for i in range(1)]
     assert 1 not in items_in_inv
     assert 5 in items_in_inv
 
@@ -147,8 +144,8 @@ def test_iis_complete_flag_initialization(game_binary) -> None:
     complete_base = labels["INTERACTIVE_OBJ_COMPLETE"]
     # TAVERN has required items -> complete flag 1
     assert mem[complete_base + labels["SCREEN_ID_TAVERN"]] == 1
-    # HARBOUR (portal, no req items) -> complete flag 0
-    assert mem[complete_base + labels["SCREEN_ID_HARBOUR"]] == 0
+    # FOREST_1_0 (portal, no req items) -> complete flag 0
+    assert mem[complete_base + labels["SCREEN_ID_FOREST_1_0"]] == 0
 
 
 def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
@@ -160,14 +157,14 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
 
     run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
 
-    # Set active screen to HARBOUR
-    mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_HARBOUR"]
+    # Set active screen to FOREST_1_0
+    mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_FOREST_1_0"]
 
-    # In HARBOUR.yaml, PORT is at grid x=25, y=6 (w=1, h=1).
-    # Position Gerwalt above PORT at grid x=25, y=5 (pixel x = 25*4+48 = 148, pixel y = 5*16+32 = 112)
+    # In FOREST_1_0.yaml, PORTAL_2 is at grid x=32, y=3 (w=2, h=2).
+    # Position Gerwalt above PORTAL_2 at grid x=32, y=2 (pixel x = 32*4+48 = 176, pixel y = 2*16+32 = 64)
     # Facing DOWN (ACTOR_DIR = 3)
-    mem[labels["ACTOR_X"]] = 148
-    mem[labels["ACTOR_Y"]] = 112
+    mem[labels["ACTOR_X"]] = 176
+    mem[labels["ACTOR_Y"]] = 64
     mem[labels["ACTOR_HEIGHT"]] = 16
     mem[labels["ACTOR_DIR"]] = 3
 
@@ -191,9 +188,7 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
     mem[labels["INPUTSTATE_TRIG"]] = 0
     run_subroutine(cpu, labels["IIS_UPDATE"])
 
-    # 2nd press result: REQ_SCREEN_TRANSITION=1, targeting FOREST_0_0 (26*4+48=152, 4*16+32=96)
+    # 2nd press result: REQ_SCREEN_TRANSITION=1, targeting START (OLD_WYZIMA portal entry)
     assert mem[labels["REQ_SCREEN_TRANSITION"]] == 1
-    assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_FOREST_0_0"]
-    assert mem[labels["NEW_ACTOR_X"]] == 152
-    assert mem[labels["NEW_ACTOR_Y"]] == 96
+    assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_START"]
 

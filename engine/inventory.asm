@@ -10,20 +10,17 @@ INVENTORY_CLOSE_BRACKET = 61  ; Kod Atari 61 dla ']'
 ITEM_SZNUREK_ID       = 4   ; ID dla Sznurka (id: 4)
 
 inventory_count
-    dta 1
+    dta 0
 inventory_items
-    dta ITEM_SZNUREK_ID, 0, 0, 0, 0, 0, 0, 0
+    dta 0, 0, 0, 0, 0, 0, 0, 0
 
 ;==============================================================
-; inventory_init — inicjalizuje ekwipunek (Sznurek ID 4 na pozycji 0, 7 pustych miejsc)
+; inventory_init — inicjalizuje pusty ekwipunek (8 pustych miejsc)
 ;==============================================================
 .proc inventory_init
-    lda #1
-    sta inventory_count
-    lda #ITEM_SZNUREK_ID
-    sta inventory_items
-    ldx #1
     lda #0
+    sta inventory_count
+    ldx #0
 @loop
     sta inventory_items,x
     inx

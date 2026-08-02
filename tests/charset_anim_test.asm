@@ -4,6 +4,7 @@
 ;----------------------------------------
 
 ; --- Mocki rejestrów Zero Page ---
+SRC_TMP = $80
 SRC_PTR = $82
 DST_PTR = $84
 

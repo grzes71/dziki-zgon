@@ -77,23 +77,36 @@ class ScreenCanvasWidget(QWidget):
                     self.update()
                 return
 
-            # 1.5 Check if there is an existing interactive object at this coordinate to edit
+            # 1.5 Check if there is an existing interactive or secret object at this coordinate to edit
             obj_dict = {o.id: o for o in self.project.objects}
             for inst in self.screen_def.objects:
                 odef = obj_dict.get(inst.object)
-                if not odef or not (odef.flags and getattr(odef.flags, 'interactive', False)):
+                if not odef:
                     continue
                 w = odef.size.width * inst.repeat_x
                 h = odef.size.height * inst.repeat_y
                 if inst.x <= x < inst.x + w and inst.y <= y < inst.y + h:
-                    from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
-                    inv_items = self.project.inventory_items if self.project else []
-                    regs = self.project.regions if self.project else {}
-                    dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
-                    if dialog.exec() == QDialog.Accepted:
-                        self.screen_changed.emit()
-                        self.update()
-                    return
+                    is_inter = odef.flags and getattr(odef.flags, 'interactive', False)
+                    is_secret = odef.flags and getattr(odef.flags, 'secret', False)
+                    if is_inter:
+                        from world_studio.widgets.interactive_object_dialog import InteractiveObjectPropertiesDialog
+                        inv_items = self.project.inventory_items if self.project else []
+                        regs = self.project.regions if self.project else {}
+                        dialog = InteractiveObjectPropertiesDialog(inst, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
+                        if dialog.exec() == QDialog.Accepted:
+                            self.screen_changed.emit()
+                            self.update()
+                        return
+                    elif is_secret:
+                        from world_studio.widgets.secret_item_dialog import SecretItemSelectionDialog
+                        inv_items = self.project.inventory_items if self.project else []
+                        current_item_id = inst.items_provided[0] if (inst.items_provided and len(inst.items_provided) > 0) else None
+                        dialog = SecretItemSelectionDialog(inv_items, initial_item_id=current_item_id, parent=self)
+                        if dialog.exec() == QDialog.Accepted and dialog.selected_item_id is not None:
+                            inst.items_provided = [dialog.selected_item_id]
+                            self.screen_changed.emit()
+                            self.update()
+                        return
 
             # 2. Add new entity/object if clicking empty space
             if self.active_tool == "PLAYER_START":
@@ -165,6 +178,7 @@ class ScreenCanvasWidget(QWidget):
                     return
                     
                 is_interactive = active_obj_def.flags and getattr(active_obj_def.flags, 'interactive', False)
+                is_secret = active_obj_def.flags and getattr(active_obj_def.flags, 'secret', False)
                 if is_interactive:
                     interactive_ids = self.project.get_interactive_object_ids()
                     existing_screen_interactive = [
@@ -203,6 +217,15 @@ class ScreenCanvasWidget(QWidget):
                         regs = self.project.regions if self.project else {}
                         dialog = InteractiveObjectPropertiesDialog(new_obj, inventory_items=inv_items, regions=regs, current_region_id=self.region_id, parent=self)
                         if dialog.exec() == QDialog.Accepted:
+                            self.screen_def.objects.append(new_obj)
+                            self.screen_changed.emit()
+                            self.update()
+                    elif is_secret:
+                        from world_studio.widgets.secret_item_dialog import SecretItemSelectionDialog
+                        inv_items = self.project.inventory_items if self.project else []
+                        dialog = SecretItemSelectionDialog(inv_items, parent=self)
+                        if dialog.exec() == QDialog.Accepted and dialog.selected_item_id is not None:
+                            new_obj.items_provided = [dialog.selected_item_id]
                             self.screen_def.objects.append(new_obj)
                             self.screen_changed.emit()
                             self.update()

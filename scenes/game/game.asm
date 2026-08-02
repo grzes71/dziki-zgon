@@ -332,7 +332,6 @@ temp_sub
     inx
     cpx #9
     bne @loop
-
     rts
 .endp
 
@@ -363,6 +362,8 @@ temp_sub
     sta ACTOR_COLOR,x
     dex
     bpl @clear_actors
+
+
 
     ; Inicjalizacja głównego bohatera (Actor 0)
     ldx #0
@@ -406,6 +407,8 @@ temp_sub
     sta ACTOR_Y_OLD,x
     sta ACTOR_INTENT_Y,x
 
+
+
     ; --- Inicjalizacja pierwszej mapy i regionu ---
     lda #START_SCREEN_ID
     sta GAME_SCREEN_ID
@@ -423,26 +426,37 @@ temp_sub
     ; --- Display List gry (ANTIC 4/5) ---
     lda #<DLIST_GAME
     sta SDLSTL
+    sta DLISTL
     lda #>DLIST_GAME
     sta SDLSTH
+    sta DLISTH
 
     ; --- Wczytanie początkowego charsetu (górny panel gry, game.fnt) ---
     lda #$64
     sta CHBAS
+    sta CHBASE
 
     ; --- Kolory (początkowe, bezpieczne) ---
     lda #$00
     sta COLOR4
+    sta COLBK
 
     ; --- Wypełnij mapę (ANTIC 5 i ANTIC 2) ---
     jsr clear_game_screens
+
+
     
     ; --- Zbuduj ekran gry bazując na World Builderze ---
+    jsr Secret_Init
     jsr build_screen
     jsr check_active_charset_animations
 
+
+
     ; --- Wypełnij pasek statusu domyślnym tekstem ---
     jsr redraw_status_bar
+
+
 
     ; --- Wyświetl komunikat początkowy na Message Line ---
 
@@ -469,6 +483,8 @@ temp_sub
     jsr inventory_init
     jsr draw_inventory
 
+
+
     ; --- Inicjalizacja obiektów interaktywnych (INTERACTION_COMPLETE) ---
     jsr iis_init
 
@@ -487,6 +503,8 @@ temp_sub
 
     ; --- Inicjalizacja 4 pocisków (M0..M3: Y=216..226, X=50, SIZEM=x4) ---
     jsr init_game_missiles
+
+
 
     jsr Render_Prepare
 

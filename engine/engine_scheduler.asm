@@ -9,6 +9,7 @@
     jsr NPC_Update
     jsr Collision_Update
     jsr IIS_Update
+    jsr Secret_Check_Pickup
     jsr Inventory_Update
     jsr Dialogue_Update
     jsr Quest_Update

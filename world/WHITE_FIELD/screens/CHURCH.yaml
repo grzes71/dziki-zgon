@@ -18,18 +18,9 @@ objects:
   items_provided:
   - 1
   game_over: false
-- object: CROSS_2
-  x: 26
-  y: 8
 - object: TREE_3
   x: 12
   y: 3
-- object: CROSS_1
-  x: 26
-  y: 6
-- object: CROSS_1
-  x: 28
-  y: 7
 - object: RIVER_TR
   x: 1
   y: 6
@@ -40,12 +31,6 @@ objects:
   x: 6
   y: 9
   repeat-x: 6
-- object: CROSS_1
-  x: 35
-  y: 5
-- object: CROSS_1
-  x: 35
-  y: 7
 - object: WATER_TR
   x: 12
   y: 9
@@ -80,12 +65,6 @@ objects:
 - object: WAVES_DOWN
   x: 0
   y: 8
-- object: TREE_3
-  x: 28
-  y: 3
-- object: TREE_3
-  x: 32
-  y: 2
 - object: OUTHOUSE_3
   x: 7
   y: 5
@@ -95,15 +74,6 @@ objects:
 - object: BARREL
   x: 17
   y: 8
-- object: CROSS_2
-  x: 33
-  y: 6
-- object: CROSS_2
-  x: 25
-  y: 7
-- object: CROSS_2
-  x: 36
-  y: 6
 - object: SIGNPOINT_RIGHT
   x: 36
   y: 2
@@ -152,9 +122,6 @@ objects:
   x: 0
   y: 9
   repeat-y: 3
-- object: BUSH_2
-  x: 31
-  y: 9
 - object: MUSHROOM
   x: 6
   y: 3
@@ -189,12 +156,6 @@ objects:
   y: 8
   repeat-x: 2
 - object: GROUND_BROWN_DOWN
-  x: 24
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 26
-  y: 4
-- object: GROUND_BROWN_DOWN
   x: 16
   y: 4
 - object: GROUND_BROWN_DOWN
@@ -213,14 +174,8 @@ objects:
   x: 12
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 32
-  y: 5
-- object: GROUND_BROWN_DOWN
   x: 38
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 31
-  y: 7
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 9
@@ -230,43 +185,14 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 7
   y: 1
-- object: ROCK_GREEN
-  x: 37
-  y: 0
-- object: STONE_BIG
-  x: 28
-  y: 0
-  repeat-x: 2
-- object: ROCK_GREEN
-  x: 21
-  y: 0
-- object: ROCK_1
-  x: 19
-  y: 0
-- object: ROCK_1
-  x: 25
-  y: 0
-- object: ROCK_1
-  x: 38
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 1
-  repeat-x: 3
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 2
   repeat-x: 2
 - object: GROUND_BROWN_DOWN
-  x: 33
-  y: 1
-- object: GROUND_BROWN_DOWN
   x: 37
   y: 3
   repeat-x: 3
-- object: GROUND_BROWN_DOWN
-  x: 31
-  y: 1
 - object: GROUND_BROWN_DOWN
   x: 39
   y: 5
@@ -279,6 +205,57 @@ objects:
 - object: GROUND_BROWN_UP
   x: 38
   y: 9
+- object: WATER_ANIM
+  x: 20
+  y: 0
+  repeat-x: 20
+- object: WATER_BL
+  x: 19
+  y: 1
+- object: WAVES_LEFT
+  x: 19
+  y: 0
+- object: WATER_UP
+  x: 20
+  y: 1
+  repeat-x: 20
+- object: CROSS_1
+  x: 25
+  y: 7
+- object: CROSS_1
+  x: 28
+  y: 7
+- object: CROSS_1
+  x: 23
+  y: 6
+- object: CROSS_1
+  x: 27
+  y: 6
+- object: CROSS_2
+  x: 26
+  y: 5
+- object: CROSS_2
+  x: 24
+  y: 8
+  repeat-x: 2
+- object: OUTHOUSE
+  x: 32
+  y: 8
+- object: OUTHOUSE_3
+  x: 34
+  y: 4
+- object: BUSH_2
+  x: 31
+  y: 5
+- object: TREE_3
+  x: 24
+  y: 3
+- object: TREE_3
+  x: 29
+  y: 3
+- object: TREE_3
+  x: 29
+  y: 8
 enemies:
 - enemy: bazyliszek
   x: 16

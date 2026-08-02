@@ -84,6 +84,10 @@ class MainWindow(QMainWindow):
         self.chk_interactive.stateChanged.connect(self._on_prop_changed)
         right_layout.addRow("Interactive:", self.chk_interactive)
 
+        self.chk_secret = QCheckBox()
+        self.chk_secret.stateChanged.connect(self._on_prop_changed)
+        right_layout.addRow("Secret:", self.chk_secret)
+
         self.lbl_size = QLineEdit()
         self.lbl_size.setReadOnly(True)
         right_layout.addRow("Calculated Size:", self.lbl_size)
@@ -146,6 +150,7 @@ class MainWindow(QMainWindow):
         self.spin_code.setEnabled(enabled)
         self.chk_blocking.setEnabled(enabled)
         self.chk_interactive.setEnabled(enabled)
+        self.chk_secret.setEnabled(enabled)
 
     def action_load_charset(self):
         path, _ = QFileDialog.getOpenFileName(self, "Load Charset", "", "Atari Font (*.fnt);;All Files (*)")
@@ -251,17 +256,20 @@ class MainWindow(QMainWindow):
         self.spin_code.blockSignals(True)
         self.chk_blocking.blockSignals(True)
         self.chk_interactive.blockSignals(True)
+        self.chk_secret.blockSignals(True)
         
         self.edit_id.setText(obj.id)
         self.spin_code.setValue(obj.code)
         self.chk_blocking.setChecked(obj.flags.blocking)
         self.chk_interactive.setChecked(obj.flags.interactive)
+        self.chk_secret.setChecked(obj.flags.secret)
         self.lbl_size.setText(f"{obj.size.width} x {obj.size.height}")
         
         self.edit_id.blockSignals(False)
         self.spin_code.blockSignals(False)
         self.chk_blocking.blockSignals(False)
         self.chk_interactive.blockSignals(False)
+        self.chk_secret.blockSignals(False)
 
         # Load tiles into canvas (block signal)
         self.canvas_widget.blockSignals(True)
@@ -344,6 +352,7 @@ class MainWindow(QMainWindow):
         self.current_object.code = self.spin_code.value()
         self.current_object.flags.blocking = self.chk_blocking.isChecked()
         self.current_object.flags.interactive = self.chk_interactive.isChecked()
+        self.current_object.flags.secret = self.chk_secret.isChecked()
         
         row = self.list_widget.list_widget.currentRow()
         item = self.list_widget.list_widget.item(row)

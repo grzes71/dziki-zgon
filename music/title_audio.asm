@@ -14,20 +14,34 @@ title_audio_init
     lda #0                  ; Subsong number
     jsr RASTERMUSICTRACKER  ; Init player
 
-    ; Save original Immediate VBI vector ($0222)
+    ; Save original Immediate VBI vector ($0222) if valid, else default to SYSVBV
+    lda orig_vbi+1
+    bne @already_saved
     lda $0222
     sta orig_vbi
     lda $0223
     sta orig_vbi+1
+    lda orig_vbi+1
+    cmp #$04
+    bcs @already_saved
+    lda #<SYSVBV
+    sta orig_vbi
+    lda #>SYSVBV
+    sta orig_vbi+1
 
+@already_saved
     ; Install custom Immediate VBI handler directly
+    lda NMIEN
+    pha
     lda #0
     sta NMIEN               ; Disable NMIs temporarily
     lda #<vblank_player
     sta $0222               ; Low byte of VVBLKI
     lda #>vblank_player
     sta $0223               ; High byte of VVBLKI
-    lda #$C0                ; Restore NMIEN (DLI + VBI)
+    pla
+    and #$80
+    ora #$40
     sta NMIEN
     rts
 
@@ -40,12 +54,25 @@ vblank_player
 title_audio_stop
     ; Restore original Immediate VBI vector ($0222)
     lda #0
-    sta NMIEN               ; Disable NMIs temporarily
+    sta NMIEN               ; Disable NMIs during audio stop & transition
+    
+    lda orig_vbi+1
+    cmp #$04
+    bcs @valid_orig
+    lda #<SYSVBV
+    sta $0222
+    lda #>SYSVBV
+    sta $0223
+    jmp @vbi_restored
+
+@valid_orig
     lda orig_vbi
     sta $0222
     lda orig_vbi+1
     sta $0223
-    lda #$C0                ; Restore NMIEN (DLI + VBI)
+
+@vbi_restored
+    lda #0
     sta NMIEN
 
     jsr RASTERMUSICTRACKER+9 ; Silence tracker player
@@ -69,15 +96,3 @@ orig_vbi
 
 dummy_vbi
     jmp XITVBV
-
-; --- Player and variables mapping ---
-; Define player location (must be page aligned)
-PLAYER = $AD00
-
-; Include the converted player code
-    icl "gen/rmtplayr.asm"
-
-; Song data module for title screen
-    .align 256
-MODUL
-    icl "gen/title_music.asm"

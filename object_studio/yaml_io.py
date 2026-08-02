@@ -32,7 +32,8 @@ def load_project(path: Path) -> Project:
             ),
             flags=ObjectFlags(
                 blocking=flags_data.get("blocking", False),
-                interactive=flags_data.get("interactive", False)
+                interactive=flags_data.get("interactive", False),
+                secret=flags_data.get("secret", False)
             ),
             tiles=obj_data.get("tiles", [])
         )
@@ -57,7 +58,8 @@ def save_project(path: Path, project: Project) -> bool:
             },
             "flags": {
                 "blocking": obj.flags.blocking,
-                "interactive": obj.flags.interactive
+                "interactive": obj.flags.interactive,
+                "secret": obj.flags.secret
             },
             "tiles": FlowList(obj.tiles)
         })

@@ -186,32 +186,23 @@ anim_chars_active_mask
     sta animated_char_timers,x
 
     ; Oblicz adres danych klatki: BaseAddress + FlatFrameIndex * 8
+    tya                     ; A = flat_frame_idx
+    sta SRC_TMP
+    lda #0
+    sta SRC_TMP+1
+    asl SRC_TMP
+    rol SRC_TMP+1
+    asl SRC_TMP
+    rol SRC_TMP+1
+    asl SRC_TMP
+    rol SRC_TMP+1
+
     lda animated_char_data_lo,x
+    clc
+    adc SRC_TMP
     sta SRC_PTR
     lda animated_char_data_hi,x
-    sta SRC_PTR+1
-
-    ; Pomnóż Y (flat_frame_idx) przez 8 i dodaj do SRC_PTR bez niszczenia rejestru X
-    tya                     ; A = flat_frame_idx
-    asl                     ; * 2, carry w C
-    ldy #0
-    bcc @no_carry1
-    ldy #1
-@no_carry1
-    asl                     ; * 4, carry w C
-    bcc @no_carry2
-    iny
-@no_carry2
-    asl                     ; * 8, carry w C
-    bcc @no_carry3
-    iny
-@no_carry3
-    ; A = low byte of offset, Y = high byte of offset
-    clc
-    adc SRC_PTR
-    sta SRC_PTR
-    tya                     ; A = high byte offset
-    adc SRC_PTR+1
+    adc SRC_TMP+1
     sta SRC_PTR+1
 
     ; Ustaw DST_PTR na docelowy adres znaku w charset

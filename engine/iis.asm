@@ -15,6 +15,9 @@ iis_obj_y2          dta $00
 INTERACTIVE_OBJ_COMPLETE .ds SCREEN_COUNT
 
 .proc iis_init
+    lda #1
+    sta iis_fire_was_pressed
+
     ldx #SCREEN_COUNT-1
 @loop
     lda INTERACTIVE_OBJ_COMPLETE_INIT,x

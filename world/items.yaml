@@ -14,3 +14,6 @@ items:
 - id: 5
   description: Podarty rachunek
   charset_position: 74
+- id: 6
+  description: wiosła
+  charset_position: 78
