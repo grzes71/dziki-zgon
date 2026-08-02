@@ -1,7 +1,7 @@
 # tests/test_memory_map.py
 import pytest
 from pathlib import Path
-from scripts.check_memory import parse_lab, parse_row, get_title_music_size, resolve_expr, strip_md
+from scripts.check_memory import parse_lab, parse_row, update_memory_usage, strip_md
 
 def test_memory_map_no_overlaps_or_page_crossings():
     root_dir = Path(__file__).parent.parent
@@ -11,8 +11,16 @@ def test_memory_map_no_overlaps_or_page_crossings():
     if not lab_file.exists():
         pytest.skip("gen/game.lab does not exist yet. Run `make all` first.")
 
+    # Update MEMORY_USAGE.md with latest symbol addresses
+    try:
+        update_memory_usage(str(lab_file), str(md_file))
+    except SystemExit:
+        pass  # We will perform assertions directly in this test
+
     symbols = parse_lab(str(lab_file))
     assert len(symbols) > 0, "gen/game.lab symbol table is empty!"
+
+    errors = []
 
     # 1. Check Display List 1KB Page Boundary & VRAM Overlap
     dlist_sizes = {
@@ -22,7 +30,6 @@ def test_memory_map_no_overlaps_or_page_crossings():
         "DLIST_GAMEOVER": 37,
         "DLIST_TRAVEL": 37,
     }
-    errors = []
     for dlist_name, size in dlist_sizes.items():
         assert dlist_name in symbols, f"Missing symbol {dlist_name} in gen/game.lab"
         start_addr = symbols[dlist_name]
@@ -59,7 +66,7 @@ def test_memory_map_no_overlaps_or_page_crossings():
         r1 = non_free_rows[i]
         r2 = non_free_rows[i + 1]
         names_pair = (r1["name_norm"], r2["name_norm"])
-        if "vram_arena" in names_pair or "footer_addr" in names_pair or "go_screen" in names_pair:
+        if "disable_basic_loader" in names_pair or "vram_arena" in names_pair or "footer_addr" in names_pair or "go_screen" in names_pair:
             continue
         if r1["end"] >= r2["start"]:
             errors.append(

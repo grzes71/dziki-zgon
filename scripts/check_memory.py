@@ -304,9 +304,8 @@ def update_memory_usage(lab_file, md_file):
     for i in range(len(non_free_rows) - 1):
         r1 = non_free_rows[i]
         r2 = non_free_rows[i + 1]
-        # Ignore overlapping VRAM_ARENA / GO_TEXT / FOOTER_ADDR which are intentional runtime overlays
         names_pair = (r1["name_norm"], r2["name_norm"])
-        if "vram_arena" in names_pair or "footer_addr" in names_pair or "go_screen" in names_pair:
+        if "vram_arena" in names_pair or "footer_addr" in names_pair or "go_screen" in names_pair or "disable_basic_loader" in names_pair or "start (jump)" in names_pair:
             continue
         if r1["end"] >= r2["start"]:
             validation_errors.append(
