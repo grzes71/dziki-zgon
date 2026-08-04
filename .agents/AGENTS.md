@@ -112,3 +112,14 @@ The engine runs a fixed, deterministic update order once per frame (50 FPS PAL).
 - **Run all tests**: `make test` or `python -m pytest`
 - **Integration test pattern** (`test_world_integration.py`): Compile `.asm` harness with MADS → load `.xex` into py65 `MPU()` memory → set screen ID → run CPU until `BRK` → compare actual VRAM bytes against `compute_expected_vram()` from Python parser.
 - **When changing parser logic**: Always run `make world` first (or `make all`) to regenerate `gen/world/screens.asm`, otherwise tests will use stale ASM data and produce false passes/failures.
+
+---
+
+## 9. AVAILABLE AGENT SKILLS
+The project includes modular skills in `.agents/skills/`. Agents MUST consult these skills for detailed domain instructions when working on related code:
+
+| Skill | Path | Description & Trigger Criteria |
+|---|---|---|
+| `atari8bit` | `.agents/skills/atari8bit/SKILL.md` | Atari 8-bit XL/XE hardware architecture (ANTIC, GTIA, POKEY, display lists, PMG). |
+| `mads` | `.agents/skills/mads/SKILL.md` | MADS assembler directives, syntax rules, pseudo-ops, macros, and memory banks. |
+
