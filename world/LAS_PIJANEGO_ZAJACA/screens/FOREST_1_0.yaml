@@ -201,16 +201,10 @@ objects:
   x: 32
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 25
-  y: 0
-  repeat-x: 3
-- object: GROUND_BROWN_DOWN
   x: 26
   y: 1
   repeat-x: 2
-- object: GROUND_BROWN_DOWN
-  x: 27
-  y: 2
+  repeat-y: 2
 - object: GROUND_BROWN_DOWN
   x: 20
   y: 11
@@ -248,4 +242,92 @@ objects:
   message_travel: stara wyżyma - 15 pacierzy
   target_region: OLD_WYZIMA
   cost_of_travel: 15
+- object: ROCK_GREEN
+  x: 18
+  y: 0
+- object: MUSHROOM
+  x: 21
+  y: 2
+- object: MUSHROOM
+  x: 14
+  y: 9
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 37
+  y: 1
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 39
+  y: 2
+  repeat-y: 2
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 15
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 18
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 4
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 28
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 25
+  y: 3
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN
+  x: 28
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 27
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 29
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 27
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 26
+  y: 4
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 19
+  y: 1
+- object: GROUND_GREEN_UP
+  x: 25
+  y: 0
+  repeat-x: 3
+- object: GROUND_GREEN_UP
+  x: 39
+  y: 0
 enemies: []

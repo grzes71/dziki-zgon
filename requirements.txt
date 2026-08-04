@@ -1,7 +1,6 @@
 annotated-types==0.7.0
-atari-charset-trainer @ git+https://github.com/grzes71/atari-charset-trainer.git@8bb7bb9d826410f33b90052f2a511c4c0d0fa360
-
-atari-image-converter @ https://github.com/grzes71/py-image-converter/releases/download/pr-2-closed-1/atari_image_converter-0.1.0-py3-none-any.whl#sha256=1ae4b3661bf960546c35a3990677d3467f2938e2b10c88142e221ab83c108f31
+atari-charset-trainer @ https://github.com/grzes71/atari-charset-trainer/releases/download/v1.1.1/atari_charset_trainer-1.1.1-py3-none-any.whl
+atari-image-converter @ https://github.com/grzes71/py-image-converter/releases/download/v0.2.1/atari_image_converter-0.2.1-py3-none-any.whl
 colorama==0.4.6
 iniconfig==2.3.0
 numpy==2.5.1

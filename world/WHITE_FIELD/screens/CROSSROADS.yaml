@@ -233,9 +233,6 @@ objects:
   x: 12
   y: 5
 - object: TREE_SMALL
-  x: 1
-  y: 1
-- object: TREE_SMALL
   x: 4
   y: 2
 - object: ROCK_1
@@ -265,6 +262,9 @@ objects:
 - object: ROCK_2
   x: 37
   y: 9
+- object: SIGNPOINT_RIGHT
+  x: 2
+  y: 1
 enemies:
 - enemy: sukkub
   x: 27

@@ -84,40 +84,9 @@ objects:
 - object: GROUND_GREEN_UP
   x: 0
   y: 1
-- object: GROUND_GREEN_UP
-  x: 0
-  y: 3
-- object: GROUND_GREEN_UP
-  x: 1
-  y: 2
-- object: GROUND_GREEN_UP
-  x: 2
-  y: 1
-- object: GROUND_GREEN_UP
-  x: 1
-  y: 4
-- object: GROUND_GREEN_UP
-  x: 0
-  y: 5
-- object: GROUND_BROWN_UP
-  x: 1
-  y: 5
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 4
-- object: GROUND_BROWN_UP
-  x: 1
-  y: 3
 - object: GROUND_BROWN_UP
   x: 4
   y: 0
-- object: GROUND_BROWN_UP
-  x: 1
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 2
 - object: WATER_DOWN
   x: 0
   y: 9
@@ -219,21 +188,6 @@ objects:
   x: 20
   y: 1
   repeat-x: 20
-- object: CROSS_1
-  x: 25
-  y: 7
-- object: CROSS_1
-  x: 28
-  y: 7
-- object: CROSS_1
-  x: 23
-  y: 6
-- object: CROSS_1
-  x: 27
-  y: 6
-- object: CROSS_2
-  x: 26
-  y: 5
 - object: CROSS_2
   x: 24
   y: 8
@@ -244,9 +198,6 @@ objects:
 - object: OUTHOUSE_3
   x: 34
   y: 4
-- object: BUSH_2
-  x: 31
-  y: 5
 - object: TREE_3
   x: 24
   y: 3
@@ -256,6 +207,26 @@ objects:
 - object: TREE_3
   x: 29
   y: 8
+- object: TREE_SMALL
+  x: 1
+  y: 2
+- object: GROUND_GREEN_DOWN
+  x: 0
+  y: 4
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 5
+- object: CROSS_1
+  x: 24
+  y: 6
+  repeat-x: 2
+- object: CROSS_1
+  x: 23
+  y: 7
+  repeat-x: 2
+- object: TREE_3
+  x: 31
+  y: 5
 enemies:
 - enemy: bazyliszek
   x: 16

@@ -2,6 +2,7 @@
 .agent/logs/
 .agent/workspace-state/
 .agent/tasks/
+.agents/skills/
 
 # MADS Assembler & Build Artifacts
 *.xex

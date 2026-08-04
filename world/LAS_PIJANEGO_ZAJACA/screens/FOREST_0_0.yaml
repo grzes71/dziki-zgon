@@ -7,9 +7,6 @@ exits:
   east: null
   west: null
 objects:
-- object: TREE_SMALL
-  x: 30
-  y: 6
 - object: TREE_2
   x: 10
   y: 6
@@ -31,96 +28,12 @@ objects:
 - object: TREE_3
   x: 36
   y: 8
-- object: SWAMP
-  x: 12
-  y: 9
-- object: SWAMP
-  x: 13
-  y: 8
-- object: SWAMP
-  x: 14
-  y: 9
-- object: SWAMP
-  x: 13
-  y: 10
-- object: SWAMP
-  x: 4
-  y: 10
-  repeat-x: 2
-- object: SWAMP
-  x: 3
-  y: 9
-- object: SWAMP
-  x: 2
-  y: 10
-- object: SWAMP
-  x: 6
-  y: 9
-- object: SWAMP
-  x: 6
-  y: 11
-- object: SWAMP
-  x: 7
-  y: 10
-- object: SWAMP
-  x: 3
-  y: 11
-  repeat-x: 2
-- object: SWAMP
-  x: 24
-  y: 7
-- object: SWAMP
-  x: 25
-  y: 6
-- object: SWAMP
-  x: 26
-  y: 7
-- object: SWAMP
-  x: 28
-  y: 7
-  repeat-x: 2
-- object: SWAMP
-  x: 27
-  y: 6
-  repeat-x: 2
-- object: SWAMP
-  x: 27
-  y: 8
-- object: SWAMP
-  x: 25
-  y: 8
-- object: SWAMP
-  x: 37
-  y: 5
-- object: SWAMP
-  x: 35
-  y: 5
-- object: SWAMP
-  x: 36
-  y: 7
-  repeat-x: 2
-- object: SWAMP
-  x: 34
-  y: 6
-  repeat-x: 3
-- object: BUSH
-  x: 32
-  y: 4
-- object: BUSH
-  x: 13
-  y: 6
 - object: BUSH
   x: 39
   y: 1
 - object: MUSHROOM
   x: 36
   y: 1
-- object: SWAMP
-  x: 39
-  y: 5
-- object: SWAMP
-  x: 39
-  y: 7
 - object: PORT_2
   x: 23
   y: 0
@@ -146,18 +59,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 27
   y: 5
-- object: SWAMP
-  x: 15
-  y: 10
-- object: SWAMP
-  x: 15
-  y: 8
-- object: SWAMP
-  x: 26
-  y: 9
-- object: BUSH
-  x: 39
-  y: 9
 - object: TREE_SMALL
   x: 0
   y: 9
@@ -170,86 +71,12 @@ objects:
 - object: BUSH_2
   x: 21
   y: 6
-- object: WAVES
-  x: 27
-  y: 7
-- object: WAVES
-  x: 25
-  y: 7
-- object: WAVES
-  x: 26
-  y: 8
-- object: WAVES
-  x: 26
-  y: 6
-- object: WAVES
-  x: 37
-  y: 6
-  repeat-x: 3
-- object: WAVES
-  x: 36
-  y: 5
-- object: WAVES
-  x: 38
-  y: 5
-- object: WAVES
-  x: 38
-  y: 7
-- object: WAVES
-  x: 14
-  y: 8
-- object: WAVES
-  x: 15
-  y: 9
-- object: WAVES
-  x: 13
-  y: 9
-- object: WAVES
-  x: 14
-  y: 10
-- object: WAVES
-  x: 4
-  y: 9
-  repeat-x: 2
-- object: WAVES
-  x: 3
-  y: 10
-- object: WAVES
-  x: 6
-  y: 10
-- object: WAVES
-  x: 5
-  y: 11
-- object: WAVES
-  x: 28
-  y: 8
 - object: ROCK_GREEN
   x: 32
   y: 10
 - object: REED
-  x: 35
-  y: 7
-- object: REED
-  x: 34
-  y: 5
-- object: REED
   x: 39
   y: 4
-- object: REED
-  x: 12
-  y: 10
-- object: REED
-  x: 12
-  y: 8
-- object: REED
-  x: 7
-  y: 9
-- object: REED
-  x: 7
-  y: 11
-- object: REED
-  x: 2
-  y: 11
 - object: WATERFALL_GREEN
   x: 0
   y: 1
@@ -282,9 +109,6 @@ objects:
   x: 6
   y: 5
 - object: TREE_3
-  x: 18
-  y: 6
-- object: TREE_3
   x: 16
   y: 9
 - object: TREE_3
@@ -293,9 +117,154 @@ objects:
 - object: BUSH_2
   x: 6
   y: 8
+- object: SWAMP
+  x: 3
+  y: 9
+- object: SWAMP
+  x: 4
+  y: 10
+- object: SWAMP
+  x: 5
+  y: 9
+- object: SWAMP
+  x: 6
+  y: 10
+- object: SWAMP
+  x: 5
+  y: 11
+- object: SWAMP
+  x: 28
+  y: 7
+- object: SWAMP
+  x: 29
+  y: 6
+- object: SWAMP
+  x: 30
+  y: 7
+- object: SWAMP
+  x: 27
+  y: 6
+- object: SWAMP
+  x: 26
+  y: 7
+- object: SWAMP
+  x: 30
+  y: 5
+- object: SWAMP
+  x: 31
+  y: 6
+- object: SWAMP
+  x: 38
+  y: 6
+- object: SWAMP
+  x: 39
+  y: 5
+- object: SWAMP
+  x: 39
+  y: 7
+- object: REED
+  x: 4
+  y: 9
+- object: REED
+  x: 5
+  y: 10
+- object: REED
+  x: 6
+  y: 11
+- object: REED
+  x: 6
+  y: 9
+- object: REED
+  x: 3
+  y: 10
+- object: REED
+  x: 4
+  y: 11
+- object: REED
+  x: 28
+  y: 6
+- object: REED
+  x: 30
+  y: 6
+- object: REED
+  x: 27
+  y: 7
+- object: REED
+  x: 29
+  y: 7
+- object: REED
+  x: 29
+  y: 5
+- object: REED
+  x: 39
+  y: 6
+- object: REED
+  x: 38
+  y: 5
+- object: REED
+  x: 37
+  y: 6
+- object: REED
+  x: 38
+  y: 7
+- object: TREE_2
+  x: 33
+  y: 6
+- object: ROCK_1
+  x: 14
+  y: 7
+- object: TREE_2
+  x: 18
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 2
+  y: 11
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 7
+  y: 11
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 3
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 8
+- object: GROUND_BROWN_UP
+  x: 31
+  y: 5
+- object: GROUND_BROWN_UP
+  x: 31
+  y: 7
 - object: BUSH_2
+  x: 19
+  y: 8
+- object: BUSH_2
+  x: 14
+  y: 5
+- object: MUSHROOM
+  x: 12
+  y: 10
+- object: BUSH_2
+  x: 26
+  y: 10
+- object: GROUND_BROWN_UP
   x: 38
   y: 11
+  repeat-x: 2
+- object: GROUND_GREEN_DOWN
+  x: 38
+  y: 10
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN
+  x: 37
+  y: 11
+- object: GROUND_GREEN_UP
+  x: 33
+  y: 11
+  repeat-x: 2
 enemies:
 - enemy: kikimora
   x: 20

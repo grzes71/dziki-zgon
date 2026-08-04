@@ -21,9 +21,6 @@ objects:
   x: 7
   y: 4
 - object: TREE_3
-  x: 18
-  y: 1
-- object: TREE_3
   x: 31
   y: 8
 - object: TREE_SMALL
@@ -53,9 +50,6 @@ objects:
 - object: STONE
   x: 1
   y: 9
-- object: GROUND_BROWN_DOWN
-  x: 8
-  y: 10
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 9
@@ -92,9 +86,6 @@ objects:
   x: 39
   y: 4
 - object: GROUND_BROWN_DOWN
-  x: 6
-  y: 8
-- object: GROUND_BROWN_DOWN
   x: 12
   y: 11
 - object: GROUND_BROWN_DOWN
@@ -128,20 +119,26 @@ objects:
   x: 21
   y: 10
 - object: TREE_3
-  x: 30
-  y: 4
-- object: TREE_3
   x: 35
   y: 6
 - object: TREE_3
   x: 38
   y: 0
-- object: TREE_3
-  x: 35
-  y: 0
 - object: SIGNPOINT_RIGHT
   x: 36
   y: 3
+- object: TREE_2
+  x: 30
+  y: 4
+- object: TREE_2
+  x: 33
+  y: 1
+- object: TREE_2
+  x: 7
+  y: 7
+- object: TREE_2
+  x: 19
+  y: 1
 enemies:
 - enemy: kikimora
   x: 25

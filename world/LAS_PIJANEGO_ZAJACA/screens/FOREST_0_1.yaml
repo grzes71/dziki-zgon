@@ -290,10 +290,10 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 11
   y: 11
-- object: GROUND_GREEN_DOWN
+- object: REED
   x: 19
   y: 8
-- object: GROUND_GREEN_DOWN
+- object: REED
   x: 19
   y: 6
 enemies:
