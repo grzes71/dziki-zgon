@@ -344,6 +344,8 @@ temp_sub
     sta NMIEN
     sta game_fire_released  ; zresetuj stan przycisku FIRE
     sta GAME_RESULT_STATUS  ; zresetuj status gry (0 = w trakcie)
+    sta Request_SFX_Step    ; zresetuj flagę dźwięku kroku
+
     
     ; Wyzeruj wszystkich aktorów
     ldx #MAX_ACTORS - 1

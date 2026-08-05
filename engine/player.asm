@@ -106,10 +106,15 @@
     inc ACTOR_ANIM_FRAME,x
     lda ACTOR_ANIM_FRAME,x
     cmp (SRC_PTR),y
-    bcc @done
+    bcc @step_sfx
     ; Przekroczono limit, wracamy do klatki 0
     lda #0
     sta ACTOR_ANIM_FRAME,x
+
+@step_sfx
+    ; Zgłoszenie żądania odtworzenia dźwięku kroku (Mailbox pattern)
+    lda #1
+    sta Request_SFX_Step
 
 @done
     rts

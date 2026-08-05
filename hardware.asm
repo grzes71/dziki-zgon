@@ -48,7 +48,17 @@ NMIST   = $D40F     ; rejestr statusu NMI: bit 7=DLI, bit 6=VBI (odczyt kasuje)
 NMIEN   = $D40E     ; włączenie NMI: bit 7=DLI, bit 6=VBI
 
 ; ---- POKEY (dźwięk, klawiatura, timery) ----
+AUDF1   = $D200     ; częstotliwość kanału 1
+AUDC1   = $D201     ; głośność i barwa (distortion) kanału 1
+AUDF2   = $D202     ; częstotliwość kanału 2
+AUDC2   = $D203     ; głośność i barwa kanału 2
+AUDF3   = $D204     ; częstotliwość kanału 3
+AUDC3   = $D205     ; głośność i barwa kanału 3
+AUDF4   = $D206     ; częstotliwość kanału 4
+AUDC4   = $D207     ; głośność i barwa kanału 4
+AUDCTL  = $D208     ; kontrola zegarów i filtrów POKEY
 IRQEN   = $D20E     ; włączenie przerwań IRQ z POKEY
+
 
 ; ---- OS shadows (cienie rejestrów w RAM) ----
 ; UWAGA: Jeśli NMIEN=$C0 (VBI włączone), OS przepisuje cienie do sprzętu w każdej klatce.

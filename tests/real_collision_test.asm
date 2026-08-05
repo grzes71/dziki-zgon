@@ -26,6 +26,7 @@ InputState_Joy  .ds 1
 InputState_Trig .ds 1
 game_fire_released .ds 1
 Engine_RequestStageAdvance .ds 1
+Request_SFX_Step           .ds 1
 HPOSP0 .ds 4
 PCOLR0 .ds 4
 

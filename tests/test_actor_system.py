@@ -683,3 +683,41 @@ def test_snake_enemy_movement(harness):
         steps += 1
         
     assert cpu.memory[labels["ACTOR_DIR"] + enemy_idx] == 2 # still 2
+
+
+def test_player_step_sfx_trigger(harness):
+    xex_file, labels = harness
+    
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    
+    # Enable Geralt (Actor 0)
+    cpu.memory[labels["ACTOR_ACTIVE"]] = 1
+    cpu.memory[labels["ACTOR_X"]] = 50
+    cpu.memory[labels["ACTOR_Y"]] = 50
+    cpu.memory[labels["ACTOR_ANIM_SPEED"]] = 6
+    cpu.memory[labels["ACTOR_ANIM_TIMER"]] = 5 # 1 frame away from incrementing anim frame!
+    cpu.memory[labels["ACTOR_ANIM_FRAME"]] = 0
+    cpu.memory[labels["ACTOR_PTRS_TABLE_LO"]] = labels["GERWALT_PTRS_TABLE"] & 0xFF
+    cpu.memory[labels["ACTOR_PTRS_TABLE_HI"]] = (labels["GERWALT_PTRS_TABLE"] >> 8) & 0xFF
+    cpu.memory[labels["ACTOR_ANIM_LIMITS_LO"]] = labels["GERWALT_ANIM_LIMITS"] & 0xFF
+    cpu.memory[labels["ACTOR_ANIM_LIMITS_HI"]] = (labels["GERWALT_ANIM_LIMITS"] >> 8) & 0xFF
+    
+    # Moving Right
+    cpu.memory[labels["INPUTSTATE_JOY"]] = 8
+    cpu.memory[labels["REQUEST_SFX_STEP"]] = 0
+    
+    cpu.sp = 0xFF
+    cpu.pc = labels["START_TEST_PLAYER"]
+    steps = 0
+    while steps < 1000:
+        if cpu.memory[cpu.pc] == 0x00: break
+        cpu.step()
+        steps += 1
+        
+    # Verify anim timer reset to 0, anim frame incremented to 1, and REQUEST_SFX_STEP mailbox set to 1!
+    assert cpu.memory[labels["ACTOR_ANIM_TIMER"]] == 0
+    assert cpu.memory[labels["ACTOR_ANIM_FRAME"]] == 1
+    assert cpu.memory[labels["REQUEST_SFX_STEP"]] == 1
+
+
