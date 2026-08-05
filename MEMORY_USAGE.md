@@ -37,11 +37,11 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$1FFD` – `$1FFF`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2000` – `$2007`** | 8 B | `disable_basic_loader` | INI Loader | Wyłączenie BASICa (obsługa INI na starcie xex). |
 | **`$2000` – `$202A`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$202B` – `$33E3`** | 5049 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$33E4` – `$3724`** | 833 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
-| **`$3725` – `$39AE`** | 650 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$39AF` – `$3B81`** | 467 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
-| **`$3B82` – `$3E7F`** | 766 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$202B` – `$341D`** | 5107 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$341E` – `$375E`** | 833 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
+| **`$375F` – `$39E8`** | 650 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
+| **`$39E9` – `$3BBD`** | 469 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
+| **`$3BBE` – `$3E7F`** | 706 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry ($3E80-$3FE7, dopasowane do strony 1 KB). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
 | **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). |

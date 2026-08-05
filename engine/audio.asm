@@ -4,28 +4,56 @@
 
 step_sfx_phase
     dta 0
+item_sfx_phase
+    dta 0
 
 .proc Audio_Update
-    ; 1. Obsługa skrzynki pocztowej: żądanie odtworzenia dźwięku kroku
-    lda Request_SFX_Step
-    beq @chk_active
+    ; 1. Sprawdź skrzynkę pocztową: podniesienie przedmiotu (wyższy priorytet)
+    lda Request_SFX_Item
+    beq @chk_step_req
     
-    ; Wyczyść flagę skrzynki pocztowej
+    lda #0
+    sta Request_SFX_Item
+    lda #4
+    sta item_sfx_phase
+    jmp @process_item
+
+@chk_step_req
+    ; 2. Sprawdź skrzynkę pocztową: krok gracza
+    lda Request_SFX_Step
+    beq @process_item
+    
     lda #0
     sta Request_SFX_Step
+    ; Jeśli trwa dźwięk podniesienia przedmiotu, ignoruj krok
+    lda item_sfx_phase
+    bne @process_item
     
-    ; Rozpocznij odtwarzanie kroku (3 klatki czasu trwania)
     lda #3
     sta step_sfx_phase
 
-@chk_active
+@process_item
+    ; Priorytet 1: Dźwięk podniesienia przedmiotu
+    lda item_sfx_phase
+    beq @process_step
+    
+    dec item_sfx_phase
+    ldx item_sfx_phase
+    
+    lda item_sfx_pitch,x
+    sta AUDF1
+    lda item_sfx_vol,x
+    sta AUDC1
+    rts
+
+@process_step
+    ; Priorytet 2: Dźwięk kroku
     lda step_sfx_phase
     beq @done
     
     dec step_sfx_phase
     ldx step_sfx_phase
     
-    ; Ustaw POKEY kanał 1: barwa (distortion) $20 (szum 4-bitowy) + głośność
     lda step_sfx_pitch,x
     sta AUDF1
     lda step_sfx_vol,x
@@ -35,13 +63,18 @@ step_sfx_phase
     rts
 .endp
 
-; Tabele obniżania barwy i głośności dla dźwięku kroku (3 klatki opadającego stuku)
-; Index 2: klatka 1 (częstotliwość $D0, głośność $24 = szum 4-bit, vol 4)
-; Index 1: klatka 2 (częstotliwość $E0, głośność $23 = szum 4-bit, vol 3)
-; Index 0: klatka 3 (częstotliwość $F0, głośność $00 = cisza)
+; --- Tabele SFX kroku (3 klatki szumu 4-bit) ---
 step_sfx_pitch
     dta $F0, $E0, $D0
 
 step_sfx_vol
     dta $00, $23, $24
+
+; --- Tabele SFX przedmiotu (4 klatki czystego tonu $A0 - wykrzyknik/chime) ---
+item_sfx_pitch
+    dta $18, $18, $24, $30
+
+item_sfx_vol
+    dta $00, $A8, $AA, $AA
+
 

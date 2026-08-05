@@ -345,6 +345,8 @@ temp_sub
     sta game_fire_released  ; zresetuj stan przycisku FIRE
     sta GAME_RESULT_STATUS  ; zresetuj status gry (0 = w trakcie)
     sta Request_SFX_Step    ; zresetuj flagę dźwięku kroku
+    sta Request_SFX_Item    ; zresetuj flagę dźwięku przedmiotu
+
 
     
     ; Wyzeruj wszystkich aktorów

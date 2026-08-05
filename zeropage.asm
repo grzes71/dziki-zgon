@@ -43,6 +43,8 @@ GAME_RESULT_STATUS    equ $A3 ; Status zakończenia gry: 0=w trakcie, 1=sukces (
 GO_RAINBOW_PTR        equ $A4 ; Wskaźnik na tablicę kolorów tęczy Game Over (2 bajty, $A4-$A5)
 IS_PORTAL_TRANSITION  equ $A6 ; Flaga: 1 = przejście przez portal (ekran podróży)
 Request_SFX_Step      equ $A7 ; Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku kroku
+Request_SFX_Item      equ $A8 ; Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku podniesienia przedmiotu
+
 
 
 

@@ -78,6 +78,11 @@ inventory_items
     sta inventory_items,x
     inc inventory_count
     jsr draw_inventory
+
+    ; Zgłoszenie żądania odtworzenia dźwięku podniesienia przedmiotu (Mailbox pattern)
+    lda #1
+    sta Request_SFX_Item
+
     clc
     rts
 @full
