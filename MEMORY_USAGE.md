@@ -37,11 +37,11 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$1FFD` – `$1FFF`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2000` – `$2007`** | 8 B | `disable_basic_loader` | INI Loader | Wyłączenie BASICa (obsługa INI na starcie xex). |
 | **`$2000` – `$202A`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$202B` – `$341D`** | 5107 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$341E` – `$375E`** | 833 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
-| **`$375F` – `$39E8`** | 650 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$39E9` – `$3BBD`** | 469 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
-| **`$3BBE` – `$3E7F`** | 706 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$202B` – `$3487`** | 5213 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$3488` – `$37C8`** | 833 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
+| **`$37C9` – `$3A52`** | 650 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
+| **`$3A53` – `$3C29`** | 471 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
+| **`$3C2A` – `$3E7F`** | 598 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry ($3E80-$3FE7, dopasowane do strony 1 KB). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
 | **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). |
@@ -50,14 +50,14 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$5F74` – `$5FFF`** | 140 B | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. |
-| **`$6800` – `$8CDD`** | 9438 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia, obiekty interaktywne). |
-| **`$8CDE` – `$8D2B`** | 78 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story, gameover). |
-| **`$8D2C` – `$8DC6`** | 155 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
-| **`$8DC7` – `$8FFF`** | 569 B | — | **WOLNY RAM** | Wolna pamięć w bloku dolnego RAM-u przed charsetem Game Over. |
-| **`$9000` – `$93FF`** | 1024 B | `GO_CHARSET` | Dane (Charset) | Zestaw znaków Game Over / Travel (1 KB). |
-| **`$9400` – `$9797`** | 920 B | `GameOverFail_Data` | Dane (Screen) | Mapa ekranu Game Over Porażka (40×23 znaków). |
-| **`$97A0` – `$9B37`** | 920 B | `GameOverSuccess_Data` | Dane (Screen) | Mapa ekranu Game Over Sukces (40×23 znaków). |
-| **`$9B40` – `$9ED7`** | 920 B | `TravelScreen_Data` | Dane (Screen) | Mapa ekranu Podróży (40×23 znaków). |
+| **`$6800` – `$924D`** | 10830 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia, obiekty interaktywne). |
+| **`$924E` – `$929B`** | 78 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story, gameover). |
+| **`$929C` – `$9336`** | 155 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
+| **`$9337` – `$9BFF`** | 2249 B | — | **WOLNY RAM** | Wolna pamięć w bloku dolnego RAM-u przed charsetem Game Over. |
+| **`$9C00` – `$9FFF`** | 1024 B | `GO_CHARSET` | Dane (Charset) | Zestaw znaków Game Over / Travel (1 KB). |
+| **`$9340` – `$96D7`** | 920 B | `GameOverFail_Data` | Dane (Screen) | Mapa ekranu Game Over Porażka (40×23 znaków). |
+| **`$96E0` – `$9A77`** | 920 B | `GameOverSuccess_Data` | Dane (Screen) | Mapa ekranu Game Over Sukces (40×23 znaków). |
+| **`$BBAC` – `$BF43`** | 920 B | `TravelScreen_Data` | Dane (Screen) | Mapa ekranu Podróży (40×23 znaków). |
 | **`$9ED8` – `$9FFF`** | 296 B | — | **WOLNY RAM** | Wolna pamięć przed PMG. |
 | **`$A000` – `$A7FF`** | 2048 B | `PMG` | Pamięć PMG | Pamięć Player/Missile Graphics (M0-M3, P0-P3). |
 | **`$A800` – `$A9DF`** | 480 B | — | **WOLNY RAM** | Wolny bufor przed zmiennymi RMT. |

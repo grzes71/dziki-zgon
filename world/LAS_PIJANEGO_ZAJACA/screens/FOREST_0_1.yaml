@@ -44,13 +44,7 @@ objects:
   x: 32
   y: 1
 - object: ROCK_1
-  x: 29
-  y: 4
-- object: ROCK_1
   x: 4
-  y: 5
-- object: ROCK_2
-  x: 16
   y: 5
 - object: ROCK_2
   x: 8
@@ -157,9 +151,6 @@ objects:
   x: 29
   y: 6
 - object: BUSH
-  x: 12
-  y: 5
-- object: BUSH
   x: 34
   y: 4
 - object: BUSH
@@ -174,21 +165,12 @@ objects:
 - object: BUSH
   x: 6
   y: 7
-- object: BUSH
-  x: 20
-  y: 4
 - object: BARREL
   x: 38
   y: 3
 - object: TREE_3
   x: 14
   y: 3
-- object: TREE_3
-  x: 16
-  y: 9
-- object: ROCK_1
-  x: 21
-  y: 7
 - object: ROCK_1
   x: 15
   y: 1
@@ -211,45 +193,12 @@ objects:
 - object: REED
   x: 31
   y: 6
-- object: SWAMP
-  x: 16
-  y: 7
-- object: SWAMP
-  x: 17
-  y: 6
-  repeat-x: 2
-- object: SWAMP
-  x: 19
-  y: 7
-- object: SWAMP
-  x: 17
-  y: 8
-  repeat-x: 2
-- object: WAVES
-  x: 17
-  y: 7
-  repeat-x: 2
 - object: BUSH_2
   x: 20
   y: 0
 - object: BUSH
   x: 29
   y: 0
-- object: BUSH
-  x: 8
-  y: 0
-- object: WAVES
-  x: 16
-  y: 6
-- object: WAVES
-  x: 16
-  y: 8
-- object: TREE_3
-  x: 14
-  y: 7
-- object: CROSS_2
-  x: 6
-  y: 2
 - object: TREE_3
   x: 38
   y: 10
@@ -290,12 +239,110 @@ objects:
 - object: GROUND_GREEN_DOWN
   x: 11
   y: 11
+- object: SWAMP
+  x: 16
+  y: 6
+- object: SWAMP
+  x: 14
+  y: 7
+- object: SWAMP
+  x: 17
+  y: 7
+  repeat-x: 3
+- object: SWAMP
+  x: 20
+  y: 6
+- object: SWAMP
+  x: 18
+  y: 6
+- object: SWAMP
+  x: 17
+  y: 5
+- object: SWAMP
+  x: 19
+  y: 5
+- object: SWAMP
+  x: 21
+  y: 7
+- object: SWAMP
+  x: 21
+  y: 5
+- object: SWAMP
+  x: 22
+  y: 6
+- object: REED
+  x: 20
+  y: 5
+- object: REED
+  x: 18
+  y: 5
+- object: REED
+  x: 17
+  y: 6
+- object: REED
+  x: 15
+  y: 7
+  repeat-x: 2
+- object: REED
+  x: 20
+  y: 7
+- object: REED
+  x: 21
+  y: 6
+- object: REED
+  x: 19
+  y: 6
+- object: REED
+  x: 22
+  y: 7
+- object: REED
+  x: 22
+  y: 5
+- object: REED
+  x: 21
+  y: 4
+- object: REED
+  x: 19
+  y: 4
+- object: REED
+  x: 13
+  y: 7
+- object: REED
+  x: 16
+  y: 5
+- object: REED
+  x: 17
+  y: 4
 - object: REED
   x: 19
   y: 8
 - object: REED
-  x: 19
-  y: 6
+  x: 17
+  y: 8
+- object: TREE_SMALL
+  x: 14
+  y: 9
+- object: TREE_SMALL
+  x: 6
+  y: 1
+- object: ROCK_GREEN
+  x: 28
+  y: 4
+- object: BUSH_2
+  x: 17
+  y: 11
+- object: BUSH_2
+  x: 11
+  y: 5
+- object: BUSH
+  x: 6
+  y: 4
+- object: BUSH
+  x: 9
+  y: 0
+- object: MUSHROOM
+  x: 24
+  y: 9
 enemies:
 - enemy: bazyliszek
   x: 19

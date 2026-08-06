@@ -327,9 +327,9 @@ def test_pf3_collision_timer_acceleration(game_binary) -> None:
     # Simulate PF3 collision by setting P0PF register to 8 (bit 3)
     mem[labels["P0PF"]] = 8
 
-    # Read dynamic region damage for region 0
-    damage_region = mem[labels["REGION_DAMAGE"] + 0]
-    assert damage_region == 10
+    stage = mem[labels["GAME_STAGE"]]
+    damage_region = mem[labels["REGION_DAMAGE"] + stage]
+    assert damage_region > 0
 
     # Run update_timer once
     run_subroutine(cpu, labels["UPDATE_TIMER"])

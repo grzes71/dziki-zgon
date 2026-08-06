@@ -1,0 +1,10 @@
+id: JAR_TOP_1
+grid_x: 0
+grid_y: 1
+exits:
+  north: JAR_TOP_2
+  south: START_JAR
+  east: null
+  west: null
+objects: []
+enemies: []

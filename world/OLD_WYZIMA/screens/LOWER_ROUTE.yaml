@@ -1,0 +1,10 @@
+id: LOWER_ROUTE
+grid_x: 0
+grid_y: 2
+exits:
+  north: START_WYZYMA
+  south: null
+  east: LOWER_MIDDLE_1
+  west: null
+objects: []
+enemies: []

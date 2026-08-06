@@ -52,6 +52,7 @@ class WorldStudioMainWindow(QMainWindow):
         self.region_tree.screen_double_clicked.connect(self._on_screen_double_clicked)
         self.region_tree.request_add_region.connect(self._on_add_region)
         self.region_tree.request_edit_region_colors.connect(self._on_edit_region_colors)
+        self.region_tree.request_delete_region.connect(self._on_delete_region)
         left_layout.addWidget(self.region_tree, 1)
         
         self.object_palette = ObjectPaletteWidget()
@@ -302,6 +303,32 @@ class WorldStudioMainWindow(QMainWindow):
             self.project.set_region_colors(region_id, colors_dict)
             self._refresh_views()
             self.statusBar().showMessage(f"Updated colors for region {region_id}")
+
+    def _on_delete_region(self, region_id: str):
+        if not self.project or region_id not in self.project.regions:
+            return
+
+        screen_count = len(self.project.screens.get(region_id, {}))
+        reply = QMessageBox.question(
+            self,
+            'Delete Region',
+            f"Are you sure you want to delete region '{region_id}' and all its screens ({screen_count} screen(s))?\n\nThis action cannot be undone.",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+
+        if reply == QMessageBox.Yes:
+            if self.project.remove_region(region_id):
+                self.region_tree.populate(self.project)
+                if self.current_region_id == region_id:
+                    self.current_region_id = None
+                    self.current_screen_id = None
+                    self.live_view.set_data(None, None, None)
+                    self.canvas_view.set_data(None, None, None, None)
+                    self.object_palette.populate(self.project, self.charset, None)
+                self.statusBar().showMessage(f"Region '{region_id}' deleted.")
+            else:
+                QMessageBox.warning(self, "Error", f"Failed to delete region '{region_id}'.")
 
     def _on_empty_cell_add_requested(self, region_id, col, row):
         text, ok = QInputDialog.getText(self, f"Add Screen at {col},{row}", "Screen ID (e.g. START):")

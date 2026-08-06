@@ -329,26 +329,19 @@ TitleFooterROM = text_title
 SpriteData = DzikizgonData
 
 
-; --- Wspólny Charset dla GameOver & Travel ($9000, 1 KB aligned -> CHBASE=$90) ---
-    org $9000
-GO_CHARSET
-    ins "gen/screens/charset.bin"
-
-    org $9400
+; --- Dane ekranu GameOver ($9340) ---
+    org $9340
 GameOverFail_Data
     ins "gen/screens/game_over-fail_screen.bin"
 
-    org $97A0
+    org $96E0
 GameOverSuccess_Data
     ins "gen/screens/game_over-success_screen.bin"
 
-; --- Dane ekranu Travel ($9B40) ---
-    org $9B40
-TravelScreen_Data
-    ins "gen/screens/travel_screen.bin"
-
-
-
+; --- Wspólny Charset dla GameOver & Travel ($9C00, 1 KB aligned -> CHBASE=$9C) ---
+    org $9C00
+GO_CHARSET
+    ins "gen/screens/charset.bin"
 
 
 ; --- RMT Tracker Player & Module ($A9E0 - $B610) ---
@@ -367,6 +360,11 @@ TravelScreen_Data
     org $B7A0
     icl "engine/travel_screen.asm"
     icl "scenes/gameover/gameover.asm"
+
+; --- Dane ekranu Travel ($BBAC, pod ROM BASIC) ---
+    org $BBAC
+TravelScreen_Data
+    ins "gen/screens/travel_screen.bin"
 
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR

@@ -1,0 +1,10 @@
+id: LOWER_MIDDLE2
+grid_x: 2
+grid_y: 2
+exits:
+  north: null
+  south: null
+  east: LOWER_MIDDLE_3
+  west: LOWER_MIDDLE_1
+objects: []
+enemies: []

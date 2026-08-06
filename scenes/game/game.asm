@@ -346,6 +346,8 @@ temp_sub
     sta GAME_RESULT_STATUS  ; zresetuj status gry (0 = w trakcie)
     sta Request_SFX_Step    ; zresetuj flagę dźwięku kroku
     sta Request_SFX_Item    ; zresetuj flagę dźwięku przedmiotu
+    sta Request_SFX_Interact; zresetuj flagę dźwięku interakcji
+
 
 
     

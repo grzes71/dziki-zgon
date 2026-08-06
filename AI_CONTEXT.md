@@ -10,30 +10,33 @@ Projekt używa modułowej architektury z `icl` (MADS include library). Jeden pli
 
 ```
 main.asm                     # Punkt startowy, maszyna stanów (title→story→game→gameover→title)
-├── hardware.asm             # Wszystkie equ dla GTIA/ANTIC/POKEY/OS + stałe projektu
-├── zeropage.asm             # Zmienne page zero ($80 SRC_TMP, $81 GAME_STATE)
+├── hardware.asm             # Definicje rejestrów GTIA/ANTIC/POKEY/OS + stałe projektu
+├── zeropage.asm             # Zmienne page zero ($80 SRC_TMP, $9B GAME_STATE, mailboxy SFX)
 ├── lib/
 │   ├── pmg.asm              # Procedury PMG: pmg_clear_all, pmg_clear_range
-│   └── world_renderer.asm   # Procedury renderowania map świata (build_screen)
-├── tests/
-│   ├── test_*.py            # Skrypty testowe dla środowiska Python oraz py65
-│   └── *_test.asm           # Wsady testowe dla jednostkowych/integracyjnych testów MPU 6502
-├── fonts/
-│   └── font.asm             # Własna czcionka 128 znaków (1 KB)
-└── scenes/
-    ├── title/
-    │   └── title.asm        # Ekran tytułowy: title_init + title_run + DLI + tęcza
-    ├── story/
-    │   └── story.asm        # Ekran opisu (wyświetlanie i obsługa opisu)
-    ├── game/
-    │   └── game.asm         # Gra właściwa (placeholder)
-    └── gameover/
-        └── gameover.asm     # Ekran końca gry (placeholder)
+│   ├── rle.asm              # Dekompresor PackBits RLE (RLE_Depack)
+│   └── world_renderer.asm   # Procedury renderowania map świata z World Buildera (build_screen)
+├── engine/                  # Modularny potok gry (50 FPS fixed update)
+│   ├── engine_scheduler.asm # Główny scheduler klatki (Input→Player→NPC→Collision→IIS→Secret→Inventory...)
+│   ├── engine_frame.asm     # Handler VBLANK NMI (audio, timer, charset anim, msg_line, shadow copy)
+│   ├── iis.asm              # Interactive Inspection System (badanie obiektów na mapie)
+│   ├── secret_object.asm    # Wytropienie i podnoszenie sekretnych przedmiotów
+│   ├── travel_screen.asm    # Logika ekranu podróży między regionami (portale)
+│   └── msg_line.asm         # Dynamiczny system komunikatów w dolnej linii statusu
+├── scenes/
+│   ├── title/title.asm      # Ekran tytułowy: title_init + title_run + DLI
+│   ├── story/story.asm      # Ekran fabularny
+│   ├── game/game.asm        # Właściwa rozgrywka
+│   └── gameover/gameover.asm# Ekran końca gry (sukces / porażka)
+├── world_builder/           # Pythonowy kompilator YAML → 6502 SoA ASM
+├── world_studio/            # Edytor wizualny map i regionów (PySide6)
+├── object_studio/           # Edytor kafelków i właściwości obiektów (PySide6)
+└── tests/                   # Zestaw 108 testów jednostkowych/integracyjnych (pytest + py65)
 ```
 
 **Konwencja**: każda scena eksportuje `_init` (konfiguracja jednorazowa) i `_run` (obsługa klatki). `_run` ustawia `GAME_STATE` by przejść do następnego stanu.
 
-**Maszyna stanów**: `GAME_STATE` ($81) — 0=title, 1=story, 2=game, 3=gameover. Gameover wraca do title.
+**Maszyna stanów**: `GAME_STATE` ($9B) — 0=title, 1=story, 2=game, 3=gameover. Gameover wraca do title.
 
 ## Pliki kluczowe
 
@@ -41,35 +44,41 @@ main.asm                     # Punkt startowy, maszyna stanów (title→story→
 |---|---|
 | `main.asm` | Punkt startowy + maszyna stanów, kompilowany do `dziki_zgon.xex` |
 | `hardware.asm` | Wspólne definicje rejestrów GTIA/ANTIC/POKEY i stałe |
+| `zeropage.asm` | Alokacja zmiennych pamięci Zero Page (`$80–$A9`) |
+| `engine/engine_scheduler.asm` | Główny potok klatki gry (14 kroków wykonawczych) |
 | `scenes/title/title.asm` | Logika ekranu tytułowego (init, run, DLI, tabele kolorów) |
 | `scenes/*/` | Kolejne sceny — każda z własnym `_init` i `_run` |
 | `lib/pmg.asm` | Współdzielone procedury PMG |
 | `lib/world_renderer.asm` | Renderowanie świata wygenerowanego w World Builder do VRAM |
-| `tests/` | Konfiguracje testów asercyjnych i wsady symulujące pamięć dla 6502 |
+| `world_builder/` | Kompilator świata gry (YAML → optymalne struktury ASM SoA) |
+| `world_studio/` | Edytor map/ekranów GUI w PySide6 (pisze bezpośrednio do YAML SSOT) |
+| `object_studio/` | Edytor obiektów/kafelków GUI w PySide6 |
+| `tests/` | Testy jednostkowe/integracyjne MPU 6502 (`pytest` + `py65`) |
 | `scripts/img2asm.py` | Konwerter PNG → .bin + .asm + _colors.asm + _displaylist.asm (+ `.rle` przy `-c rle`) |
-| `world_builder/` | Kompilator świata gry (YAML → optymalne struktury ASM i tablice wskaźników) |
-| `fonts/font.asm` | Własna czcionka 128 znaków (1 KB, $6000, CHBASE=$60) |
-| `MEMORY_USAGE.md` | Szczegółowa mapa pamięci i alokacji wolnego RAM-u |
+| `scripts/check_memory.py` | Automatyczny walidator mapy pamięci zintegrowany z Makefile |
+| `fonts/` | Surowe pliki czcionek `.fnt` (`gen/font.asm` $6000, `gen/game_font.asm` $6400) |
+| `MEMORY_USAGE.md` | Szczegółowa mapa pamięci i alokacji wolnego RAM-u (Single Source of Truth) |
+| `ARCHITECTURE.md` | Dokumentacja wysokopoziomowa silnika i potoku wykonawczego |
 | `docs/KONSPEKT.md` | Dokument projektowy — fabuła, regiony, mechaniki |
 
 ## Build
 
 ```bash
-make          # wszystko: sprite'y → tło → yaml → TESTY → XEX
+make          # wszystko: sprite'y → tło → yaml → TESTY → XEX → check_memory
 make sprites  # tylko moon + dziki-zgon
 make bg       # tylko tło
 make test     # uruchamia zestaw testów jednostkowych i integracyjnych z pytest
 make clean    # usuwa wygenerowane
 ```
 
-Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make.
+Wymagania: Python 3.10+, Pillow 12.x, MADS 2.1.x, GNU Make, Pydantic v2, PyYAML, PySide6, pytest, py65.
 Instalacja zależności: `pip install -r requirements.txt`
 
 ## Narzędzia GUI (Object Studio & World Studio)
 
 Do wizualnego projektowania danych (YAML) bez dotykania kodu używane są dwie natywne aplikacje napisane w PySide6:
 1. **Object Studio** (`object_studio/`): Graficzny kreator `world/objects.yaml`. Renderuje kafelki na podstawie załadowanej czcionki (`.fnt`) oraz definicji kolorów (ANTIC 4/5), pozwalając na edycję rozmiarów, flag (blocking/interactive) i z mapowania na znaki Atari.
-2. **World Studio** (`world_studio/`): Kompleksowy edytor map i ekranów regionów. Zapewnia skalowalny makro-widok całego regionu (renderowany dynamicznie z powiązań między ekranami) oraz mikro-edytor (`Screen Canvas` - 40x10 znaków) pozwalający na łatwe rozmieszczanie wygenerowanych obiektów, wsparcie poleceń powtarzania (`repeat-x/y` docinane do granic ekranu) oraz ustawianie pozycji startowej Gracza. Zapisuje wprost do plików `.yaml` zgodnie z zasadą SSOT.
+2. **World Studio** (`world_studio/`): Kompleksowy edytor map i ekranów regionów. Zapewnia skalowalny makro-widok całego regionu (renderowany dynamicznie z powiązań między ekranami) oraz mikro-edytor (`Screen Canvas` - 40x12 znaków) pozwalający na łatwe rozmieszczanie wygenerowanych obiektów, wsparcie poleceń powtarzania (`repeat-x/y` docinane do granic ekranu) oraz ustawianie pozycji startowej Gracza. Zapisuje wprost do plików `.yaml` zgodnie z zasadą SSOT.
 
 ## Narzędzie World Builder
 
@@ -114,8 +123,8 @@ W projekcie zawarte są narzędzia wspomagające testowanie i diagnozowanie prob
 - **ANTIC D** (Graphics 7 narrow), 128×96 px, 4 kolory (2 bpp) — ekran game over
 - **ANTIC 2** (Graphics 0), 40×24 znaków, 1 kolor (biały na czarnym, COLPF1=$0E) — ekran opisu (story) i współdzielony bufor tekstu pod $5E10
 - **Gra właściwa** używa dwóch trybów łączonych w jednym ekranie (Display List):
-  - **ANTIC 5** (górne 10 linii), 40×10 znaków podwójnej wysokości, kolorowa plansza gry (używa czcionki kafelków pod $6400)
-  - **ANTIC 2** (dolne linie), 40 znaków/linia, panel statusowy (używa systemowej czcionki pod $6000):
+  - **ANTIC 5** (górne 10 linii), 40×10 znaków podwójnej wysokości, kolorowa plansza gry (używa czcionki kafelków pod $6400, `CHBASE=$64`)
+  - **ANTIC 2** (dolne linie), 40 znaków/linia, panel statusowy (używa systemowej czcionki pod $6000, `CHBASE=$60` przełączanego w DLI):
   - **Info Line** (górna linia statusowa): 
     - Pozycje 0–1: zarezerwowane znaki ramki
     - Pozycje 2–21: nazwa regionu (max 20 znaków)
@@ -136,21 +145,91 @@ Szczegółowa mapa pamięci, wolnych bloków oraz objaśnienia znajdują się w 
 
 | Adres | Zawartość |
 |---|---|
-| $0080-$0091 | Page zero: `SRC_TMP`, `GAME_STATE`, `SRC_PTR`, `DST_PTR`, wskaźniki World Buildera |
-| $2000-$2664 | Kod: main + lib + scenes |
-| $2700-$295A | Dane tekstów i sprite'ów (RLE) |
-| $295B-$3E7F | Duży wolny blok RAM |
-| $3E80-$3FEE | Display Lists (Title/Story/Game/GameOver) |
-| $4000-$5E0F | **VRAM_ARENA** (współdzielony bufor ekranu scen) |
-| $5E10-$5F4F | Współdzielony bufor tekstu (Story/GameOver/stopka tytułu) |
-| $6000-$63FF | Czcionka systemowa (interfejs) gry (`font.asm`, `CHBASE=$60`) |
-| $6400-$67FF | Czcionka mapy gry (`game_font.asm`, `CHBASE=$64`) |
-| $6800-$7FFF | Duży wolny blok RAM (odzyskany po VRAM_ARENA) |
-| $8000-$8FFF | `ROM_DATA` (`title.rle`, `gameover.rle`) + dane wygenerowane przez World Builder |
-| $A000-$A7FF | PMG (`PMBASE_ADDR=$A000`, single-line) |
-| $A800-$ABFF | Dawniej `GAME_CHARSET`, obecnie rezerwa (nieużywana) |
-| $AD00-$B4BE | Odtwarzacz RMT |
-| $B500-$B810 | Moduł muzyki title |
+| $0080-$00A9 | Page zero: `SRC_TMP`, `SRC_PTR`, `DST_PTR`, wskaźniki świata, `FrameCounter`, `InputState_*`, actor PMG, `GAME_STATE` ($9B), przejścia ekranów, mailboxy SFX |
+| $00CB-$00DD | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera) |
+| $0700-$1F2C | Dane (ROM): skompresowany obrazek tytułowy (`title.rle`) + logo "Dziki Zgon" + księżyc (sprites RLE) |
+| $2000-$3BF7 | Kod programu: `main.asm`, `lib/` (pmg, rle, world_renderer), `engine/`, `scenes/` |
+| $3E80-$3FE7 | Display Lists (Title/Story/Game/GameOver/Travel) |
+| $4000-$5E0F | **VRAM_ARENA** (współdzielony bufor ekranu scen: title, game, gameover) |
+| $5E10-$5F4F | **FOOTER_ADDR** (współdzielony bufor tekstu: stopka tytułu / Story / GameOver) |
+| $6000-$63FF | Czcionka systemowa (interfejs) gry (`gen/font.asm`, `CHBASE=$60`) |
+| $6400-$67FF | Czcionka mapy gry (`gen/game_font.asm`, `CHBASE=$64`) |
+| $6800-$8CDD | Dane świata Gry z World Buildera (obiekty, ekrany, wyjścia, interakcje, sekrety) |
+| $8CDE-$8D2B | Skompresowane zasoby tekstowe `all_texts.asm` |
+| $8D2C-$8DC6 | Sterownik audio dla scen (`title_audio.asm`) |
+| $9000-$93FF | Czcionka Game Over / Travel (`GO_CHARSET`, `CHBASE=$90`) |
+| $9400-$9B37 | Dane ekranów Game Over (Porażka i Sukces) |
+| $9B40-$9ED7 | Dane ekranu Podróży (`TravelScreen_Data`) |
+| $A000-$A7FF | PMG memory (`PMBASE_ADDR=$A000`, single-line) |
+| $A9E0-$B610 | Odtwarzacz RMT: zmienne ($A9E0), kod player'a ($AD00), moduł muzyczny ($B300) |
+| $B611-$B79F | Sprite'y postaci (Gerwalt + przeciwnicy) |
+| $B7A0-$BBAB | Procedury ekranu podróży i sceny Game Over |
+
+> PORTB=$FF (OS ROM on, BASIC off). Program startuje jawnie przez `jmp start` na $2000.
+
+## Display List — generator i ograniczenia ANTIC
+
+ANTIC ma 12-bitowy licznik adresu podczas pobierania linii → nie może przekroczyć granicy 4KB ($x000→$y000). `img2asm.py` rozwiązuje to przez:
+
+1. `pack_pixels()` — dodaje padding ($00) przy granicach 4KB, wyrównując kolejną linię do $x000
+2. `_compute_dl_segments()` — dzieli DL na 2 segmenty, każdy LMS na adresie $x000
+3. `generate_asm_displaylist()` — generuje DL z `dta $4E/$4F, a(Label+offset)`
+
+Parametr `--screen-base` (domyślnie 0x4000) — kluczowy dla poprawnego liczenia adresów bezwzględnych.
+
+## PMG (Player/Missile Graphics)
+
+- **Single-line resolution** (`DMA_PMG_ON=$3E`), `PMBASE_ADDR=$A000`
+- Układ PMG: `MISSILES=$A300`, `PLAYER0=$A400`, `PLAYER1=$A500`, `PLAYER2=$A600`, `PLAYER3=$A700`
+- Wszystkie rejestry zapisywane bezpośrednio do sprzętu (shadow nieużywane)
+- 4 graczy (P0-P3) + missiles (M0-M3), PRIOR zależny od sceny
+- Tytuł: x1 (`SIZEP0-3=$00`), `PRIOR=$11` (5th player), `COLPF3` dla missile
+- Story/GameOver: PMG wyłączane (`GRACTL=0`, czyszczenie PMG)
+- Dane sprite'ów transponowane z formatu wierszowego `[P0,P1,P2,P3,M]xN` do per-player
+
+## DLI — sekcje
+
+Projekt używa DLI w co najmniej dwóch scenach:
+
+1. **Title**: DLI_Handler steruje kolorami, PRIOR i tęczą PMG (logo + księżyc/gwiazdy).
+2. **GameOver**: DLI_Gameover przełącza paletę pomiędzy obrazkiem i migotaniem tekstu (efekt pulse/rainbow).
+3. **Game**: Używa łańcucha przerwań DLI w `DLIST_GAME` (przełączają wektor `VDSLST` w trakcie skanowania klatki):
+   - `game_dli`: uruchamia się przy pustej linii przed Info Line ($90), ładuje paletę statusu oraz `CHBASE=$60`. Na koniec przepina `VDSLST` na `game_dli_msg`.
+   - `game_dli_msg`: uruchamia się przy Message Line ($82), na razie pełni funkcję placeholderu i przywraca `VDSLST` na `game_dli` dla kolejnej klatki.
+
+System palet etapów oparty jest na szybkim indeksowaniu tablic konfiguracyjnych w trakcie startu sceny (`update_stage_colors`).
+
+## Dopasowanie kolorów (CIELAB/CIE2000)
+
+`rgb_to_atari()` używa rzeczywistej palety Atari PAL (256×RGB z `rgb2a8.cpp`), konwertuje do CIELAB i porównuje uproszczoną formułą CIE2000 (K1=0.045, K2=0.015). Znacznie lepsze perceptualnie niż odległość Euklidesowa w RGB.
+
+## Znane pułapki
+
+1. **Init scen i NMI**: `system_init` zeruje `DMACTL/NMIEN/GRACTL` przed wejściem do sceny. Każda scena musi jawnie przywrócić potrzebne ustawienia.
+2. **Kolory bezpośrednio do GTIA**: `img2asm.py` generuje `sta $D016-$D01A` (nie shadow OS). Plik `_colors.asm` jest includowany globalnie (stałe `.equ`) i lokalnie w `_init` (kod `lda`/`sta`).
+3. **DLI timing**: DMA kradnie cykle, więc punkty DLI muszą być testowane na docelowym emulatorze/sprzęcie.
+4. **VRAM_ARENA ownership**: Title/Game/GameOver współdzielą ten sam bufor `$4000-$5E0F`; każda scena musi kompletnie odtworzyć własny ekran w `_init`.
+5. **Wspólny bufor tekstu**: Story/GameOver/stopka Title współdzielą `$5E10-$5F4F`; przejścia scen nie mogą zakładać trwałości poprzedniej treści.
+6. **MADS `OPT h+`**: MADS 2.1.6 wymaga wielkich liter dyrektyw i ostrożności przy wielu segmentach `org`.
+7. **Przerwanie VBLANK (Omijanie OS)**: Standardowe OS VBLANK (skok przez wektor `SYSVBV`) automatycznie przepisuje wszystkie rejestry-cienie do układów wejścia-wyjścia, często psując własne optymalizacje silnika np. modyfikacje wyświetlania w DLI lub ręczne zarządzanie kolorami w `STATE_GAME`. Odpowiedzią jest napisanie własnego Frame Handlera (`Engine_FrameHandler`), który ręcznie przepisuje wymagane cienie (np. `SDLSTL` czy `CHBAS`) i kończy działanie skokiem do drugiej fazy VBLANK przez `jmp (VVBLKI)`. Zabezpiecza to własne renderowanie, a jednocześnie zachowuje obsługę klawiatury sprzętowej OS-u.
+8. **Modyfikacja rozmiarów planszy gry (World Builder)**: Zmiana limitów na planszy (np. z 10 wierszy na 12) to rozproszona zmiana architektoniczna, która zawsze wymaga aktualizacji w trzech miejscach: w Pythonowych walidatorach map (`validator.py` oraz `model.py` - Pydantic), w tabelach wektorów matematycznych (`row_offsets_lo/hi` w `world_renderer.asm`), Display Liście i rozkładzie pamięci (`game.asm`), oraz w twardych limitach kolizji i obcinania obszaru osi Y w silniku fizyki (`engine/collision.asm`).
+
+## Szczegóły techniczne
+
+### Tryb graficzny
+
+| Parametr | Tytuł | Story | Gra właściwa | Game Over |
+|---|---|---|---|---|
+| Tryb ANTIC | **E** (Graphics 7) | **2** (Graphics 0) | **5** (10 linii) + **2** (HUD) | **D** (Graphics 7 narrow) + **2** (tekst) |
+| Rozdzielczość | 160 × 192 px | 40 × 24 znaków (8×8 px) | 40 × 12 znaków (4×16 px) | 128 × 96 px + 40 znaków tekstu |
+| Kolory | 4 (2 bpp) | 1 + COLBK (biały na czarnym) | 4 + COLBK | 4 (2 bpp) + DLI tęcza |
+| Pamięć ekranu | $4000–$5E0F (7696 B) | $5E10–$5F4F (320 B, RLE) | $4000–$422F (560 B, wspólna arena VRAM) | $4000–$4ADF (2784 B, wspólna arena VRAM) + $5E10 tekst |
+| Charset | $6000–$63FF (font.asm) | $6000–$63FF (font.asm) | $6400–$67FF (game_font.asm) + $6000 (interfejs) | $9000–$93FF (GO_CHARSET) |
+| Display List | $3E80 | $3E80 | $3E80 | $3E80 |
+| Kod programu | $2000 | $2000 | $2000 | $2000 |
+| PORTB | $FF — BASIC off, OS on | ← | ← | ← |
+| Czcionka | CHBASE=$60 | CHBASE=$60 | CHBASE=$64 (gra) / CHBASE=$60 (DLI HUD) | CHBASE=$90 |
+
 
 > PORTB=$FF (OS ROM on, BASIC off). Program startuje jawnie przez `jmp start` na $2000.
 

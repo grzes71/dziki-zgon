@@ -1,0 +1,10 @@
+id: END_WYZYMA
+grid_x: 1
+grid_y: 1
+exits:
+  north: null
+  south: null
+  east: MIDDLE_CENTER_2
+  west: null
+objects: []
+enemies: []

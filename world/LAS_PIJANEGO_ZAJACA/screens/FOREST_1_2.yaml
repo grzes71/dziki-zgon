@@ -55,29 +55,14 @@ objects:
   x: 4
   y: 2
 - object: BUSH_2
-  x: 9
-  y: 10
-- object: BUSH_2
-  x: 16
-  y: 5
-- object: BUSH_2
   x: 0
   y: 7
-- object: BUSH
-  x: 3
-  y: 11
 - object: BUSH
   x: 10
   y: 7
 - object: BUSH
   x: 23
   y: 10
-- object: BUSH
-  x: 37
-  y: 11
-- object: MUSHROOM
-  x: 5
-  y: 9
 - object: TREE_3
   x: 8
   y: 6
@@ -94,17 +79,11 @@ objects:
   x: 21
   y: 7
 - object: TREE_2
-  x: 18
-  y: 2
-- object: TREE_2
   x: 13
   y: 6
 - object: TREE_2
   x: 3
   y: 5
-- object: TREE_2
-  x: 26
-  y: 1
 - object: TREE_2
   x: 31
   y: 4
@@ -124,10 +103,125 @@ objects:
 - object: ROCK_GREEN
   x: 23
   y: 5
+- object: REED
+  x: 13
+  y: 3
+- object: REED
+  x: 12
+  y: 2
+- object: REED
+  x: 10
+  y: 1
+- object: REED
+  x: 7
+  y: 1
+  repeat-x: 2
+- object: REED
+  x: 5
+  y: 1
+- object: REED
+  x: 3
+  y: 3
+- object: REED
+  x: 6
+  y: 5
+- object: STONE_BIG
+  x: 9
+  y: 9
 - object: GROUND_GREEN_UP
+  x: 9
+  y: 10
+  repeat-x: 4
+- object: GROUND_GREEN_DOWN
   x: 0
   y: 11
-- object: TREE_2
+  repeat-x: 3
+- object: GROUND_GREEN_DOWN
+  x: 37
+  y: 11
+  repeat-x: 2
+- object: GROUND_GREEN_DOWN
+  x: 38
+  y: 10
+- object: BARN_SMALL
+  x: 4
+  y: 8
+- object: TREE_3
+  x: 21
+  y: 3
+- object: SIGNPOINT_LEFT
+  x: 35
+  y: 11
+- object: ROCK_2
+  x: 20
+  y: 11
+- object: ROCK_GREEN
+  x: 16
+  y: 4
+- object: BUSH
+  x: 18
+  y: 0
+- object: BUSH
+  x: 39
+  y: 5
+- object: BUSH
+  x: 14
+  y: 11
+- object: BUSH_2
+  x: 6
+  y: 11
+- object: MUSHROOM
+  x: 28
+  y: 5
+- object: MUSHROOM
+  x: 22
+  y: 1
+- object: GROUND_GREEN_DOWN
+  x: 0
+  y: 10
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 9
+  repeat-y: 3
+- object: GROUND_BROWN_UP
+  x: 39
+  y: 7
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 18
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 19
+  y: 9
+- object: GROUND_BROWN_DOWN
+  x: 17
+  y: 6
+  repeat-y: 2
+- object: GROUND_BROWN_DOWN
+  x: 21
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 1
+- object: GROUND_BROWN_DOWN
+  x: 19
+  y: 2
+- object: GROUND_GREEN_UP
   x: 0
   y: 0
-enemies: []
+  repeat-x: 3
+- object: TREE_SMALL
+  x: 0
+  y: 2
+- object: TREE_SMALL
+  x: 26
+  y: 2
+enemies:
+- enemy: sukkub
+  x: 19
+  y: 6
+  strategy: random
+  speed: medium
+  color: gray

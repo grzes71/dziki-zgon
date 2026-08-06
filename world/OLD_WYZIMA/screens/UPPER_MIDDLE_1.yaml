@@ -1,0 +1,10 @@
+id: UPPER_MIDDLE_1
+grid_x: 1
+grid_y: 0
+exits:
+  north: null
+  south: null
+  east: UPPER_MIDDLE_2
+  west: UPPER_ROUTE
+objects: []
+enemies: []

@@ -1,0 +1,10 @@
+id: UPPER_ROUTE
+grid_x: 0
+grid_y: 0
+exits:
+  north: null
+  south: START_WYZYMA
+  east: UPPER_MIDDLE_1
+  west: null
+objects: []
+enemies: []

@@ -1,9 +1,9 @@
-id: START
+id: START_WYZYMA
 grid_x: 0
 grid_y: 1
 exits:
-  north: null
-  south: null
+  north: UPPER_ROUTE
+  south: LOWER_ROUTE
   east: null
   west: null
 objects:

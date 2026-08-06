@@ -443,3 +443,24 @@ class ProjectManager:
         del self.screens[region_id][screen_id]
         self.update_all_exits(region_id, old_id=screen_id, new_id=None)
         return True
+
+    def remove_region(self, region_id: str) -> bool:
+        if region_id not in self.regions:
+            return False
+
+        del self.regions[region_id]
+        if region_id in self.screens:
+            del self.screens[region_id]
+        if region_id in self.region_colors:
+            del self.region_colors[region_id]
+        if region_id in self.region_atari_colors:
+            del self.region_atari_colors[region_id]
+
+        if self.world_dir:
+            r_dir = self.world_dir / region_id
+            if r_dir.exists() and r_dir.is_dir():
+                import shutil
+                shutil.rmtree(r_dir)
+
+        return True
+

@@ -1,16 +1,12 @@
-id: OLD_WYZIMA
-name: stara wyżyma
+id: SAMOTNIA_MISTRZA
+name: samotnia mistrza
 damage: 10
 layout:
-  rows: 3
-  columns: 4
-start_screen: START_WYZYMA
-music: OLD_WYZIMA
-portal_entries:
-  LAS_PIJANEGO_ZAJACA:
-    screen: START_WYZYMA
-    x: 7
-    y: 5
+  rows: 4
+  columns: 2
+start_screen: START_SAMOTNIA
+music: SAMOTNIA_MISTRZA
+portal_entries: {}
 colors:
   BACKGROUND:
     rgb:

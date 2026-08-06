@@ -1,0 +1,10 @@
+id: SAM_MID2_LEFT
+grid_x: 0
+grid_y: 2
+exits:
+  north: null
+  south: SAM_BL
+  east: SAM_MID2_RIGHT
+  west: null
+objects: []
+enemies: []

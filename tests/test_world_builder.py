@@ -188,3 +188,25 @@ def test_enemy_properties(happy_path_world):
     assert enemy.strategy == "vertical"
     assert enemy.speed == "medium"
     assert enemy.color == "white"
+
+def test_project_manager_remove_region(happy_path_world):
+    from world_studio.project_manager import ProjectManager
+    world_dir, _ = happy_path_world
+    pm = ProjectManager()
+    assert pm.load_project(world_dir) is True
+    assert "TEST_REGION" in pm.regions
+
+    # Add a second region
+    assert pm.add_region("REGION2", "Region 2", 2, 2) is True
+    pm.save_project()
+    assert (world_dir / "REGION2").exists()
+
+    # Remove REGION2
+    assert pm.remove_region("REGION2") is True
+    assert "REGION2" not in pm.regions
+    assert "REGION2" not in pm.screens
+    assert not (world_dir / "REGION2").exists()
+
+    # Attempt to remove non-existent region
+    assert pm.remove_region("NON_EXISTENT") is False
+

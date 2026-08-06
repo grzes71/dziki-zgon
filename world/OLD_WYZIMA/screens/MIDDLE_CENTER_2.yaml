@@ -1,0 +1,10 @@
+id: MIDDLE_CENTER_2
+grid_x: 2
+grid_y: 1
+exits:
+  north: null
+  south: null
+  east: MIDDLE_RIGHT
+  west: END_WYZYMA
+objects: []
+enemies: []

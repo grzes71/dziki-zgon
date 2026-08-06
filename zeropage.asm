@@ -44,6 +44,8 @@ GO_RAINBOW_PTR        equ $A4 ; Wskaźnik na tablicę kolorów tęczy Game Over 
 IS_PORTAL_TRANSITION  equ $A6 ; Flaga: 1 = przejście przez portal (ekran podróży)
 Request_SFX_Step      equ $A7 ; Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku kroku
 Request_SFX_Item      equ $A8 ; Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku podniesienia przedmiotu
+Request_SFX_Interact  equ $A9 ; Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku interakcji z obiektem
+
 
 
 

@@ -219,11 +219,15 @@ INTERACTIVE_OBJ_COMPLETE .ds SCREEN_COUNT
     rts
 
 @proximity_ok
-    ; 6. Gerwalt is in front of interactive object! Check INTERACTIVE_OBJ_COMPLETE flag.
+    ; 6. Gerwalt is in front of interactive object! Trigger interaction SFX
+    lda #1
+    sta Request_SFX_Interact
+
     ldx GAME_SCREEN_ID
     lda INTERACTIVE_OBJ_COMPLETE,x
     bne @do_interaction_incomplete
     jmp @interaction_already_complete
+
 
 @do_interaction_incomplete
     ; INTERACTION_COMPLETE == 1: object expects required items interaction

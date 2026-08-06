@@ -1,0 +1,40 @@
+id: JAR_WIECZNEJ_ZGAGI
+name: jar wiecznej zgagi
+damage: 25
+layout:
+  rows: 6
+  columns: 1
+start_screen: START_JAR
+music: JAR_WIECZNEJ_ZGAGI
+portal_entries: {}
+colors:
+  BACKGROUND:
+    rgb:
+    - 0
+    - 0
+    - 0
+    atari: 0
+  PF0:
+    rgb:
+    - 162
+    - 52
+    - 1
+    atari: 34
+  PF1:
+    rgb:
+    - 193
+    - 160
+    - 28
+    atari: 231
+  PF2:
+    rgb:
+    - 4
+    - 72
+    - 0
+    atari: 192
+  PF3_INV:
+    rgb:
+    - 0
+    - 41
+    - 117
+    atari: 128

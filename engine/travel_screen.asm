@@ -31,7 +31,7 @@ DLI_Travel = DLI_Travel_Top
 
 .proc DLI_Travel_Top
     pha
-    lda #$90            ; DLI #1 (góra): wspólny charset Game Over / Travel ($9000)
+    lda #$9C            ; DLI #1 (góra): wspólny charset Game Over / Travel ($9C00)
     sta CHBASE
 
 
@@ -197,7 +197,7 @@ DLI_Travel = DLI_Travel_Top
     sta DLISTH
 
     ; 6. Ustaw charset i DLI
-    lda #$90
+    lda #>GO_CHARSET
     sta CHBAS
     sta CHBASE
 

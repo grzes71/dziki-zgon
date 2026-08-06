@@ -15,29 +15,8 @@ objects:
   conditions_unmet: world
   game_over: false
 - object: TREE_3
-  x: 2
-  y: 6
-- object: TREE_3
-  x: 7
-  y: 4
-- object: TREE_3
   x: 31
   y: 8
-- object: TREE_SMALL
-  x: 10
-  y: 9
-- object: TREE_SMALL
-  x: 12
-  y: 1
-- object: TREE_SMALL
-  x: 0
-  y: 3
-- object: TREE_2
-  x: 7
-  y: 1
-- object: TREE_2
-  x: 26
-  y: 1
 - object: TREE_2
   x: 27
   y: 10
@@ -51,9 +30,6 @@ objects:
   x: 1
   y: 9
 - object: GROUND_BROWN_DOWN
-  x: 0
-  y: 9
-- object: GROUND_BROWN_DOWN
   x: 1
   y: 8
 - object: GROUND_BROWN_DOWN
@@ -62,41 +38,10 @@ objects:
 - object: GROUND_BROWN_UP
   x: 0
   y: 8
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 0
-  repeat-x: 2
-- object: GROUND_GREEN_UP
-  x: 1
-  y: 1
-- object: GROUND_GREEN_UP
-  x: 2
-  y: 0
-  repeat-x: 2
-- object: GROUND_GREEN_UP
-  x: 0
-  y: 2
+  repeat-y: 3
 - object: GROUND_GREEN_UP
   x: 5
   y: 0
-- object: GROUND_BROWN_DOWN
-  x: 39
-  y: 4
-- object: GROUND_BROWN_DOWN
-  x: 12
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 10
-  y: 11
-- object: CROSS_2
-  x: 3
-  y: 1
-- object: CROSS_2
-  x: 33
-  y: 11
 - object: BRICKS_2
   x: 14
   y: 6
@@ -111,10 +56,6 @@ objects:
 - object: OUTHOUSE
   x: 26
   y: 5
-- object: CLAW
-  x: 16
-  y: 8
-  repeat-x: 7
 - object: TREE_3
   x: 21
   y: 10
@@ -124,21 +65,140 @@ objects:
 - object: TREE_3
   x: 38
   y: 0
-- object: SIGNPOINT_RIGHT
-  x: 36
-  y: 3
-- object: TREE_2
-  x: 30
-  y: 4
-- object: TREE_2
-  x: 33
-  y: 1
-- object: TREE_2
-  x: 7
-  y: 7
 - object: TREE_2
   x: 19
   y: 1
+- object: WAVE_UP
+  x: 17
+  y: 7
+- object: WAVES_RIGHT
+  x: 23
+  y: 7
+- object: WATER_BR
+  x: 23
+  y: 8
+- object: WATERFALL_2
+  x: 5
+  y: 2
+- object: WAVE_UP
+  x: 8
+  y: 5
+  repeat-y: 2
+- object: WATER_ANIM
+  x: 8
+  y: 7
+  repeat-x: 9
+- object: WATER_ANIM
+  x: 18
+  y: 7
+  repeat-x: 5
+- object: WAVES_RIGHT
+  x: 9
+  y: 5
+  repeat-y: 2
+- object: WAVES_LEFT
+  x: 7
+  y: 5
+  repeat-y: 3
+- object: WATER_BL
+  x: 7
+  y: 8
+- object: WAVES_DOWN
+  x: 8
+  y: 8
+  repeat-x: 15
+- object: TREE_3
+  x: 2
+  y: 6
+- object: TREE_3
+  x: 31
+  y: 4
+- object: TREE_SMALL
+  x: 11
+  y: 10
+- object: TREE_SMALL
+  x: 27
+  y: 2
+- object: TREE_2
+  x: 36
+  y: 3
+- object: TREE_2
+  x: 3
+  y: 1
+- object: TREE_SMALL
+  x: 12
+  y: 1
+- object: ROCK_1
+  x: 0
+  y: 4
+- object: ROCK_2
+  x: 33
+  y: 11
+- object: SIGNPOINT_RIGHT
+  x: 33
+  y: 2
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 0
+  repeat-x: 2
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 1
+- object: MUSHROOM
+  x: 23
+  y: 2
+- object: BUSH_2
+  x: 30
+  y: 1
+- object: BUSH_2
+  x: 16
+  y: 9
+- object: BUSH_2
+  x: 37
+  y: 8
+- object: BUSH_2
+  x: 16
+  y: 0
+- object: BUSH
+  x: 26
+  y: 0
+- object: BUSH
+  x: 34
+  y: 0
+- object: BUSH
+  x: 28
+  y: 8
+- object: BUSH
+  x: 35
+  y: 9
+- object: BUSH
+  x: 10
+  y: 0
+- object: BUSH
+  x: 5
+  y: 7
+- object: BUSH
+  x: 1
+  y: 2
+- object: BUSH
+  x: 19
+  y: 11
+- object: BUSH
+  x: 30
+  y: 11
+- object: BUSH
+  x: 25
+  y: 11
+- object: REED
+  x: 8
+  y: 9
+  repeat-x: 2
+- object: REED
+  x: 6
+  y: 5
+- object: REED
+  x: 10
+  y: 5
 enemies:
 - enemy: kikimora
   x: 25

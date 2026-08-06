@@ -9,6 +9,7 @@ class RegionTreeWidget(QTreeWidget):
     region_selected = Signal(str) # region_id
     request_add_region = Signal()
     request_edit_region_colors = Signal(str) # region_id
+    request_delete_region = Signal(str) # region_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -73,4 +74,10 @@ class RegionTreeWidget(QTreeWidget):
                     act_edit_colors.triggered.connect(lambda _, r=region_id: self.request_edit_region_colors.emit(r))
                     menu.addAction(act_edit_colors)
 
+                    menu.addSeparator()
+                    act_delete_region = QAction("Delete Region...", self)
+                    act_delete_region.triggered.connect(lambda _, r=region_id: self.request_delete_region.emit(r))
+                    menu.addAction(act_delete_region)
+
         menu.exec_(self.viewport().mapToGlobal(pos))
+

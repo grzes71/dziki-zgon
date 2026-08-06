@@ -87,6 +87,10 @@ def test_iis_interaction_unmet(game_binary) -> None:
     # MSG_STATE should be 1 (showing message)
     assert mem[labels["MSG_STATE"]] == 1
 
+    # Request_SFX_Interact should be set to 1
+    assert mem[labels["REQUEST_SFX_INTERACT"]] == 1
+
+
 def test_iis_interaction_met_and_success(game_binary) -> None:
     """Verifies that pressing Fire near interactive object WITH required items swaps items, displays conditions_met, and sets GAME_RESULT_STATUS=1."""
     xex_file, labels = game_binary
@@ -190,5 +194,5 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
 
     # 2nd press result: REQ_SCREEN_TRANSITION=1, targeting START (OLD_WYZIMA portal entry)
     assert mem[labels["REQ_SCREEN_TRANSITION"]] == 1
-    assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_START"]
+    assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_START_WYZYMA"]
 

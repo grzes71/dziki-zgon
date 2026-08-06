@@ -79,7 +79,7 @@ GoLineAddrHi
     bne @bottom_text
 
 @top_image
-    lda #$90            ; DLI #1 (góra): wspólny wygenerowany charset Game Over/Travel ($9000)
+    lda #$9C            ; DLI #1 (góra): wspólny wygenerowany charset Game Over/Travel ($9C00)
     sta CHBASE
 
 
@@ -196,8 +196,8 @@ GoRainbow_Failure
     sta SDLSTH
     sta DLISTH
 
-    ; --- Charset Game Over ($9000 -> CHBAS = $90) ---
-    lda #$90
+    ; --- Charset Game Over (GO_CHARSET -> CHBAS) ---
+    lda #>GO_CHARSET
     sta CHBAS
     sta CHBASE
 
