@@ -208,16 +208,12 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 19
   y: 2
-- object: GROUND_GREEN_UP
-  x: 0
-  y: 0
-  repeat-x: 3
-- object: TREE_SMALL
-  x: 0
-  y: 2
 - object: TREE_SMALL
   x: 26
   y: 2
+- object: TREE_2
+  x: 0
+  y: 0
 enemies:
 - enemy: sukkub
   x: 19

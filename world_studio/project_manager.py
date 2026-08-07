@@ -19,6 +19,7 @@ class ProjectManager:
         self.region_colors: Dict[str, Dict[str, tuple]] = {}
         self.region_atari_colors: Dict[str, Dict[str, int]] = {}
         self.objects: List[ObjectDefinition] = []
+        self.available_tags: List[str] = []
         self.enemy_defs: List[EnemyDef] = []
         self.enemy_colors: List[str] = []
         self.inventory_items: List[InventoryItemDef] = []
@@ -95,6 +96,15 @@ class ProjectManager:
         # objects.yaml
         o_data = self._load_yaml(world_dir / "objects.yaml")
         self.objects = [ObjectDefinition.model_validate(obj) for obj in o_data.get("objects", [])]
+        tags_seen = []
+        for t in o_data.get("tags", []):
+            if t not in tags_seen:
+                tags_seen.append(t)
+        for obj in self.objects:
+            for t in obj.tags:
+                if t not in tags_seen:
+                    tags_seen.append(t)
+        self.available_tags = tags_seen
         
         # enemies.yaml
         e_data = self._load_yaml(world_dir / "enemies.yaml")

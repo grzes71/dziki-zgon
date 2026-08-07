@@ -67,12 +67,6 @@ objects:
 - object: TREE_2
   x: 3
   y: 1
-- object: TREE_SMALL
-  x: 12
-  y: 1
-- object: ROCK_1
-  x: 0
-  y: 4
 - object: ROCK_2
   x: 33
   y: 11
@@ -108,9 +102,6 @@ objects:
   x: 5
   y: 7
 - object: BUSH
-  x: 1
-  y: 2
-- object: BUSH
   x: 19
   y: 11
 - object: BUSH
@@ -119,10 +110,6 @@ objects:
 - object: BUSH
   x: 25
   y: 11
-- object: REED
-  x: 8
-  y: 9
-  repeat-x: 2
 - object: WATER_ANIM
   x: 18
   y: 7
@@ -140,21 +127,9 @@ objects:
 - object: WAVES_LEFT
   x: 16
   y: 7
-- object: CROSS_2
-  x: 9
-  y: 6
-- object: CROSS_2
-  x: 7
-  y: 5
-- object: CROSS_2
-  x: 6
-  y: 6
 - object: GROUND_BROWN_UP
   x: 0
   y: 6
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 3
 - object: SIGNPOINT_RIGHT
   x: 24
   y: 2
@@ -174,11 +149,84 @@ objects:
   y: 5
   repeat-y: 2
 - object: TREE_2
-  x: 13
-  y: 5
-- object: TREE_2
   x: 7
   y: 2
+- object: SWAMP
+  x: 9
+  y: 6
+- object: SWAMP
+  x: 6
+  y: 5
+- object: SWAMP
+  x: 9
+  y: 4
+- object: SWAMP
+  x: 8
+  y: 5
+- object: SWAMP
+  x: 7
+  y: 6
+- object: SWAMP
+  x: 8
+  y: 7
+- object: REED
+  x: 8
+  y: 6
+- object: REED
+  x: 7
+  y: 5
+- object: REED
+  x: 9
+  y: 5
+- object: REED
+  x: 7
+  y: 7
+- object: REED
+  x: 9
+  y: 7
+- object: REED
+  x: 8
+  y: 8
+- object: REED
+  x: 5
+  y: 5
+- object: REED
+  x: 10
+  y: 4
+- object: WATER_DOWN
+  x: 28
+  y: 6
+  repeat-x: 3
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 2
+- object: CROSS_2
+  x: 0
+  y: 3
+- object: CROSS_2
+  x: 1
+  y: 4
+- object: CROSS_2
+  x: 0
+  y: 5
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 4
+- object: BARREL
+  x: 15
+  y: 6
+- object: TREE_2
+  x: 12
+  y: 6
+- object: TREE_2
+  x: 13
+  y: 1
+- object: MUSHROOM
+  x: 10
+  y: 2
+- object: TREE_3
+  x: 35
+  y: 6
 enemies:
 - enemy: kikimora
   x: 25

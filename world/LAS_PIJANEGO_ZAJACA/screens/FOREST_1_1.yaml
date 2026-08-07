@@ -112,10 +112,6 @@ objects:
   x: 31
   y: 6
 - object: REED
-  x: 29
-  y: 7
-  repeat-x: 2
-- object: REED
   x: 27
   y: 7
 - object: CROSS_1
@@ -124,9 +120,6 @@ objects:
 - object: CROSS_1
   x: 1
   y: 9
-- object: CROSS_1
-  x: 0
-  y: 10
 - object: REED
   x: 7
   y: 7
@@ -202,9 +195,6 @@ objects:
   x: 11
   y: 9
 - object: TREE_3
-  x: 28
-  y: 9
-- object: TREE_3
   x: 38
   y: 5
 - object: ROCK_2
@@ -213,9 +203,6 @@ objects:
 - object: ROCK_1
   x: 21
   y: 1
-- object: ROCK_GREEN
-  x: 23
-  y: 9
 - object: CLAW
   x: 13
   y: 3
@@ -308,15 +295,6 @@ objects:
   x: 2
   y: 7
 - object: GROUND_BROWN_DOWN
-  x: 2
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 1
-  y: 11
-- object: GROUND_BROWN_DOWN
   x: 14
   y: 0
   repeat-x: 2
@@ -324,6 +302,18 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 4
   y: 0
+- object: TREE_2
+  x: 0
+  y: 10
+- object: BUSH_2
+  x: 4
+  y: 11
+- object: BUSH_2
+  x: 26
+  y: 11
+- object: STONE_BIG
+  x: 24
+  y: 9
 enemies:
 - enemy: sukkub
   x: 14

@@ -1,8 +1,11 @@
+from typing import List, Optional
 from PySide6.QtWidgets import QListWidget, QListWidgetItem, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox
 from PySide6.QtGui import QPixmap, QImage, QColor
 from PySide6.QtCore import Qt, Signal, QSize
 from world_studio.project_manager import ProjectManager
 from world_studio.charset import Charset
+
+ALL_TAGS_OPTION = "(Wszystkie tagi)"
 
 def render_object_pixmap(obj_def, charset: Charset, colors_dict: dict, zoom=2) -> QPixmap:
     w_tiles = obj_def.size.width
@@ -50,6 +53,10 @@ class ObjectPaletteWidget(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.project: Optional[ProjectManager] = None
+        self.charset: Optional[Charset] = None
+        self.region_id: Optional[str] = None
+
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
 
@@ -66,6 +73,15 @@ class ObjectPaletteWidget(QWidget):
         action_layout.addWidget(self.action_combo)
         layout.addLayout(action_layout)
 
+        tag_layout = QHBoxLayout()
+        tag_layout.addWidget(QLabel("Tag:"))
+        
+        self.tag_combo = QComboBox()
+        self.tag_combo.addItem(ALL_TAGS_OPTION)
+        self.tag_combo.currentTextChanged.connect(self._on_tag_filter_changed)
+        tag_layout.addWidget(self.tag_combo)
+        layout.addLayout(tag_layout)
+
         self.list_widget = QListWidget()
         self.list_widget.setIconSize(QSize(64, 64))
         self.list_widget.setSpacing(4)
@@ -78,28 +94,79 @@ class ObjectPaletteWidget(QWidget):
         pass
 
     def populate(self, project: ProjectManager, charset: Charset, region_id: str = None):
+        self.project = project
+        self.charset = charset
+        self.region_id = region_id
+
+        self.update_tag_combo()
+        self._refresh_object_list()
+
+    def update_tag_combo(self):
+        current_tag = self.tag_combo.currentText()
+        self.tag_combo.blockSignals(True)
+        self.tag_combo.clear()
+        self.tag_combo.addItem(ALL_TAGS_OPTION)
+
+        if self.project and getattr(self.project, 'available_tags', None):
+            for tag in self.project.available_tags:
+                self.tag_combo.addItem(tag)
+
+        idx = self.tag_combo.findText(current_tag)
+        if idx >= 0:
+            self.tag_combo.setCurrentIndex(idx)
+        else:
+            self.tag_combo.setCurrentIndex(0)
+        self.tag_combo.blockSignals(False)
+
+    def _refresh_object_list(self):
         self.list_widget.blockSignals(True)
+        
+        selected_obj_id = None
+        selected_items = self.list_widget.selectedItems()
+        if selected_items:
+            selected_obj_id = selected_items[0].data(Qt.UserRole)
+            
         self.list_widget.clear()
-        self.list_widget.blockSignals(False)
-        if not project:
+
+        if not self.project:
+            self.list_widget.blockSignals(False)
             return
+
+        colors_dict = self.project.get_region_colors(self.region_id) if self.project else {}
+        selected_tag = self.tag_combo.currentText()
+
+        matched_item = None
+        for obj in self.project.objects:
+            if selected_tag != ALL_TAGS_OPTION and selected_tag:
+                if selected_tag not in getattr(obj, 'tags', []):
+                    continue
             
-        colors_dict = project.get_region_colors(region_id) if project else {}
-            
-        for obj in project.objects:
-            pixmap = render_object_pixmap(obj, charset, colors_dict, zoom=3)
+            pixmap = render_object_pixmap(obj, self.charset, colors_dict, zoom=3)
             item = QListWidgetItem(obj.id)
             item.setIcon(pixmap)
             item.setData(Qt.UserRole, obj.id)
             self.list_widget.addItem(item)
+            
+            if selected_obj_id and obj.id == selected_obj_id:
+                matched_item = item
 
+        if matched_item:
+            self.list_widget.setCurrentItem(matched_item)
+            
+        self.list_widget.blockSignals(False)
         self._update_action_state()
+
+    def _on_tag_filter_changed(self, text):
+        self._refresh_object_list()
 
     def _on_action_changed(self, text):
         self._update_action_state()
 
     def _update_action_state(self):
         action = self.action_combo.currentText()
+        is_add_object = (action == self.ACTION_ADD_OBJECT)
+        self.tag_combo.setEnabled(is_add_object)
+
         if action == self.ACTION_ADD_ENEMY:
             self.list_widget.blockSignals(True)
             self.list_widget.clearSelection()
@@ -115,7 +182,7 @@ class ObjectPaletteWidget(QWidget):
             self.list_widget.clearSelection()
             self.list_widget.blockSignals(False)
             self.object_selected.emit("PORTAL_ENTRY")
-        elif action == self.ACTION_ADD_OBJECT:
+        elif is_add_object:
             items = self.list_widget.selectedItems()
             if items:
                 obj_id = items[0].data(Qt.UserRole)
@@ -129,7 +196,7 @@ class ObjectPaletteWidget(QWidget):
             if self.action_combo.currentText() != self.ACTION_ADD_OBJECT:
                 self.action_combo.blockSignals(True)
                 self.action_combo.setCurrentText(self.ACTION_ADD_OBJECT)
+                self.tag_combo.setEnabled(True)
                 self.action_combo.blockSignals(False)
             obj_id = items[0].data(Qt.UserRole)
             self.object_selected.emit(obj_id)
-
