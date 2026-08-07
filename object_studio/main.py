@@ -3,10 +3,10 @@ import sys
 import copy
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QHBoxLayout, 
                               QVBoxLayout, QFormLayout, QLineEdit, QSpinBox, 
-                              QCheckBox, QGroupBox, QMenuBar, QMenu, QFileDialog, QMessageBox, QPushButton, QColorDialog, QScrollArea)
+                              QCheckBox, QGroupBox, QMenuBar, QMenu, QFileDialog, QMessageBox, QPushButton, QColorDialog, QScrollArea, QListWidget, QListWidgetItem, QLabel, QSizePolicy)
 from PySide6.QtGui import QAction, QColor
+from PySide6.QtCore import Qt
 
-from object_studio.models import Project, ObjectDefinition, ObjectSize, ObjectFlags
 from object_studio.models import Project, ObjectDefinition, ObjectSize, ObjectFlags
 from object_studio.charset import Charset
 from object_studio.yaml_io import load_project, save_project, validate_project
@@ -14,6 +14,7 @@ from object_studio.settings import CANVAS_WIDTH_TILES, CANVAS_HEIGHT_TILES, DEFA
 from object_studio.widgets.palette_widget import PaletteWidget
 from object_studio.widgets.canvas_widget import CanvasWidget
 from object_studio.widgets.object_list_widget import ObjectListWidget
+from object_studio.widgets.manage_tags_dialog import ManageTagsDialog
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -65,35 +66,46 @@ class MainWindow(QMainWindow):
 
         # Prawy panel: Właściwości
         right_panel = QGroupBox("Properties")
-        right_layout = QFormLayout(right_panel)
+        right_layout = QVBoxLayout(right_panel)
         
+        form_layout = QFormLayout()
+
         self.edit_id = QLineEdit()
         self.edit_id.textChanged.connect(self._on_prop_changed)
-        right_layout.addRow("ID:", self.edit_id)
+        form_layout.addRow("ID:", self.edit_id)
         
         self.spin_code = QSpinBox()
         self.spin_code.setRange(0, 255)
         self.spin_code.valueChanged.connect(self._on_prop_changed)
-        right_layout.addRow("Code:", self.spin_code)
+        form_layout.addRow("Code:", self.spin_code)
         
         self.chk_blocking = QCheckBox()
         self.chk_blocking.stateChanged.connect(self._on_prop_changed)
-        right_layout.addRow("Blocking:", self.chk_blocking)
+        form_layout.addRow("Blocking:", self.chk_blocking)
         
         self.chk_interactive = QCheckBox()
         self.chk_interactive.stateChanged.connect(self._on_prop_changed)
-        right_layout.addRow("Interactive:", self.chk_interactive)
+        form_layout.addRow("Interactive:", self.chk_interactive)
 
         self.chk_secret = QCheckBox()
         self.chk_secret.stateChanged.connect(self._on_prop_changed)
-        right_layout.addRow("Secret:", self.chk_secret)
+        form_layout.addRow("Secret:", self.chk_secret)
 
         self.lbl_size = QLineEdit()
         self.lbl_size.setReadOnly(True)
-        right_layout.addRow("Calculated Size:", self.lbl_size)
+        form_layout.addRow("Calculated Size:", self.lbl_size)
+        
+        right_layout.addLayout(form_layout)
+
+        right_layout.addWidget(QLabel("Tags:"))
+        self.tags_list_widget = QListWidget()
+        self.tags_list_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.tags_list_widget.itemChanged.connect(self._on_tags_item_changed)
+        right_layout.addWidget(self.tags_list_widget, 1)
         
         main_layout.addWidget(right_panel, 1)
         self._enable_props(False)
+
 
     def _setup_menu(self):
         menubar = self.menuBar()
@@ -112,6 +124,11 @@ class MainWindow(QMainWindow):
         act_load_char = QAction("Load game_font.fnt...", self)
         act_load_char.triggered.connect(self.action_load_charset)
         file_menu.addAction(act_load_char)
+
+        tools_menu = menubar.addMenu("Tools")
+        act_manage_tags = QAction("Zarządzaj tagami...", self)
+        act_manage_tags.triggered.connect(self.action_manage_tags)
+        tools_menu.addAction(act_manage_tags)
         
         color_menu = menubar.addMenu("Colors")
         
@@ -151,6 +168,11 @@ class MainWindow(QMainWindow):
         self.chk_blocking.setEnabled(enabled)
         self.chk_interactive.setEnabled(enabled)
         self.chk_secret.setEnabled(enabled)
+        self.tags_list_widget.setEnabled(enabled)
+        if not enabled:
+            self.tags_list_widget.blockSignals(True)
+            self.tags_list_widget.clear()
+            self.tags_list_widget.blockSignals(False)
 
     def action_load_charset(self):
         path, _ = QFileDialog.getOpenFileName(self, "Load Charset", "", "Atari Font (*.fnt);;All Files (*)")
@@ -223,6 +245,46 @@ class MainWindow(QMainWindow):
             self.current_object = None
             self.canvas_widget.clear()
             self._enable_props(False)
+            self._on_tags_updated()
+
+    def action_manage_tags(self):
+        if not self.project:
+            QMessageBox.warning(self, "Brak projektu", "Najpierw otwórz plik z obiektami (objects.yaml).")
+            return
+        dialog = ManageTagsDialog(self.project, self)
+        dialog.tags_changed.connect(self._on_tags_updated)
+        dialog.exec()
+        self._on_tags_updated()
+
+    def _refresh_tags_properties(self):
+        self.tags_list_widget.blockSignals(True)
+        self.tags_list_widget.clear()
+        if self.current_object and self.project:
+            for tag in self.project.available_tags:
+                item = QListWidgetItem(tag)
+                item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+                if tag in self.current_object.tags:
+                    item.setCheckState(Qt.Checked)
+                else:
+                    item.setCheckState(Qt.Unchecked)
+                self.tags_list_widget.addItem(item)
+        self.tags_list_widget.blockSignals(False)
+
+    def _on_tags_item_changed(self, item):
+        if not self.current_object:
+            return
+        selected_tags = []
+        for i in range(self.tags_list_widget.count()):
+            it = self.tags_list_widget.item(i)
+            if it.checkState() == Qt.Checked:
+                selected_tags.append(it.text())
+        self.current_object.tags = selected_tags
+        self.list_widget.refresh_list(select_obj=self.current_object)
+
+    def _on_tags_updated(self):
+        self.list_widget.update_tag_filter_options()
+        self._refresh_tags_properties()
+        self.list_widget.refresh_list(select_obj=self.current_object)
 
     def action_save_project(self):
         if not self.project_path:
@@ -270,6 +332,8 @@ class MainWindow(QMainWindow):
         self.chk_blocking.blockSignals(False)
         self.chk_interactive.blockSignals(False)
         self.chk_secret.blockSignals(False)
+
+        self._refresh_tags_properties()
 
         # Load tiles into canvas (block signal)
         self.canvas_widget.blockSignals(True)

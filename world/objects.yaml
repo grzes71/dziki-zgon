@@ -1,3 +1,4 @@
+tags: [woda, drzewo, dom, skała, animacja]
 objects:
 - object: HOUSE_SMALL
   id: HOUSE_SMALL
@@ -21,6 +22,7 @@ objects:
     interactive: false
     secret: false
   tiles: [53, 54, 85, 86]
+  tags: [drzewo]
 - object: WELL
   id: WELL
   code: 3
@@ -66,6 +68,7 @@ objects:
     interactive: false
     secret: false
   tiles: [51, 52, 83, 84]
+  tags: [drzewo]
 - object: BRIDGE
   id: BRIDGE
   code: 7
@@ -133,6 +136,7 @@ objects:
     interactive: false
     secret: false
   tiles: [10, 12]
+  tags: [skała]
 - object: ROCK_2
   id: ROCK_2
   code: 13
@@ -265,6 +269,7 @@ objects:
     interactive: false
     secret: false
   tiles: [202]
+  tags: [woda]
 - object: WAVES
   id: WAVES
   code: 26
@@ -276,6 +281,7 @@ objects:
     interactive: false
     secret: false
   tiles: [133]
+  tags: [woda, animacja]
 - object: TREE_3
   id: TREE_3
   code: 27
@@ -287,6 +293,7 @@ objects:
     interactive: false
     secret: false
   tiles: [7, 8, 39, 40]
+  tags: [drzewo]
 - object: SIGNPOINT_LEFT
   id: SIGNPOINT_LEFT
   code: 28
@@ -309,6 +316,7 @@ objects:
     interactive: false
     secret: false
   tiles: [230]
+  tags: [woda]
 - object: WAVES_DOWN
   id: WAVES_DOWN
   code: 30
@@ -320,6 +328,7 @@ objects:
     interactive: false
     secret: false
   tiles: [229]
+  tags: [woda]
 - object: PYRAMID_SMALL
   id: PYRAMID_SMALL
   code: 31
@@ -365,6 +374,7 @@ objects:
     interactive: false
     secret: false
   tiles: [79, 114, 110, 111]
+  tags: [drzewo]
 - object: STONE
   id: STONE
   code: 35
@@ -499,7 +509,7 @@ objects:
     blocking: true
     interactive: true
     secret: false
-  tiles: [0, 46, 47, 0, 0, 103, 106, 0, 0, 185, 56, 0, 0, 61, 189, 0, 16, 33, 33,
+  tiles: [0, 171, 172, 0, 0, 103, 106, 0, 0, 185, 56, 0, 0, 61, 189, 0, 16, 33, 33,
     18, 33, 163, 164, 33, 33, 27, 28, 33]
 - object: BUSH
   id: BUSH
@@ -512,6 +522,7 @@ objects:
     interactive: false
     secret: false
   tiles: [68]
+  tags: [drzewo]
 - object: MUSHROOM
   id: MUSHROOM
   code: 48
@@ -523,6 +534,7 @@ objects:
     interactive: false
     secret: false
   tiles: [69, 70]
+  tags: [drzewo]
 - object: BUSH_2
   id: BUSH_2
   code: 49
@@ -534,6 +546,7 @@ objects:
     interactive: false
     secret: false
   tiles: [71, 72]
+  tags: [drzewo]
 - object: HOUSE_MEDIUM_GREEN
   id: HOUSE_MEDIUM_GREEN
   code: 50
@@ -802,6 +815,7 @@ objects:
     interactive: false
     secret: false
   tiles: [144, 145, 146, 122, 90, 123]
+  tags: [dom]
 - object: OUTHOUSE
   id: OUTHOUSE
   code: 74
@@ -813,6 +827,7 @@ objects:
     interactive: false
     secret: false
   tiles: [224, 225, 65, 66]
+  tags: [dom]
 - object: OUTHOUSE_2
   id: OUTHOUSE_2
   code: 75
@@ -824,6 +839,7 @@ objects:
     interactive: false
     secret: false
   tiles: [96, 97, 65, 66]
+  tags: [dom]
 - object: OUTHOUSE_3
   id: OUTHOUSE_3
   code: 76
@@ -835,6 +851,7 @@ objects:
     interactive: false
     secret: false
   tiles: [224, 131, 131, 225, 122, 87, 88, 123]
+  tags: [dom]
 - object: CASTLE_MID
   id: CASTLE_MID
   code: 77
@@ -858,6 +875,7 @@ objects:
     interactive: false
     secret: false
   tiles: [224, 131, 225, 122, 90, 123]
+  tags: [dom]
 - object: HOUSE_BIGGER_2
   id: HOUSE_BIGGER_2
   code: 79
@@ -869,6 +887,7 @@ objects:
     interactive: false
     secret: false
   tiles: [96, 3, 2, 3, 97, 250, 163, 164, 34, 251, 250, 34, 193, 194, 251]
+  tags: [dom]
 - object: CHURCH_SMALL
   id: CHURCH_SMALL
   code: 80
@@ -879,7 +898,7 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles: [0, 46, 47, 0, 0, 231, 234, 0, 0, 57, 56, 0, 16, 61, 61, 18, 33, 87, 88,
+  tiles: [0, 171, 172, 0, 0, 231, 234, 0, 0, 57, 56, 0, 16, 61, 61, 18, 33, 87, 88,
     33]
 - object: SHED
   id: SHED
@@ -892,6 +911,7 @@ objects:
     interactive: false
     secret: false
   tiles: [1, 3, 4, 33, 65, 66]
+  tags: [dom]
 - object: WATER_TR
   id: WATER_TR
   code: 82
@@ -903,6 +923,7 @@ objects:
     interactive: false
     secret: false
   tiles: [148]
+  tags: [woda]
 - object: WATER_TL
   id: WATER_TL
   code: 83
@@ -914,6 +935,7 @@ objects:
     interactive: false
     secret: false
   tiles: [236]
+  tags: [woda]
 - object: WATER_BR
   id: WATER_BR
   code: 84
@@ -925,6 +947,7 @@ objects:
     interactive: false
     secret: false
   tiles: [235]
+  tags: [woda]
 - object: WATER_BL
   id: WATER_BL
   code: 85
@@ -936,6 +959,7 @@ objects:
     interactive: false
     secret: false
   tiles: [237]
+  tags: [woda]
 - object: WATER_INNER_TL
   id: WATER_INNER_TL
   code: 86
@@ -947,6 +971,7 @@ objects:
     interactive: false
     secret: false
   tiles: [246]
+  tags: [woda]
 - object: WATER_INNER_TR
   id: WATER_INNER_TR
   code: 87
@@ -958,6 +983,7 @@ objects:
     interactive: false
     secret: false
   tiles: [248]
+  tags: [woda]
 - object: WATER_INNER_BL
   id: WATER_INNER_BL
   code: 88
@@ -969,6 +995,7 @@ objects:
     interactive: false
     secret: false
   tiles: [247]
+  tags: [woda]
 - object: WATER_INNER_BR
   id: WATER_INNER_BR
   code: 89
@@ -980,6 +1007,7 @@ objects:
     interactive: false
     secret: false
   tiles: [249]
+  tags: [woda]
 - object: FENCE_5
   id: FENCE_5
   code: 90
@@ -1013,6 +1041,7 @@ objects:
     interactive: false
     secret: false
   tiles: [206]
+  tags: [animacja]
 - object: CHAIN_1
   id: CHAIN_1
   code: 93
@@ -1024,6 +1053,7 @@ objects:
     interactive: false
     secret: false
   tiles: [240]
+  tags: [animacja]
 - object: CHAIN_2
   id: CHAIN_2
   code: 94
@@ -1035,6 +1065,7 @@ objects:
     interactive: false
     secret: false
   tiles: [241]
+  tags: [animacja]
 - object: CHAIN_3
   id: CHAIN_3
   code: 96
@@ -1046,6 +1077,7 @@ objects:
     interactive: false
     secret: false
   tiles: [113]
+  tags: [animacja]
 - object: WATERFALL_2
   id: WATERFALL_2
   code: 98
@@ -1058,6 +1090,7 @@ objects:
     secret: false
   tiles: [0, 0, 13, 230, 15, 0, 0, 0, 13, 14, 153, 121, 15, 0, 13, 14, 74, 153, 74,
     121, 15]
+  tags: [woda, skała]
 - object: WAVE_UP
   id: WAVE_UP
   code: 99
@@ -1069,6 +1102,7 @@ objects:
     interactive: false
     secret: false
   tiles: [153]
+  tags: [woda, animacja]
 - object: SWAMP
   id: SWAMP
   code: 100
@@ -1080,6 +1114,7 @@ objects:
     interactive: false
     secret: false
   tiles: [203]
+  tags: [woda, animacja]
 - object: PORT_2
   id: PORT_2
   code: 101
@@ -1138,3 +1173,25 @@ objects:
     interactive: false
     secret: true
   tiles: [201]
+- object: SIGNPOINT_BOTH
+  id: SIGNPOINT_BOTH
+  code: 106
+  size:
+    width: 3
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [165, 169, 170]
+- object: CROSS_3
+  id: CROSS_3
+  code: 107
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [171, 172]

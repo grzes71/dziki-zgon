@@ -35,6 +35,7 @@ class ObjectDefinition(BaseModel):
     size: ObjectSize
     flags: ObjectFlags
     tiles: List[int]
+    tags: List[str] = Field(default_factory=list)
 
 class ObjectInstance(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="ignore")

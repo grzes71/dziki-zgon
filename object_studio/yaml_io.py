@@ -19,10 +19,20 @@ def load_project(path: Path) -> Project:
     with open(path, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f) or {}
         
+    tags_seen = []
+    for t in data.get("tags", []):
+        if t not in tags_seen:
+            tags_seen.append(t)
+
     for obj_data in data.get("objects", []):
         size_data = obj_data.get("size", {})
         flags_data = obj_data.get("flags", {})
+        obj_tags = obj_data.get("tags", [])
         
+        for t in obj_tags:
+            if t not in tags_seen:
+                tags_seen.append(t)
+                
         obj = ObjectDefinition(
             id=obj_data.get("id", ""),
             code=obj_data.get("code", 0),
@@ -35,10 +45,12 @@ def load_project(path: Path) -> Project:
                 interactive=flags_data.get("interactive", False),
                 secret=flags_data.get("secret", False)
             ),
-            tiles=obj_data.get("tiles", [])
+            tiles=obj_data.get("tiles", []),
+            tags=list(obj_tags)
         )
         project.objects.append(obj)
         
+    project.available_tags = tags_seen
     return project
 
 def save_project(path: Path, project: Project) -> bool:
@@ -47,9 +59,8 @@ def save_project(path: Path, project: Project) -> bool:
     
     out_objects = []
     for obj in project.objects:
-        out_objects.append({
-            "object": obj.id,  # world_builder używa 'object' albo 'id' (zgodnie z pydantic aliasem) - tutaj specyfikacja mówi `id` ale zmienimy na id.
-            # Zgodnie z object-studio.md:
+        obj_dict = {
+            "object": obj.id,
             "id": obj.id,
             "code": obj.code,
             "size": {
@@ -62,9 +73,15 @@ def save_project(path: Path, project: Project) -> bool:
                 "secret": obj.flags.secret
             },
             "tiles": FlowList(obj.tiles)
-        })
+        }
+        if obj.tags:
+            obj_dict["tags"] = FlowList(obj.tags)
+        out_objects.append(obj_dict)
         
-    data = {"objects": out_objects}
+    data = {}
+    if project.available_tags:
+        data["tags"] = FlowList(project.available_tags)
+    data["objects"] = out_objects
     
     try:
         with open(path, 'w', encoding='utf-8') as f:

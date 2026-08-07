@@ -6,5 +6,53 @@ exits:
   south: JAR_TOP_2
   east: null
   west: null
-objects: []
+objects:
+- object: PALM_TREE
+  x: 1
+  y: 5
+- object: PALM_TREE
+  x: 17
+  y: 2
+- object: PALM_TREE
+  x: 28
+  y: 6
+- object: PALM_TREE
+  x: 33
+  y: 1
+- object: PALM_TREE
+  x: 8
+  y: 1
+- object: PALM_TREE
+  x: 5
+  y: 10
+- object: PALM_TREE
+  x: 23
+  y: 10
+- object: PALM_TREE
+  x: 38
+  y: 10
+- object: PALM_TREE
+  x: 35
+  y: 10
+- object: PALM_TREE
+  x: 24
+  y: 3
+- object: PALM_TREE
+  x: 19
+  y: 6
+- object: PYRAMID_SMALL
+  x: 35
+  y: 5
+- object: PYRAMID_SMALL
+  x: 30
+  y: 9
+- object: PYRAMID_SMALL
+  x: 28
+  y: 1
+- object: STONE_BIG
+  x: 0
+  y: 11
+- object: STONE_BIG
+  x: 13
+  y: 11
 enemies: []

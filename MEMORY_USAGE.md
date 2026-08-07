@@ -50,23 +50,22 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$5F74` – `$5FFF`** | 140 B | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. |
-| **`$6800` – `$924D`** | 10830 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia, obiekty interaktywne). |
-| **`$924E` – `$929B`** | 78 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story, gameover). |
-| **`$929C` – `$9336`** | 155 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
-| **`$9337` – `$9BFF`** | 2249 B | — | **WOLNY RAM** | Wolna pamięć w bloku dolnego RAM-u przed charsetem Game Over. |
+| **`$6800` – `$9536`** | 11575 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia, obiekty interaktywne). |
+| **`$9537` – `$9584`** | 78 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story, gameover). |
+| **`$9585` – `$961F`** | 155 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
+| **`$9620` – `$99B7`** | 920 B | `GameOverFail_Data` | Dane (Screen) | Mapa ekranu Game Over Porażka (40×23 znaków). |
+| **`$9A26` – `$9BFF`** | 474 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
+| **`$9B4E` – `$9BFF`** | 178 B | — | **WOLNY RAM** | Wolna pamięć przed charsetem Game Over. |
 | **`$9C00` – `$9FFF`** | 1024 B | `GO_CHARSET` | Dane (Charset) | Zestaw znaków Game Over / Travel (1 KB). |
-| **`$9340` – `$96D7`** | 920 B | `GameOverFail_Data` | Dane (Screen) | Mapa ekranu Game Over Porażka (40×23 znaków). |
-| **`$96E0` – `$9A77`** | 920 B | `GameOverSuccess_Data` | Dane (Screen) | Mapa ekranu Game Over Sukces (40×23 znaków). |
-| **`$BBAC` – `$BF43`** | 920 B | `TravelScreen_Data` | Dane (Screen) | Mapa ekranu Podróży (40×23 znaków). |
-| **`$9ED8` – `$9FFF`** | 296 B | — | **WOLNY RAM** | Wolna pamięć przed PMG. |
 | **`$A000` – `$A7FF`** | 2048 B | `PMG` | Pamięć PMG | Pamięć Player/Missile Graphics (M0-M3, P0-P3). |
-| **`$A800` – `$A9DF`** | 480 B | — | **WOLNY RAM** | Wolny bufor przed zmiennymi RMT. |
+| **`$A800` – `$A98E`** | 399 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
+| **`$A98F` – `$A9DF`** | 81 B | — | **WOLNY RAM** | Wolna pamięć przed zmiennymi RMT. |
 | **`$A9E0` – `$ACFF`** | 800 B | `rmtplayr_vars` | Dane (Odtwarzacz) | Zmienne i tabele odtwarzacza RMT. |
 | **`$AD00` – `$B241`** | 1346 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT. |
 | **`$B300` – `$B610`** | 785 B | `title_music.asm` | Dane (Muzyka) | Moduł muzyczny RMT. |
-| **`$B611` – `$B79F`** | 399 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
-| **`$B80E` – `$B9A3`** | 406 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
-| **`$B9A4` – `$BBAB`** | 520 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
+| **`$B6C2` – `$B7E1`** | 288 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
+| **`$B7E2` – `$BB79`** | 920 B | `GameOverSuccess_Data` | Dane (Screen) | Mapa ekranu Game Over Sukces (40×23 znaków). |
+| **`$BB7A` – `$BF11`** | 920 B | `TravelScreen_Data` | Dane (Screen) | Mapa ekranu Podróży (40×23 znaków). |
 
 ---
 

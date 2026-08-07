@@ -19,7 +19,9 @@ class ObjectDefinition:
     size: ObjectSize = field(default_factory=ObjectSize)
     flags: ObjectFlags = field(default_factory=ObjectFlags)
     tiles: List[int] = field(default_factory=list)
+    tags: List[str] = field(default_factory=list)
 
 @dataclass
 class Project:
     objects: List[ObjectDefinition] = field(default_factory=list)
+    available_tags: List[str] = field(default_factory=list)

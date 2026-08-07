@@ -329,40 +329,41 @@ TitleFooterROM = text_title
 SpriteData = DzikizgonData
 
 
-; --- Dane ekranu GameOver ($9340) ---
-    org $9340
+; --- Dane ekranu GameOver Porażka ($9620) ---
+    org $9620
 GameOverFail_Data
     ins "gen/screens/game_over-fail_screen.bin"
 
-    org $96E0
-GameOverSuccess_Data
-    ins "gen/screens/game_over-success_screen.bin"
+; --- Logika ekranu podróży ($99B8) ---
+    org $99B8
+    icl "engine/travel_screen.asm"
 
 ; --- Wspólny Charset dla GameOver & Travel ($9C00, 1 KB aligned -> CHBASE=$9C) ---
     org $9C00
 GO_CHARSET
     ins "gen/screens/charset.bin"
 
-
-; --- RMT Tracker Player & Module ($A9E0 - $B610) ---
-    org $A9E0
-    icl "music/title_audio_player.asm"
-
-; --- Aktorzy / Przeciwnicy (pod ROM BASIC od $B611) ---
-    org $B611
+; --- Aktorzy / Przeciwnicy ($A800 - wolna pamięć przed RMT vars) ---
+    org $A800
     icl "gen/gerwalt.sprite.asm"
     icl "gen/bazyliszek.sprite.asm"
     icl "gen/kikimora.sprite.asm"
     icl "gen/strzyga.sprite.asm"
     icl "gen/sukkub.sprite.asm"
 
-; --- Procedury scen (pod ROM BASIC na $B7A0) ---
-    org $B7A0
-    icl "engine/travel_screen.asm"
+; --- RMT Tracker Player & Module ($A9E0 - $B610) ---
+    org $A9E0
+    icl "music/title_audio_player.asm"
+
+; --- Procedura GameOver (pod ROM BASIC od $B611) ---
+    org $B611
     icl "scenes/gameover/gameover.asm"
 
-; --- Dane ekranu Travel ($BBAC, pod ROM BASIC) ---
-    org $BBAC
+; --- Dane ekranu GameOver Sukces (pod ROM BASIC) ---
+GameOverSuccess_Data
+    ins "gen/screens/game_over-success_screen.bin"
+
+; --- Dane ekranu Travel (pod ROM BASIC) ---
 TravelScreen_Data
     ins "gen/screens/travel_screen.bin"
 
