@@ -50,9 +50,9 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$5F74` – `$5FFF`** | 140 B | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. |
-| **`$6800` – `$9536`** | 11575 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia, obiekty interaktywne). |
-| **`$9537` – `$9584`** | 78 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story, gameover). |
-| **`$9585` – `$961F`** | 155 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
+| **`$6800` – `$9F84`** | 14213 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia, obiekty interaktywne). |
+| **`$9F85` – `$9FD2`** | 78 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story, gameover). |
+| **`$9FD3` – `$A06D`** | 155 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
 | **`$9620` – `$99B7`** | 920 B | `GameOverFail_Data` | Dane (Screen) | Mapa ekranu Game Over Porażka (40×23 znaków). |
 | **`$9A26` – `$9BFF`** | 474 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
 | **`$9B4E` – `$9BFF`** | 178 B | — | **WOLNY RAM** | Wolna pamięć przed charsetem Game Over. |

@@ -2,7 +2,197 @@
 import sys
 import argparse
 from pathlib import Path
+from collections import Counter
 import yaml
+
+def print_world_stats(base_dir, objects_data, target_region=None):
+    enemies_meta = {}
+    enemies_file = base_dir / "enemies.yaml"
+    if enemies_file.exists():
+        with open(enemies_file, 'r', encoding='utf-8') as ef:
+            edata = yaml.safe_load(ef) or {}
+            for e in edata.get("enemies", []):
+                if isinstance(e, dict) and "id" in e:
+                    enemies_meta[e["id"]] = e.get("name", e["id"])
+
+    objects_dict = {}
+    defined_tags = list(objects_data.get("tags", [])) if objects_data else []
+    if objects_data and "objects" in objects_data:
+        for obj in objects_data["objects"]:
+            obj_id = obj.get("id") or obj.get("object")
+            if obj_id:
+                objects_dict[obj_id] = obj
+                for t in obj.get("tags", []):
+                    if t not in defined_tags:
+                        defined_tags.append(t)
+
+    region_stats = {}
+    
+    for item in sorted(base_dir.iterdir()):
+        if item.is_dir() and (item / "region.yaml").exists():
+            region_id = item.name
+            if target_region and region_id.lower() != target_region.lower():
+                continue
+                
+            with open(item / "region.yaml", 'r', encoding='utf-8') as rf:
+                reg_data = yaml.safe_load(rf) or {}
+                
+            portal_entries = reg_data.get("portal_entries", {})
+            portal_entries_count = len(portal_entries) if isinstance(portal_entries, dict) else 0
+            
+            enemies_counter = Counter()
+            total_objects = 0
+            interactive_count = 0
+            kwatery_count = 0
+            portals_count = 0
+            secrets_count = 0
+            tags_counter = Counter()
+            
+            screens_dir = item / "screens"
+            if screens_dir.exists() and screens_dir.is_dir():
+                for sf in sorted(screens_dir.glob("*.yaml")):
+                    with open(sf, 'r', encoding='utf-8') as scf:
+                        sd = yaml.safe_load(scf) or {}
+                        
+                    for enemy_inst in sd.get("enemies", []):
+                        if isinstance(enemy_inst, dict):
+                            eid = enemy_inst.get("enemy")
+                            if eid:
+                                enemies_counter[eid] += 1
+                                
+                    for inst in sd.get("objects", []):
+                        if not isinstance(inst, dict):
+                            continue
+                        oid = inst.get("object")
+                        if not oid:
+                            continue
+                        rx = int(inst.get("repeat-x", 1))
+                        ry = int(inst.get("repeat-y", 1))
+                        cnt = rx * ry
+                        
+                        total_objects += cnt
+                        
+                        odef = objects_dict.get(oid, {})
+                        oflags = odef.get("flags", {})
+                        otags = odef.get("tags", [])
+                        itype = inst.get("type")
+                        
+                        is_interactive = (
+                            bool(oflags.get("interactive"))
+                            or (itype in ["interactive", "kwatera", "portal"])
+                            or ("interakcja" in otags)
+                            or (inst.get("target_region") is not None)
+                        )
+                        is_kwatera = (itype == "kwatera") or ("kwatera" in otags)
+                        is_portal = (itype == "portal") or ("portal" in otags) or (inst.get("target_region") is not None)
+                        is_secret = (
+                            bool(oflags.get("secret"))
+                            or ("sekret" in otags)
+                            or (itype == "secret")
+                            or (inst.get("secret") is True)
+                        )
+                        
+                        if is_interactive:
+                            interactive_count += cnt
+                        if is_kwatera:
+                            kwatery_count += cnt
+                        if is_portal:
+                            portals_count += cnt
+                        if is_secret:
+                            secrets_count += cnt
+                            
+                        for t in otags:
+                            tags_counter[t] += cnt
+                            
+            region_stats[region_id] = {
+                "portal_entries": portal_entries_count,
+                "enemies": enemies_counter,
+                "total_enemies": sum(enemies_counter.values()),
+                "total_objects": total_objects,
+                "interactive": interactive_count,
+                "kwatery": kwatery_count,
+                "portals": portals_count,
+                "secrets": secrets_count,
+                "tags": tags_counter
+            }
+
+    global_enemies = Counter()
+    global_portal_entries = 0
+    global_secrets = 0
+    global_total_objects = 0
+    global_interactive = 0
+    global_kwatery = 0
+    global_portals = 0
+    global_tags = Counter()
+
+    for rdata in region_stats.values():
+        global_enemies.update(rdata["enemies"])
+        global_portal_entries += rdata["portal_entries"]
+        global_secrets += rdata["secrets"]
+        global_total_objects += rdata["total_objects"]
+        global_interactive += rdata["interactive"]
+        global_kwatery += rdata["kwatery"]
+        global_portals += rdata["portals"]
+        global_tags.update(rdata["tags"])
+
+    target_str = f" [region: {target_region}]" if target_region else ""
+    print(f"\n=== STATYSTYKI ŚWIATA GRY (OGÓŁEM){target_str} ===")
+    total_e_count = sum(global_enemies.values())
+    print(f"Ilość przeciwników (ogółem: {total_e_count}):")
+    if global_enemies:
+        for eid, cnt in sorted(global_enemies.items(), key=lambda x: (-x[1], x[0])):
+            name_str = f" ({enemies_meta[eid]})" if eid in enemies_meta and enemies_meta[eid] != eid else ""
+            print(f"  - {eid}{name_str}: {cnt}")
+    else:
+        print("  - (brak)")
+        
+    print(f"Ilość portal entry: {global_portal_entries}")
+    print(f"Ilość secret'ów: {global_secrets}")
+    print(f"Ilość obiektów (ogółem: {global_total_objects}):")
+    print(f"  - Interaktywne: {global_interactive}")
+    print(f"  - Kwatery: {global_kwatery}")
+    print(f"  - Portale: {global_portals}")
+    
+    print("Ilość obiektów dla każdego tagu:")
+    if global_tags:
+        for t in defined_tags:
+            print(f"  - {t}: {global_tags.get(t, 0)}")
+        extra_tags = [t for t in global_tags if t not in defined_tags]
+        for t in sorted(extra_tags):
+            print(f"  - {t}: {global_tags[t]}")
+    else:
+        print("  - (brak)")
+
+    print(f"\n=== STATYSTYKI W ROZBICIU NA POSZCZEGÓLNE REGIONY{target_str} ===")
+    for rid, rdata in region_stats.items():
+        print(f"\n--- Region: {rid} ---")
+        renemies = rdata["enemies"]
+        print(f"Ilość przeciwników (ogółem: {rdata['total_enemies']}):")
+        if renemies:
+            for eid, cnt in sorted(renemies.items(), key=lambda x: (-x[1], x[0])):
+                name_str = f" ({enemies_meta[eid]})" if eid in enemies_meta and enemies_meta[eid] != eid else ""
+                print(f"  - {eid}{name_str}: {cnt}")
+        else:
+            print("  - (brak)")
+            
+        print(f"Ilość portal entry: {rdata['portal_entries']}")
+        print(f"Ilość secret'ów: {rdata['secrets']}")
+        print(f"Ilość obiektów (ogółem: {rdata['total_objects']}):")
+        print(f"  - Interaktywne: {rdata['interactive']}")
+        print(f"  - Kwatery: {rdata['kwatery']}")
+        print(f"  - Portale: {rdata['portals']}")
+        
+        print("Ilość obiektów dla każdego tagu:")
+        rtags = rdata["tags"]
+        if rtags:
+            for t in defined_tags:
+                print(f"  - {t}: {rtags.get(t, 0)}")
+            extra_tags = [t for t in rtags if t not in defined_tags]
+            for t in sorted(extra_tags):
+                print(f"  - {t}: {rtags[t]}")
+        else:
+            print("  - (brak)")
+
 
 def main():
     if hasattr(sys.stdout, 'reconfigure'):
@@ -28,7 +218,13 @@ def main():
         action="store_true",
         help="Report unused charset codes (0-127) not present in objects"
     )
+    parser.add_argument(
+        "--stats", "-s",
+        action="store_true",
+        help="Report game world statistics (enemies, portal entries, secrets, object categories, tags)"
+    )
     args = parser.parse_args()
+
         
     objects_file = base_dir / "objects.yaml"
     if not objects_file.exists():
@@ -165,6 +361,10 @@ def main():
         else:
             print("  (Brak - wszystkie kody 0-127 są użyte na planszach)")
 
+    if args.stats:
+        print_world_stats(base_dir, objects_data, target_region)
+
 if __name__ == '__main__':
+
     main()
 

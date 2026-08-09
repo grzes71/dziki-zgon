@@ -1266,3 +1266,39 @@ objects:
     secret: false
   tiles: [171, 172]
   tags: [infrastruktura]
+- object: RIVER_HORIZONTAL
+  id: RIVER_HORIZONTAL
+  code: 108
+  size:
+    width: 1
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [230, 243, 229]
+  tags: [woda]
+- object: RIVER_VERTICAL
+  id: RIVER_VERTICAL
+  code: 109
+  size:
+    width: 3
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [208, 153, 210]
+  tags: [woda]
+- object: SAND
+  id: SAND
+  code: 110
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [76]
+  tags: [tło]

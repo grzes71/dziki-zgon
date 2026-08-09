@@ -26,25 +26,13 @@ objects:
   x: 21
   y: 8
 - object: PYRAMID_SMALL
-  x: 6
-  y: 4
-- object: PYRAMID_SMALL
-  x: 3
-  y: 9
-- object: PYRAMID_SMALL
   x: 15
   y: 10
 - object: PYRAMID_SMALL
   x: 14
   y: 6
 - object: BUSH
-  x: 23
-  y: 5
-- object: BUSH
   x: 32
-  y: 6
-- object: BUSH
-  x: 6
   y: 6
 - object: WAVES_LEFT
   x: 22
@@ -114,23 +102,8 @@ objects:
   y: 2
   repeat-x: 2
 - object: SWAMP
-  x: 17
-  y: 5
-- object: SWAMP
-  x: 19
-  y: 5
-- object: SWAMP
-  x: 18
-  y: 6
-- object: SWAMP
-  x: 20
-  y: 6
-- object: SWAMP
   x: 20
   y: 4
-- object: SWAMP
-  x: 21
-  y: 5
 - object: SWAMP
   x: 33
   y: 3
@@ -153,11 +126,186 @@ objects:
 - object: SWAMP
   x: 30
   y: 10
+  repeat-x: 2
+- object: PALM_TREE
+  x: 1
+  y: 5
+- object: REED
+  x: 25
+  y: 7
+- object: REED
+  x: 25
+  y: 9
+- object: REED
+  x: 24
+  y: 8
+- object: REED
+  x: 24
+  y: 6
+- object: SWAMP
+  x: 1
+  y: 7
+  repeat-x: 2
+- object: SWAMP
+  x: 0
+  y: 6
+- object: SWAMP
+  x: 3
+  y: 6
+- object: SWAMP
+  x: 3
+  y: 2
+- object: SWAMP
+  x: 6
+  y: 2
+- object: SWAMP
+  x: 4
+  y: 3
+  repeat-x: 2
+- object: SWAMP
+  x: 17
+  y: 4
+- object: SWAMP
+  x: 18
+  y: 5
+  repeat-x: 2
+- object: SWAMP
+  x: 10
+  y: 9
+  repeat-x: 2
+- object: SWAMP
+  x: 12
+  y: 8
+- object: SWAMP
+  x: 9
+  y: 8
+- object: SWAMP
+  x: 29
+  y: 9
 - object: SWAMP
   x: 32
   y: 9
-  repeat-y: 2
-- object: SWAMP
-  x: 31
+- object: ROCK_1
+  x: 24
+  y: 5
+- object: SAND
+  x: 0
   y: 11
+  repeat-x: 7
+- object: SAND
+  x: 0
+  y: 10
+  repeat-x: 5
+- object: SAND
+  x: 0
+  y: 9
+  repeat-x: 4
+- object: SAND
+  x: 0
+  y: 8
+- object: SAND
+  x: 21
+  y: 2
+- object: SAND
+  x: 19
+  y: 1
+  repeat-x: 3
+- object: SAND
+  x: 17
+  y: 1
+- object: SAND
+  x: 14
+  y: 0
+  repeat-x: 8
+- object: SAND
+  x: 25
+  y: 1
+  repeat-x: 3
+- object: SAND
+  x: 25
+  y: 0
+  repeat-x: 8
+- object: SAND
+  x: 0
+  y: 0
+  repeat-x: 4
+- object: SAND
+  x: 0
+  y: 1
+  repeat-x: 3
+- object: SAND
+  x: 35
+  y: 10
+  repeat-x: 5
+- object: SAND
+  x: 36
+  y: 9
+  repeat-x: 4
+- object: SAND
+  x: 37
+  y: 8
+  repeat-x: 3
+- object: SAND
+  x: 38
+  y: 7
+  repeat-x: 2
+- object: SAND
+  x: 39
+  y: 6
+- object: SAND
+  x: 23
+  y: 10
+  repeat-x: 3
+- object: SAND
+  x: 20
+  y: 11
+  repeat-x: 6
+- object: SAND
+  x: 7
+  y: 0
+  repeat-x: 5
+- object: SAND
+  x: 8
+  y: 1
+- object: SAND
+  x: 10
+  y: 1
+- object: SAND
+  x: 7
+  y: 6
+- object: SAND
+  x: 7
+  y: 4
+- object: SAND
+  x: 6
+  y: 5
+  repeat-x: 3
+- object: SAND
+  x: 0
+  y: 3
+- object: SAND
+  x: 38
+  y: 0
+  repeat-x: 2
+- object: SAND
+  x: 39
+  y: 1
+- object: SAND
+  x: 16
+  y: 8
+  repeat-x: 3
+- object: SAND
+  x: 17
+  y: 7
+- object: SAND
+  x: 17
+  y: 9
+- object: SAND
+  x: 32
+  y: 11
+  repeat-x: 8
+- object: SAND
+  x: 0
+  y: 2
+  repeat-x: 2
 enemies: []

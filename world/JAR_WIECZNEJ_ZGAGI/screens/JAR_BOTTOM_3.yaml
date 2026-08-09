@@ -11,12 +11,6 @@ objects:
   x: 1
   y: 5
 - object: PALM_TREE
-  x: 17
-  y: 2
-- object: PALM_TREE
-  x: 28
-  y: 6
-- object: PALM_TREE
   x: 33
   y: 1
 - object: PALM_TREE
@@ -26,33 +20,180 @@ objects:
   x: 5
   y: 10
 - object: PALM_TREE
-  x: 23
-  y: 10
-- object: PALM_TREE
   x: 38
   y: 10
 - object: PALM_TREE
   x: 35
   y: 10
 - object: PALM_TREE
-  x: 24
-  y: 3
-- object: PALM_TREE
   x: 19
   y: 6
 - object: PYRAMID_SMALL
   x: 35
   y: 5
-- object: PYRAMID_SMALL
-  x: 30
-  y: 9
-- object: PYRAMID_SMALL
-  x: 28
-  y: 1
 - object: STONE_BIG
   x: 0
   y: 11
 - object: STONE_BIG
   x: 13
   y: 11
+- object: RIVER_VERTICAL
+  x: 26
+  y: 0
+  repeat-y: 8
+- object: SWAMP
+  x: 18
+  y: 7
+- object: SWAMP
+  x: 19
+  y: 8
+  repeat-x: 2
+- object: SWAMP
+  x: 21
+  y: 7
+- object: SWAMP
+  x: 32
+  y: 2
+- object: SWAMP
+  x: 35
+  y: 2
+- object: SWAMP
+  x: 33
+  y: 3
+  repeat-x: 2
+- object: SWAMP
+  x: 7
+  y: 2
+- object: SWAMP
+  x: 10
+  y: 2
+- object: SWAMP
+  x: 8
+  y: 3
+  repeat-x: 2
+- object: SWAMP
+  x: 3
+  y: 6
+- object: SWAMP
+  x: 0
+  y: 6
+- object: SWAMP
+  x: 1
+  y: 7
+  repeat-x: 2
+- object: SWAMP
+  x: 34
+  y: 11
+- object: SWAMP
+  x: 37
+  y: 11
+- object: SWAMP
+  x: 7
+  y: 11
+- object: BARREL
+  x: 31
+  y: 11
+- object: REED
+  x: 18
+  y: 4
+- object: REED
+  x: 18
+  y: 2
+- object: REED
+  x: 18
+  y: 0
+- object: REED
+  x: 29
+  y: 1
+- object: STONE
+  x: 8
+  y: 6
+- object: ROCK_2
+  x: 0
+  y: 2
+- object: ROCK_2
+  x: 36
+  y: 7
+- object: SAND
+  x: 0
+  y: 0
+  repeat-x: 7
+- object: SAND
+  x: 0
+  y: 8
+  repeat-x: 4
+- object: SAND
+  x: 0
+  y: 9
+  repeat-x: 2
+- object: SAND
+  x: 0
+  y: 10
+- object: SAND
+  x: 36
+  y: 0
+  repeat-x: 4
+- object: SAND
+  x: 38
+  y: 1
+  repeat-x: 2
+- object: SAND
+  x: 39
+  y: 4
+- object: SAND
+  x: 38
+  y: 3
+  repeat-x: 2
+- object: SAND
+  x: 37
+  y: 2
+  repeat-x: 3
+- object: SAND
+  x: 13
+  y: 0
+  repeat-x: 5
+- object: SAND
+  x: 14
+  y: 1
+  repeat-x: 3
+- object: SAND
+  x: 15
+  y: 2
+- object: SAND
+  x: 4
+  y: 2
+- object: SAND
+  x: 4
+  y: 6
+  repeat-x: 2
+- object: SAND
+  x: 3
+  y: 7
+  repeat-x: 3
+- object: SAND
+  x: 32
+  y: 8
+  repeat-x: 2
+- object: SAND
+  x: 32
+  y: 9
+- object: SAND
+  x: 33
+  y: 7
+  repeat-x: 2
+- object: SAND
+  x: 5
+  y: 5
+  repeat-x: 2
+- object: SAND
+  x: 4
+  y: 1
+  repeat-x: 2
+- object: RIVER_VERTICAL
+  x: 26
+  y: 9
+  repeat-y: 3
+- object: BRIDGE
+  x: 25
+  y: 8
 enemies: []

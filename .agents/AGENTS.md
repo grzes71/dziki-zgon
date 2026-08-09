@@ -120,6 +120,8 @@ The project includes modular skills in `.agents/skills/`. Agents MUST consult th
 
 | Skill | Path | Description & Trigger Criteria |
 |---|---|---|
+| `atari-charset-trainer` | `.agents/skills/atari-charset-trainer/SKILL.md` | Generator for optimal ANTIC 4/5 & ANTIC 2 charsets, VRAM maps, and MADS assets from PNGs. |
+| `atari-image-converter` | `.agents/skills/atari-image-converter/SKILL.md` | Converter pipeline for modern images to ANTIC Mode E graphics with dithering and palette selection. |
 | `atari8bit` | `.agents/skills/atari8bit/SKILL.md` | Atari 8-bit XL/XE hardware architecture (ANTIC, GTIA, POKEY, display lists, PMG). |
 | `mads` | `.agents/skills/mads/SKILL.md` | MADS assembler directives, syntax rules, pseudo-ops, macros, and memory banks. |
 
