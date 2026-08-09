@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget, QMenu
-from PySide6.QtGui import QPainter, QPen, QColor, QMouseEvent
-from PySide6.QtCore import Qt, Signal, QRect
+from PySide6.QtGui import QPainter, QPen, QColor, QMouseEvent, QPolygonF
+from PySide6.QtCore import Qt, Signal, QRect, QPointF
 from world_studio.project_manager import ProjectManager
 from world_studio.charset import Charset
 from world_studio.widgets.render_utils import render_screen
@@ -91,12 +91,87 @@ class LiveRegionViewWidget(QWidget):
                     
                     painter.setPen(Qt.white)
                     painter.drawText(px, py - 4, screen_id)
+                    
+                    # Draw red exit arrows in bottom-right corner of thumbnail
+                    self._draw_exit_arrows(painter, px, py, sw, sh, getattr(screen_def, 'exits', None))
                 else:
                     if is_hovered:
                         painter.setPen(QPen(Qt.yellow, 2, Qt.DashLine))
                     else:
                         painter.setPen(QPen(QColor(50, 50, 50), 1, Qt.DashLine))
                     painter.drawRect(px, py, sw, sh)
+
+    def _draw_exit_arrows(self, painter: QPainter, px: int, py: int, sw: int, sh: int, exits):
+        if not exits:
+            return
+            
+        has_north = bool(exits.north and exits.north != "null")
+        has_south = bool(exits.south and exits.south != "null")
+        has_east = bool(exits.east and exits.east != "null")
+        has_west = bool(exits.west and exits.west != "null")
+        
+        if not (has_north or has_south or has_east or has_west):
+            return
+            
+        box_w, box_h = 24, 24
+        margin = 3
+        box_x = px + sw - box_w - margin
+        box_y = py + sh - box_h - margin
+        cx = box_x + box_w // 2
+        cy = box_y + box_h // 2
+        
+        painter.save()
+        painter.setRenderHint(QPainter.Antialiasing, True)
+        
+        # Semi-transparent dark background for contrast
+        painter.setPen(QPen(QColor(0, 0, 0, 180), 1))
+        painter.setBrush(QColor(15, 15, 15, 200))
+        painter.drawRoundedRect(box_x, box_y, box_w, box_h, 4, 4)
+        
+        red_brush = QColor(255, 40, 40)
+        red_pen = QPen(QColor(180, 0, 0), 1)
+        
+        painter.setBrush(red_brush)
+        painter.setPen(red_pen)
+        
+        # North Arrow (pointing UP)
+        if has_north:
+            arrow = QPolygonF([
+                QPointF(cx, cy - 9),
+                QPointF(cx - 3.5, cy - 2),
+                QPointF(cx + 3.5, cy - 2)
+            ])
+            painter.drawPolygon(arrow)
+            
+        # South Arrow (pointing DOWN)
+        if has_south:
+            arrow = QPolygonF([
+                QPointF(cx, cy + 9),
+                QPointF(cx - 3.5, cy + 2),
+                QPointF(cx + 3.5, cy + 2)
+            ])
+            painter.drawPolygon(arrow)
+            
+        # West Arrow (pointing LEFT)
+        if has_west:
+            arrow = QPolygonF([
+                QPointF(cx - 9, cy),
+                QPointF(cx - 2, cy - 3.5),
+                QPointF(cx - 2, cy + 3.5)
+            ])
+            painter.drawPolygon(arrow)
+            
+        # East Arrow (pointing RIGHT)
+        if has_east:
+            arrow = QPolygonF([
+                QPointF(cx + 9, cy),
+                QPointF(cx + 2, cy - 3.5),
+                QPointF(cx + 2, cy + 3.5)
+            ])
+            painter.drawPolygon(arrow)
+            
+        painter.restore()
+
             
     def mouseMoveEvent(self, event):
         self.hovered_cell = None

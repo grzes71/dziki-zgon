@@ -2,7 +2,7 @@ id: SAM_MID1_RIGHT
 grid_x: 1
 grid_y: 1
 exits:
-  north: null
+  north: START_SAMOTNIA
   south: SAM_MID2_RIGHT
   east: null
   west: SAM_MID1_LEFT
