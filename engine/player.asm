@@ -50,7 +50,7 @@
     beq @chk_down
     dec ACTOR_INTENT_Y,x
     lda #2
-    sta ACTOR_DIR,x
+    jsr set_player_dir
 
 @chk_down
     tya
@@ -58,14 +58,14 @@
     beq @chk_left
     inc ACTOR_INTENT_Y,x
     lda #3
-    sta ACTOR_DIR,x
+    jsr set_player_dir
 
 @chk_left
     tya
     and #$04
     beq @chk_right
     lda #1
-    sta ACTOR_DIR,x
+    jsr set_player_dir
     
     jsr check_horizontal_move
     beq @chk_right
@@ -76,7 +76,7 @@
     and #$08
     beq @anim
     lda #0
-    sta ACTOR_DIR,x
+    jsr set_player_dir
     
     jsr check_horizontal_move
     beq @anim
@@ -117,6 +117,20 @@
     sta Request_SFX_Step
 
 @done
+    rts
+.endp
+
+;==============================================================
+; set_player_dir — Zmienia kierunek gracza i zeruje klatkę/timer animacji
+;==============================================================
+.proc set_player_dir
+    cmp ACTOR_DIR,x
+    beq @same
+    sta ACTOR_DIR,x
+    lda #0
+    sta ACTOR_ANIM_FRAME,x
+    sta ACTOR_ANIM_TIMER,x
+@same
     rts
 .endp
 

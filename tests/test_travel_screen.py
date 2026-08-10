@@ -32,14 +32,8 @@ def test_travel_screen_symbols_exist():
     labels = parse_labels(lab_path)
 
     assert "TRAVEL_SCREEN_SHOW" in labels
-    assert "DLI_TRAVEL" in labels
     assert "DLIST_TRAVEL" in labels
-    assert "GO_CHARSET" in labels
-    assert "TRAVELSCREEN_DATA" in labels
     assert "IS_PORTAL_TRANSITION" in labels
-
-    assert labels["GO_CHARSET"] % 0x0400 == 0  # 1 KB page aligned
-    assert "TRAVELSCREEN_DATA" in labels
     assert labels["IS_PORTAL_TRANSITION"] == 0x00A6
 
 

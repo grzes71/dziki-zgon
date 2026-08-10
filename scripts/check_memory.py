@@ -1,6 +1,7 @@
 # scripts/check_memory.py
 import os
 import re
+import struct
 import sys
 
 
@@ -100,7 +101,112 @@ def get_title_music_size(lab_file):
     return int(match.group(1), 16)
 
 
-def update_memory_usage(lab_file, md_file):
+def parse_xex_segments(xex_path):
+    """Parse an Atari XEX binary and return a list of segment dictionaries."""
+    segments = []
+    with open(xex_path, "rb") as f:
+        data = f.read()
+
+    pos = 0
+    seg_index = 0
+
+    # XEX header: $FF $FF
+    if len(data) < 2 or data[0] != 0xFF or data[1] != 0xFF:
+        return segments
+    pos = 2
+
+    while pos + 3 < len(data):
+        # Check for optional $FF $FF segment separator
+        if data[pos] == 0xFF and data[pos + 1] == 0xFF:
+            pos += 2
+            if pos + 3 >= len(data):
+                break
+
+        start = struct.unpack_from("<H", data, pos)[0]
+        end = struct.unpack_from("<H", data, pos + 2)[0]
+        pos += 4
+        seg_size = end - start + 1
+
+        if seg_size <= 0 or pos + seg_size > len(data):
+            break
+
+        segment_data = data[pos : pos + seg_size]
+
+        if start == 0x02E2:
+            target = struct.unpack("<H", segment_data[:2])[0]
+            segments.append({
+                "type": "INITAD",
+                "target": target,
+                "index": seg_index
+            })
+        elif start == 0x02E0:
+            target = struct.unpack("<H", segment_data[:2])[0]
+            segments.append({
+                "type": "RUNAD",
+                "target": target,
+                "index": seg_index
+            })
+        else:
+            segments.append({
+                "type": "DATA",
+                "start": start,
+                "end": end,
+                "index": seg_index
+            })
+
+        pos += seg_size
+        seg_index += 1
+
+    return segments
+
+
+def check_xex_segment_overlaps(segments):
+    """Check for overlapping XEX segments. Returns list of error strings.
+    Two segments overlap when the later-loaded one overwrites bytes from an
+    earlier one (i.e. their address ranges intersect). Overlapping is ignored
+    if there was an INITAD segment targeting the overwritten segment before
+    the overwrite occurred."""
+    errors = []
+
+    # Filter only DATA segments for comparison
+    data_segs = [s for s in segments if s["type"] == "DATA"]
+    initads = [s for s in segments if s["type"] == "INITAD"]
+
+    for i in range(len(data_segs)):
+        s1 = data_segs[i]
+        s1_start, s1_end, s1_idx = s1["start"], s1["end"], s1["index"]
+
+        for j in range(i + 1, len(data_segs)):
+            s2 = data_segs[j]
+            s2_start, s2_end, s2_idx = s2["start"], s2["end"], s2["index"]
+
+            # Check intersection: two ranges [a,b] and [c,d] overlap iff a<=d and c<=b
+            if s1_start <= s2_end and s2_start <= s1_end:
+                # Check if there is an INITAD executed after s1 was loaded but before s2 is loaded
+                # which targeted s1_start (or somewhere inside s1)
+                is_safe = False
+                for init in initads:
+                    if s1_idx < init["index"] < s2_idx:
+                        if s1_start <= init["target"] <= s1_end:
+                            is_safe = True
+                            break
+
+                if is_safe:
+                    continue
+
+                overlap_start = max(s1_start, s2_start)
+                overlap_end = min(s1_end, s2_end)
+                overlap_size = overlap_end - overlap_start + 1
+                errors.append(
+                    f"XEX Segment Overlap: segment {s1_idx} (${s1_start:04X}-${s1_end:04X}) "
+                    f"and segment {s2_idx} (${s2_start:04X}-${s2_end:04X}) overlap by "
+                    f"{overlap_size} bytes at ${overlap_start:04X}-${overlap_end:04X}! "
+                    f"Segment {s2_idx} will overwrite data from segment {s1_idx} during XEX loading."
+                )
+    return errors
+
+
+def update_memory_usage(lab_file, md_file, xex_file=None):
     symbols = parse_lab(lab_file)
 
     with open(md_file, "r", encoding="utf-8") as f:
@@ -142,17 +248,15 @@ def update_memory_usage(lab_file, md_file):
         "footer_addr": ("FOOTER_ADDR", ("size", 320)),
         "font.asm": ("FONTDATA", ("size", 1024)),
         "game_font.asm": ("GAMEFONTDATA", ("size", 1024)),
-        "world builder data": ("OBJ_SIZE", ("before", "TEXT_TITLE")),
-        "title_audio.asm": ("TITLE_AUDIO_INIT", ("size", 155)),
-        "all_texts": ("TEXT_TITLE", ("before", "TITLE_AUDIO_INIT")),
-        "travel_screen.asm": ("TRAVEL_SCREEN_SHOW", ("before", "GO_CHARSET")),
-        "gameover.asm": ("GAMEOVER_INIT", ("before", "GAMEOVERSUCCESS_DATA")),
-        "titlefooterrom": ("TITLEFOOTERROM", ("size", 289)),
-        "go_charset": ("GO_CHARSET", ("size", 1024)),
-        "sprites": ("GERWALT_RIGHT_FRAME_0", ("size", 399)),
-        "gameoverfail_data": ("GAMEOVERFAIL_DATA", ("size", 920)),
-        "gameoversuccess_data": ("GAMEOVERSUCCESS_DATA", ("size", 920)),
-        "travelscreen_data": ("TRAVELSCREEN_DATA", ("size", 920)),
+        "world builder data": ("OBJ_SIZE", ("before", "TEXT_GAMEOVER_FAIL")),
+        "all_gameover_texts": ("TEXT_GAMEOVER_FAIL", ("size", 88)),
+        "secret_objects.asm": ("SECRET_OBJ_PRESENT", ("before", "TRACK_VARIABLES")),
+        "sprites": ("GERWALT_RIGHT_FRAME_0", ("before", "ITEM_CHARSET_POS")),
+        "all_texts": ("TEXT_TITLE", ("size", 350)),
+        "gameover.asm": ("GAMEOVER_INIT", ("before", "TRAVEL_FRAME_COUNT")),
+        "travel_screen.asm": ("TRAVEL_FRAME_COUNT", ("before", "TITLE_AUDIO_INIT")),
+        "title_audio.asm": ("TITLE_AUDIO_INIT", ("before", "GERWALT_RIGHT_FRAME_0")),
+        "interactive_objects.asm": ("ITEM_CHARSET_POS", ("size", 1258)),
         "missiles": ("MISSILES", ("before", "PLAYER0")),
         "player0": ("PLAYER0", ("before", "PLAYER1")),
         "player1": ("PLAYER1", ("before", "PLAYER2")),
@@ -313,6 +417,18 @@ def update_memory_usage(lab_file, md_file):
                 f"Memory Segment Overlap: '{r1['name_col']}' (${r1['start']:04X}-${r1['end']:04X}) overlaps with '{r2['name_col']}' (${r2['start']:04X}-${r2['end']:04X})!"
             )
 
+    # --- 4) XEX Segment Overlap Check ---
+    if xex_file is None:
+        # Auto-detect: look for dziki_zgon.xex next to the lab file
+        xex_candidate = os.path.join(os.path.dirname(lab_file), "..", "dziki_zgon.xex")
+        if os.path.isfile(xex_candidate):
+            xex_file = xex_candidate
+
+    if xex_file and os.path.isfile(xex_file):
+        segments = parse_xex_segments(xex_file)
+        xex_errors = check_xex_segment_overlaps(segments)
+        validation_errors.extend(xex_errors)
+
     if missing_symbols:
         # Ignore known missing symbols like invalid-range:gameover.asm
         filtered_missing = [s for s in missing_symbols if not s.startswith("invalid-range:")]
@@ -330,8 +446,8 @@ def update_memory_usage(lab_file, md_file):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python check_memory.py <game.lab> <MEMORY_USAGE.md>")
+    if len(sys.argv) < 3:
+        print("Usage: python check_memory.py <game.lab> <MEMORY_USAGE.md> [dziki_zgon.xex]")
         sys.exit(1)
-    update_memory_usage(sys.argv[1], sys.argv[2])
-
+    xex = sys.argv[3] if len(sys.argv) > 3 else None
+    update_memory_usage(sys.argv[1], sys.argv[2], xex_file=xex)
