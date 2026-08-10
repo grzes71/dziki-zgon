@@ -103,15 +103,29 @@ gameover_fire_released
 ; copy_gameover_text — Kopiuje tekst GAME OVER (porażka/sukces) z ROM do RAM ($5E10)
 ;==============================================================
 .proc copy_gameover_text
+    ; Clear footer buffer (320 B)
+    ldx #0
+    lda #0
+@clr
+    sta FOOTER_ADDR,x
+    cpx #64
+    bcs @skip
+    sta FOOTER_ADDR+256,x
+@skip
+    inx
+    bne @clr
+
     lda GAME_RESULT_STATUS
     cmp #1                  ; 1 = Sukces
     beq @do_success
 
 @do_fail
+    jsr show_gameover_fail_header
     mRLE_Depack text_gameover_fail FOOTER_ADDR
     rts
 
 @do_success
+    jsr show_gameover_success_header
     mRLE_Depack text_gameover_success FOOTER_ADDR
     rts
 .endp

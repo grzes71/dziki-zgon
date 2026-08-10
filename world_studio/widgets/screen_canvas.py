@@ -176,6 +176,21 @@ class ScreenCanvasWidget(QWidget):
                 active_obj_def = next((o for o in self.project.objects if o.id == self.active_tool), None)
                 if not active_obj_def:
                     return
+                
+                # Round coordinates to nearest even number and clamp to grid boundaries
+                click_x = event.position().x() / (self.tile_w_px * self.zoom)
+                click_y = event.position().y() / (self.tile_h_px * self.zoom)
+                x = int((click_x + 1.0) // 2) * 2
+                y = int((click_y + 1.0) // 2) * 2
+                
+                if x < 0:
+                    x = 0
+                elif x > 38:
+                    x = 38
+                if y < 0:
+                    y = 0
+                elif y > 10:
+                    y = 10
                     
                 is_interactive = active_obj_def.flags and getattr(active_obj_def.flags, 'interactive', False)
                 is_secret = active_obj_def.flags and getattr(active_obj_def.flags, 'secret', False)
@@ -289,7 +304,75 @@ class ScreenCanvasWidget(QWidget):
                         break
                         
             if to_remove is not None:
-                self.screen_def.objects.pop(to_remove)
-                self.screen_changed.emit()
+                inst = self.screen_def.objects[to_remove]
+                odef = obj_dict.get(inst.object)
+                w = odef.size.width
+                h = odef.size.height
+                rx = inst.repeat_x
+                ry = inst.repeat_y
+                inst_w = w * rx
+                inst_h = h * ry
+
+                def is_valid_pos(nx, ny):
+                    if nx < 0 or nx + inst_w > 40:
+                        return False
+                    if ny < 0 or ny + inst_h > 12:
+                        return False
+                    for idx, other in enumerate(self.screen_def.objects):
+                        if idx == to_remove:
+                            continue
+                        other_def = obj_dict.get(other.object)
+                        if not other_def:
+                            continue
+                        other_w = other_def.size.width * other.repeat_x
+                        other_h = other_def.size.height * other.repeat_y
+                        if not (nx >= other.x + other_w or other.x >= nx + inst_w or ny >= other.y + other_h or other.y >= ny + inst_h):
+                            return False
+                    return True
+
+                # Calculate movement targets to next/prev even coordinate
+                right_x = inst.x + 2 if inst.x % 2 == 0 else inst.x + 1
+                can_move_right = is_valid_pos(right_x, inst.y)
+
+                left_x = inst.x - 2 if inst.x % 2 == 0 else inst.x - 1
+                can_move_left = is_valid_pos(left_x, inst.y)
+
+                up_y = inst.y - 2 if inst.y % 2 == 0 else inst.y - 1
+                can_move_up = is_valid_pos(inst.x, up_y)
+
+                down_y = inst.y + 2 if inst.y % 2 == 0 else inst.y + 1
+                can_move_down = is_valid_pos(inst.x, down_y)
+
+                from PySide6.QtWidgets import QMenu
+                menu = QMenu(self)
+
+                action_delete = menu.addAction("usuń")
+                action_right = menu.addAction("w prawo")
+                action_right.setEnabled(can_move_right)
+                action_left = menu.addAction("w lewo")
+                action_left.setEnabled(can_move_left)
+                action_up = menu.addAction("w górę")
+                action_up.setEnabled(can_move_up)
+                action_down = menu.addAction("w dół")
+                action_down.setEnabled(can_move_down)
+
+                # Show menu at the global cursor position
+                selected_action = menu.exec(event.globalPosition().toPoint())
+
+                if selected_action == action_delete:
+                    self.screen_def.objects.pop(to_remove)
+                    self.screen_changed.emit()
+                elif selected_action == action_right:
+                    inst.x = right_x
+                    self.screen_changed.emit()
+                elif selected_action == action_left:
+                    inst.x = left_x
+                    self.screen_changed.emit()
+                elif selected_action == action_up:
+                    inst.y = up_y
+                    self.screen_changed.emit()
+                elif selected_action == action_down:
+                    inst.y = down_y
+                    self.screen_changed.emit()
                 
         self.update()

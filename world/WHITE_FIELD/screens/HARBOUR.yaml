@@ -9,15 +9,15 @@ exits:
 objects:
 - object: TREE_2
   x: 10
-  y: 3
+  y: 4
 - object: TREE_2
-  x: 25
+  x: 24
   y: 2
 - object: TREE_2
   x: 34
   y: 2
 - object: PORT
-  x: 25
+  x: 24
   y: 6
   type: portal
   conditions_met: pięknie, płyniemy!
@@ -33,10 +33,10 @@ objects:
   repeat-x: 19
 - object: TREE_3
   x: 30
-  y: 3
+  y: 2
 - object: BUSH
   x: 31
-  y: 1
+  y: 0
 - object: GROUND_GREEN_DOWN
   x: 37
   y: 0
@@ -78,12 +78,8 @@ objects:
   x: 13
   y: 10
   repeat-x: 9
-- object: FENCE_2
-  x: 35
-  y: 8
-  repeat-x: 2
 - object: SHED
-  x: 37
+  x: 36
   y: 7
 - object: TREE_SMALL
   x: 2
@@ -107,20 +103,6 @@ objects:
 - object: GROUND_BROWN_UP
   x: 39
   y: 3
-- object: GROUND_BROWN_UP
-  x: 2
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 1
-  y: 2
-- object: GROUND_BROWN_DOWN
-  x: 2
-  y: 0
-  repeat-x: 2
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 2
-  repeat-y: 2
 - object: ROCK_GREEN
   x: 37
   y: 5
@@ -142,7 +124,7 @@ objects:
   y: 7
 - object: TREE_3
   x: 12
-  y: 1
+  y: 2
 - object: ROCK_GREEN
   x: 6
   y: 1
@@ -156,7 +138,7 @@ objects:
   x: 28
   y: 1
 - object: TREE_3
-  x: 17
+  x: 18
   y: 0
 - object: TREE_3
   x: 22
@@ -206,7 +188,7 @@ objects:
   y: 0
 - object: TREE_3
   x: 7
-  y: 3
+  y: 4
 enemies:
 - enemy: strzyga
   x: 16

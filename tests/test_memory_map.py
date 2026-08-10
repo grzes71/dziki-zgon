@@ -34,8 +34,8 @@ def test_memory_map_no_overlaps_or_page_crossings():
         "DLIST_TITLE": 206,
         "DLIST_STORY": 29,
         "DLIST_GAME": 26,
-        "DLIST_GAMEOVER": 37,
-        "DLIST_TRAVEL": 37,
+        "DLIST_GAMEOVER": 29,
+        "DLIST_TRAVEL": 29,
     }
     for dlist_name, size in dlist_sizes.items():
         assert dlist_name in symbols, f"Missing symbol {dlist_name} in gen/game.lab"

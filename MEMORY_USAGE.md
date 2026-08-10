@@ -37,34 +37,35 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$1FFD` – `$1FFF`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2000` – `$2007`** | 8 B | `disable_basic_loader` | INI Loader | Wyłączenie BASICa (obsługa INI na starcie xex). |
 | **`$2000` – `$202A`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$202B` – `$34B1`** | 5255 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$34B2` – `$37F2`** | 833 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
-| **`$37F3` – `$3A7C`** | 650 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$3A7D` – `$3C53`** | 471 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
-| **`$3C54` – `$3E7F`** | 556 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$202B` – `$3613`** | 5609 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$3614` – `$3B4D`** | 1338 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
+| **`$9D21` – `$9DC4`** | 164 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
+| **`$3B4E` – `$3D24`** | 471 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
+| **`$3D25` – `$3E7F`** | 347 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry ($3E80-$3FE7, dopasowane do strony 1 KB). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
 | **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). |
 | **`$5E10` – `$5F4F`** | 320 B | `FOOTER_ADDR` | VRAM / Bufor | Tekst stopki tytułowej / tekst Story / tekst GameOver. |
 | **`$5F50` – `$5F73`** | 36 B | `secret_msg_buf` | RAM (Bufor) | Bufor roboczy na sklejony komunikat podniesienia secretu. |
-| **`$5F74` – `$5FFF`** | 140 B | — | **WOLNY RAM** | Bufor wolnego RAM-u przed własną czcionką. |
+| **`$5F74` – `$5FEB`** | 120 B | `ICON_ADDR` | RAM (Bufor) | Bufor nagłówka z ikonami dla ekranów tekstowych. |
+| **`$5FEC` – `$5FFF`** | 20 B | — | **WOLNY RAM** | Pozostały wolny RAM przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. |
-| **`$6800` – `$9C1E`** | 13343 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
-| **`$9C1F` – `$9C76`** | 88 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
+| **`$6800` – `$9B06`** | 13063 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
+| **`$9B07` – `$9B5E`** | 88 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
 | **`$9C76` – `$9FFF`** | 906 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
 | **`$1E2E` – `$1F8B`** | 350 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story). |
 | **`$A800` – `$A9DF`** | 480 B | `secret_objects.asm` | Dane (World) | Obiekty sekretów na planszach. |
-| **`$B7B1` – `$B84D`** | 157 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
+| **`$B7CF` – `$B86B`** | 157 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
 | **`$A000` – `$A7FF`** | 2048 B | `PMG` | Pamięć PMG | Pamięć Player/Missile Graphics (M0-M3, P0-P3). |
-| **`$B6D7` – `$B7B0`** | 218 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
+| **`$B6EE` – `$B7CE`** | 225 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
 | **`$A2DF` – `$A9DF`** | 1793 B | — | **WOLNY RAM** | Wolna pamięć przed zmiennymi RMT. |
 | **`$A9E0` – `$ACFF`** | 800 B | `rmtplayr_vars` | Dane (Odtwarzacz) | Zmienne i tabele odtwarzacza RMT. |
 | **`$AD00` – `$B241`** | 1346 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT. |
 | **`$B300` – `$B610`** | 785 B | `title_music.asm` | Dane (Muzyka) | Moduł muzyczny RMT. |
-| **`$B618` – `$B6D6`** | 191 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
-| **`$B84E` – `$B9D1`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
-| **`$B9D2` – `$BEBB`** | 1258 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
+| **`$B618` – `$B6ED`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
+| **`$B86C` – `$B9EF`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
+| **`$B9F0` – `$BED9`** | 1258 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
 
 ---
 

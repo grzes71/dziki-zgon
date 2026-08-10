@@ -34,13 +34,17 @@ TravelPrefixText
 
     ; 2. Wyczyszczenie PMG
     jsr pmg_clear_all
+    jsr show_travel_header
 
     ; 3. Czyszczenie bufora tekstu (320 B)
     ldx #0
     lda #0
 @clr_footer
     sta FOOTER_ADDR,x
-    sta FOOTER_ADDR+$100,x
+    cpx #64
+    bcs @skip_upper
+    sta FOOTER_ADDR+256,x
+@skip_upper
     inx
     bne @clr_footer
 

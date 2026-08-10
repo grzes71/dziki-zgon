@@ -47,13 +47,13 @@ TitleScreen_Data
     icl "lib/pmg.asm"
     icl "lib/rle.asm"
     icl "lib/world_renderer.asm"
+    icl "lib/text_headers.asm"
     
     ; --- Silnik gry ---
     icl "engine/engine.asm"
 
     ; --- Sceny (każda eksportuje _init i _run) ---
     icl "scenes/title/title.asm"
-    icl "scenes/story/story.asm"
     icl "scenes/game/game.asm"
 
 ; ===================================================================
@@ -211,11 +211,14 @@ main_loop
 TitleData = SCREEN
     icl "gen/title_displaylist.asm"    ; definiuje DLIST_TITLE
 
-; --- DL story — ANTIC mode 2, tekst 8 linii wyśrodkowany ---
-DLIST_STORY
+; --- DL tekstowa (współdzielona: story, gameover, travel) — ANTIC mode 2 ---
+DLIST_TEXT
     dta $70,$70,$70        ; 3 blank
-    dta $70,$70            ; 2 blank (razem 5 blank na gorze)
-    dta $42,a(StoryText_RAM) ; LMS + ANTIC mode 2 -> adres StoryText_RAM ($5E10)
+    dta $42,a(ICON_ADDR)   ; LMS + ANTIC mode 2 -> adres ICON_ADDR
+    dta $02
+    dta $02
+    dta $70                ; Blank line 0
+    dta $42,a(FOOTER_ADDR) ; LMS + ANTIC mode 2 -> adres FOOTER_ADDR ($5E10)
     dta $70                ; Blank line 1
     dta $02                ; ANTIC mode 2 (Line 2 - Text)
     dta $70                ; Blank line 2
@@ -232,7 +235,11 @@ DLIST_STORY
     dta $02                ; ANTIC mode 2 (Line 8 - Text)
     dta $70,$70,$70        ; 3 blank
     dta $70                ; 1 blank (razem 4 blank na dole)
-    dta $41,a(DLIST_STORY) ; JVB
+    dta $41,a(DLIST_TEXT)  ; JVB
+
+DLIST_STORY = DLIST_TEXT
+DLIST_GAMEOVER = DLIST_TEXT
+DLIST_TRAVEL = DLIST_TEXT
 
 ; --- DL gra ---
 DLIST_GAME
@@ -245,52 +252,6 @@ DLIST_GAME
     dta $42,a(GAME_SCREEN_A2) ; ANTIC 2, 1 linia (Info Line)
     dta $82                ; Kolejna 1 linia ANTIC 2 (Message Line) + DLI dla Message Line
     dta $41,a(DLIST_GAME)  ; JVB
-
-; --- DL game over — ANTIC mode 2, tekst statyczny 8 linii ---
-DLIST_GAMEOVER
-    dta $70,$70,$70        ; 3 blank
-    dta $70,$70            ; 2 blank (razem 5 blank na gorze)
-    dta $42,a(FOOTER_ADDR) ; LMS + ANTIC mode 2 -> adres FOOTER_ADDR ($5E10)
-    dta $70                ; Blank line 1
-    dta $02                ; ANTIC mode 2 (Line 2 - Text)
-    dta $70                ; Blank line 2
-    dta $02                ; ANTIC mode 2 (Line 3 - Text)
-    dta $70                ; Blank line 3
-    dta $02                ; ANTIC mode 2 (Line 4 - Text)
-    dta $70                ; Blank line 4
-    dta $02                ; ANTIC mode 2 (Line 5 - Text)
-    dta $70                ; Blank line 5
-    dta $02                ; ANTIC mode 2 (Line 6 - Text)
-    dta $70                ; Blank line 6
-    dta $02                ; ANTIC mode 2 (Line 7 - Text)
-    dta $70                ; Blank line 7
-    dta $02                ; ANTIC mode 2 (Line 8 - Text)
-    dta $70,$70,$70        ; 3 blank
-    dta $70                ; 1 blank (razem 4 blank na dole)
-    dta $41,a(DLIST_GAMEOVER) ; JVB
-
-; --- DL travel screen — ANTIC mode 2, tekst statyczny 8 linii ---
-DLIST_TRAVEL
-    dta $70,$70,$70        ; 3 blank
-    dta $70,$70            ; 2 blank (razem 5 blank na gorze)
-    dta $42,a(FOOTER_ADDR) ; LMS + ANTIC mode 2 -> adres FOOTER_ADDR ($5E10)
-    dta $70                ; Blank line 1
-    dta $02                ; ANTIC mode 2 (Line 2 - Text)
-    dta $70                ; Blank line 2
-    dta $02                ; ANTIC mode 2 (Line 3 - Text)
-    dta $70                ; Blank line 3
-    dta $02                ; ANTIC mode 2 (Line 4 - Text)
-    dta $70                ; Blank line 4
-    dta $02                ; ANTIC mode 2 (Line 5 - Text)
-    dta $70                ; Blank line 5
-    dta $02                ; ANTIC mode 2 (Line 6 - Text)
-    dta $70                ; Blank line 6
-    dta $02                ; ANTIC mode 2 (Line 7 - Text)
-    dta $70                ; Blank line 7
-    dta $02                ; ANTIC mode 2 (Line 8 - Text)
-    dta $70,$70,$70        ; 3 blank
-    dta $70                ; 1 blank (razem 4 blank na dole)
-    dta $41,a(DLIST_TRAVEL) ; JVB
 
 ; ===================================================================
 ; 7. Współdzielona Arena VRAM ($4000)
@@ -328,6 +289,11 @@ VRAM_ARENA = SCREEN
 ; --- Teksty GameOver ---
     icl "gen/gameover-fail_text.asm"
     icl "gen/gameover-success_text.asm"
+
+; --- Scena Story (przeniesiona do wolnego bloku RAM $9D20-$9FFF) ---
+    org $9D20
+    icl "scenes/story/story.asm"
+STORY_END
 
 ; --- Sekrety ($A800 - wolna pamięć przed RMT player) ---
     org $A800
