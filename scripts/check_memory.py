@@ -301,27 +301,28 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
         except KeyError as err:
             missing_symbols.add(str(err).strip("'"))
 
-    # 2) Wyznacz zakresy WOLNY RAM z sąsiadów po aktualizacji sekcji zajętych.
-    for idx, row in enumerate(rows):
+    # 2) Wyznacz zakresy WOLNY RAM na podstawie posortowanych sekcji zajętych.
+    non_free_sorted = [r for r in rows if "wolny ram" not in r["type_norm"]]
+    non_free_sorted.sort(key=lambda r: r["start"])
+
+    for row in rows:
         if "wolny ram" not in row["type_norm"]:
             continue
-        if idx == 0:
-            continue
+        prev_section = None
+        next_section = None
+        for nf in non_free_sorted:
+            if nf["end"] < row["start"]:
+                prev_section = nf
+            elif nf["start"] > row["start"] and next_section is None:
+                next_section = nf
+                break
 
-        if idx == len(rows) - 1:
-            prev_row = rows[idx - 1]
-            new_start = prev_row["end"] + 1
-            if row["end"] >= new_start:
+        if prev_section:
+            new_start = prev_section["end"] + 1
+            new_end = (next_section["start"] - 1) if next_section else row["end"]
+            if new_end >= new_start:
                 row["start"] = new_start
-            continue
-
-        prev_row = rows[idx - 1]
-        next_row = rows[idx + 1]
-        new_start = prev_row["end"] + 1
-        new_end = next_row["start"] - 1
-        if new_end >= new_start:
-            row["start"] = new_start
-            row["end"] = new_end
+                row["end"] = new_end
 
     # 2b) Dodatkowa walidacja: "wolny" zakres nie powinien zawierać symboli.
     free_conflicts = []
@@ -345,11 +346,12 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
             lines[line_idx] = new_line
             changed.append(strip_md(row["name_col"]))
 
-    # 4) Zaktualizuj tekst z sumą wolnej pamięci
-    total_free = 0
-    for row in rows:
-        if "wolny ram" in row["type_norm"]:
-            total_free += (row["end"] - row["start"] + 1)
+    # 4) Zaktualizuj tekst z sumą wolnej pamięci (suma wszystkich luk w RAM do $C000)
+    total_free = sum(
+        non_free_sorted[i + 1]["start"] - 1 - non_free_sorted[i]["end"]
+        for i in range(len(non_free_sorted) - 1)
+        if non_free_sorted[i + 1]["start"] > non_free_sorted[i]["end"] + 1
+    )
             
     summary_prefix = "Łącznie wolny RAM z tych bloków to"
     for i, line in enumerate(lines):
@@ -367,6 +369,25 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
         print(f"MEMORY_USAGE.md updated ({len(changed)} rows).")
     else:
         print("MEMORY_USAGE.md is up-to-date.")
+
+    world_start = symbols.get("OBJ_SIZE")
+    world_end = (symbols.get("TEXT_GAMEOVER_FAIL") - 1) if "TEXT_GAMEOVER_FAIL" in symbols else None
+    if world_start and world_end:
+        main_world_ram = world_end - world_start + 1
+        main_world_budget = 0x9D20 - 0x6800
+        free_world_ram = 0x9D20 - 1 - world_end
+        free_world_pct = (free_world_ram / main_world_budget) * 100.0 if main_world_budget > 0 else 0
+
+        secret_ram = (symbols.get("TRACK_VARIABLES") - symbols.get("SECRET_OBJ_PRESENT")) if ("SECRET_OBJ_PRESENT" in symbols and "TRACK_VARIABLES" in symbols) else 0
+        interactive_ram = 1258 if "ITEM_CHARSET_POS" in symbols else 0
+        total_world_ram = main_world_ram + secret_ram + interactive_ram
+
+        print("\n=== Statystyki Pamięci Świata Gry w RAM (MADS) ===")
+        print(f"  * Rozmiar danych Świata Gry w RAM: {total_world_ram:,} B".replace(",", " "))
+        print(f"    - Główny blok świata ($6800-$9D1F): {main_world_ram:,} B / {main_world_budget:,} B".replace(",", " "))
+        print(f"    - Bloki pomocnicze (sekrety / obiekty interaktywne): {secret_ram + interactive_ram:,} B".replace(",", " "))
+        print(f"  * Wolne miejsce na dalszą rozbudowę Świata: {free_world_ram:,} B ({free_world_pct:.1f}% zapasu wolnego miejsca w bloku)")
+        print(f"  * Całkowity wolny RAM w systemie: {total_free:,} B\n".replace(",", " "))
 
     validation_errors = []
 

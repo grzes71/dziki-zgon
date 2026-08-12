@@ -60,12 +60,12 @@ def test_iis_interaction_unmet(game_binary) -> None:
     # Set active screen to TAVERN (Screen 4 in default world)
     mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_TAVERN"]
 
-    # Position Gerwalt (Actor 0) below The Tavern (x=18, y=5, size w=12, h=2)
-    # The Tavern grid Y is 5..6 (y1=5, y2=6).
-    # Position Gerwalt at grid x=18, y=7 (pixel x = 18*4+48 = 120, pixel y = 7*16+32 = 144)
+    # Position Gerwalt (Actor 0) below The Tavern (x=18, y=4, size w=12, h=2)
+    # The Tavern grid Y is 4..5 (y1=4, y2=5).
+    # Position Gerwalt at grid x=18, y=6 (pixel x = 18*4+48 = 120, pixel y = 6*16+32 = 128)
     # Facing UP (ACTOR_DIR = 2)
     mem[labels["ACTOR_X"]] = 120
-    mem[labels["ACTOR_Y"]] = 144
+    mem[labels["ACTOR_Y"]] = 128
     mem[labels["ACTOR_HEIGHT"]] = 16
     mem[labels["ACTOR_DIR"]] = 2
 
@@ -110,7 +110,7 @@ def test_iis_interaction_met_and_success(game_binary) -> None:
 
     # Position Gerwalt below The Tavern facing UP (ACTOR_DIR = 2)
     mem[labels["ACTOR_X"]] = 120
-    mem[labels["ACTOR_Y"]] = 144
+    mem[labels["ACTOR_Y"]] = 128
     mem[labels["ACTOR_HEIGHT"]] = 16
     mem[labels["ACTOR_DIR"]] = 2
 
@@ -164,11 +164,11 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
     # Set active screen to FOREST_1_0
     mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_FOREST_1_0"]
 
-    # In FOREST_1_0.yaml, PORTAL_2 is at grid x=32, y=3 (w=2, h=2).
-    # Position Gerwalt above PORTAL_2 at grid x=32, y=2 (pixel x = 32*4+48 = 176, pixel y = 2*16+32 = 64)
+    # In FOREST_1_0.yaml, PORTAL_2 is at grid x=32, y=4 (w=2, h=2).
+    # Position Gerwalt above PORTAL_2 at grid x=32, y=3 (pixel x = 32*4+48 = 176, pixel y = 3*16+32 = 80)
     # Facing DOWN (ACTOR_DIR = 3)
     mem[labels["ACTOR_X"]] = 176
-    mem[labels["ACTOR_Y"]] = 64
+    mem[labels["ACTOR_Y"]] = 80
     mem[labels["ACTOR_HEIGHT"]] = 16
     mem[labels["ACTOR_DIR"]] = 3
 

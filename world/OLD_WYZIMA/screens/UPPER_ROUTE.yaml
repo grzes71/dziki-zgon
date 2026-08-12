@@ -7,61 +7,13 @@ exits:
   east: UPPER_MIDDLE_1
   west: null
 objects:
-- object: HOUSE_MEDIUM_2
-  x: 6
-  y: 7
-- object: HOUSE_BIG_2
-  x: 2
-  y: 3
-- object: HOUSE_BIG_2
-  x: 12
-  y: 7
-- object: HOUSE_MEDIUM_2
-  x: 9
-  y: 3
 - object: HOUSE_TALLEST
   x: 22
   y: 2
-- object: HOUSE_MEDIUM
-  x: 32
-  y: 7
-- object: HOUSE_SMALL_2
-  x: 1
-  y: 0
 - object: HOUSE_SMALL_2
   x: 16
   y: 4
-- object: HOUSE_TALLEST
-  x: 33
-  y: 2
-- object: HOUSE_MEDIUM_2
-  x: 23
-  y: 7
-- object: TREE_SMALL
-  x: 14
-  y: 1
-- object: TREE_SMALL
-  x: 18
-  y: 1
-- object: TREE_SMALL
-  x: 19
-  y: 8
 - object: TREE_SMALL
   x: 28
   y: 4
-- object: BUSH_2
-  x: 30
-  y: 5
-- object: BUSH_2
-  x: 7
-  y: 1
-- object: BUSH_2
-  x: 3
-  y: 9
-- object: TREE_3
-  x: 0
-  y: 7
-- object: ROCK_GREEN
-  x: 28
-  y: 1
 enemies: []

@@ -244,7 +244,11 @@ class AsmGenerator:
             out.append(f"    dta {len(s.objects)} ; Object count")
             for inst in s.objects:
                 obj_def = objects_by_id[inst.object]
-                out.append(f"    dta {obj_def.code}, {inst.x}, {inst.y} ; {inst.object}")
+                # Coordinates packed into a single byte: 5 lower bits = x // 2, 3 upper bits = y // 2
+                x_half = inst.x // 2
+                y_half = inst.y // 2
+                packed_xy = (y_half << 5) | x_half
+                out.append(f"    dta {obj_def.code}, {packed_xy} ; {inst.object} (x={inst.x}, y={inst.y})")
             
             # Append compiled enemy data
             out.append(f"    dta {len(s.enemies)} ; Enemy count")
@@ -272,8 +276,8 @@ class AsmGenerator:
         out.append("\n; Player Spawn Configuration")
         out.append(f"START_REGION_ID = {self.region_idx[self.world.world.start_region]}")
         out.append(f"START_SCREEN_ID = {self.screen_idx[self.world.world.start_screen]}")
-        out.append(f"START_POS_X = {self.world.world.start_position.x}")
-        out.append(f"START_POS_Y = {self.world.world.start_position.y}")
+        out.append(f"START_POS_X = {(self.world.world.start_position.x // 2) * 2}")
+        out.append(f"START_POS_Y = {(self.world.world.start_position.y // 2) * 2}")
         
         with open(self.out_dir / "world.inc", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")
@@ -310,11 +314,11 @@ class AsmGenerator:
 
         # INTERACTIVE_OBJ_X
         out.append("INTERACTIVE_OBJ_X")
-        out.append("    dta " + ", ".join(str(d[0].x) if d else "0" for d in interactive_data))
+        out.append("    dta " + ", ".join(str((d[0].x // 2) * 2) if d else "0" for d in interactive_data))
 
         # INTERACTIVE_OBJ_Y
         out.append("INTERACTIVE_OBJ_Y")
-        out.append("    dta " + ", ".join(str(d[0].y) if d else "0" for d in interactive_data))
+        out.append("    dta " + ", ".join(str((d[0].y // 2) * 2) if d else "0" for d in interactive_data))
 
         # INTERACTIVE_OBJ_W
         out.append("INTERACTIVE_OBJ_W")
@@ -387,8 +391,10 @@ class AsmGenerator:
                 p_entry = target_region_obj.portal_entries.get(source_region.id) if (target_region_obj and source_region) else None
                 if p_entry and p_entry.screen in self.screen_idx:
                     portal_screen_list.append(f"${self.screen_idx[p_entry.screen]:02X}")
-                    portal_x_list.append(str(p_entry.x * 4 + 48))
-                    portal_y_list.append(str(p_entry.y * 16 + 32))
+                    p_entry_x_even = (p_entry.x // 2) * 2
+                    p_entry_y_even = (p_entry.y // 2) * 2
+                    portal_x_list.append(str(p_entry_x_even * 4 + 48))
+                    portal_y_list.append(str(p_entry_y_even * 16 + 32))
                 else:
                     portal_screen_list.append("$FF")
                     portal_x_list.append("0")
@@ -462,11 +468,11 @@ class AsmGenerator:
 
         # SECRET_OBJ_X
         out.append("SECRET_OBJ_X")
-        out.append("    dta " + ", ".join(str(d[0].x) if d else "0" for d in secret_data))
+        out.append("    dta " + ", ".join(str((d[0].x // 2) * 2) if d else "0" for d in secret_data))
 
         # SECRET_OBJ_Y
         out.append("SECRET_OBJ_Y")
-        out.append("    dta " + ", ".join(str(d[0].y) if d else "0" for d in secret_data))
+        out.append("    dta " + ", ".join(str((d[0].y // 2) * 2) if d else "0" for d in secret_data))
 
         # SECRET_OBJ_W
         out.append("SECRET_OBJ_W")
@@ -525,3 +531,87 @@ class AsmGenerator:
 
         with open(self.out_dir / "secret_objects.asm", "w", encoding="utf-8") as f:
             f.write("\n".join(out) + "\n")
+
+    def get_stats(self) -> dict:
+        max_code = max((obj.code for obj in self.world.objects), default=0)
+        objects_bytes = 4 * (max_code + 1) + sum(len(obj.tiles) for obj in self.world.objects)
+
+        num_regions = len(self.regions_sorted)
+        num_screens = len(self.screens_sorted)
+        num_enemies = len(self.world.enemies)
+
+        regions_bytes = 38 * num_regions + num_screens + num_enemies
+        exits_bytes = 4 * num_screens
+
+        screens_bytes = 2 * num_screens
+        placed_objects_count = 0
+        placed_enemies_count = 0
+        for s in self.screens_sorted:
+            placed_objects_count += len(s.objects)
+            placed_enemies_count += len(s.enemies)
+            screens_bytes += 2 + 2 * len(s.objects) + 6 * len(s.enemies)
+
+        max_item_id = max((item.id for item in self.world.inventory_items), default=0)
+
+        # Interactive objects
+        objects_by_id = {obj.id: obj for obj in self.world.objects}
+        interactive_data = []
+        for s in self.screens_sorted:
+            inter_inst = None
+            for inst in s.objects:
+                obj_def = objects_by_id.get(inst.object)
+                if obj_def and obj_def.flags.interactive:
+                    inter_inst = (inst, obj_def)
+                    break
+            interactive_data.append(inter_inst)
+
+        interactive_bytes = (max_item_id + 1) + 22 * num_screens + 2
+        for d in interactive_data:
+            if not d:
+                continue
+            inst, _ = d
+            if inst.items_required:
+                interactive_bytes += len(inst.items_required)
+            if inst.items_provided:
+                interactive_bytes += len(inst.items_provided)
+            if inst.conditions_met:
+                interactive_bytes += len(inst.conditions_met.encode("utf-8")) + 1
+            if inst.conditions_unmet:
+                interactive_bytes += len(inst.conditions_unmet.encode("utf-8")) + 1
+            if inst.message_travel:
+                interactive_bytes += len(inst.message_travel.encode("utf-8")) + 1
+
+        # Secret objects
+        secret_bytes = 7 * num_screens + 2 * (max_item_id + 1) + 1
+        item_desc_map = {item.id: item.description for item in self.world.inventory_items}
+        for item_id in range(1, max_item_id + 1):
+            if item_id in item_desc_map:
+                secret_bytes += len(item_desc_map[item_id].encode("utf-8")) + 1
+
+        main_world_bytes = objects_bytes + regions_bytes + screens_bytes + exits_bytes
+        total_world_bytes = main_world_bytes + interactive_bytes + secret_bytes
+
+        # Memory Budget for Main World Data ($6800 - $9D1F = 13,600 bytes)
+        main_budget = 13600
+        free_main = main_budget - main_world_bytes
+        free_main_pct = (free_main / main_budget) * 100.0 if main_budget > 0 else 0
+
+        return {
+            "num_regions": num_regions,
+            "num_screens": num_screens,
+            "num_object_defs": len(self.world.objects),
+            "placed_objects_count": placed_objects_count,
+            "placed_enemies_count": placed_enemies_count,
+            "objects_bytes": objects_bytes,
+            "regions_bytes": regions_bytes,
+            "screens_bytes": screens_bytes,
+            "exits_bytes": exits_bytes,
+            "interactive_bytes": interactive_bytes,
+            "secret_bytes": secret_bytes,
+            "main_world_bytes": main_world_bytes,
+            "total_world_bytes": total_world_bytes,
+            "main_budget": main_budget,
+            "free_main": free_main,
+            "free_main_pct": free_main_pct,
+        }
+

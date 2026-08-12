@@ -15,15 +15,15 @@ story_icons
 
 travel_icons
     .byte 10, 71, 81, 82, 11, 77  ; Lewa ikona (L1, L2, L3)
-    .byte 37, 90, 83, 84, 40, 39  ; Prawa ikona (L1, L2, L3)
+    .byte 10, 71, 81, 82, 11, 77  ; Prawa ikona (L1, L2, L3)
 
 gameover_fail_icons
     .byte 87, 65, 85, 86, 96, 66  ; Lewa ikona (L1, L2, L3)
     .byte 87, 65, 85, 86, 96, 66  ; Prawa ikona (L1, L2, L3)
 
 gameover_success_icons
-    .byte 10, 71, 81, 82, 11, 77  ; Lewa ikona (L1, L2, L3)
-    .byte 37, 90, 83, 84, 40, 39  ; Prawa ikona (L1, L2, L3)
+    .byte 69, 69, 84, 84, 68, 70  ; Lewa ikona (L1, L2, L3)
+    .byte 69, 69, 84, 84, 68, 70  ; Prawa ikona (L1, L2, L3)
 
 ; --- Procedury ---
 

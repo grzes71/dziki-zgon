@@ -14,6 +14,7 @@ DEFAULT_REGION_COLORS = {
 class ProjectManager:
     def __init__(self):
         self.world_dir: Optional[Path] = None
+        self.objects_path: Optional[Path] = None
         self.world_config: Optional[WorldConfig] = None
         self.colors: Dict[str, tuple] = {} # Deprecated global colors
         self.region_colors: Dict[str, Dict[str, tuple]] = {}
@@ -25,6 +26,34 @@ class ProjectManager:
         self.inventory_items: List[InventoryItemDef] = []
         self.regions: Dict[str, RegionDef] = {}
         self.screens: Dict[str, Dict[str, ScreenDef]] = {}
+
+    def load_objects(self, objects_path: Optional[Path] = None) -> bool:
+        if objects_path is not None:
+            self.objects_path = Path(objects_path)
+        elif self.objects_path is None and self.world_dir:
+            self.objects_path = self.world_dir / "objects.yaml"
+
+        if not self.objects_path or not self.objects_path.exists():
+            self.objects = []
+            self.available_tags = []
+            return True
+
+        try:
+            o_data = self._load_yaml(self.objects_path)
+            self.objects = [ObjectDefinition.model_validate(obj) for obj in o_data.get("objects", [])]
+            tags_seen = []
+            for t in o_data.get("tags", []):
+                if t not in tags_seen:
+                    tags_seen.append(t)
+            for obj in self.objects:
+                for t in obj.tags:
+                    if t not in tags_seen:
+                        tags_seen.append(t)
+            self.available_tags = tags_seen
+            return True
+        except Exception as e:
+            print(f"Error loading objects from {self.objects_path}: {e}")
+            return False
 
     def get_region_colors(self, region_id: Optional[str] = None) -> Dict[str, tuple]:
         if region_id and region_id in self.region_colors and self.region_colors[region_id]:
@@ -94,17 +123,10 @@ class ProjectManager:
                 self.colors[k] = tuple(v)
                 
         # objects.yaml
-        o_data = self._load_yaml(world_dir / "objects.yaml")
-        self.objects = [ObjectDefinition.model_validate(obj) for obj in o_data.get("objects", [])]
-        tags_seen = []
-        for t in o_data.get("tags", []):
-            if t not in tags_seen:
-                tags_seen.append(t)
-        for obj in self.objects:
-            for t in obj.tags:
-                if t not in tags_seen:
-                    tags_seen.append(t)
-        self.available_tags = tags_seen
+        self.objects_path = world_dir / "objects.yaml"
+        if not self.load_objects():
+            self.load_error = f"Failed to load objects from {self.objects_path}"
+            return False
         
         # enemies.yaml
         e_data = self._load_yaml(world_dir / "enemies.yaml")

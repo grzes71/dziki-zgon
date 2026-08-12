@@ -7,70 +7,18 @@ exits:
   east: MIDDLE_CENTER_2
   west: null
 objects:
-- object: ROCK_BIG
-  x: 33
-  y: 9
-- object: ROCK_BIG
-  x: 33
-  y: 0
 - object: CHAIN_1
   x: 36
-  y: 3
-  repeat-y: 6
-- object: SWAMP
-  x: 26
-  y: 5
-- object: SWAMP
-  x: 28
-  y: 5
-- object: SWAMP
-  x: 28
-  y: 7
-- object: SWAMP
-  x: 27
+  y: 4
+- object: CHAIN_1
+  x: 36
   y: 6
-- object: SWAMP
-  x: 25
-  y: 6
-- object: SWAMP
-  x: 26
-  y: 7
-- object: SWAMP
-  x: 27
+- object: CHAIN_1
+  x: 36
   y: 8
-- object: SWAMP
-  x: 27
-  y: 4
-- object: SWAMP
-  x: 29
-  y: 4
-- object: SWAMP
-  x: 29
-  y: 6
-- object: SWAMP
-  x: 30
-  y: 5
-- object: SWAMP
-  x: 30
-  y: 7
-- object: SWAMP
-  x: 29
-  y: 8
-- object: SWAMP
-  x: 31
-  y: 6
-- object: REED
-  x: 31
-  y: 5
-- object: REED
-  x: 29
-  y: 5
 - object: REED
   x: 28
   y: 4
-- object: REED
-  x: 27
-  y: 5
 - object: REED
   x: 26
   y: 6
@@ -81,124 +29,82 @@ objects:
   x: 30
   y: 6
 - object: REED
-  x: 29
-  y: 7
-- object: REED
-  x: 27
-  y: 7
-- object: REED
   x: 28
   y: 8
-- object: WATER_DOWN
-  x: 0
-  y: 11
-  repeat-x: 33
 - object: WATER_UP
   x: 0
   y: 0
-  repeat-x: 33
-- object: CROSS_2
-  x: 30
-  y: 4
-- object: CROSS_2
-  x: 32
-  y: 5
-- object: CROSS_2
-  x: 31
-  y: 7
-- object: SWAMP
+- object: WATER_UP
+  x: 2
+  y: 0
+- object: WATER_UP
+  x: 4
+  y: 0
+- object: WATER_UP
+  x: 6
+  y: 0
+- object: WATER_UP
+  x: 8
+  y: 0
+- object: WATER_UP
+  x: 10
+  y: 0
+- object: WATER_UP
+  x: 12
+  y: 0
+- object: WATER_UP
+  x: 14
+  y: 0
+- object: WATER_UP
+  x: 16
+  y: 0
+- object: WATER_UP
+  x: 18
+  y: 0
+- object: WATER_UP
+  x: 20
+  y: 0
+- object: WATER_UP
+  x: 22
+  y: 0
+- object: WATER_UP
+  x: 24
+  y: 0
+- object: WATER_UP
+  x: 26
+  y: 0
+- object: WATER_UP
   x: 28
-  y: 9
-- object: SHIP
-  x: 1
+  y: 0
+- object: WATER_UP
+  x: 30
+  y: 0
+- object: WATER_UP
+  x: 32
+  y: 0
+- object: CROSS_2
+  x: 30
   y: 4
-- object: RIVER_BR
-  x: 10
-  y: 7
-- object: RIVER_TR
-  x: 10
-  y: 1
 - object: WATER_ANIM
   x: 0
   y: 2
-  repeat-x: 10
+  repeat-x: 5
 - object: WATER_ANIM
   x: 0
   y: 8
-  repeat-x: 10
-- object: WAVES_UP
-  x: 0
-  y: 1
-  repeat-x: 10
-- object: WAVES_UP
-  x: 0
-  y: 7
-  repeat-x: 10
-- object: WAVES_DOWN
-  x: 0
-  y: 9
-  repeat-x: 10
-- object: WAVES_DOWN
-  x: 0
-  y: 3
-  repeat-x: 10
-- object: ROCK_2
-  x: 20
-  y: 1
+  repeat-x: 5
 - object: ROCK_2
   x: 20
   y: 4
 - object: ROCK_2
   x: 20
-  y: 7
-- object: ROCK_2
-  x: 20
   y: 10
-- object: CHAIN_2
-  x: 21
-  y: 8
-  repeat-y: 2
-- object: CHAIN_2
-  x: 21
-  y: 5
-  repeat-y: 2
-- object: CHAIN_2
-  x: 21
-  y: 2
-  repeat-y: 2
-- object: TREE_SMALL
-  x: 25
-  y: 3
-- object: TREE_SMALL
-  x: 25
-  y: 8
-- object: TREE_SMALL
-  x: 16
-  y: 7
 - object: TREE_SMALL
   x: 16
   y: 2
-- object: BUSH
-  x: 32
-  y: 9
-- object: BUSH_2
-  x: 29
-  y: 2
-- object: BUSH_2
-  x: 15
-  y: 10
-- object: BUSH_2
-  x: 25
-  y: 1
-- object: BUSH
-  x: 32
-  y: 1
 - object: BUSH
   x: 30
   y: 10
-- object: BUSH
-  x: 39
-  y: 7
 - object: BUSH_2
   x: 38
   y: 4

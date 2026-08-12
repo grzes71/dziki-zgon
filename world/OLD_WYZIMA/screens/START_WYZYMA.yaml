@@ -7,181 +7,37 @@ exits:
   east: null
   west: null
 objects:
-- object: HOUSE_TALL
-  x: 13
-  y: 4
-- object: HOUSE_BIGGER
-  x: 32
-  y: 7
-- object: CHURCH_SMALL
-  x: 19
-  y: 5
-- object: HOUSE_BIGGER_2
-  x: 2
-  y: 7
-- object: SHED
-  x: 11
-  y: 9
-- object: TREE_2
-  x: 9
-  y: 6
 - object: TREE_SMALL
   x: 0
   y: 8
 - object: HOUSE_BIGGER
   x: 0
   y: 2
-- object: SHED
-  x: 9
-  y: 2
-- object: HOUSE_SMALL_2
-  x: 31
-  y: 2
 - object: TREE_2
   x: 36
   y: 2
 - object: BUSH_2
   x: 0
   y: 6
-- object: BUSH_2
-  x: 6
-  y: 1
-- object: BUSH_2
-  x: 8
-  y: 11
-- object: BUSH_2
-  x: 38
-  y: 9
-- object: BUSH_2
-  x: 27
-  y: 1
-- object: CROSS_2
-  x: 15
-  y: 8
-- object: CROSS_2
-  x: 15
-  y: 10
-- object: CROSS_2
-  x: 14
-  y: 9
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 11
-  repeat-x: 3
-- object: GROUND_BROWN_DOWN
-  x: 3
-  y: 11
-  repeat-x: 2
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 0
-  repeat-x: 3
 - object: GROUND_BROWN_DOWN
-  x: 0
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 1
-  repeat-y: 2
+  x: 2
+  y: 0
 - object: GROUND_BROWN_UP
   x: 36
   y: 0
-  repeat-x: 4
+- object: GROUND_BROWN_UP
+  x: 38
+  y: 0
 - object: GROUND_BROWN_UP
   x: 34
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 39
-  y: 3
-- object: GROUND_BROWN_DOWN
-  x: 35
+  x: 20
   y: 0
-- object: GROUND_BROWN_DOWN
-  x: 33
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 38
-  y: 1
-- object: FENCE_4
-  x: 5
-  y: 4
-- object: FENCE_4
-  x: 7
-  y: 9
-- object: FENCE_4
-  x: 17
-  y: 6
-- object: CLAW
-  x: 18
-  y: 11
-  repeat-x: 6
-- object: CLAW
-  x: 5
-  y: 3
-  repeat-x: 4
-- object: HOUSE_SMALL_2
-  x: 19
-  y: 2
-- object: CLAW
-  x: 23
-  y: 3
-  repeat-x: 8
-- object: HOUSE_SMALL
-  x: 25
-  y: 6
-- object: BUSH_2
-  x: 27
-  y: 9
-- object: BUSH_2
-  x: 37
-  y: 5
-- object: BUSH_2
-  x: 15
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 31
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 33
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 29
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 27
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 25
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 23
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 27
-  y: 11
-  repeat-x: 9
-- object: GROUND_BROWN_DOWN
-  x: 19
-  y: 0
-  repeat-x: 2
 - object: GROUND_BROWN_DOWN
   x: 22
   y: 0
-  repeat-x: 2
-- object: GROUND_BROWN_DOWN
-  x: 25
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 24
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 17
-  y: 0
-- object: ROCK_2
-  x: 37
-  y: 11
 enemies: []

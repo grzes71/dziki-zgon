@@ -86,11 +86,10 @@ def test_build_screen_single_tile(harness):
     cpu.memory[SCREEN_POINTERS_LO] = SCREEN_DATA & 0xFF
     cpu.memory[SCREEN_POINTERS_HI] = (SCREEN_DATA >> 8) & 0xFF
     
-    # Setup SCREEN_DATA: 1 obiekt (kod=1, x=2, y=1)
+    # Setup SCREEN_DATA: 1 obiekt (kod=1, x=2, y=2)
     cpu.memory[SCREEN_DATA] = 1     # Liczba obiektów
     cpu.memory[SCREEN_DATA+1] = 1   # Kod obiektu
-    cpu.memory[SCREEN_DATA+2] = 2   # X
-    cpu.memory[SCREEN_DATA+3] = 1   # Y
+    cpu.memory[SCREEN_DATA+2] = 33  # packed_xy = (1 << 5) | 1 = 33
     
     # Setup OBJ_SIZE: (W-1)<<4 | (H-1) -> 0x00 dla rozmiaru 1x1
     cpu.memory[OBJ_SIZE + 1] = 0x00
@@ -116,11 +115,11 @@ def test_build_screen_single_tile(harness):
         
     assert steps < max_steps, "Nieskończona pętla w 6502!"
     
-    # Asercja wirtualnego VRAMu (Szerokość 40. Y=1, X=2 -> indeks 42)
-    assert cpu.memory[GAME_SCREEN_A5 + 42] == 42, "Brak kafelka na właściwej pozycji VRAM"
+    # Asercja wirtualnego VRAMu (Szerokość 40. Y=2, X=2 -> indeks 82)
+    assert cpu.memory[GAME_SCREEN_A5 + 82] == 42, "Brak kafelka na właściwej pozycji VRAM"
     # Sprawdzenie czy dookoła nic nie ma
-    assert cpu.memory[GAME_SCREEN_A5 + 41] == 0
-    assert cpu.memory[GAME_SCREEN_A5 + 43] == 0
+    assert cpu.memory[GAME_SCREEN_A5 + 81] == 0
+    assert cpu.memory[GAME_SCREEN_A5 + 83] == 0
 
 def test_build_screen_blocking_with_empty_tiles(harness):
     xex_file, labels = harness
@@ -156,11 +155,10 @@ def test_build_screen_blocking_with_empty_tiles(harness):
     cpu.memory[SCREEN_POINTERS_LO] = SCREEN_DATA & 0xFF
     cpu.memory[SCREEN_POINTERS_HI] = (SCREEN_DATA >> 8) & 0xFF
     
-    # Setup SCREEN_DATA: 1 obiekt (kod=1, x=4, y=3)
+    # Setup SCREEN_DATA: 1 obiekt (kod=1, x=4, y=2)
     cpu.memory[SCREEN_DATA] = 1     # Liczba obiektów
     cpu.memory[SCREEN_DATA+1] = 1   # Kod obiektu
-    cpu.memory[SCREEN_DATA+2] = 4   # X
-    cpu.memory[SCREEN_DATA+3] = 3   # Y
+    cpu.memory[SCREEN_DATA+2] = 34  # packed_xy = (1 << 5) | 2 = 34
     
     # Setup OBJ_SIZE: (W-1)<<4 | (H-1) -> W=2, H=2 -> (2-1)<<4 | (2-1) = 0x11
     cpu.memory[OBJ_SIZE + 1] = 0x11
@@ -193,14 +191,14 @@ def test_build_screen_blocking_with_empty_tiles(harness):
     assert steps < max_steps, "Nieskończona pętla w 6502!"
     
     # Asercja wirtualnego VRAMu
+    # Row 2, Col 4 -> 2 * 40 + 4 = 84
+    # Row 2, Col 5 -> 2 * 40 + 5 = 85
     # Row 3, Col 4 -> 3 * 40 + 4 = 124
     # Row 3, Col 5 -> 3 * 40 + 5 = 125
-    # Row 4, Col 4 -> 4 * 40 + 4 = 164
-    # Row 4, Col 5 -> 4 * 40 + 5 = 165
-    assert cpu.memory[GAME_SCREEN_A5 + 124] == 0
-    assert cpu.memory[GAME_SCREEN_A5 + 125] == 42
-    assert cpu.memory[GAME_SCREEN_A5 + 164] == 43
-    assert cpu.memory[GAME_SCREEN_A5 + 165] == 0
+    assert cpu.memory[GAME_SCREEN_A5 + 84] == 0
+    assert cpu.memory[GAME_SCREEN_A5 + 85] == 42
+    assert cpu.memory[GAME_SCREEN_A5 + 124] == 43
+    assert cpu.memory[GAME_SCREEN_A5 + 125] == 0
     
     # Asercja COLLISION_GRID
     def is_blocking(x, y):
@@ -209,14 +207,14 @@ def test_build_screen_blocking_with_empty_tiles(harness):
         mask = 0x80 >> bit_index
         return bool(cpu.memory[COLLISION_GRID + byte_offset] & mask)
         
-    assert is_blocking(4, 3) is False, "Empty tile (4,3) should not block"
-    assert is_blocking(5, 3) is True, "Non-empty tile (5,3) should block"
-    assert is_blocking(4, 4) is True, "Non-empty tile (4,4) should block"
-    assert is_blocking(5, 4) is False, "Empty tile (5,4) should not block"
+    assert is_blocking(4, 2) is False, "Empty tile (4,2) should not block"
+    assert is_blocking(5, 2) is True, "Non-empty tile (5,2) should block"
+    assert is_blocking(4, 3) is True, "Non-empty tile (4,3) should block"
+    assert is_blocking(5, 3) is False, "Empty tile (5,3) should not block"
     
     # Sprawdzenie czy dookoła nic nie jest zablokowane
-    assert is_blocking(3, 3) is False
-    assert is_blocking(6, 3) is False
-    assert is_blocking(4, 2) is False
-    assert is_blocking(4, 5) is False
+    assert is_blocking(3, 2) is False
+    assert is_blocking(6, 2) is False
+    assert is_blocking(4, 1) is False
+    assert is_blocking(4, 4) is False
 

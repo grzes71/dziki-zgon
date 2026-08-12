@@ -7,15 +7,9 @@ exits:
   east: VILLAGE2
   west: null
 objects:
-- object: HOUSE_TALL
-  x: 18
-  y: 3
 - object: HOUSE_SMALL
   x: 2
   y: 4
-- object: ROCK_GREEN
-  x: 34
-  y: 5
 - object: ROCK_GREEN
   x: 0
   y: 8
@@ -23,165 +17,47 @@ objects:
   x: 34
   y: 2
 - object: TREE_SMALL
-  x: 11
-  y: 2
-- object: TREE_SMALL
   x: 6
   y: 2
-- object: ROCK_GREEN
-  x: 2
-  y: 9
-- object: BUSH
-  x: 29
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 5
-  y: 0
 - object: GROUND_BROWN_DOWN
   x: 0
-  y: 1
-  repeat-y: 2
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 36
-  y: 1
-  repeat-x: 2
+  y: 2
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 2
-- object: REED
-  x: 14
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 0
-  y: 9
-- object: GROUND_GREEN_DOWN
-  x: 6
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 5
-  y: 10
-- object: GROUND_GREEN_DOWN
-  x: 9
-  y: 11
 - object: GROUND_GREEN_DOWN
   x: 36
   y: 0
-  repeat-x: 2
-- object: GROUND_GREEN_DOWN
-  x: 39
-  y: 2
 - object: GROUND_GREEN_DOWN
   x: 34
   y: 0
 - object: GROUND_GREEN_UP
   x: 16
-  y: 1
-- object: GROUND_GREEN_UP
-  x: 21
-  y: 0
-  repeat-y: 2
-- object: GROUND_GREEN_UP
-  x: 15
-  y: 0
-  repeat-x: 5
-- object: GROUND_GREEN_UP
-  x: 13
   y: 0
 - object: GROUND_GREEN_UP
-  x: 14
-  y: 1
-- object: GROUND_GREEN_UP
-  x: 23
+  x: 18
   y: 0
-- object: GROUND_GREEN_UP
-  x: 11
-  y: 0
-- object: GROUND_GREEN_DOWN
-  x: 7
-  y: 0
-- object: GROUND_GREEN_DOWN
-  x: 4
-  y: 11
-- object: GROUND_GREEN_DOWN
-  x: 3
-  y: 10
-- object: BARREL
-  x: 1
-  y: 5
 - object: OUTHOUSE
   x: 8
   y: 4
-- object: REED
-  x: 13
-  y: 10
-- object: GROUND_GREEN_DOWN
-  x: 1
-  y: 11
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 3
-  y: 11
 - object: GROUND_BROWN_UP
   x: 0
   y: 10
-  repeat-x: 3
 - object: GROUND_BROWN_UP
-  x: 1
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 1
-  y: 3
-- object: GROUND_BROWN_UP
-  x: 27
-  y: 0
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 0
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 1
+  x: 2
+  y: 10
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 0
-- object: GROUND_BROWN_DOWN
-  x: 39
-  y: 1
 - object: GROUND_BROWN_DOWN
   x: 32
   y: 0
 - object: SHED
   x: 24
   y: 4
-- object: SIGNPOINT_RIGHT
-  x: 31
-  y: 1
-- object: TREE_SMALL
-  x: 9
-  y: 8
 - object: TREE_2
   x: 16
   y: 4
-- object: BUSH_2
-  x: 15
-  y: 9
-- object: BUSH_2
-  x: 5
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 18
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 11
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 3
-  y: 7
 - object: GROUND_BROWN_DOWN
   x: 14
   y: 4
@@ -191,82 +67,25 @@ objects:
 - object: TREE_3
   x: 22
   y: 8
-- object: CROSS_2
-  x: 31
-  y: 3
-- object: ROCK_1
-  x: 25
-  y: 2
-- object: WATER_TL
-  x: 19
-  y: 10
-- object: WAVES_LEFT
-  x: 19
-  y: 11
-- object: WAVES_UP
-  x: 20
-  y: 10
-  repeat-x: 20
-- object: WATER_ANIM
-  x: 20
-  y: 11
-  repeat-x: 20
 - object: BARN_SMALL
   x: 26
   y: 8
-- object: REED
-  x: 32
-  y: 9
-- object: REED
-  x: 36
-  y: 9
-- object: REED
-  x: 34
-  y: 9
-- object: REED
-  x: 38
-  y: 9
-- object: REED
-  x: 18
-  y: 11
-- object: REED
-  x: 19
-  y: 9
-- object: BRICKS_2
-  x: 6
-  y: 5
-  repeat-x: 2
 - object: TREE_2
   x: 38
   y: 6
-- object: TREE_2
-  x: 31
-  y: 5
 - object: OUTHOUSE
   x: 28
   y: 4
-- object: FENCE_5
-  x: 27
-  y: 5
-- object: FENCE_5
-  x: 22
-  y: 5
-  repeat-x: 2
-- object: TREE_3
-  x: 9
-  y: 0
-- object: TREE_3
-  x: 3
-  y: 1
 - object: BUSH
   x: 2
   y: 0
-- object: BUSH
-  x: 12
-  y: 5
-- object: MUSHROOM
-  x: 35
-  y: 7
+- object: WATER_TL
+  x: 18
+  y: 10
+- object: WAVES_UP
+  x: 20
+  y: 10
+  repeat-x: 10
 enemies:
 - enemy: strzyga
   x: 14

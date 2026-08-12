@@ -92,8 +92,8 @@ def compute_expected_vram(world_dir: Path, region_id: str, screen_id: str):
         h = obj_def.size.height
         tiles = obj_def.tiles
         
-        base_x = obj_inst.x
-        base_y = obj_inst.y
+        base_x = (obj_inst.x // 2) * 2
+        base_y = (obj_inst.y // 2) * 2
 
         for ty in range(h):
             for tx in range(w):

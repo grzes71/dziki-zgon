@@ -9,80 +9,26 @@ exits:
 objects:
 - object: CASTLE_SMALL
   x: 16
-  y: 5
+  y: 6
   type: kwatera
   conditions_met: hello
   conditions_unmet: world
   game_over: false
-- object: TREE_2
-  x: 27
-  y: 10
-- object: TREE_2
-  x: 37
-  y: 10
-- object: ROCK_2
-  x: 15
-  y: 11
-- object: STONE
-  x: 1
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 1
-  y: 8
-- object: GROUND_BROWN_DOWN
-  x: 0
-  y: 7
 - object: GROUND_BROWN_UP
   x: 0
   y: 8
-  repeat-y: 4
-- object: GROUND_GREEN_UP
-  x: 5
-  y: 0
-- object: BRICKS_2
-  x: 24
-  y: 6
-  repeat-x: 2
-- object: OUTHOUSE
-  x: 26
-  y: 5
-- object: TREE_3
-  x: 21
+- object: GROUND_BROWN_UP
+  x: 0
   y: 10
 - object: TREE_3
   x: 38
   y: 0
-- object: TREE_2
-  x: 19
-  y: 1
-- object: WAVE_UP
-  x: 17
-  y: 7
 - object: TREE_3
   x: 2
   y: 6
-- object: TREE_SMALL
-  x: 11
-  y: 10
-- object: TREE_2
-  x: 3
-  y: 1
-- object: ROCK_2
-  x: 33
-  y: 11
 - object: GROUND_BROWN_UP
   x: 0
   y: 0
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 1
-- object: BUSH_2
-  x: 16
-  y: 9
-- object: BUSH_2
-  x: 37
-  y: 8
 - object: BUSH_2
   x: 16
   y: 0
@@ -93,140 +39,48 @@ objects:
   x: 34
   y: 0
 - object: BUSH
-  x: 35
-  y: 9
-- object: BUSH
   x: 10
   y: 0
-- object: BUSH
-  x: 5
-  y: 7
-- object: BUSH
-  x: 19
-  y: 11
-- object: BUSH
-  x: 30
-  y: 11
-- object: BUSH
-  x: 25
-  y: 11
-- object: WATER_ANIM
-  x: 18
-  y: 7
-  repeat-x: 14
 - object: WAVES_DOWN
-  x: 17
+  x: 26
   y: 8
-  repeat-x: 16
-- object: WATER_BL
-  x: 16
-  y: 8
-- object: WATER_BR
-  x: 33
-  y: 8
-- object: WAVES_LEFT
-  x: 16
-  y: 7
+  repeat-x: 4
 - object: GROUND_BROWN_UP
   x: 0
   y: 6
 - object: SIGNPOINT_RIGHT
   x: 24
   y: 2
-- object: WATERFALL_2
-  x: 29
-  y: 2
 - object: WAVE_UP
   x: 32
-  y: 5
-  repeat-y: 3
-- object: WAVES_RIGHT
-  x: 33
-  y: 5
-  repeat-y: 3
-- object: WAVES_LEFT
-  x: 31
-  y: 5
-  repeat-y: 2
-- object: TREE_2
-  x: 7
-  y: 2
-- object: SWAMP
-  x: 9
   y: 6
-- object: SWAMP
-  x: 6
-  y: 5
-- object: SWAMP
-  x: 9
-  y: 4
-- object: SWAMP
-  x: 8
-  y: 5
-- object: SWAMP
-  x: 7
-  y: 6
-- object: SWAMP
-  x: 8
-  y: 7
 - object: REED
   x: 8
   y: 6
-- object: REED
-  x: 7
-  y: 5
-- object: REED
-  x: 9
-  y: 5
-- object: REED
-  x: 7
-  y: 7
-- object: REED
-  x: 9
-  y: 7
 - object: REED
   x: 8
   y: 8
-- object: REED
-  x: 5
-  y: 5
 - object: REED
   x: 10
   y: 4
 - object: WATER_DOWN
   x: 28
   y: 6
-  repeat-x: 3
+- object: WATER_DOWN
+  x: 30
+  y: 6
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 2
-- object: CROSS_2
-  x: 0
-  y: 3
-- object: CROSS_2
-  x: 1
-  y: 4
-- object: CROSS_2
-  x: 0
-  y: 5
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 4
-- object: BARREL
-  x: 15
-  y: 6
 - object: TREE_2
   x: 12
   y: 6
-- object: TREE_2
-  x: 13
-  y: 1
 - object: MUSHROOM
   x: 10
   y: 2
-- object: TREE_3
-  x: 35
-  y: 6
 enemies:
 - enemy: kikimora
   x: 25

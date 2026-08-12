@@ -10,6 +10,7 @@ class RegionTreeWidget(QTreeWidget):
     request_add_region = Signal()
     request_edit_region_colors = Signal(str) # region_id
     request_delete_region = Signal(str) # region_id
+    request_clean_screen = Signal(str, str) # region_id, screen_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -78,6 +79,11 @@ class RegionTreeWidget(QTreeWidget):
                     act_delete_region = QAction("Delete Region...", self)
                     act_delete_region.triggered.connect(lambda _, r=region_id: self.request_delete_region.emit(r))
                     menu.addAction(act_delete_region)
+            elif item_type == "SCREEN":
+                screen_id = item.data(0, 34)
+                act_clean_screen = QAction("Clean", self)
+                act_clean_screen.triggered.connect(lambda _, r=region_id, s=screen_id: self.request_clean_screen.emit(r, s))
+                menu.addAction(act_clean_screen)
 
         menu.exec_(self.viewport().mapToGlobal(pos))
 

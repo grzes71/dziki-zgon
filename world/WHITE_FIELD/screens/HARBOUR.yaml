@@ -8,16 +8,13 @@ exits:
   west: VILLAGE_3
 objects:
 - object: TREE_2
-  x: 10
-  y: 4
-- object: TREE_2
-  x: 24
+  x: 26
   y: 2
 - object: TREE_2
-  x: 34
+  x: 36
   y: 2
 - object: PORT
-  x: 24
+  x: 28
   y: 6
   type: portal
   conditions_met: pięknie, płyniemy!
@@ -27,168 +24,65 @@ objects:
   items_required:
   - 6
   cost_of_travel: 10
-- object: WAVES
-  x: 21
-  y: 9
-  repeat-x: 19
 - object: TREE_3
   x: 30
   y: 2
-- object: BUSH
-  x: 31
-  y: 0
-- object: GROUND_GREEN_DOWN
-  x: 37
-  y: 0
-- object: GROUND_GREEN_DOWN
-  x: 38
-  y: 1
-- object: GROUND_GREEN_DOWN
-  x: 36
-  y: 1
-- object: GROUND_GREEN_DOWN
-  x: 39
-  y: 0
-- object: GROUND_GREEN_DOWN
-  x: 35
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 33
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 39
-  y: 2
-- object: WAVES
-  x: 0
-  y: 9
-  repeat-x: 12
-- object: WATER_ANIM
-  x: 0
-  y: 10
-  repeat-x: 13
-- object: WATER_ANIM
-  x: 0
-  y: 11
-  repeat-x: 40
-- object: WATER_ANIM
-  x: 22
-  y: 10
-  repeat-x: 18
-- object: WAVES
-  x: 13
-  y: 10
-  repeat-x: 9
-- object: SHED
-  x: 36
-  y: 7
-- object: TREE_SMALL
-  x: 2
-  y: 5
-- object: TREE_SMALL
-  x: 5
-  y: 6
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 0
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 2
-  repeat-x: 2
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 3
-- object: ROCK_GREEN
-  x: 37
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 23
-  y: 5
-- object: REED
-  x: 0
-  y: 8
-  repeat-x: 2
-- object: REED
-  x: 11
-  y: 8
-- object: SHIP
-  x: 12
-  y: 7
 - object: TREE_3
   x: 12
   y: 2
-- object: ROCK_GREEN
-  x: 6
-  y: 1
-- object: TREE_3
-  x: 9
-  y: 7
-- object: ROCK_GREEN
-  x: 18
-  y: 3
-- object: MUSHROOM
-  x: 28
-  y: 1
 - object: TREE_3
   x: 18
   y: 0
 - object: TREE_3
   x: 22
   y: 0
-- object: GROUND_BROWN_DOWN
-  x: 20
-  y: 1
-  repeat-y: 2
-- object: GROUND_BROWN_DOWN
-  x: 21
-  y: 3
-- object: GROUND_BROWN_DOWN
-  x: 20
-  y: 4
-- object: GROUND_BROWN_DOWN
-  x: 20
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 19
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 25
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 17
-  y: 5
-- object: MUSHROOM
-  x: 13
-  y: 6
 - object: TREE_3
   x: 0
   y: 0
-- object: BUSH_2
-  x: 13
-  y: 4
-- object: BUSH_2
-  x: 3
-  y: 8
-- object: BUSH_2
-  x: 1
-  y: 3
-- object: TREE_3
-  x: 3
-  y: 2
 - object: SIGNPOINT_LEFT
   x: 10
   y: 0
-- object: TREE_3
-  x: 7
+- object: SHIP
+  x: 6
+  y: 8
+- object: WAVES_UP
+  x: 0
+  y: 10
+  repeat-x: 3
+- object: WAVES_UP
+  x: 16
+  y: 10
+  repeat-x: 12
+- object: TREE_2
+  x: 2
   y: 4
+- object: TREE_2
+  x: 8
+  y: 6
+- object: TREE_2
+  x: 18
+  y: 6
+- object: TREE_2
+  x: 38
+  y: 4
+- object: TREE_2
+  x: 6
+  y: 2
+- object: TREE_2
+  x: 4
+  y: 8
+- object: TREE_3
+  x: 26
+  y: 8
+- object: TREE_3
+  x: 20
+  y: 2
+- object: TREE_3
+  x: 38
+  y: 0
+- object: TREE_3
+  x: 34
+  y: 0
 enemies:
 - enemy: strzyga
   x: 16
