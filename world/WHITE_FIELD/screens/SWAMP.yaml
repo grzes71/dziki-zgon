@@ -106,9 +106,6 @@ objects:
   x: 36
   y: 8
 - object: REED_2V
-  x: 30
-  y: 10
-- object: REED_2V
   x: 20
   y: 0
 - object: REED_2V
@@ -168,9 +165,6 @@ objects:
 - object: ROCK_GREEN
   x: 24
   y: 2
-- object: ROCK_GREEN
-  x: 32
-  y: 10
 - object: CROSS_1
   x: 12
   y: 6
@@ -186,9 +180,6 @@ objects:
 - object: GROUND_GREEN_UP_2
   x: 8
   y: 4
-- object: GROUND_GREEN_UP_2
-  x: 4
-  y: 6
 - object: SWAMP_2_WEED
   x: 24
   y: 4
@@ -204,9 +195,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 28
   y: 6
-- object: GROUND_BROWN_DOWN
-  x: 30
-  y: 8
 - object: GROUND_BROWN_DOWN
   x: 32
   y: 0
@@ -225,6 +213,25 @@ objects:
 - object: WAVE_UP
   x: 26
   y: 10
+- object: ROCK_GREEN
+  x: 30
+  y: 8
+- object: BUSH_2
+  x: 32
+  y: 10
+- object: BUSH_2_2
+  x: 4
+  y: 8
+- object: MUSHROOM
+  x: 8
+  y: 8
+- object: MUSHROOM
+  x: 2
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 2
+  y: 6
+  repeat-x: 2
 enemies:
 - enemy: kikimora
   x: 10

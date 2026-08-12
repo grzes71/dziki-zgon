@@ -7,80 +7,38 @@ exits:
   east: WASTELAND
   west: VILLAGE
 objects:
-- object: GROUND_GREEN_DOWN
-  x: 0
-  y: 2
-- object: CROSS_1
-  x: 24
-  y: 10
-- object: GROUND_BROWN_DOWN
-  x: 18
-  y: 4
-- object: GROUND_BROWN_DOWN
-  x: 12
-  y: 0
 - object: TREE_3
   x: 16
-  y: 10
-- object: GROUND_BROWN_UP
-  x: 26
   y: 10
 - object: TREE_2
   x: 32
   y: 10
-- object: GROUND_BROWN_DOWN
-  x: 12
-  y: 10
 - object: TREE_2
   x: 38
   y: 10
-- object: GROUND_GREEN_UP
-  x: 0
-  y: 0
 - object: SECRET1
-  x: 6
-  y: 6
+  x: 8
+  y: 2
   items_provided:
   - 6
 - object: TREE_SMALL
-  x: 14
-  y: 4
-- object: TREE_SMALL
   x: 0
   y: 6
 - object: TREE_SMALL
-  x: 12
-  y: 2
+  x: 10
+  y: 0
 - object: TREE_SMALL
   x: 20
   y: 10
-- object: GROUND_BROWN_DOWN
-  x: 16
+- object: TREE_SMALL
+  x: 14
   y: 6
-- object: TREE_2
-  x: 38
-  y: 2
 - object: TREE_SMALL
-  x: 12
-  y: 6
-- object: BUSH_2
-  x: 8
-  y: 2
-- object: TREE_SMALL
-  x: 2
-  y: 4
-- object: TREE_SMALL
-  x: 2
+  x: 4
   y: 0
 - object: WAVES_UP
   x: 0
   y: 10
-- object: ROCK_GREEN
-  x: 8
-  y: 4
-- object: SIGNPOINT_LEFT
-  x: 6
-  y: 8
 - object: WATER_TR
   x: 2
   y: 10
@@ -91,10 +49,173 @@ objects:
   x: 18
   y: 0
   repeat-x: 11
+- object: HOUSE_MEDIUM_BLUE
+  x: 18
+  y: 4
+- object: HOUSE_SMALL_BLUE
+  x: 36
+  y: 2
+- object: HOUSE_MEDIUM_GREEN
+  x: 8
+  y: 10
+- object: HOUSE_SMALL_BLUE
+  x: 2
+  y: 6
+- object: FENCE_4_2
+  x: 6
+  y: 6
+- object: OUTHOUSE_3
+  x: 8
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 10
+  y: 2
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 0
+  y: 8
+  repeat-x: 9
+- object: GROUND_GREEN_UP_2
+  x: 4
+  y: 2
+- object: BARREL_2_2
+  x: 12
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 36
+  y: 4
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 18
+  y: 6
+  repeat-x: 2
+- object: GROUND_GREEN_UP
+  x: 22
+  y: 6
+- object: HOUSE_MEDIUM_GREEN
+  x: 30
+  y: 6
+- object: GROUND_GREEN_UP
+  x: 34
+  y: 8
+- object: GROUND_GREEN_UP_2
+  x: 30
+  y: 8
+  repeat-x: 2
+- object: TREE_2
+  x: 24
+  y: 8
+- object: TREE_2
+  x: 26
+  y: 4
+- object: TREE_2
+  x: 32
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 24
+  y: 10
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 26
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 32
+  y: 4
+- object: WELL
+  x: 16
+  y: 2
+- object: TREE_2
+  x: 16
+  y: 6
+- object: CROSS_1
+  x: 20
+  y: 2
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 16
+  y: 4
+- object: REED_3
+  x: 28
+  y: 2
+- object: REED_3
+  x: 24
+  y: 2
+- object: BUSH_2_2
+  x: 12
+  y: 0
+- object: BUSH_2_2
+  x: 26
+  y: 8
+- object: BUSH_2_2
+  x: 36
+  y: 10
+- object: ROCK_GREEN
+  x: 6
+  y: 4
+- object: GROUND_BROWN_UP_TL
+  x: 0
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 2
+  y: 0
+- object: GROUND_BROWN_UP
+  x: 0
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 6
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 4
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 22
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 30
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 4
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 8
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 4
+- object: SIGNPOINT_BOTH
+  x: 28
+  y: 10
+- object: CROSS_3
+  x: 12
+  y: 4
 enemies:
 - enemy: strzyga
   x: 37
   y: 9
-  strategy: chaotic
+  strategy: random
   speed: medium
   color: cyan

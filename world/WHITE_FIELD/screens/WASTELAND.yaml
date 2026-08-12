@@ -38,15 +38,6 @@ objects:
   x: 0
   y: 0
   repeat-x: 13
-- object: WATER_INNER_TL
-  x: 26
-  y: 0
-- object: RIVER_VERTICAL
-  x: 26
-  y: 2
-- object: BRIDGE
-  x: 26
-  y: 4
 - object: RIVER_BL_2
   x: 26
   y: 6
@@ -160,11 +151,44 @@ objects:
   x: 22
   y: 6
 - object: GROUND_BROWN_DOWN_3
-  x: 16
-  y: 4
-- object: GROUND_BROWN_DOWN_3
   x: 6
   y: 6
+- object: WATER_INNER_TL
+  x: 26
+  y: 0
+- object: RIVER_VERTICAL
+  x: 26
+  y: 2
+- object: BRIDGE
+  x: 26
+  y: 4
+- object: GROUND_BROWN_UP_4
+  x: 38
+  y: 10
+- object: GROUND_BROWN_BR
+  x: 36
+  y: 10
+- object: GROUND_BROWN_DOWN_3
+  x: 18
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 4
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 34
+  y: 10
+- object: GROUND_BROWN_BR
+  x: 38
+  y: 4
 enemies:
 - enemy: strzyga
   x: 8

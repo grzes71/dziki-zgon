@@ -43,24 +43,17 @@ objects:
   x: 10
   y: 0
 - object: SHIP
-  x: 6
+  x: 10
   y: 8
 - object: WAVES_UP
   x: 0
   y: 10
-  repeat-x: 3
-- object: WAVES_UP
-  x: 16
-  y: 10
-  repeat-x: 12
+  repeat-x: 5
 - object: TREE_2
   x: 2
   y: 4
 - object: TREE_2
   x: 8
-  y: 6
-- object: TREE_2
-  x: 18
   y: 6
 - object: TREE_2
   x: 38
@@ -72,17 +65,100 @@ objects:
   x: 4
   y: 8
 - object: TREE_3
-  x: 26
+  x: 20
   y: 8
 - object: TREE_3
   x: 20
-  y: 2
+  y: 4
 - object: TREE_3
   x: 38
   y: 0
-- object: TREE_3
-  x: 34
+- object: GROUND_GREEN_UP_2
+  x: 6
+  y: 4
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 12
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 18
+  y: 2
+  repeat-x: 3
+- object: GROUND_GREEN_UP_2
+  x: 20
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 26
+  y: 4
+  repeat-x: 3
+- object: GROUND_GREEN_UP_2
+  x: 32
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 38
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 36
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 38
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 8
+  y: 8
+- object: WAVES_UP
+  x: 20
+  y: 10
+  repeat-x: 10
+- object: TREE_2
+  x: 32
   y: 0
+- object: MUSHROOM
+  x: 8
+  y: 2
+- object: MUSHROOM
+  x: 20
+  y: 0
+- object: MUSHROOM
+  x: 0
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 0
+  y: 6
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN_3
+  x: 12
+  y: 6
+- object: GROUND_BROWN_DOWN_3
+  x: 16
+  y: 6
+- object: GROUND_BROWN_DOWN_3
+  x: 24
+  y: 6
+- object: GROUND_BROWN_DOWN_3
+  x: 4
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 0
+  y: 2
+- object: BUSH_2_2
+  x: 28
+  y: 2
+- object: BUSH_2_2
+  x: 38
+  y: 8
+- object: BUSH_2_2
+  x: 0
+  y: 8
+- object: BUSH
+  x: 2
+  y: 0
+- object: GROUND_GREEN_UP
+  x: 2
+  y: 2
+- object: BARREL_2_2
+  x: 24
+  y: 8
 enemies:
 - enemy: strzyga
   x: 16

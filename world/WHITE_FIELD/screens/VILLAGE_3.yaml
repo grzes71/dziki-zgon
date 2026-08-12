@@ -10,9 +10,6 @@ objects:
 - object: HOUSE_MEDIUM_BLUE
   x: 28
   y: 4
-- object: BARN_SMALL
-  x: 18
-  y: 8
 - object: TREE_3
   x: 8
   y: 8
@@ -20,7 +17,7 @@ objects:
   x: 10
   y: 6
 - object: TREE_3
-  x: 28
+  x: 30
   y: 8
 - object: SIGNPOINT_LEFT
   x: 4
@@ -28,9 +25,6 @@ objects:
 - object: BUSH_2
   x: 6
   y: 6
-- object: SIGNPOINT_RIGHT
-  x: 30
-  y: 2
 - object: TREE_3
   x: 38
   y: 0
@@ -50,6 +44,148 @@ objects:
   x: 0
   y: 10
   repeat-x: 20
+- object: SIGNPOINT_BOTH
+  x: 14
+  y: 8
+- object: TREE_2
+  x: 34
+  y: 8
+- object: TREE_2
+  x: 2
+  y: 4
+- object: TREE_2
+  x: 4
+  y: 8
+- object: TREE_2
+  x: 16
+  y: 4
+- object: TREE_2
+  x: 4
+  y: 2
+- object: HOUSE_MEDIUM_GREEN
+  x: 24
+  y: 8
+- object: HOME_NEW
+  x: 18
+  y: 0
+- object: HOME_NEW_2
+  x: 8
+  y: 2
+- object: BARN_3
+  x: 34
+  y: 4
+- object: WELL
+  x: 34
+  y: 0
+- object: FENCE_2
+  x: 22
+  y: 8
+- object: OUTHOUSE
+  x: 20
+  y: 8
+- object: BARN_4
+  x: 26
+  y: 0
+- object: GROUND_GREEN_UP_2
+  x: 8
+  y: 4
+  repeat-x: 3
+- object: GROUND_GREEN_UP_2
+  x: 16
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 4
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 2
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 34
+  y: 2
+  repeat-x: 3
+- object: GROUND_BROWN_BL
+  x: 0
+  y: 8
+- object: BUSH
+  x: 18
+  y: 4
+- object: MUSHROOM
+  x: 36
+  y: 0
+- object: GROUND_GREEN_UP
+  x: 18
+  y: 6
+- object: GROUND_GREEN_UP
+  x: 28
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 28
+  y: 6
+  repeat-x: 4
+- object: GROUND_GREEN_UP
+  x: 36
+  y: 6
+- object: BUSH_2_2
+  x: 16
+  y: 0
+- object: GROUND_GREEN_UP_2
+  x: 16
+  y: 2
+  repeat-x: 6
+- object: TREE_2_2
+  x: 30
+  y: 0
+- object: TREE_2_2
+  x: 24
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 22
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 26
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 38
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 8
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 0
+- object: CROSS_2
+  x: 6
+  y: 2
+- object: CROSS_2
+  x: 0
+  y: 4
+- object: CROSS_2
+  x: 32
+  y: 2
+- object: CROSS_1_COPY
+  x: 18
+  y: 8
+- object: CROSS_1_COPY
+  x: 10
+  y: 8
 enemies:
 - enemy: kikimora
   x: 22

@@ -798,13 +798,13 @@ objects:
   code: 67
   size:
     width: 9
-    height: 3
+    height: 4
   flags:
     blocking: true
     interactive: false
     secret: false
   tiles: [0, 0, 0, 0, 0, 126, 19, 126, 0, 0, 0, 0, 0, 0, 195, 193, 194, 0, 93, 94,
-    94, 94, 94, 94, 94, 94, 125]
+    94, 94, 94, 94, 94, 94, 125, 133, 133, 133, 133, 133, 133, 133, 133, 133]
   tags: [woda]
 - object: CASTLE_BIGGEST
   id: CASTLE_BIGGEST
@@ -1251,12 +1251,12 @@ objects:
   code: 106
   size:
     width: 3
-    height: 1
+    height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles: [165, 169, 170]
+  tiles: [0, 0, 0, 165, 169, 170]
   tags: [infrastruktura]
 - object: CROSS_3
   id: CROSS_3
@@ -1659,13 +1659,13 @@ objects:
   id: CHAIN_1_2
   code: 143
   size:
-    width: 1
+    width: 2
     height: 2
   flags:
     blocking: false
     interactive: false
     secret: false
-  tiles: [240, 240]
+  tiles: [240, 240, 240, 240]
   tags: [animacja]
 - object: CHAIN_2_2
   id: CHAIN_2_2
@@ -1933,7 +1933,7 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles: [0, 124, 124, 203]
+  tiles: [203, 124, 124, 203]
   tags: [woda, animacja]
 - object: SWAMP_BLOCK_2
   id: SWAMP_BLOCK_2
@@ -1945,7 +1945,7 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles: [124, 133, 133, 124]
+  tiles: [124, 203, 203, 124]
   tags: [woda, animacja]
 - object: GROUND_BROWN_TR
   id: GROUND_BROWN_TR
@@ -2066,4 +2066,149 @@ objects:
     interactive: false
     secret: false
   tiles: [0, 100]
+  tags: [tło]
+- object: ROCK_1_2
+  id: ROCK_1_2
+  code: 180
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 10, 12]
+  tags: [skała]
+- object: ROCK_2_2
+  id: ROCK_2_2
+  code: 181
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 10, 11, 12]
+  tags: [skała]
+- object: ROCK_BIG_2
+  id: ROCK_BIG_2
+  code: 182
+  size:
+    width: 7
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 14, 15, 0, 0, 0, 13, 14, 74, 74, 15, 0, 13,
+    14, 74, 74, 74, 74, 15]
+  tags: [skała]
+- object: ROCK_GREEN_2
+  id: ROCK_GREEN_2
+  code: 183
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 13, 14, 15]
+  tags: [skała]
+- object: STONE_BIG_2
+  id: STONE_BIG_2
+  code: 184
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 0, 10, 11, 9, 12]
+  tags: [skała]
+- object: TREE_2_2
+  id: TREE_2_2
+  code: 185
+  size:
+    width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 51, 52, 83, 84]
+  tags: [drzewo]
+- object: TREE_SMALL_2
+  id: TREE_SMALL_2
+  code: 186
+  size:
+    width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 53, 54, 85, 86]
+  tags: [drzewo]
+- object: TREE_3_2
+  id: TREE_3_2
+  code: 187
+  size:
+    width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 7, 8, 39, 40]
+  tags: [drzewo]
+- object: PALM_TREE_2
+  id: PALM_TREE_2
+  code: 188
+  size:
+    width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 79, 114, 110, 111]
+  tags: [drzewo]
+- object: PALM_SWAMP_2
+  id: PALM_SWAMP_2
+  code: 189
+  size:
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 0, 0, 79, 114, 0, 203, 110, 111, 203, 0, 203, 203, 0]
+  tags: [drzewo, animacja]
+- object: CROSS_1_COPY
+  id: CROSS_1_COPY
+  code: 190
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 0, 43, 44]
+  tags: [tło]
+- object: CROSS_2_COPY
+  id: CROSS_2_COPY
+  code: 191
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 0, 46, 47]
   tags: [tło]
