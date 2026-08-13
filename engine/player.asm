@@ -49,24 +49,17 @@
     and #$01
     beq @chk_down
     dec ACTOR_INTENT_Y,x
-    lda #2
-    jsr set_player_dir
 
 @chk_down
     tya
     and #$02
     beq @chk_left
     inc ACTOR_INTENT_Y,x
-    lda #3
-    jsr set_player_dir
 
 @chk_left
     tya
     and #$04
     beq @chk_right
-    lda #1
-    jsr set_player_dir
-    
     jsr check_horizontal_move
     beq @chk_right
     dec ACTOR_INTENT_X,x
@@ -74,13 +67,43 @@
 @chk_right
     tya
     and #$08
-    beq @anim
+    beq @set_dir
+    jsr check_horizontal_move
+    beq @set_dir
+    inc ACTOR_INTENT_X,x
+
+@set_dir
+    ; Ustalamy kierunek (ACTOR_DIR) dokładnie RAZ na klatkę.
+    ; Priorytet mają kierunki poziome (lewo/prawo) przed pionowymi (góra/dół).
+    tya
+    and #$04            ; LEFT
+    beq @try_right
+    lda #1
+    jsr set_player_dir
+    jmp @anim
+
+@try_right
+    tya
+    and #$08            ; RIGHT
+    beq @try_up
     lda #0
     jsr set_player_dir
-    
-    jsr check_horizontal_move
+    jmp @anim
+
+@try_up
+    tya
+    and #$01            ; UP
+    beq @try_down
+    lda #2
+    jsr set_player_dir
+    jmp @anim
+
+@try_down
+    tya
+    and #$02            ; DOWN
     beq @anim
-    inc ACTOR_INTENT_X,x
+    lda #3
+    jsr set_player_dir
 
 @anim
     ; Aktualizacja animacji

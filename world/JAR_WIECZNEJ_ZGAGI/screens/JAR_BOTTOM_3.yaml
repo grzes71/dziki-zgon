@@ -58,9 +58,6 @@ objects:
   x: 4
   y: 6
 - object: PALM_TREE
-  x: 16
-  y: 8
-- object: PALM_TREE
   x: 18
   y: 6
 - object: PALM_TREE
@@ -130,4 +127,22 @@ objects:
 - object: SAND_3_TL
   x: 20
   y: 0
+- object: PALM_TREE
+  x: 14
+  y: 10
+- object: PALM_TREE
+  x: 10
+  y: 10
+- object: PALM_TREE
+  x: 20
+  y: 10
+- object: BUSH
+  x: 12
+  y: 10
+- object: BARREL_1_2
+  x: 24
+  y: 10
+- object: PALM_SWAMP
+  x: 16
+  y: 8
 enemies: []

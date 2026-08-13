@@ -37,11 +37,11 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$1FFD` – `$1FFF`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2000` – `$2007`** | 8 B | `disable_basic_loader` | INI Loader | Wyłączenie BASICa (obsługa INI na starcie xex). |
 | **`$2000` – `$202A`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$202B` – `$3616`** | 5612 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$3617` – `$3B50`** | 1338 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
+| **`$202B` – `$3633`** | 5641 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$3634` – `$3B6D`** | 1338 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
 | **`$9D21` – `$9DC4`** | 164 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$3B51` – `$3D27`** | 471 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
-| **`$3D28` – `$3E7F`** | 344 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$3B6E` – `$3D44`** | 471 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
+| **`$3D45` – `$3E7F`** | 315 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry ($3E80-$3FE7, dopasowane do strony 1 KB). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
 | **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). |
@@ -51,9 +51,9 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$5FEC` – `$5FFF`** | 20 B | — | **WOLNY RAM** | Pozostały wolny RAM przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. |
-| **`$6800` – `$7DF8`** | 5625 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
-| **`$7DF9` – `$7E50`** | 88 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
-| **`$6800` – `$7DF8`** | 5625 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
+| **`$6800` – `$7F43`** | 5956 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
+| **`$7F44` – `$7F9B`** | 88 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
+| **`$6800` – `$7F43`** | 5956 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
 | **`$1E2E` – `$1F8B`** | 350 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story). |
 | **`$A800` – `$A9DF`** | 480 B | `secret_objects.asm` | Dane (World) | Obiekty sekretów na planszach. |
 | **`$B7CF` – `$B86B`** | 157 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
