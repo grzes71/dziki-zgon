@@ -130,9 +130,6 @@ objects:
   x: 12
   y: 6
 - object: GROUND_BROWN_DOWN_3
-  x: 16
-  y: 6
-- object: GROUND_BROWN_DOWN_3
   x: 24
   y: 6
 - object: GROUND_BROWN_DOWN_3
@@ -159,6 +156,9 @@ objects:
 - object: BARREL_2_2
   x: 24
   y: 8
+- object: CHAIN_3_2
+  x: 16
+  y: 6
 enemies:
 - enemy: strzyga
   x: 16

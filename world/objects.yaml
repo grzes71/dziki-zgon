@@ -84,7 +84,7 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles: [23, 24, 24, 26, 208, 243, 243, 210]
+  tiles: [23, 24, 24, 26, 208, 153, 153, 210]
   tags: [infrastruktura]
 - object: HOUSE_TALL
   id: HOUSE_TALL
@@ -1689,7 +1689,7 @@ objects:
     width: 1
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
   tiles: [113, 113]
@@ -2044,7 +2044,7 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles: [0, 23, 24, 24, 26, 0, 208, 243, 243, 210]
+  tiles: [0, 23, 24, 24, 26, 0, 208, 153, 153, 210]
   tags: [infrastruktura]
 - object: BARREL_2_2
   id: BARREL_2_2
@@ -2215,3 +2215,27 @@ objects:
     secret: false
   tiles: [0, 0, 46, 47]
   tags: [tło]
+- object: WAVE_UP_2
+  id: WAVE_UP_2
+  code: 192
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [230, 153, 153, 230, 243, 243, 243, 243]
+  tags: [woda, animacja]
+- object: CLAW_2_2
+  id: CLAW_2_2
+  code: 193
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 0, 206, 206]
+  tags: [animacja]

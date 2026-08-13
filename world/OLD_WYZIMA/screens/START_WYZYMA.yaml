@@ -50,14 +50,8 @@ objects:
   x: 6
   y: 10
 - object: GROUND_GREEN_UP_2
-  x: 12
-  y: 10
-- object: GROUND_GREEN_UP_2
   x: 0
   y: 10
-- object: BUSH_2_2
-  x: 12
-  y: 8
 - object: BUSH_2_2
   x: 38
   y: 0
@@ -159,11 +153,11 @@ objects:
   x: 8
   y: 10
 - object: GROUND_BROWN_DOWN
-  x: 14
-  y: 10
-- object: GROUND_BROWN_DOWN
   x: 2
   y: 6
+- object: TREE_3
+  x: 12
+  y: 10
 enemies:
 - enemy: strzyga
   x: 14

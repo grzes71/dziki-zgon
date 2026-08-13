@@ -7,33 +7,31 @@ exits:
   east: LOWER_MIDDLE2
   west: LOWER_ROUTE
 objects:
-- object: WAVES_UP
+- object: TREE_SMALL
   x: 0
-  y: 6
-  repeat-x: 9
-- object: WAVES_DOWN
+  y: 0
+- object: TREE_2_2
+  x: 0
+  y: 2
+- object: TREE_2_2
+  x: 2
+  y: 4
+- object: TREE_2
   x: 0
   y: 8
-  repeat-x: 9
-- object: WELL
+- object: ROCK_GREEN
+  x: 2
+  y: 8
+- object: ROCK_1
   x: 0
-  y: 0
-- object: HOME_NEW
+  y: 6
+- object: ROCK_BIG
   x: 6
-  y: 0
-- object: TREE_SMALL
+  y: 6
+- object: TREE_2
+  x: 4
+  y: 6
+- object: TREE_SMALL_2
   x: 14
-  y: 0
-- object: BUSH_2
-  x: 14
-  y: 4
-- object: BUSH
-  x: 0
-  y: 4
-- object: REED
-  x: 18
-  y: 0
-- object: REED
-  x: 22
-  y: 4
+  y: 6
 enemies: []
