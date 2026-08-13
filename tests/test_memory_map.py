@@ -1,19 +1,26 @@
 # tests/test_memory_map.py
 import pytest
 from pathlib import Path
-from scripts.check_memory import parse_lab, parse_row, update_memory_usage, strip_md
+from scripts.check_memory import (
+    parse_lab, parse_row, update_memory_usage, strip_md,
+    parse_xex_segments, check_xex_segment_overlaps,
+)
 
 def test_memory_map_no_overlaps_or_page_crossings():
     root_dir = Path(__file__).parent.parent
     lab_file = root_dir / "gen" / "game.lab"
     md_file = root_dir / "MEMORY_USAGE.md"
+    xex_file = root_dir / "dziki_zgon.xex"
 
     if not lab_file.exists():
         pytest.skip("gen/game.lab does not exist yet. Run `make all` first.")
 
     # Update MEMORY_USAGE.md with latest symbol addresses
     try:
-        update_memory_usage(str(lab_file), str(md_file))
+        update_memory_usage(
+            str(lab_file), str(md_file),
+            xex_file=str(xex_file) if xex_file.exists() else None,
+        )
     except SystemExit:
         pass  # We will perform assertions directly in this test
 
@@ -27,8 +34,8 @@ def test_memory_map_no_overlaps_or_page_crossings():
         "DLIST_TITLE": 206,
         "DLIST_STORY": 29,
         "DLIST_GAME": 26,
-        "DLIST_GAMEOVER": 37,
-        "DLIST_TRAVEL": 37,
+        "DLIST_GAMEOVER": 29,
+        "DLIST_TRAVEL": 29,
     }
     for dlist_name, size in dlist_sizes.items():
         assert dlist_name in symbols, f"Missing symbol {dlist_name} in gen/game.lab"
@@ -74,3 +81,23 @@ def test_memory_map_no_overlaps_or_page_crossings():
             )
 
     assert not errors, "Memory map validation failed:\n" + "\n".join(errors)
+
+
+def test_xex_segment_no_overlaps():
+    """Parse the compiled dziki_zgon.xex binary and verify that no two XEX load
+    segments occupy overlapping address ranges. This catches bugs where an `org`
+    directive in main.asm creates a segment that overwrites data from a previous
+    segment during the OS loader's sequential load process."""
+    root_dir = Path(__file__).parent.parent
+    xex_file = root_dir / "dziki_zgon.xex"
+
+    if not xex_file.exists():
+        pytest.skip("dziki_zgon.xex does not exist yet. Run `make all` first.")
+
+    segments = parse_xex_segments(str(xex_file))
+    assert len(segments) > 0, "No data segments found in dziki_zgon.xex!"
+
+    errors = check_xex_segment_overlaps(segments)
+    assert not errors, (
+        "XEX segment overlap detected!\n" + "\n".join(errors)
+    )

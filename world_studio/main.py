@@ -53,6 +53,7 @@ class WorldStudioMainWindow(QMainWindow):
         self.region_tree.request_add_region.connect(self._on_add_region)
         self.region_tree.request_edit_region_colors.connect(self._on_edit_region_colors)
         self.region_tree.request_delete_region.connect(self._on_delete_region)
+        self.region_tree.request_clean_screen.connect(self._on_clean_screen)
         left_layout.addWidget(self.region_tree, 1)
         
         self.object_palette = ObjectPaletteWidget()
@@ -75,6 +76,7 @@ class WorldStudioMainWindow(QMainWindow):
         self.live_view.screen_delete_requested.connect(self._on_screen_delete_requested)
         self.live_view.screen_preview_requested.connect(self._on_screen_preview_requested)
         self.live_view.screen_exits_requested.connect(self._on_screen_exits_requested)
+        self.live_view.screen_clean_requested.connect(self._on_clean_screen)
         self.scroll_live.setWidget(self.live_view)
         self.tabs.addTab(self.scroll_live, "Live Region")
         
@@ -97,9 +99,21 @@ class WorldStudioMainWindow(QMainWindow):
         act_open.triggered.connect(self.action_open_world)
         file_menu.addAction(act_open)
         
+        self.act_reload_objects = QAction("Reload Objects", self)
+        self.act_reload_objects.setEnabled(False)
+        self.act_reload_objects.triggered.connect(self.action_reload_objects)
+        file_menu.addAction(self.act_reload_objects)
+        
+        file_menu.addSeparator()
+
         act_load_char = QAction("Load Charset...", self)
         act_load_char.triggered.connect(self.action_load_charset)
         file_menu.addAction(act_load_char)
+        
+        self.act_reload_charset = QAction("Reload Charset", self)
+        self.act_reload_charset.setEnabled(False)
+        self.act_reload_charset.triggered.connect(self.action_reload_charset)
+        file_menu.addAction(self.act_reload_charset)
         
         file_menu.addSeparator()
         
@@ -125,25 +139,53 @@ class WorldStudioMainWindow(QMainWindow):
         folder = QFileDialog.getExistingDirectory(self, "Select world folder")
         if folder:
             if self.project.load_project(Path(folder)):
+                self.act_reload_objects.setEnabled(True)
                 self.region_tree.populate(self.project)
                 self.object_palette.populate(self.project, self.charset, self.current_region_id)
                 self.statusBar().showMessage(f"World loaded: {folder}")
             else:
+                self.act_reload_objects.setEnabled(False)
                 load_err = getattr(self.project, 'load_error', None)
                 if load_err:
                     QMessageBox.warning(self, "Error Reading World", f"Could not load world due to validation error:\n\n{load_err}")
                 else:
                     QMessageBox.warning(self, "Error", "Invalid world folder (missing world.yaml).")
 
+    def action_reload_objects(self):
+        if not self.project.objects_path or not self.project.objects_path.exists():
+            QMessageBox.warning(self, "Error", "No previously loaded objects path found.")
+            return
+
+        if self.project.load_objects():
+            self.object_palette.populate(self.project, self.charset, self.current_region_id)
+            self._refresh_views()
+            self.statusBar().showMessage(f"Objects reloaded: {self.project.objects_path}")
+        else:
+            QMessageBox.warning(self, "Error", f"Failed to reload objects from {self.project.objects_path}.")
+
     def action_load_charset(self):
         path, _ = QFileDialog.getOpenFileName(self, "Load Charset", "", "Atari Font (*.fnt);;All Files (*)")
         if path:
             if self.charset.load(Path(path)):
+                self.act_reload_charset.setEnabled(True)
                 self.object_palette.populate(self.project, self.charset, self.current_region_id)
                 self._refresh_views()
                 self.statusBar().showMessage(f"Charset loaded: {path}")
             else:
+                self.act_reload_charset.setEnabled(False)
                 QMessageBox.warning(self, "Error", "Failed to load charset (must be 1024 bytes).")
+
+    def action_reload_charset(self):
+        if not self.charset.file_path or not self.charset.file_path.exists():
+            QMessageBox.warning(self, "Error", "No previously loaded charset path found.")
+            return
+
+        if self.charset.reload():
+            self.object_palette.populate(self.project, self.charset, self.current_region_id)
+            self._refresh_views()
+            self.statusBar().showMessage(f"Charset reloaded: {self.charset.file_path}")
+        else:
+            QMessageBox.warning(self, "Error", f"Failed to reload charset from {self.charset.file_path}.")
 
     def action_save_project(self):
         errors = self.project.validate_interactive_objects()
@@ -390,6 +432,34 @@ class WorldStudioMainWindow(QMainWindow):
 
     def _on_screen_changed(self):
         self.live_view.update() # Refresh live region
+        
+    def _on_clean_screen(self, region_id: str, screen_id: str):
+        if not region_id or not screen_id:
+            return
+            
+        screen_def = self.project.screens.get(region_id, {}).get(screen_id)
+        if not screen_def:
+            return
+            
+        if not screen_def.objects:
+            QMessageBox.information(self, "Clean Screen", "Screen is already clean (no objects to remove).")
+            return
+
+        reply = QMessageBox.question(
+            self,
+            "Clean Screen",
+            f"Are you sure you want to remove all objects from screen '{screen_id}'?\n\nThis action cannot be undone.",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        if reply == QMessageBox.Yes:
+            screen_def.objects.clear()
+            if region_id == self.current_region_id and screen_id == self.current_screen_id:
+                self._on_screen_changed()
+                self.canvas_view.update()
+            else:
+                self.live_view.update()
+            self.statusBar().showMessage(f"All objects removed from screen '{screen_id}'.")
         
     def _refresh_views(self):
         if self.current_region_id:

@@ -56,6 +56,19 @@
     lda (DST_PTR),y
     sta SRC_TMP+1
     
+    ; Sprawdzenie limitu klatek animacji dla bieżącego kierunku
+    lda ACTOR_ANIM_LIMITS_LO,x
+    sta DST_PTR
+    lda ACTOR_ANIM_LIMITS_HI,x
+    sta DST_PTR+1
+    ldy ACTOR_DIR,x
+    lda ACTOR_ANIM_FRAME,x
+    cmp (DST_PTR),y
+    bcc @frame_valid
+    lda #0
+    sta ACTOR_ANIM_FRAME,x
+@frame_valid
+
     ; Obliczenie przesunięcia klatki wewnątrz tej tablicy
     lda ACTOR_ANIM_FRAME,x
     asl

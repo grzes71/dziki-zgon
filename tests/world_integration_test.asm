@@ -32,15 +32,13 @@ COLLISION_GRID     .ds 60
 
 SECRET_COLLECTED_FLAGS .ds 256
 
-; --- Entry Point ---
-    org $7000
+; --- Entry Point & Rendering Library ---
+    org $8000
 start_test
     jsr build_screen
     brk
     rts
 
-; --- Włączenie biblioteki docelowej ---
-    org $8000
     icl "../lib/world_renderer.asm"
 
 Load_Screen_Enemies

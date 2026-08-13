@@ -429,17 +429,13 @@ class MainWindow(QMainWindow):
             
         grid = self.canvas_widget.get_grid()
         
-        min_x = CANVAS_WIDTH_TILES
         max_x = -1
-        min_y = CANVAS_HEIGHT_TILES
         max_y = -1
         
         for y in range(CANVAS_HEIGHT_TILES):
             for x in range(CANVAS_WIDTH_TILES):
                 if grid[y][x] != 0:
-                    min_x = min(min_x, x)
                     max_x = max(max_x, x)
-                    min_y = min(min_y, y)
                     max_y = max(max_y, y)
                     
         if max_x == -1: # Empty canvas
@@ -449,8 +445,11 @@ class MainWindow(QMainWindow):
             self.lbl_size.setText("1 x 1")
             return
             
-        w = max_x - min_x + 1
-        h = max_y - min_y + 1
+        # Do not trim spaces on the left and top (min_x and min_y are always 0)
+        min_x = 0
+        min_y = 0
+        w = max_x + 1
+        h = max_y + 1
         self.current_object.size.width = w
         self.current_object.size.height = h
         self.lbl_size.setText(f"{w} x {h}")

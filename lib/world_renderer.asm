@@ -52,17 +52,20 @@ row_offsets_hi
     sta OBJ_CODE
     
     inc SCREEN_PTR
-    bne @read_x
+    bne @read_packed
     inc SCREEN_PTR+1
-@read_x
-    lda (SCREEN_PTR),y
+@read_packed
+    lda (SCREEN_PTR),y          ; A = packed_xy = (y_half << 5) | x_half
+    pha                         ; Save packed_xy to stack
+    and #%00011111              ; Filter out x_half (5 bits)
+    asl                         ; Shift left by 1 (x_half * 2 = OBJ_X)
     sta OBJ_X
-
-    inc SCREEN_PTR
-    bne @read_y
-    inc SCREEN_PTR+1
-@read_y
-    lda (SCREEN_PTR),y
+    pla                         ; Restore packed_xy
+    lsr
+    lsr
+    lsr
+    lsr                         ; Shift right by 4 bits
+    and #%00001110              ; Filter out and scale (y_half * 2 = OBJ_Y)
     sta OBJ_Y
 
     txa

@@ -56,6 +56,52 @@ class ScreenCanvasWidget(QWidget):
             py = y * self.tile_h_px * self.zoom
             painter.drawLine(0, py, self.grid_width * self.tile_w_px * self.zoom, py)
 
+    def _is_area_overlapping_entities(self, x: int, y: int, w: int, h: int, ignore_obj_idx: int = None, ignore_player_start: bool = False, ignore_enemy_idx: int = None) -> bool:
+        if not self.screen_def or not self.project:
+            return False
+
+        # 1. Objects
+        obj_dict = {o.id: o for o in self.project.objects}
+        for idx, inst in enumerate(self.screen_def.objects):
+            if ignore_obj_idx is not None and idx == ignore_obj_idx:
+                continue
+            odef = obj_dict.get(inst.object)
+            if not odef:
+                continue
+            inst_w = odef.size.width * inst.repeat_x
+            inst_h = odef.size.height * inst.repeat_y
+            if not (x >= inst.x + inst_w or inst.x >= x + w or y >= inst.y + inst_h or inst.y >= y + h):
+                return True
+
+        # 2. Player Start
+        if not ignore_player_start and self.project.world_config and self.project.world_config.start_screen == self.screen_def.id:
+            sx = self.project.world_config.start_position.x
+            sy = self.project.world_config.start_position.y
+            if x <= sx < x + w and y <= sy < y + h:
+                return True
+
+        # 3. Portal Entries
+        if self.region_id and self.project and self.region_id in self.project.regions:
+            region = self.project.regions[self.region_id]
+            if getattr(region, 'portal_entries', None):
+                for entry in region.portal_entries.values():
+                    es = getattr(entry, 'screen', None) if not isinstance(entry, dict) else entry.get('screen')
+                    ex = getattr(entry, 'x', None) if not isinstance(entry, dict) else entry.get('x')
+                    ey = getattr(entry, 'y', None) if not isinstance(entry, dict) else entry.get('y')
+                    if es == self.screen_def.id and ex is not None and ey is not None:
+                        if x <= ex < x + w and y <= ey < y + h:
+                            return True
+
+        # 4. Enemies
+        if self.screen_def.enemies:
+            for idx, enemy in enumerate(self.screen_def.enemies):
+                if ignore_enemy_idx is not None and idx == ignore_enemy_idx:
+                    continue
+                if x <= enemy.x < x + w and y <= enemy.y < y + h:
+                    return True
+
+        return False
+
     def mousePressEvent(self, event: QMouseEvent):
         if not self.screen_def or not self.project:
             return
@@ -110,17 +156,18 @@ class ScreenCanvasWidget(QWidget):
 
             # 2. Add new entity/object if clicking empty space
             if self.active_tool == "PLAYER_START":
-                if self.project.world_config:
-                    self.project.world_config.start_screen = self.screen_def.id
-                    self.project.world_config.start_position.x = int(x)
-                    self.project.world_config.start_position.y = int(y)
-                    self.screen_changed.emit()
+                if not self._is_area_overlapping_entities(int(x), int(y), 1, 1, ignore_player_start=True):
+                    if self.project.world_config:
+                        self.project.world_config.start_screen = self.screen_def.id
+                        self.project.world_config.start_position.x = int(x)
+                        self.project.world_config.start_position.y = int(y)
+                        self.screen_changed.emit()
             elif self.active_tool and (self.active_tool == "ENEMY" or self.active_tool.startswith("ENEMY:")):
                 if self.active_tool.startswith("ENEMY:"):
                     enemy_id = self.active_tool.split(":")[1]
                 else:
                     enemy_id = self.project.enemy_defs[0].id if (self.project and self.project.enemy_defs) else "strzyga"
-                if len(self.screen_def.enemies) < 3:
+                if len(self.screen_def.enemies) < 3 and not self._is_area_overlapping_entities(int(x), int(y), 1, 1):
                     # Create temporary enemy instance with default properties
                     new_enemy = EnemyInstance(
                         enemy=enemy_id,
@@ -136,6 +183,9 @@ class ScreenCanvasWidget(QWidget):
                         self.screen_def.enemies.append(new_enemy)
                         self.screen_changed.emit()
             elif self.active_tool and self.active_tool.startswith("PORTAL_ENTRY"):
+                if self._is_area_overlapping_entities(int(x), int(y), 1, 1):
+                    return
+
                 region = self.project.regions.get(self.region_id) if (self.project and self.region_id) else None
                 existing_from_regions = set(region.portal_entries.keys()) if (region and getattr(region, 'portal_entries', None)) else set()
                 avail_regions = [r for r in self.project.regions.keys() if r != self.region_id and r not in existing_from_regions]
@@ -176,6 +226,23 @@ class ScreenCanvasWidget(QWidget):
                 active_obj_def = next((o for o in self.project.objects if o.id == self.active_tool), None)
                 if not active_obj_def:
                     return
+                
+                # Round coordinates to nearest even number and clamp to grid boundaries
+                click_x = event.position().x() / (self.tile_w_px * self.zoom)
+                click_y = event.position().y() / (self.tile_h_px * self.zoom)
+                x = int((click_x + 1.0) // 2) * 2
+                y = int((click_y + 1.0) // 2) * 2
+                
+                new_w = active_obj_def.size.width
+                new_h = active_obj_def.size.height
+                
+                max_x = ((self.grid_width - new_w) // 2) * 2
+                max_y = ((self.grid_height - new_h) // 2) * 2
+                if max_x < 0 or max_y < 0:
+                    return
+                    
+                x = min(max(0, x), max_x)
+                y = min(max(0, y), max_y)
                     
                 is_interactive = active_obj_def.flags and getattr(active_obj_def.flags, 'interactive', False)
                 is_secret = active_obj_def.flags and getattr(active_obj_def.flags, 'secret', False)
@@ -191,23 +258,8 @@ class ScreenCanvasWidget(QWidget):
                             f"Screen '{self.screen_def.id}' already contains an interactive object ('{existing_screen_interactive[0].object}').\n\nThere can be at most one interactive object per screen."
                         )
                         return
-
-                new_w = active_obj_def.size.width
-                new_h = active_obj_def.size.height
                 
-                overlap = False
-                obj_dict = {o.id: o for o in self.project.objects}
-                for inst in self.screen_def.objects:
-                    odef = obj_dict.get(inst.object)
-                    if not odef:
-                        continue
-                        
-                    inst_w = odef.size.width * inst.repeat_x
-                    inst_h = odef.size.height * inst.repeat_y
-                    
-                    if not (x >= inst.x + inst_w or inst.x >= x + new_w or y >= inst.y + inst_h or inst.y >= y + new_h):
-                        overlap = True
-                        break
+                overlap = self._is_area_overlapping_entities(x, y, new_w, new_h)
                         
                 if not overlap:
                     new_obj = ObjectInstance(object=self.active_tool, x=int(x), y=int(y), **{"repeat-x": 1, "repeat-y": 1})
@@ -289,7 +341,65 @@ class ScreenCanvasWidget(QWidget):
                         break
                         
             if to_remove is not None:
-                self.screen_def.objects.pop(to_remove)
-                self.screen_changed.emit()
+                inst = self.screen_def.objects[to_remove]
+                odef = obj_dict.get(inst.object)
+                w = odef.size.width
+                h = odef.size.height
+                rx = inst.repeat_x
+                ry = inst.repeat_y
+                inst_w = w * rx
+                inst_h = h * ry
+
+                def is_valid_pos(nx, ny):
+                    if nx < 0 or nx + inst_w > 40:
+                        return False
+                    if ny < 0 or ny + inst_h > 12:
+                        return False
+                    return not self._is_area_overlapping_entities(nx, ny, inst_w, inst_h, ignore_obj_idx=to_remove)
+
+                # Calculate movement targets to next/prev even coordinate
+                right_x = inst.x + 2 if inst.x % 2 == 0 else inst.x + 1
+                can_move_right = is_valid_pos(right_x, inst.y)
+
+                left_x = inst.x - 2 if inst.x % 2 == 0 else inst.x - 1
+                can_move_left = is_valid_pos(left_x, inst.y)
+
+                up_y = inst.y - 2 if inst.y % 2 == 0 else inst.y - 1
+                can_move_up = is_valid_pos(inst.x, up_y)
+
+                down_y = inst.y + 2 if inst.y % 2 == 0 else inst.y + 1
+                can_move_down = is_valid_pos(inst.x, down_y)
+
+                from PySide6.QtWidgets import QMenu
+                menu = QMenu(self)
+
+                action_delete = menu.addAction("usuń")
+                action_right = menu.addAction("w prawo")
+                action_right.setEnabled(can_move_right)
+                action_left = menu.addAction("w lewo")
+                action_left.setEnabled(can_move_left)
+                action_up = menu.addAction("w górę")
+                action_up.setEnabled(can_move_up)
+                action_down = menu.addAction("w dół")
+                action_down.setEnabled(can_move_down)
+
+                # Show menu at the global cursor position
+                selected_action = menu.exec(event.globalPosition().toPoint())
+
+                if selected_action == action_delete:
+                    self.screen_def.objects.pop(to_remove)
+                    self.screen_changed.emit()
+                elif selected_action == action_right:
+                    inst.x = right_x
+                    self.screen_changed.emit()
+                elif selected_action == action_left:
+                    inst.x = left_x
+                    self.screen_changed.emit()
+                elif selected_action == action_up:
+                    inst.y = up_y
+                    self.screen_changed.emit()
+                elif selected_action == action_down:
+                    inst.y = down_y
+                    self.screen_changed.emit()
                 
         self.update()

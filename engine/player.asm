@@ -49,24 +49,17 @@
     and #$01
     beq @chk_down
     dec ACTOR_INTENT_Y,x
-    lda #2
-    sta ACTOR_DIR,x
 
 @chk_down
     tya
     and #$02
     beq @chk_left
     inc ACTOR_INTENT_Y,x
-    lda #3
-    sta ACTOR_DIR,x
 
 @chk_left
     tya
     and #$04
     beq @chk_right
-    lda #1
-    sta ACTOR_DIR,x
-    
     jsr check_horizontal_move
     beq @chk_right
     dec ACTOR_INTENT_X,x
@@ -74,13 +67,43 @@
 @chk_right
     tya
     and #$08
-    beq @anim
-    lda #0
-    sta ACTOR_DIR,x
-    
+    beq @set_dir
     jsr check_horizontal_move
-    beq @anim
+    beq @set_dir
     inc ACTOR_INTENT_X,x
+
+@set_dir
+    ; Ustalamy kierunek (ACTOR_DIR) dokładnie RAZ na klatkę.
+    ; Priorytet mają kierunki poziome (lewo/prawo) przed pionowymi (góra/dół).
+    tya
+    and #$04            ; LEFT
+    beq @try_right
+    lda #1
+    jsr set_player_dir
+    jmp @anim
+
+@try_right
+    tya
+    and #$08            ; RIGHT
+    beq @try_up
+    lda #0
+    jsr set_player_dir
+    jmp @anim
+
+@try_up
+    tya
+    and #$01            ; UP
+    beq @try_down
+    lda #2
+    jsr set_player_dir
+    jmp @anim
+
+@try_down
+    tya
+    and #$02            ; DOWN
+    beq @anim
+    lda #3
+    jsr set_player_dir
 
 @anim
     ; Aktualizacja animacji
@@ -117,6 +140,20 @@
     sta Request_SFX_Step
 
 @done
+    rts
+.endp
+
+;==============================================================
+; set_player_dir — Zmienia kierunek gracza i zeruje klatkę/timer animacji
+;==============================================================
+.proc set_player_dir
+    cmp ACTOR_DIR,x
+    beq @same
+    sta ACTOR_DIR,x
+    lda #0
+    sta ACTOR_ANIM_FRAME,x
+    sta ACTOR_ANIM_TIMER,x
+@same
     rts
 .endp
 

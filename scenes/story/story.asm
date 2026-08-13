@@ -87,6 +87,20 @@ fire_released_flag
 ; copy_story_text — Kopiuje tekst story (320 B) z ROM do RAM ($5E10)
 ;==============================================================
 .proc copy_story_text
+    jsr show_story_header
+
+    ; Clear footer buffer (320 B)
+    ldx #0
+    lda #0
+@clr
+    sta StoryText_RAM,x
+    cpx #64
+    bcs @skip
+    sta StoryText_RAM+256,x
+@skip
+    inx
+    bne @clr
+
     mRLE_Depack StoryText_Data StoryText_RAM
     rts
 .endp

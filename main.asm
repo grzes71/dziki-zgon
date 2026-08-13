@@ -24,15 +24,19 @@ disable_basic_loader
     ini disable_basic_loader
 
 ; ===================================================================
-; 1.5. Grafiki tytułowe w wolnym niskim RAM-ie ($0700)
+; 1.5. Grafiki tytułowe i teksty w wolnym niskim RAM-ie ($0600)
 ; ===================================================================
-    org $0700
+    org $0600
 TitleScreen_Data
     ins "gen/title.rle"
 
 ; --- Dane Duszków / Sprite'ów (Logo & Księżyc) ---
     icl "gen/dziki-zgon.asm"
     icl "gen/moon.asm"
+
+; --- Teksty scen Tytuł i Fabuła ---
+    icl "gen/title_text.asm"
+    icl "gen/story_text.asm"
 
 ; ===================================================================
 ; 2. Kod programu ($2000)
@@ -43,13 +47,13 @@ TitleScreen_Data
     icl "lib/pmg.asm"
     icl "lib/rle.asm"
     icl "lib/world_renderer.asm"
+    icl "lib/text_headers.asm"
     
     ; --- Silnik gry ---
     icl "engine/engine.asm"
 
     ; --- Sceny (każda eksportuje _init i _run) ---
     icl "scenes/title/title.asm"
-    icl "scenes/story/story.asm"
     icl "scenes/game/game.asm"
 
 ; ===================================================================
@@ -97,7 +101,7 @@ STAGE_COUNT = * - stage_order
 ; Wywoływana przed każdym scene_init (i w start)
 ; Niszczy: A
 ; ===================================================================
-.proc system_init
+system_init
     cld                     ; clear decimal mode (po resecie D może być nieznany!)
     sei                     ; blokada IRQ
     lda #0
@@ -124,7 +128,6 @@ STAGE_COUNT = * - stage_order
     lda #>XITVBV
     sta $0225
     rts
-.endp
 
 ; ===================================================================
 ; 3. Punkt startowy — inicjalizacja systemu
@@ -141,9 +144,6 @@ start
     lda stage_order,x
     sta GAME_STATE
 
-; ===================================================================
-; 4. Pętla główna — maszyna stanów
-; ===================================================================
 main_loop
     lda GAME_STATE
     cmp #STATE_TITLE
@@ -211,11 +211,14 @@ main_loop
 TitleData = SCREEN
     icl "gen/title_displaylist.asm"    ; definiuje DLIST_TITLE
 
-; --- DL story — ANTIC mode 2, tekst 8 linii wyśrodkowany ---
-DLIST_STORY
+; --- DL tekstowa (współdzielona: story, gameover, travel) — ANTIC mode 2 ---
+DLIST_TEXT
     dta $70,$70,$70        ; 3 blank
-    dta $70,$70            ; 2 blank (razem 5 blank na gorze)
-    dta $42,a(StoryText_RAM) ; LMS + ANTIC mode 2 -> adres StoryText_RAM ($5E10)
+    dta $42,a(ICON_ADDR)   ; LMS + ANTIC mode 2 -> adres ICON_ADDR
+    dta $02
+    dta $02
+    dta $70                ; Blank line 0
+    dta $42,a(FOOTER_ADDR) ; LMS + ANTIC mode 2 -> adres FOOTER_ADDR ($5E10)
     dta $70                ; Blank line 1
     dta $02                ; ANTIC mode 2 (Line 2 - Text)
     dta $70                ; Blank line 2
@@ -232,7 +235,11 @@ DLIST_STORY
     dta $02                ; ANTIC mode 2 (Line 8 - Text)
     dta $70,$70,$70        ; 3 blank
     dta $70                ; 1 blank (razem 4 blank na dole)
-    dta $41,a(DLIST_STORY) ; JVB
+    dta $41,a(DLIST_TEXT)  ; JVB
+
+DLIST_STORY = DLIST_TEXT
+DLIST_GAMEOVER = DLIST_TEXT
+DLIST_TRAVEL = DLIST_TEXT
 
 ; --- DL gra ---
 DLIST_GAME
@@ -246,34 +253,6 @@ DLIST_GAME
     dta $82                ; Kolejna 1 linia ANTIC 2 (Message Line) + DLI dla Message Line
     dta $41,a(DLIST_GAME)  ; JVB
 
-; --- DL game over (ANTIC 4, 40×23 znaków + ANTIC 2 40×1 linia tekstu) ---
-DLIST_GAMEOVER
-    dta $70,$70,$70             ; 16 blank lines (górny margines)
-    dta $F0                     ; 8 blank lines + DLI
-    dta $44,a(VRAM_ARENA)       ; LMS + ANTIC 4 (linia 1)
-    .rept 22
-    dta $04                     ; ANTIC 4 (linie 2-23)
-    .endr
-    dta $90                     ; 1 pusta linia + DLI
-GO_TEXT_LMS
-    dta $42,a(GO_TEXT)          ; LMS + ANTIC mode 2 (40 znaków z czcionki font.asm $6000 na $5E10)
-    dta $41,a(DLIST_GAMEOVER)   ; JVB — powrót na początek DL
-
-; --- DL travel screen (ANTIC 4, 40×23 znaków + ANTIC 2 40×1 linia tekstu) ---
-DLIST_TRAVEL
-    dta $70,$70,$70             ; 16 blank lines (górny margines)
-    dta $F0                     ; 8 blank lines + DLI
-    dta $44,a(VRAM_ARENA)       ; LMS + ANTIC 4 (linia 1)
-    .rept 22
-    dta $04                     ; ANTIC 4 (linie 2-23)
-    .endr
-    dta $90                     ; 1 pusta linia + DLI
-TRAVEL_TEXT_LMS
-    dta $42,a(FOOTER_ADDR)      ; LMS + ANTIC mode 2 (40 znaków z czcionki font.asm $6000 na $5E10)
-    dta $41,a(DLIST_TRAVEL)     ; JVB — powrót na początek DL
-
-
-
 ; ===================================================================
 ; 7. Współdzielona Arena VRAM ($4000)
 ; ===================================================================
@@ -281,7 +260,7 @@ VRAM_ARENA = SCREEN
 ; Zamiast "ins" surowego obrazka, rozpakowujemy go z ROM_DATA w title_init.
 
 ; ===================================================================
-; 8. Stopka tekstowa ($5E10) — współdzielona (tytuł/story/gameover)
+; 8. Stopka tekstowa ($5E10) — współdzielona (tytuł/story/gameover/travel)
 ; ===================================================================
     org FOOTER_ADDR
     .ds 320                 ; 8 linii × 40 znaków — zerowane na starcie
@@ -295,13 +274,8 @@ VRAM_ARENA = SCREEN
     org $6400
     icl "gen/game_font.asm"
 
-; 11. Dane ekranu Game Over (w VRAM_ARENA)
 ; ===================================================================
-GO_SCREEN = VRAM_ARENA
-; Gameover grafika jest kompresowana i wypakowywana w gameover_init.
-
-; ===================================================================
-; 12. Dane świata, sterownik audio, GameOver i sprite'y ($6800)
+; 12. Dane świata, sterownik audio i sprite'y ($6800)
 ; ===================================================================
     org $6800
 
@@ -311,14 +285,19 @@ GO_SCREEN = VRAM_ARENA
     icl "gen/world/regions.asm"
     icl "gen/world/screens.asm"
     icl "gen/world/exits.asm"
-    icl "gen/world/interactive_objects.asm"
+
+; --- Teksty GameOver ---
+    icl "gen/gameover-fail_text.asm"
+    icl "gen/gameover-success_text.asm"
+
+; --- Scena Story (przeniesiona do wolnego bloku RAM $9D20-$9FFF) ---
+    org $9D20
+    icl "scenes/story/story.asm"
+STORY_END
+
+; --- Sekrety ($A800 - wolna pamięć przed RMT player) ---
+    org $A800
     icl "gen/world/secret_objects.asm"
-
-; --- Dane tekstów ---
-    icl "gen/all_texts.asm"
-
-; --- Muzyka i sterownik ($8506 / $A9E0 / $AD00 / $B300) ---
-    icl "music/title_audio.asm"
 
 StoryText_RAM = FOOTER_ADDR
 StoryText_Data = text_story
@@ -328,44 +307,25 @@ GO_TEXT_Data = text_gameover_fail
 TitleFooterROM = text_title
 SpriteData = DzikizgonData
 
+; --- RMT Tracker Player & Module ($A9E0 - $B610) ---
+    org $A9E0
+    icl "music/title_audio_player.asm"
 
-; --- Dane ekranu GameOver Porażka ($9620) ---
-    org $9620
-GameOverFail_Data
-    ins "gen/screens/game_over-fail_screen.bin"
-
-; --- Logika ekranu podróży ($99B8) ---
-    org $99B8
+; --- Procedury i dane pod ROM BASIC ($B611) ---
+    org $B611
+    icl "scenes/gameover/gameover.asm"
     icl "engine/travel_screen.asm"
+    icl "music/title_audio.asm"
 
-; --- Wspólny Charset dla GameOver & Travel ($9C00, 1 KB aligned -> CHBASE=$9C) ---
-    org $9C00
-GO_CHARSET
-    ins "gen/screens/charset.bin"
-
-; --- Aktorzy / Przeciwnicy ($A800 - wolna pamięć przed RMT vars) ---
-    org $A800
+; --- Sprite'y (Gerwalt + Przeciwnicy) ---
     icl "gen/gerwalt.sprite.asm"
     icl "gen/bazyliszek.sprite.asm"
     icl "gen/kikimora.sprite.asm"
     icl "gen/strzyga.sprite.asm"
     icl "gen/sukkub.sprite.asm"
 
-; --- RMT Tracker Player & Module ($A9E0 - $B610) ---
-    org $A9E0
-    icl "music/title_audio_player.asm"
-
-; --- Procedura GameOver (pod ROM BASIC od $B611) ---
-    org $B611
-    icl "scenes/gameover/gameover.asm"
-
-; --- Dane ekranu GameOver Sukces (pod ROM BASIC) ---
-GameOverSuccess_Data
-    ins "gen/screens/game_over-success_screen.bin"
-
-; --- Dane ekranu Travel (pod ROM BASIC) ---
-TravelScreen_Data
-    ins "gen/screens/travel_screen.bin"
+; --- Dane obiektów interaktywnych ---
+    icl "gen/world/interactive_objects.asm"
 
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR

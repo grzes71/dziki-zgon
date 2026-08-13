@@ -89,6 +89,7 @@ DLIST_ADDR  = $3E80         ; adres bazowy Display List
 
 PMBASE_ADDR = $A000         ; pamięć PMG (1K-aligned, pod ROM BASIC)
 FOOTER_ADDR = $5E10         ; stopka tekstowa (ANTIC mode 2, 40 znaków)
+ICON_ADDR   = $5F74         ; nagłówek z ikonami (ANTIC mode 2, 3 linie = 120 B)
 
 ; ---- Offsety PMG (single-line resolution) ----
 MISSILES    = PMBASE_ADDR+$300   ; 256 B — wszystkie 4 missile w 1 bajcie/linia

@@ -128,7 +128,7 @@ class WorldValidator:
                     bottom = inst.y + obj_def.size.height
                     # Bounds are up to 40 and 12 (exclusive max)
                     if right > 40 or bottom > 12:
-                        raise ValidationError(f"Screen '{screen.id}': Object '{inst.object}' goes out of bounds. Right: {right}, Bottom: {bottom}")
+                        raise ValidationError(f"Screen '{screen.id}': Object '{inst.object}' at (x: {inst.x}, y: {inst.y}) goes out of bounds. Right: {right}, Bottom: {bottom}")
 
     def _check_reachability(self):
         # Build graph
@@ -164,9 +164,11 @@ class WorldValidator:
                     obj_def = self.objects_by_id[inst.object]
                     if not obj_def.flags.blocking:
                         continue
-                        
-                    for x in range(inst.x, inst.x + obj_def.size.width):
-                        for y in range(inst.y, inst.y + obj_def.size.height):
+                    
+                    x_even = (inst.x // 2) * 2
+                    y_even = (inst.y // 2) * 2
+                    for x in range(x_even, x_even + obj_def.size.width):
+                        for y in range(y_even, y_even + obj_def.size.height):
                             if (x, y) in grid:
                                 self.warnings.append(f"Overlapping blocking objects on screen '{screen.id}' at ({x}, {y})")
                             grid[(x, y)] = True

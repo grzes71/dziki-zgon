@@ -111,7 +111,7 @@ def main():
 
     else:
         # Ogólne przetwarzanie plików tekstowych
-        text = "".join(lines)
+        text = "".join(lines).replace("\r", "").replace("\n", "")
         for c in text:
             raw_bytes.append(to_atari_screencode(c))
 

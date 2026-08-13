@@ -12,6 +12,7 @@ class LiveRegionViewWidget(QWidget):
     screen_delete_requested = Signal(str, str) # region_id, screen_id
     screen_preview_requested = Signal(str, str) # region_id, screen_id
     screen_exits_requested = Signal(str, str) # region_id, screen_id
+    screen_clean_requested = Signal(str, str) # region_id, screen_id
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -227,6 +228,7 @@ class LiveRegionViewWidget(QWidget):
             preview_action = menu.addAction("Preview Screen")
             edit_action = menu.addAction("Rename Screen...")
             exits_action = menu.addAction("Set Exits...")
+            clean_action = menu.addAction("Clean")
             del_action = menu.addAction("Remove Screen")
             action = menu.exec(event.globalPos())
             if action == preview_action:
@@ -235,6 +237,8 @@ class LiveRegionViewWidget(QWidget):
                 self.screen_edit_requested.emit(self.region_id, screen_id)
             elif action == exits_action:
                 self.screen_exits_requested.emit(self.region_id, screen_id)
+            elif action == clean_action:
+                self.screen_clean_requested.emit(self.region_id, screen_id)
             elif action == del_action:
                 self.screen_delete_requested.emit(self.region_id, screen_id)
         else:

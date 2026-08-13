@@ -4,16 +4,24 @@ from typing import List
 class Charset:
     def __init__(self):
         self.data = bytearray(1024)
+        self.file_path: Optional[Path] = None
 
     def load(self, path: Path) -> bool:
         try:
+            path = Path(path)
             with open(path, "rb") as f:
                 data = f.read(1024)
                 if len(data) == 1024:
                     self.data = bytearray(data)
+                    self.file_path = path
                     return True
         except Exception:
             pass
+        return False
+
+    def reload(self) -> bool:
+        if self.file_path:
+            return self.load(self.file_path)
         return False
 
     def get_tile_pixels(self, tile_index: int) -> List[List[int]]:

@@ -91,19 +91,20 @@ def compute_expected_vram(world_dir: Path, region_id: str, screen_id: str):
         w = obj_def.size.width
         h = obj_def.size.height
         tiles = obj_def.tiles
-        base_x = obj_inst.x
-        base_y = obj_inst.y
         
+        base_x = (obj_inst.x // 2) * 2
+        base_y = (obj_inst.y // 2) * 2
+
         for ty in range(h):
             for tx in range(w):
                 idx = ty * w + tx
                 if idx < len(tiles):
                     tile = tiles[idx]
-                    
+
                     # Nanieś na vram (zabezpieczenie granic tak jak robi to kompilator)
                     screen_x = base_x + tx
                     screen_y = base_y + ty
-                    
+
                     if screen_x < 40 and screen_y < 12:
                         vram[screen_y * 40 + screen_x] = tile
                         
@@ -128,9 +129,12 @@ def test_full_screen_rendering(integration_harness):
     GAME_SCREEN_A5 = labels["GAME_SCREEN_A5"]
     GAME_SCREEN_ID_Z = labels["GAME_SCREEN_ID"]
     
-    # Wyczyść wirtualny VRAM przed testem (upewnij się że zaczynamy z czystą kartą)
+    # Wyczyść wirtualny VRAM i SECRET_COLLECTED_FLAGS przed testem
     for i in range(480):
         cpu.memory[GAME_SCREEN_A5 + i] = 0
+    if "SECRET_COLLECTED_FLAGS" in labels:
+        for i in range(256):
+            cpu.memory[labels["SECRET_COLLECTED_FLAGS"] + i] = 0
         
     # Ustaw ekran (MADS exportuje labele globalne)
     # Z world.inc mamy SCREEN_ID_SWAMP

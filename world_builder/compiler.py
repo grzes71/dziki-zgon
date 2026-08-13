@@ -26,6 +26,18 @@ def compile_world(input_dir: str, output_dir: str) -> bool:
         # Generate ASM
         generator = AsmGenerator(world, out_path)
         generator.generate()
+
+        stats = generator.get_stats()
+        print("\n=== Podsumowanie Pamięci Świata Gry (World Builder) ===")
+        print(f"  * Elementy Świata: {stats['num_regions']} regionów | {stats['num_screens']} ekranów | {stats['num_object_defs']} typów obiektów | {stats['placed_objects_count']} postawionych obiektów")
+        print(f"  * Rozmiar danych Świata Gry: {stats['total_world_bytes']:,} B".replace(",", " "))
+        print(f"    - Definicje obiektów i kafelki: {stats['objects_bytes']:,} B".replace(",", " "))
+        print(f"    - Ekrany i postawione obiekty: {stats['screens_bytes']:,} B".replace(",", " "))
+        print(f"    - Regiony i palety barw: {stats['regions_bytes']:,} B".replace(",", " "))
+        print(f"    - Wyjścia z ekranów: {stats['exits_bytes']:,} B".replace(",", " "))
+        print(f"    - Obiekty interaktywne & sekrety: {stats['interactive_bytes'] + stats['secret_bytes']:,} B".replace(",", " "))
+        print(f"  * Główny blok pamięci świata ($6800-$9D1F): {stats['main_world_bytes']:,} B / {stats['main_budget']:,} B".replace(",", " "))
+        print(f"  * Wolne miejsce na rozbudowę Świata: {stats['free_main']:,} B ({stats['free_main_pct']:.1f}% wolnego miejsca)\n".replace(",", " "))
         
         print("Compilation successful.")
         return True

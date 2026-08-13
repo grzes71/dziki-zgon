@@ -11,146 +11,40 @@ objects:
   x: 6
   y: 4
 - object: TREE_SMALL
-  x: 17
-  y: 8
-- object: TREE_SMALL
-  x: 33
-  y: 1
-- object: TREE_SMALL
   x: 12
   y: 2
-- object: TREE_SMALL
-  x: 23
-  y: 5
-- object: TREE_SMALL
-  x: 1
-  y: 7
 - object: TREE_2
   x: 12
   y: 6
 - object: TREE_2
-  x: 7
-  y: 0
-- object: TREE_2
-  x: 29
-  y: 0
-- object: TREE_2
   x: 6
   y: 8
-- object: TREE_2
-  x: 0
-  y: 1
 - object: ROCK_2
   x: 0
   y: 4
-- object: ROCK_1
-  x: 17
-  y: 5
-- object: STONE_BIG
-  x: 24
-  y: 9
-- object: RIVER_TL
-  x: 32
-  y: 8
-- object: WATER_ANIM
-  x: 36
-  y: 9
-  repeat-x: 4
-- object: WAVES_RIGHT
-  x: 34
-  y: 11
-- object: WAVES_LEFT
-  x: 32
-  y: 11
 - object: WAVES_UP
   x: 36
   y: 8
-  repeat-x: 4
+  repeat-x: 2
 - object: WAVES_DOWN
   x: 36
   y: 10
-  repeat-x: 4
-- object: WAVE_UP
-  x: 33
-  y: 11
+  repeat-x: 2
 - object: BUSH
   x: 12
   y: 10
 - object: BUSH
-  x: 29
-  y: 4
-- object: BUSH
-  x: 16
-  y: 3
-- object: BUSH
-  x: 36
-  y: 7
-- object: BUSH
   x: 0
   y: 10
-- object: BUSH
-  x: 3
-  y: 11
-- object: BUSH_2
-  x: 9
-  y: 7
-- object: BUSH_2
-  x: 3
-  y: 0
-- object: REED
-  x: 35
-  y: 11
-  repeat-x: 5
-- object: REED
-  x: 31
-  y: 11
 - object: REED
   x: 30
   y: 10
-- object: REED
-  x: 31
-  y: 9
-- object: REED
-  x: 28
-  y: 11
-  repeat-x: 2
-- object: REED
-  x: 38
-  y: 7
-  repeat-x: 2
-- object: REED
-  x: 33
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 1
-  y: 11
 - object: GROUND_BROWN_DOWN
   x: 2
   y: 10
-- object: GROUND_BROWN_DOWN
-  x: 1
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 0
-  y: 9
-- object: GROUND_BROWN_UP
-  x: 1
-  y: 10
-- object: GROUND_BROWN_UP
-  x: 5
-  y: 11
 - object: GROUND_BROWN_UP
   x: 4
   y: 10
-- object: GROUND_BROWN_UP
-  x: 2
-  y: 11
-- object: GROUND_BROWN_UP
-  x: 3
-  y: 9
 - object: GROUND_BROWN_UP
   x: 36
   y: 0
@@ -158,86 +52,20 @@ objects:
   x: 4
   y: 2
 - object: GROUND_BROWN_UP
-  x: 3
-  y: 3
-  repeat-x: 3
-- object: GROUND_BROWN_UP
   x: 4
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 3
-  y: 4
-- object: GROUND_BROWN_DOWN
-  x: 3
-  y: 2
-- object: GROUND_BROWN_DOWN
-  x: 2
-  y: 3
-- object: GROUND_BROWN_DOWN
-  x: 5
-  y: 2
-- object: GROUND_BROWN_DOWN
-  x: 6
-  y: 3
-- object: GROUND_BROWN_DOWN
-  x: 7
-  y: 2
-- object: GROUND_BROWN_DOWN
-  x: 8
-  y: 3
 - object: GROUND_BROWN_DOWN
   x: 4
   y: 8
-- object: GROUND_BROWN_DOWN
-  x: 7
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 35
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 36
-  y: 1
 - object: GROUND_BROWN_DOWN
   x: 32
   y: 0
 - object: GROUND_BROWN_DOWN
   x: 26
-  y: 1
-  repeat-x: 2
-  repeat-y: 2
-- object: GROUND_BROWN_DOWN
-  x: 20
-  y: 11
-- object: GROUND_BROWN_DOWN
-  x: 21
-  y: 10
-- object: GROUND_BROWN_DOWN
-  x: 20
-  y: 9
-- object: GROUND_BROWN_DOWN
-  x: 21
-  y: 8
-- object: GROUND_BROWN_DOWN
-  x: 20
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 21
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 20
-  y: 5
-- object: GROUND_BROWN_DOWN
-  x: 21
-  y: 4
-- object: GROUND_BROWN_DOWN
-  x: 22
-  y: 3
-- object: GROUND_BROWN_DOWN
-  x: 22
-  y: 11
+  y: 2
 - object: PORTAL_2
   x: 32
-  y: 3
+  y: 4
   type: portal
   message_travel: stara wyżyma - 15 pacierzy
   target_region: OLD_WYZIMA
@@ -245,34 +73,9 @@ objects:
 - object: ROCK_GREEN
   x: 18
   y: 0
-- object: MUSHROOM
-  x: 21
-  y: 2
-- object: MUSHROOM
-  x: 14
-  y: 9
 - object: GROUND_BROWN_UP
   x: 38
   y: 0
-- object: GROUND_BROWN_UP
-  x: 39
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 37
-  y: 1
-- object: GROUND_BROWN_UP
-  x: 38
-  y: 2
-- object: GROUND_BROWN_DOWN
-  x: 37
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 38
-  y: 1
-- object: GROUND_BROWN_DOWN
-  x: 39
-  y: 2
-  repeat-y: 2
 - object: GROUND_BROWN_DOWN
   x: 12
   y: 0
@@ -283,14 +86,8 @@ objects:
   x: 16
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 15
-  y: 1
-- object: GROUND_BROWN_DOWN
   x: 18
   y: 2
-- object: GROUND_BROWN_DOWN
-  x: 10
-  y: 5
 - object: GROUND_BROWN_DOWN
   x: 4
   y: 6
@@ -298,36 +95,15 @@ objects:
   x: 28
   y: 6
 - object: GROUND_BROWN_DOWN
-  x: 25
-  y: 3
-  repeat-x: 2
-- object: GROUND_BROWN_DOWN
   x: 28
   y: 8
 - object: GROUND_BROWN_DOWN
-  x: 27
-  y: 10
-- object: GROUND_BROWN_DOWN
-  x: 29
-  y: 7
-- object: GROUND_BROWN_DOWN
-  x: 27
-  y: 5
-- object: GROUND_BROWN_DOWN
   x: 26
   y: 4
-  repeat-x: 2
 - object: GROUND_BROWN_DOWN
   x: 20
   y: 2
-- object: GROUND_BROWN_DOWN
-  x: 19
-  y: 1
 - object: GROUND_GREEN_UP
-  x: 25
-  y: 0
-  repeat-x: 3
-- object: GROUND_GREEN_UP
-  x: 39
+  x: 26
   y: 0
 enemies: []
