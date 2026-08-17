@@ -75,17 +75,11 @@ objects:
 - object: TREE_SMALL_2
   x: 22
   y: 0
-- object: TREE_SMALL_2
-  x: 10
-  y: 0
-- object: TREE_2_2
-  x: 32
-  y: 0
 - object: TREE_2_2
   x: 10
   y: 8
 - object: TREE_2
-  x: 4
+  x: 2
   y: 10
 - object: BUSH
   x: 30
@@ -119,9 +113,6 @@ objects:
   y: 10
 - object: GROUND_BROWN_UP_TL
   x: 0
-  y: 0
-- object: GROUND_BROWN_UP_2
-  x: 2
   y: 0
 - object: GROUND_BROWN_BR
   x: 38
@@ -171,9 +162,6 @@ objects:
   x: 20
   y: 0
 - object: GROUND_BROWN_DOWN
-  x: 20
-  y: 2
-- object: GROUND_BROWN_DOWN
   x: 28
   y: 0
 - object: GROUND_BROWN_DOWN
@@ -192,6 +180,38 @@ objects:
   x: 36
   y: 4
   repeat-x: 2
+- object: SIGNPOINT_RIGHT
+  x: 18
+  y: 2
+- object: SWAMP_2_WEED
+  x: 6
+  y: 0
+- object: SWAMP_2_WEED
+  x: 10
+  y: 0
+- object: SWAMP_BLOCK_2
+  x: 8
+  y: 0
+- object: SWAMP_BLOCK_2
+  x: 26
+  y: 0
+- object: CHAIN_3_2
+  x: 32
+  y: 0
+  repeat-y: 2
+- object: CHAIN_3_2
+  x: 34
+  y: 0
+  repeat-y: 2
+- object: SWAMP
+  x: 12
+  y: 0
+- object: SWAMP
+  x: 4
+  y: 0
+- object: SWAMP
+  x: 14
+  y: 0
 enemies:
 - enemy: kikimora
   x: 16

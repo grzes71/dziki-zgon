@@ -148,8 +148,8 @@ def test_iis_complete_flag_initialization(game_binary) -> None:
     complete_base = labels["INTERACTIVE_OBJ_COMPLETE"]
     # TAVERN has required items -> complete flag 1
     assert mem[complete_base + labels["SCREEN_ID_TAVERN"]] == 1
-    # FOREST_1_0 (portal, no req items) -> complete flag 0
-    assert mem[complete_base + labels["SCREEN_ID_FOREST_1_0"]] == 0
+    # FOREST_0_0 (portal, no req items) -> complete flag 0
+    assert mem[complete_base + labels["SCREEN_ID_FOREST_0_0"]] == 0
 
 
 def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
@@ -161,16 +161,16 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
 
     run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
 
-    # Set active screen to FOREST_1_0
-    mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_FOREST_1_0"]
+    # Set active screen to FOREST_0_0
+    mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_FOREST_0_0"]
 
-    # In FOREST_1_0.yaml, PORTAL_2 is at grid x=32, y=4 (w=2, h=2).
-    # Position Gerwalt above PORTAL_2 at grid x=32, y=3 (pixel x = 32*4+48 = 176, pixel y = 3*16+32 = 80)
-    # Facing DOWN (ACTOR_DIR = 3)
-    mem[labels["ACTOR_X"]] = 176
+    # In FOREST_0_0.yaml, PORT_2 is at grid x=26, y=0 (w=10, h=3).
+    # Position Gerwalt below PORT_2 at grid x=28, y=3 (pixel x = 28*4+48 = 160, pixel y = 3*16+32 = 80)
+    # Facing UP (ACTOR_DIR = 2)
+    mem[labels["ACTOR_X"]] = 160
     mem[labels["ACTOR_Y"]] = 80
     mem[labels["ACTOR_HEIGHT"]] = 16
-    mem[labels["ACTOR_DIR"]] = 3
+    mem[labels["ACTOR_DIR"]] = 2
 
     mem[labels["REQ_SCREEN_TRANSITION"]] = 0
     mem[labels["MSG_STATE"]] = 0
@@ -192,7 +192,8 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
     mem[labels["INPUTSTATE_TRIG"]] = 0
     run_subroutine(cpu, labels["IIS_UPDATE"])
 
-    # 2nd press result: REQ_SCREEN_TRANSITION=1, targeting START (OLD_WYZIMA portal entry)
+    # 2nd press result: REQ_SCREEN_TRANSITION=1, targeting HARBOUR (WHITE_FIELD portal entry)
     assert mem[labels["REQ_SCREEN_TRANSITION"]] == 1
-    assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_START_WYZYMA"]
+    assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_HARBOUR"]
+
 

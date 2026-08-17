@@ -124,9 +124,6 @@ objects:
   x: 36
   y: 4
 - object: CROSS_2
-  x: 28
-  y: 10
-- object: CROSS_2
   x: 32
   y: 8
 - object: CROSS_2
@@ -135,9 +132,6 @@ objects:
 - object: CROSS_2
   x: 26
   y: 6
-- object: GROUND_BROWN_BL
-  x: 0
-  y: 10
 - object: GROUND_BROWN_BR
   x: 38
   y: 10
@@ -192,8 +186,11 @@ objects:
 - object: BUSH
   x: 36
   y: 10
-- object: BUSH
-  x: 2
+- object: TREE_2
+  x: 0
+  y: 10
+- object: TREE_2
+  x: 28
   y: 10
 enemies:
 - enemy: kikimora
