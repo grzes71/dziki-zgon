@@ -52,13 +52,6 @@ objects:
 - object: GROUND_GREEN_UP_2
   x: 0
   y: 10
-- object: BUSH_2_2
-  x: 38
-  y: 0
-- object: GROUND_GREEN_UP_2
-  x: 36
-  y: 2
-  repeat-x: 2
 - object: GROUND_GREEN_UP_2
   x: 0
   y: 6
@@ -79,9 +72,6 @@ objects:
   y: 2
 - object: BUSH
   x: 22
-  y: 0
-- object: TREE_3
-  x: 36
   y: 0
 - object: RIVER_LEFT_END
   x: 38
@@ -158,6 +148,9 @@ objects:
 - object: TREE_3
   x: 12
   y: 10
+- object: RIVER_BL_2
+  x: 36
+  y: 0
 enemies:
 - enemy: strzyga
   x: 14
