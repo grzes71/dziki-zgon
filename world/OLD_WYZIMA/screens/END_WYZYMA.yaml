@@ -18,94 +18,50 @@ objects:
   y: 8
 - object: REED
   x: 28
-  y: 4
-- object: REED
-  x: 26
-  y: 6
-- object: REED
-  x: 28
   y: 6
 - object: REED
   x: 30
   y: 6
-- object: REED
-  x: 28
-  y: 8
-- object: WATER_UP
-  x: 0
-  y: 0
-- object: WATER_UP
-  x: 2
-  y: 0
-- object: WATER_UP
-  x: 4
-  y: 0
-- object: WATER_UP
-  x: 6
-  y: 0
-- object: WATER_UP
-  x: 8
-  y: 0
-- object: WATER_UP
-  x: 10
-  y: 0
-- object: WATER_UP
-  x: 12
-  y: 0
-- object: WATER_UP
-  x: 14
-  y: 0
-- object: WATER_UP
-  x: 16
-  y: 0
-- object: WATER_UP
-  x: 18
-  y: 0
-- object: WATER_UP
-  x: 20
-  y: 0
-- object: WATER_UP
-  x: 22
-  y: 0
-- object: WATER_UP
-  x: 24
-  y: 0
-- object: WATER_UP
-  x: 26
-  y: 0
-- object: WATER_UP
-  x: 28
-  y: 0
-- object: WATER_UP
-  x: 30
-  y: 0
 - object: WATER_UP
   x: 32
   y: 0
 - object: CROSS_2
   x: 30
   y: 4
-- object: WATER_ANIM
-  x: 0
-  y: 2
-  repeat-x: 5
-- object: WATER_ANIM
-  x: 0
-  y: 8
-  repeat-x: 5
-- object: ROCK_2
-  x: 20
-  y: 4
-- object: ROCK_2
-  x: 20
-  y: 10
-- object: TREE_SMALL
-  x: 16
-  y: 2
 - object: BUSH
   x: 30
   y: 10
 - object: BUSH_2
   x: 38
   y: 4
+- object: RIVER_HORIZONTAL
+  x: 0
+  y: 0
+  repeat-x: 12
+- object: RIVER_HORIZONTAL
+  x: 0
+  y: 8
+  repeat-x: 12
+- object: RIVER_RIGHT_END
+  x: 24
+  y: 8
+- object: RIVER_RIGHT_END
+  x: 24
+  y: 0
+- object: CHAIN_1_2
+  x: 24
+  y: 4
+  repeat-y: 2
+- object: CHAIN_1_2
+  x: 18
+  y: 4
+  repeat-y: 2
+- object: CHAIN_1_2
+  x: 12
+  y: 4
+  repeat-y: 2
+- object: CHAIN_1_2
+  x: 6
+  y: 4
+  repeat-y: 2
 enemies: []

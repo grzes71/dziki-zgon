@@ -6,32 +6,5 @@ exits:
   south: null
   east: LOWER_MIDDLE2
   west: LOWER_ROUTE
-objects:
-- object: TREE_SMALL
-  x: 0
-  y: 0
-- object: TREE_2_2
-  x: 0
-  y: 2
-- object: TREE_2_2
-  x: 2
-  y: 4
-- object: TREE_2
-  x: 0
-  y: 8
-- object: ROCK_GREEN
-  x: 2
-  y: 8
-- object: ROCK_1
-  x: 0
-  y: 6
-- object: ROCK_BIG
-  x: 6
-  y: 6
-- object: TREE_2
-  x: 4
-  y: 6
-- object: TREE_SMALL_2
-  x: 14
-  y: 6
+objects: []
 enemies: []

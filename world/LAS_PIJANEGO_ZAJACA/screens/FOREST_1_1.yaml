@@ -143,7 +143,7 @@ objects:
   x: 20
   y: 0
 - object: BUSH
-  x: 18
+  x: 16
   y: 0
 - object: BUSH
   x: 22
@@ -181,6 +181,18 @@ objects:
 - object: STONE_BIG_2
   x: 16
   y: 10
+- object: GROUND_BROWN_UP_TL
+  x: 0
+  y: 0
+- object: GROUND_BROWN_DOWN_3
+  x: 10
+  y: 2
+- object: GROUND_BROWN_DOWN_2
+  x: 0
+  y: 2
+- object: GROUND_BROWN_DOWN_2
+  x: 4
+  y: 2
 enemies:
 - enemy: sukkub
   x: 14

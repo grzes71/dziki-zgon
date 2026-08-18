@@ -1,55 +1,32 @@
-tags:
-- woda
-- drzewo
-- dom
-- skała
-- animacja
-- infrastruktura
-- portal
-- interakcja
-- tło
-- sekret
+tags: [woda, drzewo, dom, skała, animacja, infrastruktura, portal, interakcja, tło,
+  sekret]
 objects:
-- object: HOUSE_SMALL
-  id: HOUSE_SMALL
+- object: GROUND_GREEN_UP_2
+  id: GROUND_GREEN_UP_2
   code: 1
   size:
-    width: 4
-    height: 2
+    width: 2
+    height: 1
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 1
-  - 2
-  - 3
-  - 4
-  - 65
-  - 66
-  - 163
-  - 164
-  tags:
-  - dom
-- object: TREE_SMALL
-  id: TREE_SMALL
+  tiles: [32, 32]
+  tags: [tło]
+- object: GROUND_BROWN_DOWN
+  id: GROUND_BROWN_DOWN
   code: 2
   size:
-    width: 2
-    height: 2
+    width: 1
+    height: 1
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 53
-  - 54
-  - 85
-  - 86
-  tags:
-  - drzewo
-- object: WELL
-  id: WELL
+  tiles: [77]
+  tags: [tło]
+- object: WAVES_UP
+  id: WAVES_UP
   code: 3
   size:
     width: 2
@@ -58,52 +35,22 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 30
-  - 31
-  - 62
-  - 63
-  tags:
-  - infrastruktura
-- object: THE_TAVERN
-  id: THE_TAVERN
+  tiles: [230, 230, 243, 243]
+  tags: [woda]
+- object: TREE_2
+  id: TREE_2
   code: 4
   size:
-    width: 12
+    width: 2
     height: 2
   flags:
     blocking: true
-    interactive: true
+    interactive: false
     secret: false
-  tiles:
-  - 16
-  - 3
-  - 2
-  - 3
-  - 3
-  - 3
-  - 3
-  - 3
-  - 3
-  - 2
-  - 3
-  - 18
-  - 250
-  - 163
-  - 164
-  - 163
-  - 164
-  - 87
-  - 88
-  - 163
-  - 164
-  - 163
-  - 164
-  - 251
-  tags:
-  - interakcja
-- object: FENCE_1
-  id: FENCE_1
+  tiles: [51, 52, 83, 84]
+  tags: [drzewo]
+- object: WAVES_DOWN
+  id: WAVES_DOWN
   code: 5
   size:
     width: 2
@@ -112,54 +59,11 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 21
-  - 21
-  tags:
-  - infrastruktura
-- object: TREE_2
-  id: TREE_2
+  tiles: [243, 243, 229, 229]
+  tags: [woda]
+- object: PALM_SWAMP
+  id: PALM_SWAMP
   code: 6
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 51
-  - 52
-  - 83
-  - 84
-  tags:
-  - drzewo
-- object: BRIDGE
-  id: BRIDGE
-  code: 7
-  size:
-    width: 4
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 23
-  - 24
-  - 24
-  - 26
-  - 208
-  - 153
-  - 153
-  - 210
-  tags:
-  - infrastruktura
-- object: HOUSE_TALL
-  id: HOUSE_TALL
-  code: 8
   size:
     width: 4
     height: 3
@@ -167,168 +71,83 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 1
-  - 2
-  - 3
-  - 4
-  - 34
-  - 35
-  - 36
-  - 34
-  - 65
-  - 66
-  - 34
-  - 67
-  tags:
-  - dom
-- object: TOWER
-  id: TOWER
-  code: 9
+  tiles: [0, 79, 114, 0, 203, 110, 111, 203, 0, 203, 203, 0]
+  tags: [drzewo, animacja]
+- object: TREE_SMALL
+  id: TREE_SMALL
+  code: 7
   size:
     width: 2
-    height: 6
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 224
-  - 225
-  - 33
-  - 34
-  - 34
-  - 33
-  - 33
-  - 34
-  - 34
-  - 33
-  - 87
-  - 88
-  tags:
-  - portal
-- object: CASTLE_SMALL
-  id: CASTLE_SMALL
-  code: 10
-  size:
-    width: 8
     height: 2
   flags:
     blocking: true
-    interactive: true
+    interactive: false
     secret: false
-  tiles:
-  - 59
-  - 60
-  - 55
-  - 55
-  - 55
-  - 55
-  - 59
-  - 60
-  - 91
-  - 92
-  - 33
-  - 87
-  - 88
-  - 33
-  - 91
-  - 92
-  tags:
-  - interakcja
-- object: CASTLE_BIG
-  id: CASTLE_BIG
-  code: 11
+  tiles: [53, 54, 85, 86]
+  tags: [drzewo]
+- object: BUSH_2_2
+  id: BUSH_2_2
+  code: 8
   size:
-    width: 8
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 0, 71, 72]
+  tags: [drzewo, tło]
+- object: TREE_3
+  id: TREE_3
+  code: 9
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [7, 8, 39, 40]
+  tags: [drzewo]
+- object: RIVER_HORIZONTAL
+  id: RIVER_HORIZONTAL
+  code: 10
+  size:
+    width: 2
     height: 4
   flags:
     blocking: true
-    interactive: true
+    interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 96
-  - 97
-  - 0
-  - 0
-  - 0
-  - 59
-  - 60
-  - 55
-  - 58
-  - 58
-  - 55
-  - 59
-  - 60
-  - 91
-  - 92
-  - 33
-  - 33
-  - 33
-  - 33
-  - 91
-  - 92
-  - 91
-  - 92
-  - 34
-  - 27
-  - 28
-  - 34
-  - 91
-  - 92
-  tags:
-  - interakcja
-- object: ROCK_1
-  id: ROCK_1
+  tiles: [230, 230, 243, 243, 243, 243, 229, 229]
+  tags: [woda]
+- object: BUSH
+  id: BUSH
+  code: 11
+  size:
+    width: 1
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 68]
+  tags: [drzewo, tło]
+- object: MUSHROOM
+  id: MUSHROOM
   code: 12
   size:
     width: 2
-    height: 1
+    height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 10
-  - 12
-  tags:
-  - skała
-- object: ROCK_2
-  id: ROCK_2
+  tiles: [0, 0, 69, 70]
+  tags: [drzewo, tło]
+- object: SAND_2
+  id: SAND_2
   code: 13
-  size:
-    width: 3
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 10
-  - 11
-  - 12
-  tags:
-  - skała
-- object: BRICK_WALL
-  id: BRICK_WALL
-  code: 14
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 29
-  tags:
-  - infrastruktura
-- object: CROSS_1
-  id: CROSS_1
-  code: 15
   size:
     width: 2
     height: 1
@@ -336,13 +155,34 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 43
-  - 44
-  tags:
-  - tło
-- object: CROSS_2
-  id: CROSS_2
+  tiles: [76, 76]
+  tags: [tło]
+- object: SWAMP_BLOCK_2
+  id: SWAMP_BLOCK_2
+  code: 14
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [124, 203, 203, 124]
+  tags: [woda, animacja]
+- object: SWAMP_BLOCK
+  id: SWAMP_BLOCK
+  code: 15
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [203, 124, 124, 203]
+  tags: [woda, animacja]
+- object: GROUND_BROWN_DOWN_2
+  id: GROUND_BROWN_DOWN_2
   code: 16
   size:
     width: 2
@@ -351,28 +191,34 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 46
-  - 47
-  tags:
-  - tło
-- object: SIGNPOINT_RIGHT
-  id: SIGNPOINT_RIGHT
-  code: 18
+  tiles: [77, 77]
+  tags: [tło]
+- object: RIVER_VERTICAL
+  id: RIVER_VERTICAL
+  code: 17
   size:
-    width: 2
-    height: 1
+    width: 4
+    height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 169
-  - 170
-  tags:
-  - infrastruktura
-- object: GROUND_BROWN_UP
-  id: GROUND_BROWN_UP
+  tiles: [208, 153, 153, 210, 208, 153, 153, 210]
+  tags: [woda]
+- object: PALM_TREE
+  id: PALM_TREE
+  code: 18
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [79, 114, 110, 111]
+  tags: [drzewo]
+- object: SWAMP
+  id: SWAMP
   code: 19
   size:
     width: 1
@@ -381,82 +227,70 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 45
-  tags:
-  - tło
-- object: GROUND_BROWN_DOWN
-  id: GROUND_BROWN_DOWN
+  tiles: [203]
+  tags: [woda, animacja]
+- object: REED_2
+  id: REED_2
   code: 20
   size:
-    width: 1
+    width: 2
     height: 1
   flags:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 77
-  tags:
-  - tło
-- object: GROUND_GREEN_UP
-  id: GROUND_GREEN_UP
+  tiles: [124, 124]
+  tags: [tło]
+- object: REED_2V
+  id: REED_2V
   code: 21
   size:
     width: 1
-    height: 1
+    height: 2
   flags:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 32
-  tags:
-  - tło
-- object: GROUND_GREEN_DOWN
-  id: GROUND_GREEN_DOWN
+  tiles: [124, 124]
+  tags: [tło]
+- object: CROSS_1
+  id: CROSS_1
   code: 22
   size:
-    width: 1
+    width: 2
     height: 1
   flags:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 64
-  tags:
-  - tło
-- object: WATER_UP
-  id: WATER_UP
+  tiles: [43, 44]
+  tags: [tło]
+- object: CROSS_1_COPY
+  id: CROSS_1_COPY
   code: 23
   size:
-    width: 1
-    height: 1
+    width: 2
+    height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 160
-  tags:
-  - tło
-- object: WATER_DOWN
-  id: WATER_DOWN
+  tiles: [0, 0, 43, 44]
+  tags: [tło]
+- object: CROSS_2
+  id: CROSS_2
   code: 24
   size:
-    width: 1
+    width: 2
     height: 1
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 192
-  tags:
-  - tło
-- object: WATER
-  id: WATER
+  tiles: [46, 47]
+  tags: [tło]
+- object: WATER_UP
+  id: WATER_UP
   code: 25
   size:
     width: 1
@@ -465,591 +299,277 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 202
-- object: WAVES
-  id: WAVES
+  tiles: [160]
+  tags: [tło]
+- object: REED
+  id: REED
   code: 26
   size:
-    width: 2
-    height: 2
+    width: 1
+    height: 1
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 133
-  - 133
-  - 133
-  - 133
-  tags:
-  - woda
-  - animacja
-- object: TREE_3
-  id: TREE_3
+  tiles: [124]
+  tags: [tło]
+- object: SAND_4
+  id: SAND_4
   code: 27
   size:
     width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 7
-  - 8
-  - 39
-  - 40
-  tags:
-  - drzewo
-- object: SIGNPOINT_LEFT
-  id: SIGNPOINT_LEFT
+  tiles: [76, 76, 76, 76]
+  tags: [tło]
+- object: GROUND_BROWN_DOWN_3
+  id: GROUND_BROWN_DOWN_3
   code: 28
   size:
-    width: 2
+    width: 3
     height: 1
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 165
-  - 166
-  tags:
-  - infrastruktura
-- object: WAVES_UP
-  id: WAVES_UP
+  tiles: [77, 0, 77]
+  tags: [tło]
+- object: SWAMP_2_WEED
+  id: SWAMP_2_WEED
   code: 29
   size:
     width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 230
-  - 230
-  - 243
-  - 243
-  tags:
-  - woda
-- object: WAVES_DOWN
-  id: WAVES_DOWN
+  tiles: [203, 203, 124, 124]
+  tags: [woda, animacja]
+- object: GROUND_BROWN_TR
+  id: GROUND_BROWN_TR
   code: 30
   size:
     width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 243
-  - 243
-  - 229
-  - 229
-  tags:
-  - woda
-- object: PYRAMID_SMALL
-  id: PYRAMID_SMALL
+  tiles: [45, 45, 0, 45]
+  tags: [tło]
+- object: BARREL_2_2
+  id: BARREL_2_2
   code: 31
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 0, 100, 228]
+  tags: [tło]
+- object: CHAIN_1_2
+  id: CHAIN_1_2
+  code: 32
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [240, 240, 240, 240]
+  tags: [animacja]
+- object: GROUND_BROWN_UP_2
+  id: GROUND_BROWN_UP_2
+  code: 33
   size:
     width: 2
     height: 1
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 232
-  - 233
-  tags:
-  - dom
-- object: PYRAMID_MEDIUM
-  id: PYRAMID_MEDIUM
-  code: 32
-  size:
-    width: 6
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 232
-  - 233
-  - 0
-  - 0
-  - 232
-  - 231
-  - 227
-  - 34
-  - 234
-  - 233
-  tags:
-  - dom
-- object: PYRAMID_BIG
-  id: PYRAMID_BIG
-  code: 33
-  size:
-    width: 10
-    height: 3
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 232
-  - 233
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 232
-  - 231
-  - 227
-  - 34
-  - 234
-  - 233
-  - 0
-  - 0
-  - 232
-  - 231
-  - 227
-  - 227
-  - 155
-  - 156
-  - 34
-  - 34
-  - 234
-  - 233
-  tags:
-  - interakcja
-- object: PALM_TREE
-  id: PALM_TREE
+  tiles: [45, 45]
+  tags: [tło]
+- object: GROUND_BROWN_UP_TL
+  id: GROUND_BROWN_UP_TL
   code: 34
   size:
     width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 79
-  - 114
-  - 110
-  - 111
-  tags:
-  - drzewo
-- object: STONE
-  id: STONE
+  tiles: [45, 45, 45, 0]
+  tags: [tło]
+- object: SAND_2V
+  id: SAND_2V
   code: 35
   size:
-    width: 7
-    height: 3
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 10
-  - 11
-  - 12
-  - 0
-  - 0
-  - 0
-  - 10
-  - 11
-  - 34
-  - 9
-  - 12
-  - 0
-  - 10
-  - 11
-  - 34
-  - 34
-  - 9
-  - 9
-  - 12
-  tags:
-  - skała
-- object: WATERFALL
-  id: WATERFALL
-  code: 36
-  size:
-    width: 6
+    width: 1
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 10
-  - 230
-  - 230
-  - 12
-  - 0
-  - 10
-  - 11
-  - 153
-  - 153
-  - 9
-  - 12
-  tags:
-  - woda
-  - skała
-- object: FENCE_6
-  id: FENCE_6
+  tiles: [76, 76]
+  tags: [tło]
+- object: SAND_3
+  id: SAND_3
+  code: 36
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [76, 0, 204, 204]
+  tags: [tło]
+- object: WATER_ANIM
+  id: WATER_ANIM
   code: 37
   size:
     width: 2
-    height: 2
+    height: 1
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 49
-  - 177
-  tags:
-  - infrastruktura
-- object: BARN_SMALL
-  id: BARN_SMALL
+  tiles: [243, 243]
+  tags: [woda]
+- object: CHAIN_3_2
+  id: CHAIN_3_2
   code: 38
   size:
-    width: 3
+    width: 1
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 16
-  - 17
-  - 18
-  - 48
-  - 0
-  - 50
-  tags:
-  - dom
-- object: BARN_MEDIUM
-  id: BARN_MEDIUM
+  tiles: [113, 113]
+  tags: [animacja]
+- object: GROUND_BROWN_BR
+  id: GROUND_BROWN_BR
   code: 39
   size:
-    width: 4
+    width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 16
-  - 17
-  - 17
-  - 18
-  - 48
-  - 0
-  - 0
-  - 50
-  tags:
-  - dom
-- object: LAKE
-  id: LAKE
+  tiles: [0, 45, 45, 45]
+  tags: [tło]
+- object: CLAW_2
+  id: CLAW_2
   code: 40
   size:
-    width: 8
+    width: 2
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [206, 206]
+  tags: [animacja]
+- object: GROUND_BROWN_UP_4
+  id: GROUND_BROWN_UP_4
+  code: 41
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [45, 45, 45, 45]
+  tags: [tło]
+- object: GROUND_BROWN_UP
+  id: GROUND_BROWN_UP
+  code: 42
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [45]
+  tags: [tło]
+- object: GROUND_BROWN_UP_2V
+  id: GROUND_BROWN_UP_2V
+  code: 43
+  size:
+    width: 1
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [45, 45]
+  tags: [tło]
+- object: GROUND_GREEN_UP
+  id: GROUND_GREEN_UP
+  code: 44
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [32]
+  tags: [tło]
+- object: RIVER_BR_2
+  id: RIVER_BR_2
+  code: 45
+  size:
+    width: 4
     height: 4
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 236
-  - 230
-  - 230
-  - 230
-  - 230
-  - 230
-  - 230
-  - 148
-  - 208
-  - 243
-  - 243
-  - 243
-  - 243
-  - 243
-  - 243
-  - 210
-  - 208
-  - 243
-  - 243
-  - 243
-  - 243
-  - 243
-  - 243
-  - 210
-  - 237
-  - 229
-  - 229
-  - 229
-  - 229
-  - 229
-  - 229
-  - 235
-  tags:
-  - woda
-- object: ROCK_BIG
-  id: ROCK_BIG
-  code: 41
-  size:
-    width: 7
-    height: 3
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 13
-  - 14
-  - 15
-  - 0
-  - 0
-  - 0
-  - 13
-  - 14
-  - 74
-  - 74
-  - 15
-  - 0
-  - 13
-  - 14
-  - 74
-  - 74
-  - 74
-  - 74
-  - 15
-  tags:
-  - skała
-- object: HOUSE_BIGGER
-  id: HOUSE_BIGGER
-  code: 42
-  size:
-    width: 5
-    height: 3
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 1
-  - 2
-  - 3
-  - 3
-  - 4
-  - 163
-  - 164
-  - 34
-  - 163
-  - 164
-  - 34
-  - 34
-  - 193
-  - 194
-  - 34
-  tags:
-  - dom
-- object: CASTLE_BIGGER
-  id: CASTLE_BIGGER
-  code: 43
-  size:
-    width: 8
-    height: 5
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 1
-  - 132
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 33
-  - 33
-  - 0
-  - 0
-  - 0
-  - 59
-  - 60
-  - 55
-  - 61
-  - 61
-  - 55
-  - 59
-  - 60
-  - 91
-  - 92
-  - 33
-  - 33
-  - 33
-  - 33
-  - 91
-  - 92
-  - 91
-  - 92
-  - 34
-  - 87
-  - 88
-  - 34
-  - 91
-  - 92
-  tags:
-  - interakcja
-- object: HOUSE_SMALL_BLUE
-  id: HOUSE_SMALL_BLUE
-  code: 44
-  size:
-    width: 4
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 129
-  - 130
-  - 131
-  - 132
-  - 65
-  - 66
-  - 163
-  - 164
-  tags:
-  - dom
-- object: HOUSE_MEDIUM_BLUE
-  id: HOUSE_MEDIUM_BLUE
-  code: 45
-  size:
-    width: 5
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 144
-  - 131
-  - 130
-  - 131
-  - 146
-  - 33
-  - 65
-  - 66
-  - 163
-  - 164
-  tags:
-  - dom
-- object: CHURCH
-  id: CHURCH
+  tiles: [247, 153, 153, 210, 243, 153, 153, 210, 243, 153, 153, 210, 229, 229, 229,
+    235]
+  tags: [woda]
+- object: RIVER_TL_2
+  id: RIVER_TL_2
   code: 46
   size:
     width: 4
-    height: 7
+    height: 4
   flags:
     blocking: true
-    interactive: true
+    interactive: false
     secret: false
-  tiles:
-  - 0
-  - 171
-  - 172
-  - 0
-  - 0
-  - 103
-  - 106
-  - 0
-  - 0
-  - 185
-  - 56
-  - 0
-  - 0
-  - 61
-  - 189
-  - 0
-  - 16
-  - 33
-  - 33
-  - 18
-  - 33
-  - 163
-  - 164
-  - 33
-  - 33
-  - 27
-  - 28
-  - 33
-  tags:
-  - interakcja
-- object: BUSH
-  id: BUSH
+  tiles: [236, 230, 230, 230, 208, 153, 153, 243, 208, 153, 153, 243, 208, 153, 153,
+    246]
+  tags: [woda]
+- object: BRIDGE
+  id: BRIDGE
   code: 47
   size:
-    width: 1
+    width: 4
     height: 2
   flags:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 68
-  tags:
-  - drzewo
-  - tło
-- object: MUSHROOM
-  id: MUSHROOM
-  code: 48
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 69
-  - 70
-  tags:
-  - drzewo
-  - tło
+  tiles: [23, 24, 24, 26, 208, 153, 153, 210]
+  tags: [infrastruktura]
 - object: BUSH_2
   id: BUSH_2
-  code: 49
+  code: 48
   size:
     width: 2
     height: 1
@@ -1057,15 +577,83 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 71
-  - 72
-  tags:
-  - drzewo
-  - tło
+  tiles: [71, 72]
+  tags: [drzewo, tło]
+- object: REED_3
+  id: REED_3
+  code: 49
+  size:
+    width: 3
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [124, 0, 124]
+  tags: [tło]
+- object: SAND_3_TR
+  id: SAND_3_TR
+  code: 50
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [76, 76, 0, 76]
+  tags: [tło]
+- object: TREE_2_2
+  id: TREE_2_2
+  code: 51
+  size:
+    width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 51, 52, 83, 84]
+  tags: [drzewo]
+- object: BARREL_1_2
+  id: BARREL_1_2
+  code: 52
+  size:
+    width: 1
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 100]
+  tags: [tło]
+- object: BARREL_2
+  id: BARREL_2
+  code: 53
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [100, 228]
+  tags: [tło]
+- object: CLAW_2_2
+  id: CLAW_2_2
+  code: 54
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 0, 206, 206]
+  tags: [animacja]
 - object: HOUSE_MEDIUM_GREEN
   id: HOUSE_MEDIUM_GREEN
-  code: 50
+  code: 55
   size:
     width: 5
     height: 2
@@ -1073,22 +661,11 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 16
-  - 3
-  - 2
-  - 3
-  - 18
-  - 195
-  - 65
-  - 66
-  - 163
-  - 164
-  tags:
-  - dom
+  tiles: [16, 3, 2, 3, 18, 195, 65, 66, 163, 164]
+  tags: [dom]
 - object: ROCK_GREEN
   id: ROCK_GREEN
-  code: 51
+  code: 56
   size:
     width: 3
     height: 1
@@ -1096,337 +673,84 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 13
-  - 14
-  - 15
-  tags:
-  - skała
-- object: WATER_ANIM
-  id: WATER_ANIM
-  code: 52
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 243
-  - 243
-  tags:
-  - woda
-- object: WATERFALL_GREEN
-  id: WATERFALL_GREEN
-  code: 53
-  size:
-    width: 6
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 13
-  - 230
-  - 230
-  - 15
-  - 0
-  - 13
-  - 14
-  - 153
-  - 153
-  - 121
-  - 15
-  tags:
-  - woda
-  - skała
-- object: RIVER_TL
-  id: RIVER_TL
-  code: 54
-  size:
-    width: 4
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 236
-  - 230
-  - 230
-  - 230
-  - 208
-  - 243
-  - 243
-  - 243
-  - 208
-  - 153
-  - 246
-  - 229
-  - 208
-  - 153
-  - 210
-  - 0
-  tags:
-  - woda
-- object: RIVER_TR
-  id: RIVER_TR
-  code: 55
-  size:
-    width: 4
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 230
-  - 230
-  - 230
-  - 148
-  - 243
-  - 243
-  - 243
-  - 210
-  - 229
-  - 248
-  - 153
-  - 210
-  - 0
-  - 208
-  - 153
-  - 210
-  tags:
-  - woda
-- object: RIVER_BL
-  id: RIVER_BL
-  code: 56
-  size:
-    width: 4
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 208
-  - 153
-  - 210
-  - 0
-  - 208
-  - 153
-  - 249
-  - 230
-  - 208
-  - 243
-  - 243
-  - 243
-  - 237
-  - 229
-  - 229
-  - 229
-  tags:
-  - woda
-- object: RIVER_BR
-  id: RIVER_BR
+  tiles: [13, 14, 15]
+  tags: [skała]
+- object: SAND_3_BR
+  id: SAND_3_BR
   code: 57
   size:
-    width: 4
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 208
-  - 153
-  - 210
-  - 230
-  - 247
-  - 153
-  - 210
-  - 243
-  - 243
-  - 243
-  - 210
-  - 229
-  - 229
-  - 229
-  - 235
-  tags:
-  - woda
-- object: WAVES_RIGHT
-  id: WAVES_RIGHT
-  code: 58
-  size:
-    width: 1
+    width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 210
-  - 210
-  tags:
-  - woda
-- object: WAVES_LEFT
-  id: WAVES_LEFT
+  tiles: [0, 76, 76, 76]
+  tags: [tło]
+- object: SAND_3_TL
+  id: SAND_3_TL
+  code: 58
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [76, 76, 204, 0]
+  tags: [tło]
+- object: GROUND_BROWN_BL
+  id: GROUND_BROWN_BL
   code: 59
   size:
     width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 208
-  - 0
-  - 208
-  tags:
-  - woda
-- object: HOME_NEW
-  id: HOME_NEW
+  tiles: [45, 0, 45, 45]
+  tags: [tło]
+- object: HOUSE_SMALL_BLUE
+  id: HOUSE_SMALL_BLUE
   code: 60
   size:
-    width: 6
+    width: 4
     height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 96
-  - 3
-  - 2
-  - 3
-  - 3
-  - 97
-  - 250
-  - 163
-  - 164
-  - 65
-  - 66
-  - 251
-  tags:
-  - dom
-- object: HOME_NEW_2
-  id: HOME_NEW_2
+  tiles: [129, 130, 131, 132, 65, 66, 163, 164]
+  tags: [dom]
+- object: RIVER_BL_2
+  id: RIVER_BL_2
   code: 61
   size:
-    width: 6
-    height: 2
+    width: 4
+    height: 4
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 224
-  - 131
-  - 130
-  - 131
-  - 131
-  - 225
-  - 250
-  - 81
-  - 6
-  - 163
-  - 164
-  - 251
-  tags:
-  - dom
-- object: HOME_SMALL_2
-  id: HOME_SMALL_2
+  tiles: [208, 153, 153, 249, 208, 153, 153, 243, 208, 153, 153, 243, 237, 229, 229,
+    229]
+  tags: [woda]
+- object: ROCK_2
+  id: ROCK_2
   code: 62
   size:
-    width: 5
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 144
-  - 131
-  - 130
-  - 131
-  - 146
-  - 250
-  - 33
-  - 65
-  - 66
-  - 251
-  tags:
-  - dom
-- object: PORT
-  id: PORT
-  code: 63
-  size:
-    width: 10
-    height: 3
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 96
-  - 17
-  - 17
-  - 17
-  - 17
-  - 17
-  - 17
-  - 17
-  - 17
-  - 97
-  - 250
-  - 34
-  - 163
-  - 164
-  - 33
-  - 33
-  - 163
-  - 164
-  - 34
-  - 251
-  - 250
-  - 29
-  - 29
-  - 29
-  - 27
-  - 28
-  - 29
-  - 29
-  - 29
-  - 251
-  tags:
-  - interakcja
-- object: STONE_BIG
-  id: STONE_BIG
-  code: 64
-  size:
-    width: 4
+    width: 3
     height: 1
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 10
-  - 11
-  - 9
-  - 12
-  tags:
-  - skała
-- object: REED
-  id: REED
-  code: 65
+  tiles: [10, 11, 12]
+  tags: [skała]
+- object: SAND
+  id: SAND
+  code: 63
   size:
     width: 1
     height: 1
@@ -1434,214 +758,59 @@ objects:
     blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 124
-  tags:
-  - tło
-- object: DOOR
-  id: DOOR
+  tiles: [76]
+  tags: [tło]
+- object: SIGNPOINT_LEFT
+  id: SIGNPOINT_LEFT
+  code: 64
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [165, 166]
+  tags: [infrastruktura]
+- object: TREE_3_2
+  id: TREE_3_2
+  code: 65
+  size:
+    width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 7, 8, 39, 40]
+  tags: [drzewo]
+- object: WATER_BL
+  id: WATER_BL
   code: 66
   size:
-    width: 1
-    height: 1
+    width: 2
+    height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 90
-  tags:
-  - infrastruktura
-- object: SHIP
-  id: SHIP
+  tiles: [208, 243, 237, 229]
+  tags: [woda]
+- object: WATER_BR
+  id: WATER_BR
   code: 67
   size:
-    width: 9
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 126
-  - 19
-  - 126
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 195
-  - 193
-  - 194
-  - 0
-  - 93
-  - 94
-  - 94
-  - 94
-  - 94
-  - 94
-  - 94
-  - 94
-  - 125
-  - 133
-  - 133
-  - 133
-  - 133
-  - 133
-  - 133
-  - 133
-  - 133
-  - 133
-  tags:
-  - woda
-- object: CASTLE_BIGGEST
-  id: CASTLE_BIGGEST
-  code: 68
-  size:
-    width: 12
-    height: 5
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 224
-  - 225
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 96
-  - 97
-  - 0
-  - 33
-  - 33
-  - 0
-  - 96
-  - 97
-  - 0
-  - 0
-  - 0
-  - 0
-  - 58
-  - 58
-  - 55
-  - 58
-  - 58
-  - 55
-  - 58
-  - 58
-  - 0
-  - 0
-  - 59
-  - 60
-  - 29
-  - 29
-  - 33
-  - 29
-  - 29
-  - 33
-  - 29
-  - 29
-  - 59
-  - 60
-  - 91
-  - 92
-  - 87
-  - 88
-  - 29
-  - 27
-  - 28
-  - 29
-  - 87
-  - 88
-  - 91
-  - 92
-  tags:
-  - interakcja
-- object: FENCE_2
-  id: FENCE_2
-  code: 69
-  size:
     width: 2
     height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 22
-  - 22
-  tags:
-  - infrastruktura
-- object: BROWN_DOWN
-  id: BROWN_DOWN
-  code: 70
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 116
-  tags:
-  - tło
-- object: BRICKS_2
-  id: BRICKS_2
-  code: 71
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 95
-  - 95
-  - 95
-  - 95
-  tags:
-  - infrastruktura
-- object: FENCE_4
-  id: FENCE_4
-  code: 72
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 89
-  - 89
-  tags:
-  - infrastruktura
+  tiles: [243, 210, 229, 235]
+  tags: [woda]
 - object: BARN_3
   id: BARN_3
-  code: 73
+  code: 68
   size:
     width: 3
     height: 2
@@ -1649,15 +818,68 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 144
-  - 145
-  - 146
-  - 122
-  - 90
-  - 123
-  tags:
-  - dom
+  tiles: [144, 145, 146, 122, 90, 123]
+  tags: [dom]
+- object: CHAIN_1
+  id: CHAIN_1
+  code: 69
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [240]
+  tags: [animacja]
+- object: GROUND_BROWN_DOWN_2V
+  id: GROUND_BROWN_DOWN_2V
+  code: 70
+  size:
+    width: 1
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [77, 77]
+  tags: [tło]
+- object: GROUND_BROWN_UP_3
+  id: GROUND_BROWN_UP_3
+  code: 71
+  size:
+    width: 3
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [45, 0, 45]
+  tags: [tło]
+- object: HOUSE_BIG
+  id: HOUSE_BIG
+  code: 72
+  size:
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [1, 3, 2, 4, 161, 161, 161, 161, 161, 161, 218, 161, 116, 116, 116, 116]
+  tags: [dom]
+- object: HOUSE_SMALL
+  id: HOUSE_SMALL
+  code: 73
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [1, 2, 3, 4, 65, 66, 163, 164]
+  tags: [dom]
 - object: OUTHOUSE
   id: OUTHOUSE
   code: 74
@@ -1668,15 +890,10 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 224
-  - 225
-  - 65
-  - 66
-  tags:
-  - dom
-- object: OUTHOUSE_2
-  id: OUTHOUSE_2
+  tiles: [224, 225, 65, 66]
+  tags: [dom]
+- object: ROCK_1_2
+  id: ROCK_1_2
   code: 75
   size:
     width: 2
@@ -1685,171 +902,11 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 96
-  - 97
-  - 65
-  - 66
-  tags:
-  - dom
-- object: OUTHOUSE_3
-  id: OUTHOUSE_3
-  code: 76
-  size:
-    width: 4
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 224
-  - 131
-  - 131
-  - 225
-  - 122
-  - 87
-  - 88
-  - 123
-  tags:
-  - dom
-- object: CASTLE_MID
-  id: CASTLE_MID
-  code: 77
-  size:
-    width: 8
-    height: 4
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 158
-  - 159
-  - 0
-  - 0
-  - 0
-  - 59
-  - 60
-  - 55
-  - 58
-  - 58
-  - 55
-  - 59
-  - 60
-  - 91
-  - 92
-  - 57
-  - 56
-  - 57
-  - 56
-  - 91
-  - 92
-  - 91
-  - 92
-  - 250
-  - 215
-  - 88
-  - 251
-  - 91
-  - 92
-  tags:
-  - interakcja
-- object: BARN_4
-  id: BARN_4
-  code: 78
-  size:
-    width: 3
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 224
-  - 131
-  - 225
-  - 122
-  - 90
-  - 123
-  tags:
-  - dom
-- object: HOUSE_BIGGER_2
-  id: HOUSE_BIGGER_2
-  code: 79
-  size:
-    width: 5
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 96
-  - 3
-  - 2
-  - 3
-  - 97
-  - 250
-  - 163
-  - 164
-  - 34
-  - 251
-  - 250
-  - 34
-  - 193
-  - 194
-  - 251
-  - 116
-  - 116
-  - 116
-  - 116
-  - 116
-  tags:
-  - dom
-- object: CHURCH_SMALL
-  id: CHURCH_SMALL
-  code: 80
-  size:
-    width: 4
-    height: 6
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 171
-  - 172
-  - 0
-  - 0
-  - 231
-  - 234
-  - 0
-  - 0
-  - 57
-  - 56
-  - 0
-  - 16
-  - 61
-  - 61
-  - 18
-  - 33
-  - 87
-  - 88
-  - 33
-  - 116
-  - 116
-  - 116
-  - 116
-  tags:
-  - dom
+  tiles: [0, 0, 10, 12]
+  tags: [skała]
 - object: SHED
   id: SHED
-  code: 81
+  code: 76
   size:
     width: 3
     height: 2
@@ -1857,17 +914,71 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 1
-  - 3
-  - 4
-  - 33
-  - 65
-  - 66
-  tags:
-  - dom
+  tiles: [1, 3, 4, 33, 65, 66]
+  tags: [dom]
+- object: SHIP
+  id: SHIP
+  code: 77
+  size:
+    width: 9
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 0, 0, 126, 19, 126, 0, 0, 0, 0, 0, 0, 195, 193, 194, 0, 93, 94,
+    94, 94, 94, 94, 94, 94, 125, 133, 133, 133, 133, 133, 133, 133, 133, 133]
+  tags: [woda]
+- object: WATERFALL
+  id: WATERFALL
+  code: 78
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 10, 230, 230, 12, 0, 10, 11, 153, 153, 9, 12]
+  tags: [woda, skała]
+- object: WATERFALL_GREEN
+  id: WATERFALL_GREEN
+  code: 79
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 13, 230, 230, 15, 0, 13, 14, 153, 153, 121, 15]
+  tags: [woda, skała]
 - object: WATER_TR
   id: WATER_TR
+  code: 80
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [230, 148, 243, 210]
+  tags: [woda]
+- object: WAVE_UP
+  id: WAVE_UP
+  code: 81
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [153, 153, 153, 153]
+  tags: [woda, animacja]
+- object: WELL
+  id: WELL
   code: 82
   size:
     width: 2
@@ -1876,32 +987,22 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 230
-  - 148
-  - 243
-  - 210
-  tags:
-  - woda
-- object: WATER_TL
-  id: WATER_TL
+  tiles: [30, 31, 62, 63]
+  tags: [infrastruktura]
+- object: CROSS_2_COPY
+  id: CROSS_2_COPY
   code: 83
   size:
     width: 2
     height: 2
   flags:
-    blocking: true
+    blocking: false
     interactive: false
     secret: false
-  tiles:
-  - 236
-  - 230
-  - 208
-  - 243
-  tags:
-  - woda
-- object: WATER_BR
-  id: WATER_BR
+  tiles: [0, 0, 46, 47]
+  tags: [tło]
+- object: FENCE_4
+  id: FENCE_4
   code: 84
   size:
     width: 2
@@ -1910,47 +1011,48 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 243
-  - 210
-  - 229
-  - 235
-  tags:
-  - woda
-- object: WATER_BL
-  id: WATER_BL
+  tiles: [0, 0, 89, 89]
+  tags: [infrastruktura]
+- object: HOUSE_MEDIUM
+  id: HOUSE_MEDIUM
   code: 85
   size:
-    width: 2
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [129, 131, 130, 132, 163, 164, 163, 164, 65, 66, 163, 164, 116, 116, 116,
+    116]
+  tags: [dom]
+- object: HOUSE_MEDIUM_2
+  id: HOUSE_MEDIUM_2
+  code: 86
+  size:
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [129, 131, 130, 132, 33, 33, 33, 33, 33, 90, 33, 33, 116, 116, 116, 116]
+  tags: [dom]
+- object: HOUSE_MEDIUM_BLUE
+  id: HOUSE_MEDIUM_BLUE
+  code: 87
+  size:
+    width: 5
     height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 208
-  - 243
-  - 237
-  - 229
-  tags:
-  - woda
-- object: WATER_INNER_TR
-  id: WATER_INNER_TR
-  code: 86
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 249
-  tags:
-  - woda
-- object: WATER_INNER_TL
-  id: WATER_INNER_TL
-  code: 87
+  tiles: [144, 131, 130, 131, 146, 33, 65, 66, 163, 164]
+  tags: [dom]
+- object: OUTHOUSE_3
+  id: OUTHOUSE_3
+  code: 88
   size:
     width: 4
     height: 2
@@ -1958,342 +1060,60 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 243
-  - 153
-  - 153
-  - 210
-  - 248
-  - 153
-  - 153
-  - 210
-  tags:
-  - woda
-- object: WATER_INNER_BL
-  id: WATER_INNER_BL
-  code: 88
+  tiles: [224, 131, 131, 225, 122, 87, 88, 123]
+  tags: [dom]
+- object: PALM_SWAMP_2
+  id: PALM_SWAMP_2
+  code: 89
   size:
-    width: 1
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 247
-  tags:
-  - woda
-- object: FENCE_5
-  id: FENCE_5
-  code: 90
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 98
-  - 98
-  tags:
-  - infrastruktura
-- object: BARREL
-  id: BARREL
-  code: 91
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 100
-  tags:
-  - tło
-- object: CLAW
-  id: CLAW
-  code: 92
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 206
-  tags:
-  - animacja
-- object: CHAIN_1
-  id: CHAIN_1
-  code: 93
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 240
-  tags:
-  - animacja
-- object: CHAIN_2
-  id: CHAIN_2
-  code: 94
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 241
-  tags:
-  - animacja
-- object: CHAIN_3
-  id: CHAIN_3
-  code: 96
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 113
-  tags:
-  - animacja
-- object: WATERFALL_2
-  id: WATERFALL_2
-  code: 98
-  size:
-    width: 8
+    width: 4
     height: 4
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 13
-  - 230
-  - 230
-  - 15
-  - 0
-  - 0
-  - 0
-  - 13
-  - 14
-  - 153
-  - 153
-  - 121
-  - 15
-  - 0
-  - 13
-  - 14
-  - 74
-  - 153
-  - 153
-  - 74
-  - 121
-  - 15
-  tags:
-  - woda
-  - skała
-- object: WAVE_UP
-  id: WAVE_UP
-  code: 99
+  tiles: [0, 0, 0, 0, 0, 79, 114, 0, 203, 110, 111, 203, 0, 203, 203, 0]
+  tags: [drzewo, animacja]
+- object: RIVER_RIGHT_END
+  id: RIVER_RIGHT_END
+  code: 90
   size:
     width: 2
-    height: 2
+    height: 4
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 153
-  - 153
-  - 153
-  - 153
-  tags:
-  - woda
-  - animacja
-- object: SWAMP
-  id: SWAMP
-  code: 100
+  tiles: [230, 148, 243, 210, 243, 210, 229, 235]
+  tags: [woda]
+- object: RIVER_TR_2
+  id: RIVER_TR_2
+  code: 91
   size:
-    width: 1
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [230, 230, 230, 148, 243, 153, 243, 210, 243, 153, 153, 210, 248, 153, 153,
+    210]
+  tags: [woda]
+- object: ROCK_1
+  id: ROCK_1
+  code: 92
+  size:
+    width: 2
     height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 203
-  tags:
-  - woda
-  - animacja
-- object: PORT_2
-  id: PORT_2
-  code: 101
-  size:
-    width: 10
-    height: 3
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 144
-  - 145
-  - 145
-  - 145
-  - 145
-  - 145
-  - 145
-  - 145
-  - 145
-  - 146
-  - 250
-  - 33
-  - 33
-  - 33
-  - 33
-  - 33
-  - 33
-  - 33
-  - 33
-  - 251
-  - 250
-  - 255
-  - 255
-  - 255
-  - 87
-  - 216
-  - 255
-  - 255
-  - 255
-  - 251
-  tags:
-  - portal
-  - interakcja
-- object: PORTAL_2
-  id: PORTAL_2
-  code: 102
-  size:
-    width: 7
-    height: 3
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 13
-  - 14
-  - 15
-  - 0
-  - 0
-  - 0
-  - 13
-  - 14
-  - 74
-  - 74
-  - 15
-  - 0
-  - 13
-  - 14
-  - 74
-  - 155
-  - 156
-  - 74
-  - 15
-  tags:
-  - portal
-  - interakcja
-- object: CAVE_PORTAL
-  id: CAVE_PORTAL
-  code: 103
-  size:
-    width: 7
-    height: 3
-  flags:
-    blocking: true
-    interactive: true
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 10
-  - 11
-  - 12
-  - 0
-  - 0
-  - 0
-  - 10
-  - 11
-  - 34
-  - 9
-  - 12
-  - 0
-  - 10
-  - 11
-  - 34
-  - 218
-  - 34
-  - 9
-  - 12
-  tags:
-  - portal
-  - interakcja
-- object: SECRET1
-  id: SECRET1
-  code: 104
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: true
-  tiles:
-  - 73
-  tags:
-  - sekret
-- object: SECRET2
-  id: SECRET2
-  code: 105
-  size:
-    width: 1
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: true
-  tiles:
-  - 201
-  tags:
-  - sekret
+  tiles: [10, 12]
+  tags: [skała]
 - object: SIGNPOINT_BOTH
   id: SIGNPOINT_BOTH
-  code: 106
+  code: 93
   size:
     width: 3
     height: 2
@@ -2301,18 +1121,134 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 165
-  - 169
-  - 170
-  tags:
-  - infrastruktura
+  tiles: [0, 0, 0, 165, 169, 170]
+  tags: [infrastruktura]
+- object: STONE_BIG_2
+  id: STONE_BIG_2
+  code: 94
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 0, 10, 11, 9, 12]
+  tags: [skała]
+- object: TREE_SMALL_2
+  id: TREE_SMALL_2
+  code: 95
+  size:
+    width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 53, 54, 85, 86]
+  tags: [drzewo]
+- object: WATERFALL_2
+  id: WATERFALL_2
+  code: 96
+  size:
+    width: 8
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 230, 230, 15, 0, 0, 0, 13, 14, 153, 153,
+    121, 15, 0, 13, 14, 74, 153, 153, 74, 121, 15]
+  tags: [woda, skała]
+- object: WATER_TL
+  id: WATER_TL
+  code: 97
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [236, 230, 208, 243]
+  tags: [woda]
+- object: WAVE_UP_2
+  id: WAVE_UP_2
+  code: 98
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [230, 153, 153, 230, 243, 243, 243, 243]
+  tags: [woda, animacja]
+- object: BARN_4
+  id: BARN_4
+  code: 99
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [224, 131, 225, 122, 90, 123]
+  tags: [dom]
+- object: BARN_MEDIUM
+  id: BARN_MEDIUM
+  code: 100
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [16, 17, 17, 18, 48, 0, 0, 50]
+  tags: [dom]
+- object: CASTLE_SMALL
+  id: CASTLE_SMALL
+  code: 101
+  size:
+    width: 8
+    height: 2
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [59, 60, 55, 55, 55, 55, 59, 60, 91, 92, 33, 87, 88, 33, 91, 92]
+  tags: [interakcja]
+- object: CHURCH
+  id: CHURCH
+  code: 102
+  size:
+    width: 4
+    height: 7
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 171, 172, 0, 0, 103, 106, 0, 0, 185, 56, 0, 0, 61, 189, 0, 16, 33, 33,
+    18, 33, 163, 164, 33, 33, 27, 28, 33]
+  tags: [interakcja]
+- object: CHURCH_SMALL
+  id: CHURCH_SMALL
+  code: 103
+  size:
+    width: 4
+    height: 6
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 171, 172, 0, 0, 231, 234, 0, 0, 57, 56, 0, 16, 61, 61, 18, 33, 87, 88,
+    33, 116, 116, 116, 116]
+  tags: [dom]
 - object: CROSS_3
   id: CROSS_3
-  code: 107
+  code: 104
   size:
     width: 2
     height: 1
@@ -2320,34 +1256,58 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 171
-  - 172
-  tags:
-  - infrastruktura
-- object: RIVER_HORIZONTAL
-  id: RIVER_HORIZONTAL
-  code: 108
+  tiles: [171, 172]
+  tags: [infrastruktura]
+- object: FENCE_2
+  id: FENCE_2
+  code: 105
   size:
     width: 2
-    height: 4
+    height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 230
-  - 230
-  - 243
-  - 243
-  - 243
-  - 243
-  - 229
-  - 229
-  tags:
-  - woda
-- object: RIVER_VERTICAL
-  id: RIVER_VERTICAL
+  tiles: [0, 0, 22, 22]
+  tags: [infrastruktura]
+- object: HOME_NEW
+  id: HOME_NEW
+  code: 106
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [96, 3, 2, 3, 3, 97, 250, 163, 164, 65, 66, 251]
+  tags: [dom]
+- object: HOME_NEW_2
+  id: HOME_NEW_2
+  code: 107
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [224, 131, 130, 131, 131, 225, 250, 81, 6, 163, 164, 251]
+  tags: [dom]
+- object: HOME_SMALL_2
+  id: HOME_SMALL_2
+  code: 108
+  size:
+    width: 5
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [144, 131, 130, 131, 146, 250, 33, 65, 66, 251]
+  tags: [dom]
+- object: HOUSE_SMALL_2
+  id: HOUSE_SMALL_2
   code: 109
   size:
     width: 4
@@ -2356,34 +1316,175 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 208
-  - 153
-  - 153
-  - 210
-  - 208
-  - 153
-  - 153
-  - 210
-  tags:
-  - woda
-- object: SAND
-  id: SAND
+  tiles: [129, 131, 130, 132, 65, 66, 161, 161]
+  tags: [dom]
+- object: HOUSE_TALLEST
+  id: HOUSE_TALLEST
   code: 110
+  size:
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [129, 131, 130, 132, 161, 161, 161, 161, 161, 161, 161, 161, 33, 90, 33,
+    33]
+  tags: [dom]
+- object: LAKE
+  id: LAKE
+  code: 111
+  size:
+    width: 8
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [236, 230, 230, 230, 230, 230, 230, 148, 208, 243, 243, 243, 243, 243, 243,
+    210, 208, 243, 243, 243, 243, 243, 243, 210, 237, 229, 229, 229, 229, 229, 229,
+    235]
+  tags: [woda]
+- object: PORT
+  id: PORT
+  code: 112
+  size:
+    width: 10
+    height: 3
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [96, 17, 17, 17, 17, 17, 17, 17, 17, 97, 250, 34, 163, 164, 33, 33, 163,
+    164, 34, 251, 250, 29, 29, 29, 27, 28, 29, 29, 29, 251]
+  tags: [interakcja]
+- object: PORT_2
+  id: PORT_2
+  code: 113
+  size:
+    width: 10
+    height: 3
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [144, 145, 145, 145, 145, 145, 145, 145, 145, 146, 250, 33, 33, 33, 33, 33,
+    33, 33, 33, 251, 250, 255, 255, 255, 87, 216, 255, 255, 255, 251]
+  tags: [portal, interakcja]
+- object: RIVER_LEFT_END
+  id: RIVER_LEFT_END
+  code: 114
+  size:
+    width: 2
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [236, 230, 208, 243, 208, 243, 237, 229]
+  tags: [woda]
+- object: ROCK_BIG
+  id: ROCK_BIG
+  code: 115
+  size:
+    width: 7
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 13, 14, 15, 0, 0, 0, 13, 14, 74, 74, 15, 0, 13, 14, 74, 74, 74, 74,
+    15]
+  tags: [skała]
+- object: ROCK_BIG_2
+  id: ROCK_BIG_2
+  code: 116
+  size:
+    width: 7
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 14, 15, 0, 0, 0, 13, 14, 74, 74, 15, 0, 13,
+    14, 74, 74, 74, 74, 15]
+  tags: [skała]
+- object: ROCK_GREEN_2
+  id: ROCK_GREEN_2
+  code: 117
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 13, 14, 15]
+  tags: [skała]
+- object: SECRET1
+  id: SECRET1
+  code: 118
   size:
     width: 1
     height: 1
   flags:
     blocking: false
     interactive: false
+    secret: true
+  tiles: [73]
+  tags: [sekret]
+- object: SIGNPOINT_RIGHT
+  id: SIGNPOINT_RIGHT
+  code: 119
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
     secret: false
-  tiles:
-  - 76
-  tags:
-  - tło
-- object: HOUSE_SMALL_2
-  id: HOUSE_SMALL_2
-  code: 111
+  tiles: [169, 170]
+  tags: [infrastruktura]
+- object: SWAMP_2
+  id: SWAMP_2
+  code: 120
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [203, 203, 203, 203]
+  tags: [woda, animacja]
+- object: THE_TAVERN
+  id: THE_TAVERN
+  code: 121
+  size:
+    width: 12
+    height: 2
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [16, 3, 2, 3, 3, 3, 3, 3, 3, 2, 3, 18, 250, 163, 164, 163, 164, 87, 88, 163,
+    164, 163, 164, 251]
+  tags: [interakcja]
+- object: WATER_ANIM_2
+  id: WATER_ANIM_2
+  code: 122
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [243, 243, 243, 243]
+  tags: [woda]
+- object: WATER_INNER_TL
+  id: WATER_INNER_TL
+  code: 123
   size:
     width: 4
     height: 2
@@ -2391,107 +1492,305 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 129
-  - 131
-  - 130
-  - 132
-  - 65
-  - 66
-  - 161
-  - 161
-  tags:
-  - dom
-- object: HOUSE_MEDIUM
-  id: HOUSE_MEDIUM
-  code: 112
+  tiles: [243, 153, 153, 210, 248, 153, 153, 210]
+  tags: [woda]
+- object: BARN_SMALL
+  id: BARN_SMALL
+  code: 124
   size:
-    width: 4
-    height: 4
+    width: 3
+    height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 129
-  - 131
-  - 130
-  - 132
-  - 163
-  - 164
-  - 163
-  - 164
-  - 65
-  - 66
-  - 163
-  - 164
-  - 116
-  - 116
-  - 116
-  - 116
-  tags:
-  - dom
-- object: HOUSE_TALLEST
-  id: HOUSE_TALLEST
-  code: 113
+  tiles: [16, 17, 18, 48, 0, 50]
+  tags: [dom]
+- object: BARREL
+  id: BARREL
+  code: 125
   size:
-    width: 4
-    height: 4
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [100]
+  tags: [tło]
+- object: BRICKS_2
+  id: BRICKS_2
+  code: 126
+  size:
+    width: 2
+    height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 129
-  - 131
-  - 130
-  - 132
-  - 161
-  - 161
-  - 161
-  - 161
-  - 161
-  - 161
-  - 161
-  - 161
-  - 33
-  - 90
-  - 33
-  - 33
-  tags:
-  - dom
-- object: HOUSE_BIG
-  id: HOUSE_BIG
-  code: 114
+  tiles: [95, 95, 95, 95]
+  tags: [infrastruktura]
+- object: BRICKS_2_3
+  id: BRICKS_2_3
+  code: 127
   size:
-    width: 4
-    height: 4
+    width: 2
+    height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 1
-  - 3
-  - 2
-  - 4
-  - 161
-  - 161
-  - 161
-  - 161
-  - 161
-  - 161
-  - 218
-  - 161
-  - 116
-  - 116
-  - 116
-  - 116
-  tags:
-  - dom
-- object: HOUSE_BIG_2
-  id: HOUSE_BIG_2
-  code: 115
+  tiles: [0, 0, 95, 95]
+  tags: [infrastruktura]
+- object: BRICK_WALL
+  id: BRICK_WALL
+  code: 128
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [29]
+  tags: [infrastruktura]
+- object: BRICK_WALL_2
+  id: BRICK_WALL_2
+  code: 129
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 29, 29]
+  tags: [infrastruktura]
+- object: BRIDGE_2
+  id: BRIDGE_2
+  code: 130
+  size:
+    width: 5
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 23, 24, 24, 26, 0, 208, 153, 153, 210]
+  tags: [infrastruktura]
+- object: BROWN_DOWN
+  id: BROWN_DOWN
+  code: 131
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [116]
+  tags: [tło]
+- object: CASTLE_BIG
+  id: CASTLE_BIG
+  code: 132
+  size:
+    width: 8
+    height: 4
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 0, 0, 96, 97, 0, 0, 0, 59, 60, 55, 58, 58, 55, 59, 60, 91, 92, 33, 33,
+    33, 33, 91, 92, 91, 92, 34, 27, 28, 34, 91, 92]
+  tags: [interakcja]
+- object: CASTLE_BIGGER
+  id: CASTLE_BIGGER
+  code: 133
+  size:
+    width: 8
+    height: 5
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 0, 0, 1, 132, 0, 0, 0, 0, 0, 0, 33, 33, 0, 0, 0, 59, 60, 55, 61, 61,
+    55, 59, 60, 91, 92, 33, 33, 33, 33, 91, 92, 91, 92, 34, 87, 88, 34, 91, 92]
+  tags: [interakcja]
+- object: CASTLE_BIGGEST
+  id: CASTLE_BIGGEST
+  code: 134
+  size:
+    width: 12
+    height: 5
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 0, 0, 0, 0, 224, 225, 0, 0, 0, 0, 0, 0, 0, 96, 97, 0, 33, 33, 0, 96,
+    97, 0, 0, 0, 0, 58, 58, 55, 58, 58, 55, 58, 58, 0, 0, 59, 60, 29, 29, 33, 29,
+    29, 33, 29, 29, 59, 60, 91, 92, 87, 88, 29, 27, 28, 29, 87, 88, 91, 92]
+  tags: [interakcja]
+- object: CASTLE_MID
+  id: CASTLE_MID
+  code: 135
+  size:
+    width: 8
+    height: 4
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 0, 0, 158, 159, 0, 0, 0, 59, 60, 55, 58, 58, 55, 59, 60, 91, 92, 57,
+    56, 57, 56, 91, 92, 91, 92, 250, 215, 88, 251, 91, 92]
+  tags: [interakcja]
+- object: CAVE_PORTAL
+  id: CAVE_PORTAL
+  code: 136
+  size:
+    width: 7
+    height: 3
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 0, 10, 11, 12, 0, 0, 0, 10, 11, 34, 9, 12, 0, 10, 11, 34, 218, 34, 9,
+    12]
+  tags: [portal, interakcja]
+- object: CHAIN_2
+  id: CHAIN_2
+  code: 137
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [241]
+  tags: [animacja]
+- object: CHAIN_2_2
+  id: CHAIN_2_2
+  code: 138
+  size:
+    width: 1
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [241, 241]
+  tags: [animacja]
+- object: CHAIN_3
+  id: CHAIN_3
+  code: 139
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [113]
+  tags: [animacja]
+- object: CLAW
+  id: CLAW
+  code: 140
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [206]
+  tags: [animacja]
+- object: DOOR
+  id: DOOR
+  code: 141
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [90]
+  tags: [infrastruktura]
+- object: FENCE_1
+  id: FENCE_1
+  code: 142
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 21, 21]
+  tags: [infrastruktura]
+- object: FENCE_3_2
+  id: FENCE_3_2
+  code: 143
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 116, 116]
+  tags: [infrastruktura]
+- object: FENCE_5
+  id: FENCE_5
+  code: 144
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 0, 98, 98]
+  tags: [infrastruktura]
+- object: FENCE_6
+  id: FENCE_6
+  code: 145
+  size:
+    width: 2
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 49, 177]
+  tags: [infrastruktura]
+- object: FENCE_6_2
+  id: FENCE_6_2
+  code: 146
+  size:
+    width: 2
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [49, 49]
+  tags: [infrastruktura]
+- object: HOUSE_BIGGER
+  id: HOUSE_BIGGER
+  code: 147
+  size:
+    width: 5
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [1, 2, 3, 3, 4, 163, 164, 34, 163, 164, 34, 34, 193, 194, 34]
+  tags: [dom]
+- object: HOUSE_BIGGER_2
+  id: HOUSE_BIGGER_2
+  code: 148
   size:
     width: 5
     height: 4
@@ -2499,61 +1798,25 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 1
-  - 3
-  - 2
-  - 3
-  - 4
-  - 161
-  - 161
-  - 161
-  - 161
-  - 33
-  - 193
-  - 194
-  - 33
-  - 33
-  - 33
-  - 116
-  - 116
-  - 116
-  - 116
-  - 116
-  tags:
-  - dom
-- object: HOUSE_MEDIUM_2
-  id: HOUSE_MEDIUM_2
-  code: 116
+  tiles: [96, 3, 2, 3, 97, 250, 163, 164, 34, 251, 250, 34, 193, 194, 251, 116, 116,
+    116, 116, 116]
+  tags: [dom]
+- object: HOUSE_BIG_2
+  id: HOUSE_BIG_2
+  code: 149
   size:
-    width: 4
+    width: 5
     height: 4
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 129
-  - 131
-  - 130
-  - 132
-  - 33
-  - 33
-  - 33
-  - 33
-  - 33
-  - 90
-  - 33
-  - 33
-  - 116
-  - 116
-  - 116
-  - 116
-  tags:
-  - dom
-- object: PALM_SWAMP
-  id: PALM_SWAMP
-  code: 117
+  tiles: [1, 3, 2, 3, 4, 161, 161, 161, 161, 33, 193, 194, 33, 33, 33, 116, 116, 116,
+    116, 116]
+  tags: [dom]
+- object: HOUSE_TALL
+  id: HOUSE_TALL
+  code: 150
   size:
     width: 4
     height: 3
@@ -2561,470 +1824,10 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 79
-  - 114
-  - 0
-  - 203
-  - 110
-  - 111
-  - 203
-  - 0
-  - 203
-  - 203
-  - 0
-  tags:
-  - drzewo
-  - animacja
-- object: RIVER_RIGHT_END
-  id: RIVER_RIGHT_END
-  code: 118
-  size:
-    width: 2
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 230
-  - 148
-  - 243
-  - 210
-  - 243
-  - 210
-  - 229
-  - 235
-  tags:
-  - woda
-- object: RIVER_LEFT_END
-  id: RIVER_LEFT_END
-  code: 119
-  size:
-    width: 2
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 236
-  - 230
-  - 208
-  - 243
-  - 208
-  - 243
-  - 237
-  - 229
-  tags:
-  - woda
-- object: RIVER_BOTTOM_END
-  id: RIVER_BOTTOM_END
-  code: 120
-  size:
-    width: 4
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 208
-  - 153
-  - 153
-  - 210
-  - 237
-  - 229
-  - 229
-  - 235
-  tags:
-  - woda
-- object: RIVER_TOP_END
-  id: RIVER_TOP_END
-  code: 121
-  size:
-    width: 4
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 236
-  - 230
-  - 230
-  - 148
-  - 208
-  - 153
-  - 153
-  - 210
-  tags:
-  - woda
-- object: SAND_2
-  id: SAND_2
-  code: 122
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 76
-  - 76
-  tags:
-  - tło
-- object: SAND_3
-  id: SAND_3
-  code: 123
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 76
-  - 0
-  - 204
-  - 204
-  tags:
-  - tło
-- object: REED_2
-  id: REED_2
-  code: 124
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 124
-  - 124
-  tags:
-  - tło
-- object: REED_3
-  id: REED_3
-  code: 125
-  size:
-    width: 3
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 124
-  - 0
-  - 124
-  tags:
-  - tło
-- object: BARREL_2
-  id: BARREL_2
-  code: 126
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 100
-  - 228
-  tags:
-  - tło
-- object: GROUND_BROWN_UP_2
-  id: GROUND_BROWN_UP_2
-  code: 127
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 45
-  - 45
-  tags:
-  - tło
-- object: GROUND_BROWN_UP_3
-  id: GROUND_BROWN_UP_3
-  code: 128
-  size:
-    width: 3
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 45
-  - 0
-  - 45
-  tags:
-  - tło
-- object: GROUND_BROWN_DOWN_2
-  id: GROUND_BROWN_DOWN_2
-  code: 129
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 77
-  - 77
-  tags:
-  - tło
-- object: GROUND_BROWN_DOWN_3
-  id: GROUND_BROWN_DOWN_3
-  code: 130
-  size:
-    width: 3
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 77
-  - 0
-  - 77
-  tags:
-  - tło
-- object: WATER_UP_2
-  id: WATER_UP_2
-  code: 131
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 160
-  - 160
-  tags:
-  - tło
-- object: WATER_DOWN_3
-  id: WATER_DOWN_3
-  code: 132
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 192
-  - 192
-  tags:
-  - tło
-- object: GROUND_GREEN_UP_2
-  id: GROUND_GREEN_UP_2
-  code: 133
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 32
-  - 32
-  tags:
-  - tło
-- object: GROUND_GREEN_DOWN_2
-  id: GROUND_GREEN_DOWN_2
-  code: 134
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 64
-  - 64
-  tags:
-  - tło
-- object: WATER_2
-  id: WATER_2
-  code: 135
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 202
-  - 202
-  - 202
-  - 202
-  tags:
-  - woda
-- object: WATER_ANIM_2
-  id: WATER_ANIM_2
-  code: 137
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 243
-  - 243
-  - 243
-  - 243
-  tags:
-  - woda
-- object: SWAMP_2
-  id: SWAMP_2
-  code: 138
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 203
-  - 203
-  - 203
-  - 203
-  tags:
-  - woda
-  - animacja
-- object: WAVES_1_2
-  id: WAVES_1_2
-  code: 141
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 133
-  - 133
-  tags:
-  - woda
-  - animacja
-- object: CLAW_2
-  id: CLAW_2
-  code: 142
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 206
-  - 206
-  tags:
-  - animacja
-- object: CHAIN_1_2
-  id: CHAIN_1_2
-  code: 143
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 240
-  - 240
-  - 240
-  - 240
-  tags:
-  - animacja
-- object: CHAIN_2_2
-  id: CHAIN_2_2
-  code: 144
-  size:
-    width: 1
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 241
-  - 241
-  tags:
-  - animacja
-- object: CHAIN_3_2
-  id: CHAIN_3_2
-  code: 145
-  size:
-    width: 1
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 113
-  - 113
-  tags:
-  - animacja
-- object: BRICK_WALL_2
-  id: BRICK_WALL_2
-  code: 148
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 29
-  - 29
-  tags:
-  - infrastruktura
-- object: FENCE_6_2
-  id: FENCE_6_2
-  code: 149
-  size:
-    width: 2
-    height: 1
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 49
-  - 49
-  tags:
-  - infrastruktura
-- object: FENCE_3_2
-  id: FENCE_3_2
+  tiles: [1, 2, 3, 4, 34, 35, 36, 34, 65, 66, 34, 67]
+  tags: [dom]
+- object: OUTHOUSE_2
+  id: OUTHOUSE_2
   code: 151
   size:
     width: 2
@@ -3033,127 +1836,73 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 116
-  - 116
-  tags:
-  - infrastruktura
-- object: BRICKS_2_3
-  id: BRICKS_2_3
+  tiles: [96, 97, 65, 66]
+  tags: [dom]
+- object: PALM_TREE_2
+  id: PALM_TREE_2
   code: 152
   size:
     width: 2
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 79, 114, 110, 111]
+  tags: [drzewo]
+- object: PORTAL_2
+  id: PORTAL_2
+  code: 153
+  size:
+    width: 7
+    height: 3
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 0, 13, 14, 15, 0, 0, 0, 13, 14, 74, 74, 15, 0, 13, 14, 74, 155, 156,
+    74, 15]
+  tags: [portal, interakcja]
+- object: PYRAMID_BIG
+  id: PYRAMID_BIG
+  code: 154
+  size:
+    width: 10
+    height: 3
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 0, 0, 0, 232, 233, 0, 0, 0, 0, 0, 0, 232, 231, 227, 34, 234, 233, 0,
+    0, 232, 231, 227, 227, 155, 156, 34, 34, 234, 233]
+  tags: [interakcja]
+- object: PYRAMID_MEDIUM
+  id: PYRAMID_MEDIUM
+  code: 155
+  size:
+    width: 6
     height: 2
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 95
-  - 95
-  tags:
-  - infrastruktura
-- object: GROUND_BROWN_UP_4
-  id: GROUND_BROWN_UP_4
-  code: 155
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 45
-  - 45
-  - 45
-  - 45
-  tags:
-  - tło
-- object: GROUND_BROWN_UP_2V
-  id: GROUND_BROWN_UP_2V
+  tiles: [0, 0, 232, 233, 0, 0, 232, 231, 227, 34, 234, 233]
+  tags: [dom]
+- object: PYRAMID_SMALL
+  id: PYRAMID_SMALL
   code: 156
   size:
-    width: 1
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 45
-  - 45
-  tags:
-  - tło
-- object: SAND_2V
-  id: SAND_2V
-  code: 157
-  size:
-    width: 1
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 76
-  - 76
-  tags:
-  - tło
-- object: SAND_4
-  id: SAND_4
-  code: 158
-  size:
     width: 2
-    height: 2
+    height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 76
-  - 76
-  - 76
-  - 76
-  tags:
-  - tło
-- object: REED_2V
-  id: REED_2V
-  code: 159
-  size:
-    width: 1
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 124
-  - 124
-  tags:
-  - tło
-- object: GROUND_BROWN_DOWN_2V
-  id: GROUND_BROWN_DOWN_2V
-  code: 160
-  size:
-    width: 1
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 77
-  - 77
-  tags:
-  - tło
-- object: RIVER_TL_2
-  id: RIVER_TL_2
-  code: 161
+  tiles: [232, 233]
+  tags: [dom]
+- object: RIVER_BL
+  id: RIVER_BL
+  code: 157
   size:
     width: 4
     height: 4
@@ -3161,27 +1910,61 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 236
-  - 230
-  - 230
-  - 230
-  - 208
-  - 153
-  - 153
-  - 243
-  - 208
-  - 153
-  - 153
-  - 243
-  - 208
-  - 153
-  - 153
-  - 246
-  tags:
-  - woda
-- object: RIVER_TR_2
-  id: RIVER_TR_2
+  tiles: [208, 153, 210, 0, 208, 153, 249, 230, 208, 243, 243, 243, 237, 229, 229,
+    229]
+  tags: [woda]
+- object: RIVER_BOTTOM_END
+  id: RIVER_BOTTOM_END
+  code: 158
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [208, 153, 153, 210, 237, 229, 229, 235]
+  tags: [woda]
+- object: RIVER_BR
+  id: RIVER_BR
+  code: 159
+  size:
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 208, 153, 210, 230, 247, 153, 210, 243, 243, 243, 210, 229, 229, 229,
+    235]
+  tags: [woda]
+- object: RIVER_TL
+  id: RIVER_TL
+  code: 160
+  size:
+    width: 4
+    height: 4
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [236, 230, 230, 230, 208, 243, 243, 243, 208, 153, 246, 229, 208, 153, 210,
+    0]
+  tags: [woda]
+- object: RIVER_TOP_END
+  id: RIVER_TOP_END
+  code: 161
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [236, 230, 230, 148, 208, 153, 153, 210]
+  tags: [woda]
+- object: RIVER_TR
+  id: RIVER_TR
   code: 162
   size:
     width: 4
@@ -3190,332 +1973,179 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 230
-  - 230
-  - 230
-  - 148
-  - 243
-  - 153
-  - 243
-  - 210
-  - 243
-  - 153
-  - 153
-  - 210
-  - 248
-  - 153
-  - 153
-  - 210
-  tags:
-  - woda
-- object: RIVER_BL_2
-  id: RIVER_BL_2
+  tiles: [230, 230, 230, 148, 243, 243, 243, 210, 229, 248, 153, 210, 0, 208, 153,
+    210]
+  tags: [woda]
+- object: ROCK_2_2
+  id: ROCK_2_2
+  code: 163
+  size:
+    width: 3
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 0, 0, 10, 11, 12]
+  tags: [skała]
+- object: SECRET2
+  id: SECRET2
   code: 164
   size:
-    width: 4
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 208
-  - 153
-  - 153
-  - 249
-  - 208
-  - 153
-  - 153
-  - 243
-  - 208
-  - 153
-  - 153
-  - 243
-  - 237
-  - 229
-  - 229
-  - 229
-  tags:
-  - woda
-- object: RIVER_BR_2
-  id: RIVER_BR_2
-  code: 165
-  size:
-    width: 4
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 247
-  - 153
-  - 153
-  - 210
-  - 243
-  - 153
-  - 153
-  - 210
-  - 243
-  - 153
-  - 153
-  - 210
-  - 229
-  - 229
-  - 229
-  - 235
-  tags:
-  - woda
-- object: SWAMP_2_WEED
-  id: SWAMP_2_WEED
-  code: 166
-  size:
-    width: 2
-    height: 2
+    width: 1
+    height: 1
   flags:
     blocking: false
     interactive: false
+    secret: true
+  tiles: [201]
+  tags: [sekret]
+- object: STONE
+  id: STONE
+  code: 165
+  size:
+    width: 7
+    height: 3
+  flags:
+    blocking: true
+    interactive: false
     secret: false
-  tiles:
-  - 203
-  - 203
-  - 124
-  - 124
-  tags:
-  - woda
-  - animacja
-- object: BUSH_2_2
-  id: BUSH_2_2
+  tiles: [0, 0, 10, 11, 12, 0, 0, 0, 10, 11, 34, 9, 12, 0, 10, 11, 34, 34, 9, 9, 12]
+  tags: [skała]
+- object: STONE_BIG
+  id: STONE_BIG
+  code: 166
+  size:
+    width: 4
+    height: 1
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [10, 11, 9, 12]
+  tags: [skała]
+- object: TOWER
+  id: TOWER
   code: 167
   size:
     width: 2
-    height: 2
+    height: 6
   flags:
-    blocking: false
-    interactive: false
+    blocking: true
+    interactive: true
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 71
-  - 72
-  tags:
-  - drzewo
-  - tło
-- object: SWAMP_BLOCK
-  id: SWAMP_BLOCK
+  tiles: [224, 225, 33, 34, 34, 33, 33, 34, 34, 33, 87, 88]
+  tags: [portal]
+- object: WATER
+  id: WATER
   code: 168
   size:
-    width: 2
-    height: 2
+    width: 1
+    height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 203
-  - 124
-  - 124
-  - 203
-  tags:
-  - woda
-  - animacja
-- object: SWAMP_BLOCK_2
-  id: SWAMP_BLOCK_2
+  tiles: [202]
+- object: WATER_2
+  id: WATER_2
   code: 169
   size:
     width: 2
     height: 2
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 124
-  - 203
-  - 203
-  - 124
-  tags:
-  - woda
-  - animacja
-- object: GROUND_BROWN_TR
-  id: GROUND_BROWN_TR
+  tiles: [202, 202, 202, 202]
+  tags: [woda]
+- object: WATER_INNER_BL
+  id: WATER_INNER_BL
   code: 170
   size:
-    width: 2
-    height: 2
+    width: 1
+    height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 45
-  - 45
-  - 0
-  - 45
-  tags:
-  - tło
-- object: GROUND_BROWN_BR
-  id: GROUND_BROWN_BR
+  tiles: [247]
+  tags: [woda]
+- object: WATER_INNER_TR
+  id: WATER_INNER_TR
   code: 171
   size:
-    width: 2
-    height: 2
+    width: 1
+    height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 45
-  - 45
-  - 45
-  tags:
-  - tło
-- object: GROUND_BROWN_UP_TL
-  id: GROUND_BROWN_UP_TL
+  tiles: [249]
+  tags: [woda]
+- object: WATER_UP_2
+  id: WATER_UP_2
   code: 172
   size:
     width: 2
-    height: 2
+    height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 45
-  - 45
-  - 45
-  - 0
-  tags:
-  - tło
-- object: GROUND_BROWN_BL
-  id: GROUND_BROWN_BL
+  tiles: [160, 160]
+  tags: [tło]
+- object: WAVES
+  id: WAVES
   code: 173
   size:
     width: 2
     height: 2
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 45
-  - 0
-  - 45
-  - 45
-  tags:
-  - tło
-- object: SAND_3_TL
-  id: SAND_3_TL
+  tiles: [133, 133, 133, 133]
+  tags: [woda, animacja]
+- object: WAVES_1_2
+  id: WAVES_1_2
   code: 174
   size:
     width: 2
-    height: 2
+    height: 1
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 76
-  - 76
-  - 204
-  - 0
-  tags:
-  - tło
-- object: SAND_3_TR
-  id: SAND_3_TR
+  tiles: [133, 133]
+  tags: [woda, animacja]
+- object: WAVES_LEFT
+  id: WAVES_LEFT
   code: 175
   size:
     width: 2
     height: 2
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 76
-  - 76
-  - 0
-  - 76
-  tags:
-  - tło
-- object: SAND_3_BR
-  id: SAND_3_BR
+  tiles: [0, 208, 0, 208]
+  tags: [woda]
+- object: WAVES_RIGHT
+  id: WAVES_RIGHT
   code: 176
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 76
-  - 76
-  - 76
-  tags:
-  - tło
-- object: BRIDGE_2
-  id: BRIDGE_2
-  code: 177
-  size:
-    width: 5
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 23
-  - 24
-  - 24
-  - 26
-  - 0
-  - 208
-  - 153
-  - 153
-  - 210
-  tags:
-  - infrastruktura
-- object: BARREL_2_2
-  id: BARREL_2_2
-  code: 178
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 100
-  - 228
-  tags:
-  - tło
-- object: BARREL_1_2
-  id: BARREL_1_2
-  code: 179
   size:
     width: 1
     height: 2
   flags:
-    blocking: false
+    blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 100
-  tags:
-  - tło
-- object: ROCK_1_2
-  id: ROCK_1_2
-  code: 180
+  tiles: [210, 210]
+  tags: [woda]
+- object: TREE_4
+  id: TREE_4
+  code: 177
   size:
     width: 2
     height: 2
@@ -3523,116 +2153,11 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 10
-  - 12
-  tags:
-  - skała
-- object: ROCK_2_2
-  id: ROCK_2_2
-  code: 181
-  size:
-    width: 3
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 10
-  - 11
-  - 12
-  tags:
-  - skała
-- object: ROCK_BIG_2
-  id: ROCK_BIG_2
-  code: 182
-  size:
-    width: 7
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 13
-  - 14
-  - 15
-  - 0
-  - 0
-  - 0
-  - 13
-  - 14
-  - 74
-  - 74
-  - 15
-  - 0
-  - 13
-  - 14
-  - 74
-  - 74
-  - 74
-  - 74
-  - 15
-  tags:
-  - skała
-- object: ROCK_GREEN_2
-  id: ROCK_GREEN_2
-  code: 183
-  size:
-    width: 3
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 13
-  - 14
-  - 15
-  tags:
-  - skała
-- object: STONE_BIG_2
-  id: STONE_BIG_2
-  code: 184
-  size:
-    width: 4
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 10
-  - 11
-  - 9
-  - 12
-  tags:
-  - skała
-- object: TREE_2_2
-  id: TREE_2_2
-  code: 185
+  tiles: [64, 117, 39, 40]
+  tags: [drzewo]
+- object: TREE_4_2
+  id: TREE_4_2
+  code: 178
   size:
     width: 2
     height: 3
@@ -3640,172 +2165,17 @@ objects:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 51
-  - 52
-  - 83
-  - 84
-  tags:
-  - drzewo
-- object: TREE_SMALL_2
-  id: TREE_SMALL_2
-  code: 186
+  tiles: [0, 0, 64, 117, 39, 40]
+  tags: [drzewo]
+- object: BROWN_DOWN_2
+  id: BROWN_DOWN_2
+  code: 179
   size:
     width: 2
-    height: 3
+    height: 1
   flags:
     blocking: true
     interactive: false
     secret: false
-  tiles:
-  - 0
-  - 0
-  - 53
-  - 54
-  - 85
-  - 86
-  tags:
-  - drzewo
-- object: TREE_3_2
-  id: TREE_3_2
-  code: 187
-  size:
-    width: 2
-    height: 3
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 7
-  - 8
-  - 39
-  - 40
-  tags:
-  - drzewo
-- object: PALM_TREE_2
-  id: PALM_TREE_2
-  code: 188
-  size:
-    width: 2
-    height: 3
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 79
-  - 114
-  - 110
-  - 111
-  tags:
-  - drzewo
-- object: PALM_SWAMP_2
-  id: PALM_SWAMP_2
-  code: 189
-  size:
-    width: 4
-    height: 4
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 79
-  - 114
-  - 0
-  - 203
-  - 110
-  - 111
-  - 203
-  - 0
-  - 203
-  - 203
-  - 0
-  tags:
-  - drzewo
-  - animacja
-- object: CROSS_1_COPY
-  id: CROSS_1_COPY
-  code: 190
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 43
-  - 44
-  tags:
-  - tło
-- object: CROSS_2_COPY
-  id: CROSS_2_COPY
-  code: 191
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 46
-  - 47
-  tags:
-  - tło
-- object: WAVE_UP_2
-  id: WAVE_UP_2
-  code: 192
-  size:
-    width: 4
-    height: 2
-  flags:
-    blocking: true
-    interactive: false
-    secret: false
-  tiles:
-  - 230
-  - 153
-  - 153
-  - 230
-  - 243
-  - 243
-  - 243
-  - 243
-  tags:
-  - woda
-  - animacja
-- object: CLAW_2_2
-  id: CLAW_2_2
-  code: 193
-  size:
-    width: 2
-    height: 2
-  flags:
-    blocking: false
-    interactive: false
-    secret: false
-  tiles:
-  - 0
-  - 0
-  - 206
-  - 206
-  tags:
-  - animacja
+  tiles: [116, 116]
+  tags: [tło]
