@@ -249,8 +249,8 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
         "icon_addr": ("ICON_ADDR", ("size", 120)),
         "font.asm": ("FONTDATA", ("size", 1024)),
         "game_font.asm": ("GAMEFONTDATA", ("size", 1024)),
-        "world builder data": ("OBJ_SIZE", ("before", "TEXT_GAMEOVER_FAIL")),
-        "all_gameover_texts": ("TEXT_GAMEOVER_FAIL", ("size", 88)),
+        "world builder data": ("OBJ_SIZE", ("before", "TEXT_CONTENTS_GAMEOVER_FAIL")),
+        "all_gameover_texts": ("TEXT_CONTENTS_GAMEOVER_FAIL", ("before", "STORY_INIT")),
         "secret_objects.asm": ("SECRET_OBJ_PRESENT", ("before", "TRACK_VARIABLES")),
         "sprites": ("GERWALT_RIGHT_FRAME_0", ("before", "ITEM_CHARSET_POS")),
         "all_texts": ("TEXT_TITLE", ("size", 350)),
@@ -371,7 +371,7 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
         print("MEMORY_USAGE.md is up-to-date.")
 
     world_start = symbols.get("OBJ_SIZE")
-    world_end = (symbols.get("TEXT_GAMEOVER_FAIL") - 1) if "TEXT_GAMEOVER_FAIL" in symbols else None
+    world_end = (symbols.get("TEXT_CONTENTS_GAMEOVER_FAIL") - 1) if "TEXT_CONTENTS_GAMEOVER_FAIL" in symbols else None
     if world_start and world_end:
         main_world_ram = world_end - world_start + 1
         main_world_budget = 0x9D20 - 0x6800

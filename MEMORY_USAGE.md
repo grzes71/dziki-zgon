@@ -51,21 +51,21 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$5FEC` – `$5FFF`** | 20 B | — | **WOLNY RAM** | Pozostały wolny RAM przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. |
-| **`$6800` – `$8243`** | 6724 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
-| **`$8244` – `$829B`** | 88 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
-| **`$6800` – `$8243`** | 6724 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
+| **`$6800` – `$84C4`** | 7365 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
+| **`$84C5` – `$9D20`** | 6236 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
+| **`$6800` – `$84C4`** | 7365 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
 | **`$1E2E` – `$1F8B`** | 350 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story). |
 | **`$A800` – `$A9DF`** | 480 B | `secret_objects.asm` | Dane (World) | Obiekty sekretów na planszach. |
-| **`$B7CF` – `$B86B`** | 157 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
+| **`$B79D` – `$B839`** | 157 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
 | **`$A000` – `$A7FF`** | 2048 B | `PMG` | Pamięć PMG | Pamięć Player/Missile Graphics (M0-M3, P0-P3). |
-| **`$B6EE` – `$B7CE`** | 225 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
+| **`$B6EE` – `$B79C`** | 175 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
 | **`$9DC5` – `$9FFF`** | 571 B | — | **WOLNY RAM** | Wolna pamięć przed zmiennymi RMT. |
 | **`$A9E0` – `$ACFF`** | 800 B | `rmtplayr_vars` | Dane (Odtwarzacz) | Zmienne i tabele odtwarzacza RMT. |
 | **`$AD00` – `$B241`** | 1346 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT. |
 | **`$B300` – `$B610`** | 785 B | `title_music.asm` | Dane (Muzyka) | Moduł muzyczny RMT. |
 | **`$B618` – `$B6ED`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
-| **`$B86C` – `$B9EF`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
-| **`$B9F0` – `$BED9`** | 1258 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
+| **`$B83A` – `$B9BD`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
+| **`$B9BE` – `$BEA7`** | 1258 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
 
 ---
 

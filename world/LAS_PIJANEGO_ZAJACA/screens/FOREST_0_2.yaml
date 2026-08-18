@@ -172,6 +172,66 @@ objects:
   x: 16
   y: 8
   repeat-x: 9
+- object: BUSH_2_2
+  x: 8
+  y: 2
+- object: BUSH_2_2
+  x: 14
+  y: 0
+- object: BUSH_2
+  x: 38
+  y: 4
+- object: REED_2
+  x: 34
+  y: 0
+- object: CROSS_1_COPY
+  x: 26
+  y: 6
+- object: CROSS_1_COPY
+  x: 34
+  y: 6
+- object: CROSS_1_COPY
+  x: 34
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 18
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 10
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 28
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 34
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 36
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 8
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 0
+  y: 2
 enemies:
 - enemy: kikimora
   x: 12

@@ -121,11 +121,11 @@ gameover_fire_released
 
 @do_fail
     jsr show_gameover_fail_header
-    mRLE_Depack text_gameover_fail FOOTER_ADDR
+    mRLE_Depack text_contents_gameover_fail FOOTER_ADDR
     rts
 
 @do_success
     jsr show_gameover_success_header
-    mRLE_Depack text_gameover_success FOOTER_ADDR
+    mRLE_Depack text_contents_gameover_success FOOTER_ADDR
     rts
 .endp

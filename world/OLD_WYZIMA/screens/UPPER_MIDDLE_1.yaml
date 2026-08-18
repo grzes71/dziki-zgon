@@ -32,9 +32,6 @@ objects:
   x: 14
   y: 0
 - object: TREE_SMALL
-  x: 10
-  y: 10
-- object: TREE_SMALL
   x: 24
   y: 10
 - object: TREE_3
@@ -128,6 +125,9 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 8
   y: 2
+- object: SIGNPOINT_BOTH
+  x: 10
+  y: 10
 enemies:
 - enemy: bazyliszek
   x: 20

@@ -38,7 +38,14 @@ def test_travel_screen_symbols_exist():
 
 
 
-def test_travel_screen_footer_formatting():
+@pytest.mark.parametrize("screen_id,expected_region_id", [
+    (1, "WHITE_FIELD"),
+    (3, "LAS_PIJANEGO_ZAJACA"),
+    (10, "JAR_WIECZNEJ_ZGAGI"),
+    (2, "OLD_WYZIMA"),
+    (21, "SAMOTNIA_MISTRZA"),
+])
+def test_travel_screen_footer_formatting(screen_id, expected_region_id):
     lab_path = ROOT_DIR / "gen" / "game.lab"
     xex_path = ROOT_DIR / "dziki_zgon.xex"
     if not lab_path.exists() or not xex_path.exists():
@@ -62,8 +69,8 @@ def test_travel_screen_footer_formatting():
         cpu.memory[seg_start:seg_start+seg_len] = data[idx:idx+seg_len]
         idx += seg_len
 
-    # Set NEW_SCREEN_ID to 1 (screen 1 -> region "białe pole")
-    cpu.memory[labels["NEW_SCREEN_ID"]] = 1
+    # Set NEW_SCREEN_ID
+    cpu.memory[labels["NEW_SCREEN_ID"]] = screen_id
 
     # Place a RTS at Engine_WaitFrame to stub out the 250 frame wait loop
     wait_frame_addr = labels["ENGINE_WAITFRAME"]
@@ -81,17 +88,20 @@ def test_travel_screen_footer_formatting():
         cpu.step()
         steps += 1
 
-    # Inspect FOOTER_ADDR ($5E10)
-    footer_bytes = bytes(cpu.memory[0x5E10:0x5E38])
-    # Total string = "podróż do białe pole" (20 chars) -> offset (40-20)/2 = 10
-    # Bytes 0..9 should be 0x00
-    assert footer_bytes[:10] == b"\x00" * 10
-    # Bytes 10..19: "podróż do " ($70, $6F, $64, $72, $5F, $5C, $00, $64, $6F, $00)
-    assert footer_bytes[10:20] == bytes([0x70, 0x6F, 0x64, 0x72, 0x5F, 0x5C, 0x00, 0x64, 0x6F, 0x00])
-    # Bytes 20..29: "białe pole" ($62, $69, $61, $7E, $65, $00, $70, $6F, $6C, $65)
-    assert footer_bytes[20:30] == bytes([0x62, 0x69, 0x61, 0x7E, 0x65, 0x00, 0x70, 0x6F, 0x6C, 0x65])
-    # Bytes 30..39 should be 0x00
-    assert footer_bytes[30:40] == b"\x00" * 10
+    # Inspect FOOTER_ADDR ($5E10) - should contain 320 bytes of region travel text
+    from scripts.rle_compress_text import to_atari_screencode
+    expected_file = ROOT_DIR / "texts" / f"contents-travel-{expected_region_id}.txt"
+    expected_lines = expected_file.read_text(encoding="utf-8").splitlines()
+    expected_bytes = bytearray()
+    for line in expected_lines[:8]:
+        line = line.rstrip("\r\n").ljust(40)[:40]
+        for c in line:
+            expected_bytes.append(to_atari_screencode(c))
+    while len(expected_bytes) < 320:
+        expected_bytes.append(0)
+
+    footer_bytes = bytes(cpu.memory[0x5E10:0x5E10 + 320])
+    assert footer_bytes == bytes(expected_bytes)
 
 
 

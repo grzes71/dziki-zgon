@@ -172,4 +172,16 @@ objects:
 - object: SWAMP_BLOCK
   x: 34
   y: 2
+- object: PYRAMID_SMALL
+  x: 6
+  y: 2
+- object: PYRAMID_SMALL
+  x: 38
+  y: 6
+- object: PYRAMID_SMALL
+  x: 16
+  y: 8
+- object: PYRAMID_SMALL
+  x: 18
+  y: 4
 enemies: []

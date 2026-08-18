@@ -5,15 +5,23 @@
 ; --- Zmienne lokalne ---
 travel_frame_count
     dta $00
-travel_regname_len
-    dta $00
 travel_screen_active
     dta $00
 
-; Kody znakowe ekranu (Screen Codes) dla małych liter: "podróż do " (10 znaków)
-; p=$70, o=$6F, d=$64, r=$72, ó=$5F, ż=$5C, space=$00, d=$64, o=$6F, space=$00
-TravelPrefixText
-    dta $70, $6F, $64, $72, $5F, $5C, $00, $64, $6F, $00
+; --- Tabele wskaźników do tekstów podróży (indeksowane przez RegionId) ---
+TRAVEL_TEXTS_LO
+    dta <text_contents_travel_JAR_WIECZNEJ_ZGAGI
+    dta <text_contents_travel_LAS_PIJANEGO_ZAJACA
+    dta <text_contents_travel_OLD_WYZIMA
+    dta <text_contents_travel_SAMOTNIA_MISTRZA
+    dta <text_contents_travel_WHITE_FIELD
+
+TRAVEL_TEXTS_HI
+    dta >text_contents_travel_JAR_WIECZNEJ_ZGAGI
+    dta >text_contents_travel_LAS_PIJANEGO_ZAJACA
+    dta >text_contents_travel_OLD_WYZIMA
+    dta >text_contents_travel_SAMOTNIA_MISTRZA
+    dta >text_contents_travel_WHITE_FIELD
 
 ;==============================================================
 ; travel_screen_show — Wyświetla 5-sekundowy statyczny ekran podróży (ANTIC mode 2)
@@ -54,59 +62,18 @@ TravelPrefixText
     lda SCREEN_REGION,x
     tax                     ; X = RegionId
 
-    ; Pobranie wskaźnika nazwy regionu
-    lda REGION_NAMES_LO,x
+    ; Pobranie wskaźnika tekstu podróży dla docelowego regionu
+    lda TRAVEL_TEXTS_LO,x
     sta SRC_PTR
-    lda REGION_NAMES_HI,x
+    lda TRAVEL_TEXTS_HI,x
     sta SRC_PTR+1
 
-    ; Oblicz długość nazwy regionu L_name (skanuj wstecz od indeksu 19 w poszukiwaniu niezerowego bajtu)
-    ldy #19
-@find_end
-    lda (SRC_PTR),y
-    bne @found_end
-    dey
-    bpl @find_end
-    ldy #0
-    jmp @got_len
-@found_end
-    iny                     ; Y = L_name (ostatni niezerowy indeks + 1)
-@got_len
-    sty travel_regname_len
-
-    ; Całkowita długość L_total = 10 + L_name
-    tya
-    clc
-    adc #10
-
-    ; start_offset = (40 - L_total) / 2
-    eor #$FF
-    sec
-    adc #40
-    lsr
-    tax                     ; X = start_offset
-
-    ; Kopiowanie "podróż do " (10 bajtów) od FOOTER_ADDR + start_offset
-    ldy #0
-@copy_prefix
-    lda TravelPrefixText,y
-    sta FOOTER_ADDR,x
-    inx
-    iny
-    cpy #10
-    bne @copy_prefix
-
-    ; Kopiowanie L_name bajtów nazwy regionu od FOOTER_ADDR + start_offset + 10
-    ldy #0
-@copy_regname
-    cpy travel_regname_len
-    bcs @copy_done
-    lda (SRC_PTR),y
-    sta FOOTER_ADDR,x
-    inx
-    iny
-    jmp @copy_regname
-@copy_done
+    ; Rozpakuj wielowierszowy tekst podróży (8 linii × 40 znaków) do FOOTER_ADDR
+    lda #<FOOTER_ADDR
+    sta DST_PTR
+    lda #>FOOTER_ADDR
+    sta DST_PTR+1
+    jsr RLE_Depack
 
     ; 5. Ustaw Display List dla Travel Screen
     lda #<DLIST_TRAVEL

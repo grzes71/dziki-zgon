@@ -85,8 +85,8 @@ def main():
 
     # Przygotuj dane wejściowe
     raw_bytes = bytearray()
-    if basename == "story":
-        # Story oczekuje 8 linii po dokładnie 40 znaków
+    if basename == "story" or basename.startswith("contents-") or basename.startswith("header-travel-") or basename.startswith("travel-"):
+        # Story oraz Teksty Podróży oczekują 8 linii po dokładnie 40 znaków (320 B)
         for line in lines[:8]:
             line = line.rstrip("\r\n")
             line = line.ljust(40)[:40]

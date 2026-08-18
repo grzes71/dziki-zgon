@@ -22,12 +22,6 @@ objects:
   y: 0
 - object: PALM_SWAMP
   x: 30
-  y: 4
-- object: PALM_SWAMP
-  x: 34
-  y: 6
-- object: PALM_SWAMP
-  x: 30
   y: 0
 - object: SAND_4
   x: 0
@@ -126,9 +120,6 @@ objects:
 - object: SAND_3_TR
   x: 8
   y: 0
-- object: PALM_SWAMP
-  x: 30
-  y: 8
 - object: SWAMP_BLOCK
   x: 36
   y: 4
@@ -136,9 +127,6 @@ objects:
   x: 34
   y: 2
   repeat-y: 2
-- object: SAND_3
-  x: 26
-  y: 10
 - object: RIVER_VERTICAL
   x: 22
   y: 6
@@ -160,5 +148,36 @@ objects:
   y: 0
 - object: GROUND_BROWN_TR
   x: 20
+  y: 4
+- object: PYRAMID_MEDIUM
+  x: 32
+  y: 6
+- object: PYRAMID_SMALL
+  x: 14
+  y: 4
+- object: PYRAMID_SMALL
+  x: 2
+  y: 8
+- object: PYRAMID_SMALL
+  x: 20
+  y: 6
+- object: BROWN_DOWN_2
+  x: 32
+  y: 8
+  repeat-x: 3
+- object: SWAMP_BLOCK_2
+  x: 26
+  y: 10
+- object: SWAMP_BLOCK
+  x: 30
+  y: 10
+- object: SWAMP_2_WEED
+  x: 28
+  y: 10
+- object: PYRAMID_SMALL
+  x: 34
+  y: 10
+- object: SWAMP_2_WEED
+  x: 32
   y: 4
 enemies: []

@@ -39,8 +39,11 @@ def test_validate_xex_path_missing(tmp_path):
 def test_text_line_length_validation():
     """Verifies that all gameover and title text files in texts/ have lines of exactly 40 characters."""
     texts_dir = Path(__file__).parent.parent / "texts"
-    target_files = list(texts_dir.glob("gameover*.txt")) + [texts_dir / "title.txt"]
-    assert len(target_files) >= 3, "Expected at least 3 text files (gameover* and title.txt)"
+    target_files = [
+        f for f in texts_dir.glob("*.txt")
+        if not f.name.startswith("header-")
+    ]
+    assert len(target_files) >= 3, "Expected at least 3 body text files"
 
     for file_path in target_files:
         assert file_path.exists(), f"Text file {file_path.name} does not exist"

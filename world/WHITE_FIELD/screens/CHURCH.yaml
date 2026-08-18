@@ -42,7 +42,7 @@ objects:
   x: 8
   y: 8
 - object: TREE_SMALL
-  x: 10
+  x: 8
   y: 4
 - object: TREE_2
   x: 24
@@ -60,9 +60,6 @@ objects:
   x: 14
   y: 6
 - object: TREE_3_2
-  x: 4
-  y: 4
-- object: TREE_3_2
   x: 30
   y: 4
 - object: TREE_2_2
@@ -77,10 +74,10 @@ objects:
   repeat-x: 2
 - object: TREE_SMALL
   x: 12
-  y: 0
+  y: 2
 - object: GROUND_GREEN_UP_2
   x: 12
-  y: 2
+  y: 4
   repeat-x: 2
 - object: GROUND_BROWN_TR
   x: 38
@@ -115,14 +112,14 @@ objects:
   x: 12
   y: 8
 - object: BUSH_2_2
-  x: 8
+  x: 6
   y: 4
 - object: BUSH_2_2
   x: 34
   y: 2
 - object: MUSHROOM
   x: 14
-  y: 0
+  y: 2
 - object: MUSHROOM
   x: 32
   y: 8
@@ -141,7 +138,7 @@ objects:
   y: 4
   repeat-x: 2
 - object: GROUND_GREEN_UP_2
-  x: 8
+  x: 6
   y: 6
   repeat-x: 2
 - object: BARREL_2
@@ -150,12 +147,6 @@ objects:
 - object: MUSHROOM
   x: 0
   y: 2
-- object: GROUND_BROWN_DOWN
-  x: 16
-  y: 4
-- object: GROUND_BROWN_DOWN
-  x: 14
-  y: 4
 - object: GROUND_BROWN_DOWN
   x: 28
   y: 4
@@ -195,6 +186,33 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 38
   y: 6
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 4
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 12
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 14
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 8
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 0
+- object: GROUND_BROWN_DOWN
+  x: 30
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 22
+  y: 4
 enemies:
 - enemy: bazyliszek
   x: 16

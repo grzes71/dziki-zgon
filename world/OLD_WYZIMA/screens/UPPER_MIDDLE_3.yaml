@@ -6,5 +6,70 @@ exits:
   south: MIDDLE_RIGHT
   east: null
   west: UPPER_MIDDLE_2
-objects: []
+objects:
+- object: RIVER_BR_2
+  x: 36
+  y: 8
+- object: RIVER_TL_2
+  x: 10
+  y: 0
+- object: RIVER_BL_2
+  x: 10
+  y: 8
+- object: RIVER_TR_2
+  x: 36
+  y: 0
+- object: RIVER_HORIZONTAL
+  x: 14
+  y: 0
+  repeat-x: 11
+- object: RIVER_HORIZONTAL
+  x: 14
+  y: 8
+  repeat-x: 11
+- object: RIVER_VERTICAL
+  x: 36
+  y: 4
+  repeat-y: 2
+- object: RIVER_VERTICAL
+  x: 10
+  y: 4
+- object: BRIDGE
+  x: 10
+  y: 6
+- object: BUSH_2_2
+  x: 14
+  y: 6
+- object: TREE_SMALL
+  x: 24
+  y: 4
+- object: TREE_2
+  x: 18
+  y: 6
+- object: TREE_3
+  x: 30
+  y: 6
+- object: BUSH
+  x: 28
+  y: 6
+- object: MUSHROOM
+  x: 22
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 22
+  y: 6
+  repeat-x: 2
+- object: GROUND_BROWN_TR
+  x: 34
+  y: 4
+- object: GROUND_BROWN_UP_TL
+  x: 14
+  y: 4
+- object: GROUND_BROWN_BR
+  x: 34
+  y: 6
+- object: REED_2
+  x: 18
+  y: 4
+  repeat-x: 2
 enemies: []

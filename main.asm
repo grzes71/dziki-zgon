@@ -36,7 +36,7 @@ TitleScreen_Data
 
 ; --- Teksty scen Tytuł i Fabuła ---
     icl "gen/title_text.asm"
-    icl "gen/story_text.asm"
+    icl "gen/contents-story_text.asm"
 
 ; ===================================================================
 ; 2. Kod programu ($2000)
@@ -287,8 +287,15 @@ VRAM_ARENA = SCREEN
     icl "gen/world/exits.asm"
 
 ; --- Teksty GameOver ---
-    icl "gen/gameover-fail_text.asm"
-    icl "gen/gameover-success_text.asm"
+    icl "gen/contents-gameover-fail_text.asm"
+    icl "gen/contents-gameover-success_text.asm"
+
+; --- Teksty Podróży (Travel) ---
+    icl "gen/contents-travel-JAR_WIECZNEJ_ZGAGI_text.asm"
+    icl "gen/contents-travel-LAS_PIJANEGO_ZAJACA_text.asm"
+    icl "gen/contents-travel-OLD_WYZIMA_text.asm"
+    icl "gen/contents-travel-SAMOTNIA_MISTRZA_text.asm"
+    icl "gen/contents-travel-WHITE_FIELD_text.asm"
 
 ; --- Scena Story (przeniesiona do wolnego bloku RAM $9D20-$9FFF) ---
     org $9D20
@@ -300,10 +307,10 @@ STORY_END
     icl "gen/world/secret_objects.asm"
 
 StoryText_RAM = FOOTER_ADDR
-StoryText_Data = text_story
-GO_TEXT_FAIL_Data = text_gameover_fail
-GO_TEXT_SUCCESS_Data = text_gameover_success
-GO_TEXT_Data = text_gameover_fail
+StoryText_Data = text_contents_story
+GO_TEXT_FAIL_Data = text_contents_gameover_fail
+GO_TEXT_SUCCESS_Data = text_contents_gameover_success
+GO_TEXT_Data = text_contents_gameover_fail
 TitleFooterROM = text_title
 SpriteData = DzikizgonData
 

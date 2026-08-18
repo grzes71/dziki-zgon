@@ -41,16 +41,10 @@ objects:
   x: 10
   y: 2
 - object: PALM_SWAMP
-  x: 4
-  y: 4
-- object: PALM_SWAMP
   x: 0
   y: 2
 - object: PALM_SWAMP
   x: 0
-  y: 6
-- object: PALM_SWAMP
-  x: 10
   y: 6
 - object: PALM_SWAMP
   x: 6
@@ -68,9 +62,6 @@ objects:
 - object: REED_3
   x: 22
   y: 0
-- object: REED_2
-  x: 12
-  y: 10
 - object: REED_2
   x: 24
   y: 2
@@ -150,4 +141,20 @@ objects:
   x: 34
   y: 0
   repeat-x: 2
+- object: PYRAMID_MEDIUM
+  x: 4
+  y: 4
+- object: SWAMP_BLOCK_2
+  x: 12
+  y: 8
+- object: SWAMP_BLOCK
+  x: 12
+  y: 10
+- object: SWAMP_2_WEED
+  x: 12
+  y: 6
+- object: BROWN_DOWN_2
+  x: 4
+  y: 6
+  repeat-x: 3
 enemies: []

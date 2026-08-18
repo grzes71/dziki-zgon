@@ -52,7 +52,7 @@ objects:
   y: 10
 - object: TREE_SMALL
   x: 38
-  y: 2
+  y: 4
 - object: TREE_SMALL
   x: 14
   y: 10
@@ -99,7 +99,7 @@ objects:
   repeat-x: 2
 - object: GROUND_GREEN_UP_2
   x: 38
-  y: 4
+  y: 6
 - object: CROSS_1_COPY
   x: 38
   y: 10
@@ -181,6 +181,31 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 24
   y: 8
+- object: CROSS_1
+  x: 26
+  y: 6
+- object: CROSS_1
+  x: 30
+  y: 6
+- object: CROSS_1
+  x: 34
+  y: 0
+- object: GROUND_BROWN_TR
+  x: 38
+  y: 0
+- object: REED_2V
+  x: 20
+  y: 0
+  repeat-y: 2
+- object: REED_2V
+  x: 0
+  y: 4
+- object: BARREL_1_2
+  x: 2
+  y: 10
+- object: CROSS_1
+  x: 24
+  y: 0
 enemies:
 - enemy: bazyliszek
   x: 21
