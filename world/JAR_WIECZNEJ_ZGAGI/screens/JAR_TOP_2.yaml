@@ -53,19 +53,12 @@ objects:
 - object: RIVER_TL_2
   x: 22
   y: 0
-- object: RIVER_VERTICAL
-  x: 22
-  y: 4
-  repeat-y: 4
 - object: PALM_SWAMP
   x: 26
   y: 6
 - object: PALM_SWAMP
   x: 18
   y: 8
-- object: PALM_SWAMP
-  x: 18
-  y: 4
 - object: SAND_2V
   x: 0
   y: 8
@@ -103,12 +96,6 @@ objects:
 - object: SWAMP
   x: 10
   y: 8
-- object: SWAMP
-  x: 16
-  y: 8
-- object: SWAMP
-  x: 16
-  y: 6
 - object: SWAMP
   x: 8
   y: 4
@@ -152,4 +139,26 @@ objects:
 - object: SAND_3
   x: 26
   y: 10
+- object: RIVER_VERTICAL
+  x: 22
+  y: 6
+  repeat-y: 3
+- object: BRIDGE
+  x: 22
+  y: 4
+- object: PALM_SWAMP_2
+  x: 16
+  y: 2
+- object: PALM_SWAMP_2
+  x: 14
+  y: 6
+- object: SAND_2
+  x: 6
+  y: 0
+- object: SAND_2
+  x: 34
+  y: 0
+- object: GROUND_BROWN_TR
+  x: 20
+  y: 4
 enemies: []

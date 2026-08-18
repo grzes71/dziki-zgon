@@ -175,7 +175,7 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 14
   y: 0
-- object: FENCE_4_2
+- object: FENCE_4
   x: 24
   y: 8
 - object: HOUSE_SMALL

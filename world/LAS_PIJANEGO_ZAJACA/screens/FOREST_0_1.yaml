@@ -51,15 +51,6 @@ objects:
 - object: TREE_3_2
   x: 28
   y: 4
-- object: RIVER_HORIZONTAL
-  x: 38
-  y: 4
-- object: RIVER_LEFT_END
-  x: 36
-  y: 4
-- object: TREE_2
-  x: 38
-  y: 10
 - object: TREE_3
   x: 38
   y: 2
@@ -109,12 +100,6 @@ objects:
 - object: MUSHROOM
   x: 2
   y: 4
-- object: MUSHROOM
-  x: 36
-  y: 10
-- object: REED_3
-  x: 36
-  y: 8
 - object: GROUND_GREEN_UP_2
   x: 16
   y: 6
@@ -203,6 +188,13 @@ objects:
 - object: MUSHROOM
   x: 36
   y: 2
+- object: RIVER_VERTICAL
+  x: 36
+  y: 8
+  repeat-y: 2
+- object: RIVER_TL_2
+  x: 36
+  y: 4
 enemies:
 - enemy: bazyliszek
   x: 19

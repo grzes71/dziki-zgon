@@ -3,8 +3,23 @@ grid_x: 1
 grid_y: 0
 exits:
   north: null
-  south: null
+  south: SAMOTNIA_BR
   east: null
-  west: SAM_TL
-objects: []
+  west: SAMOTNIA_TL
+objects:
+- object: TREE_SMALL
+  x: 8
+  y: 6
+- object: TREE_SMALL
+  x: 30
+  y: 2
+- object: TREE_2
+  x: 18
+  y: 6
+- object: TREE_2
+  x: 30
+  y: 8
+- object: TREE_2
+  x: 10
+  y: 2
 enemies: []

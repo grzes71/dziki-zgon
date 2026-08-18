@@ -1,4 +1,30 @@
 #!/usr/bin/env python3
+"""
+analyze_objects.py — Analizator wystąpień obiektów i znaków charsetu w świecie gry.
+
+PRZYPADKI UŻYCIA (USE CASES):
+1. Pełny raport wystąpień obiektów (gdzie i ile razy każdy obiekt jest postawiony):
+   python scripts/analyze_objects.py
+
+2. Ograniczenie analizy do konkretnego regionu:
+   python scripts/analyze_objects.py -r WHITE_FIELD
+
+3. Analiza nieużywanych znaków charsetu (0-127) oraz obiektów bezpiecznych do usunięcia:
+   python scripts/analyze_objects.py -c
+   (Wykrywa nieużywane znaki w charsecie oraz klasyfikuje nieużywane obiekty pod kątem
+    możliwości bezpiecznego przeprojektowania ich znaków).
+
+4. Raport nieużywanych obiektów i znaków do odzyskania / przeprojektowania:
+   python scripts/analyze_objects.py -u
+   (lub --unused-objects / --cleanup)
+
+5. Zbiorcze statystyki świata gry (przeciwnicy, portale, kwatery, sekrety, tagi):
+   python scripts/analyze_objects.py -s
+   python scripts/analyze_objects.py -s -r LAS_PIJANEGO_ZAJACA
+
+6. Kombinacja flag (np. pełne statystyki + analiza czyszczenia):
+   python scripts/analyze_objects.py -c -u -s
+"""
 import sys
 import argparse
 from pathlib import Path
@@ -194,6 +220,67 @@ def print_world_stats(base_dir, objects_data, target_region=None):
             print("  - (brak)")
 
 
+def print_unused_cleanup_report(object_tiles, object_counts, target_region=None):
+    region_str = f" [region: {target_region}]" if target_region else ""
+    print(f"\n=== ANALIZA NIEUŻYWANYCH OBIEKTÓW I MOŻLIWOŚCI PRZEPROJEKTOWANIA ZNAKÓW{region_str} ===")
+
+    placed_tiles = set()
+    for oid, count in object_counts.items():
+        if count > 0 and oid in object_tiles:
+            for t in object_tiles[oid]:
+                if isinstance(t, int):
+                    placed_tiles.add(t % 128)
+
+    unused_objects = [oid for oid, count in object_counts.items() if count == 0]
+
+    fully_unused_objs = []
+    partially_unused_objs = []
+    locked_unused_objs = []
+
+    for oid in sorted(unused_objects):
+        raw_tiles = object_tiles.get(oid, [])
+        otiles = set(t % 128 for t in raw_tiles if isinstance(t, int))
+        shared = otiles & placed_tiles
+        exclusive = otiles - placed_tiles
+
+        if not shared:
+            fully_unused_objs.append((oid, sorted(otiles)))
+        elif exclusive:
+            partially_unused_objs.append((oid, sorted(exclusive), sorted(shared)))
+        else:
+            locked_unused_objs.append((oid, sorted(otiles)))
+
+    freed_tiles_100 = set()
+    for _, tiles in fully_unused_objs:
+        freed_tiles_100.update(tiles)
+
+    print(f"\n1. OBIEKTY W 100% BEZPIECZNE DO USUNIĘCIA (oraz ich znaki do przeprojektowania) [{len(fully_unused_objs)} obiektów]:")
+    print("   (Żaden ze znaków tych obiektów nie jest używany przez żaden obiekt na planszach)")
+    if fully_unused_objs:
+        for oid, tiles in fully_unused_objs:
+            print(f"   - {oid:<22} znaki charsetu: {tiles}")
+        print(f"\n   -> ŁĄCZNIE WOLNE ZNAKI CHARSETU Z TEJ GRUPY ({len(freed_tiles_100)}):")
+        print(f"      {sorted(freed_tiles_100)}")
+    else:
+        print("   (Brak takich obiektów)")
+
+    print(f"\n2. NIEUŻYWANE OBIEKTY O CZĘŚCIOWO WOLNYCH ZNAKACH [{len(partially_unused_objs)} obiektów]:")
+    print("   (Obiekt można usunąć z objects.yaml, ale przeprojektować wolno TYLKO znaki niewspółdzielone)")
+    if partially_unused_objs:
+        for oid, excl, shared in partially_unused_objs:
+            print(f"   - {oid:<22} wolne znaki: {excl} | współdzielone z grą: {shared}")
+    else:
+        print("   (Brak)")
+
+    print(f"\n3. NIEUŻYWANE OBIEKTY O CAŁKOWICIE ZABLOKOWANYCH ZNAKACH [{len(locked_unused_objs)} obiektów]:")
+    print("   (Obiekt można usunąć z objects.yaml, ale ŻADNEGO jego znaku NIE WOLNO modyfikować)")
+    if locked_unused_objs:
+        for oid, tiles in locked_unused_objs:
+            print(f"   - {oid:<22} używane w innych obiektach: {tiles}")
+    else:
+        print("   (Brak)")
+
+
 def main():
     if hasattr(sys.stdout, 'reconfigure'):
         sys.stdout.reconfigure(encoding='utf-8')
@@ -217,6 +304,11 @@ def main():
         "--unused-charset", "--charset", "-c",
         action="store_true",
         help="Report unused charset codes (0-127) not present in objects"
+    )
+    parser.add_argument(
+        "--unused-objects", "--cleanup", "-u",
+        action="store_true",
+        help="Report unused objects and whether their charset tiles can be safely redesigned/reused"
     )
     parser.add_argument(
         "--stats", "-s",
@@ -357,9 +449,22 @@ def main():
         region_str = f" [region: {target_region}]" if target_region else ""
         print(f"\nNieużywane w obiektach umieszczonych na planszach{region_str} ({len(unused_placed)}/128):")
         if unused_placed:
-            print("  " + ", ".join(map(str, unused_placed)))
+            print("  Kody: " + ", ".join(map(str, unused_placed)))
+            print("  Występowanie w definicjach obiektów (objects.yaml):")
+            for t in unused_placed:
+                using_objs = [
+                    oid for oid, tiles in object_tiles.items()
+                    if any(isinstance(x, int) and (x % 128) == t for x in tiles)
+                ]
+                if using_objs:
+                    print(f"    - Znak {t:>3}: {', '.join(sorted(using_objs))}")
+                else:
+                    print(f"    - Znak {t:>3}: (brak - nieużyty w żadnym obiekcie)")
         else:
             print("  (Brak - wszystkie kody 0-127 są użyte na planszach)")
+
+    if args.unused_objects:
+        print_unused_cleanup_report(object_tiles, object_counts, target_region)
 
     if args.stats:
         print_world_stats(base_dir, objects_data, target_region)

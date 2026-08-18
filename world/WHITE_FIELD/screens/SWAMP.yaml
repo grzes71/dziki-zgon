@@ -39,9 +39,6 @@ objects:
   x: 20
   y: 8
   repeat-x: 2
-- object: SWAMP_2_WEED
-  x: 18
-  y: 2
 - object: WATERFALL_GREEN
   x: 24
   y: 8
@@ -65,9 +62,6 @@ objects:
 - object: SWAMP_2_WEED
   x: 22
   y: 6
-- object: SWAMP_BLOCK
-  x: 18
-  y: 0
 - object: SWAMP_BLOCK
   x: 14
   y: 8
@@ -93,9 +87,6 @@ objects:
   x: 6
   y: 0
 - object: BUSH
-  x: 16
-  y: 0
-- object: BUSH
   x: 14
   y: 4
   repeat-y: 2
@@ -105,9 +96,6 @@ objects:
 - object: BUSH
   x: 36
   y: 8
-- object: REED_2V
-  x: 20
-  y: 0
 - object: REED_2V
   x: 38
   y: 4
@@ -145,13 +133,10 @@ objects:
   x: 26
   y: 6
 - object: CROSS_2
-  x: 22
+  x: 20
   y: 0
 - object: CROSS_2
   x: 32
-  y: 6
-- object: CROSS_2
-  x: 38
   y: 6
 - object: CROSS_2
   x: 12
@@ -179,9 +164,6 @@ objects:
   y: 2
 - object: GROUND_GREEN_UP_2
   x: 8
-  y: 4
-- object: SWAMP_2_WEED
-  x: 24
   y: 4
 - object: GROUND_BROWN_DOWN
   x: 28
@@ -232,6 +214,24 @@ objects:
   x: 2
   y: 6
   repeat-x: 2
+- object: REED_2V
+  x: 18
+  y: 0
+- object: SWAMP_2
+  x: 18
+  y: 2
+- object: CROSS_1_COPY
+  x: 22
+  y: 0
+- object: REED_2V
+  x: 24
+  y: 4
+- object: REED_2V
+  x: 30
+  y: 10
+- object: REED_2
+  x: 36
+  y: 6
 enemies:
 - enemy: kikimora
   x: 10

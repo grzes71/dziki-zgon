@@ -1,8 +1,8 @@
 id: SAMOTNIA_MISTRZA
 name: samotnia mistrza
-damage: 10
+damage: 20
 layout:
-  rows: 4
+  rows: 2
   columns: 2
 start_screen: START_SAMOTNIA
 music: SAMOTNIA_MISTRZA

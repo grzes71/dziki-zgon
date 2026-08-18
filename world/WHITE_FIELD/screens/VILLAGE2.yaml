@@ -61,7 +61,7 @@ objects:
 - object: HOUSE_SMALL_BLUE
   x: 2
   y: 6
-- object: FENCE_4_2
+- object: FENCE_4
   x: 6
   y: 6
 - object: OUTHOUSE_3

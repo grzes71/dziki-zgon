@@ -1,10 +1,10 @@
-id: SAM_MID1_LEFT
+id: SAMOTNIA_EXIT
 grid_x: 0
 grid_y: 1
 exits:
-  north: SAM_TL
+  north: SAMOTNIA_TL
   south: null
-  east: SAM_MID1_RIGHT
+  east: SAMOTNIA_BR
   west: null
 objects: []
 enemies: []

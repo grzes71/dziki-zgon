@@ -1,0 +1,31 @@
+id: SAMOTNIA_BR
+grid_x: 1
+grid_y: 1
+exits:
+  north: START_SAMOTNIA
+  south: null
+  east: null
+  west: SAMOTNIA_EXIT
+objects:
+- object: TREE_SMALL
+  x: 24
+  y: 6
+- object: TREE_SMALL
+  x: 10
+  y: 2
+- object: TREE_SMALL
+  x: 34
+  y: 2
+- object: TREE_2
+  x: 8
+  y: 8
+- object: TREE_2
+  x: 16
+  y: 4
+- object: TREE_2
+  x: 34
+  y: 8
+- object: TREE_2
+  x: 2
+  y: 4
+enemies: []

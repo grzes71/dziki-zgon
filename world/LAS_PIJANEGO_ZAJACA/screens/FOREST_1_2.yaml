@@ -7,9 +7,6 @@ exits:
   east: null
   west: FOREST_0_2
 objects:
-- object: TREE_2
-  x: 0
-  y: 0
 - object: SWAMP_BLOCK_2
   x: 12
   y: 4
@@ -19,9 +16,6 @@ objects:
 - object: SWAMP_2_WEED
   x: 16
   y: 4
-- object: SWAMP_2_WEED
-  x: 14
-  y: 2
 - object: SWAMP_2_WEED
   x: 28
   y: 2
@@ -51,13 +45,10 @@ objects:
   x: 6
   y: 8
 - object: TREE_2
-  x: 20
-  y: 2
-- object: TREE_2
   x: 30
   y: 8
 - object: TREE_SMALL
-  x: 22
+  x: 20
   y: 10
 - object: TREE_SMALL
   x: 38
@@ -65,30 +56,19 @@ objects:
 - object: TREE_SMALL
   x: 14
   y: 10
-- object: TREE_SMALL
-  x: 2
-  y: 4
 - object: TREE_2
-  x: 8
-  y: 2
-- object: TREE_2
-  x: 24
-  y: 6
-- object: GROUND_GREEN_UP_2
-  x: 24
+  x: 26
   y: 8
+- object: GROUND_GREEN_UP_2
+  x: 26
+  y: 10
+  repeat-x: 3
 - object: BUSH_2_2
   x: 10
   y: 10
-- object: BUSH_2_2
-  x: 0
-  y: 4
 - object: BUSH
   x: 4
   y: 8
-- object: MUSHROOM
-  x: 6
-  y: 2
 - object: MUSHROOM
   x: 28
   y: 8
@@ -105,28 +85,13 @@ objects:
   x: 32
   y: 0
 - object: REED
-  x: 16
-  y: 2
-- object: REED
   x: 34
   y: 2
 - object: CROSS_1
   x: 26
   y: 4
 - object: GROUND_GREEN_UP_2
-  x: 0
-  y: 6
-  repeat-x: 2
-- object: GROUND_GREEN_UP_2
-  x: 0
-  y: 2
-  repeat-x: 2
-- object: GROUND_GREEN_UP_2
-  x: 6
-  y: 4
-  repeat-x: 2
-- object: GROUND_GREEN_UP_2
-  x: 20
+  x: 22
   y: 4
 - object: GROUND_GREEN_UP_2
   x: 4
@@ -148,37 +113,9 @@ objects:
 - object: BARREL_2_2
   x: 38
   y: 8
-- object: BARREL_1_2
-  x: 2
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 8
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 6
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 10
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 18
-  y: 10
-- object: GROUND_BROWN_DOWN
-  x: 18
-  y: 8
-- object: GROUND_BROWN_DOWN
-  x: 18
-  y: 6
 - object: GROUND_BROWN_DOWN
   x: 18
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 18
-  y: 2
-- object: GROUND_GREEN_UP_2
-  x: 34
-  y: 0
-  repeat-x: 3
 - object: CHURCH_SMALL
   x: 34
   y: 4
@@ -198,39 +135,56 @@ objects:
   x: 10
   y: 8
 - object: CROSS_1_COPY
-  x: 10
-  y: 0
-- object: CROSS_1_COPY
   x: 24
   y: 2
 - object: CROSS_1_COPY
-  x: 20
+  x: 18
   y: 10
-- object: CROSS_1_COPY
-  x: 28
-  y: 10
-- object: GROUND_BROWN_DOWN_2
-  x: 20
+- object: RIVER_HORIZONTAL
+  x: 0
   y: 0
-- object: GROUND_BROWN_DOWN_2
-  x: 16
-  y: 0
-- object: GROUND_BROWN_DOWN_2
-  x: 8
-  y: 0
-- object: GROUND_BROWN_DOWN_2
-  x: 4
-  y: 0
-- object: GROUND_BROWN_UP_2
-  x: 6
-  y: 0
-- object: GROUND_BROWN_UP_2
+  repeat-x: 9
+- object: RIVER_RIGHT_END
   x: 18
   y: 0
+- object: TREE_2
+  x: 2
+  y: 4
+- object: TREE_3
+  x: 8
+  y: 4
+- object: MUSHROOM
+  x: 6
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 2
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 6
+  y: 6
+  repeat-x: 2
+- object: TREE_3
+  x: 22
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 18
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 16
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 20
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 22
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 24
+  y: 8
 enemies:
-- enemy: sukkub
-  x: 19
+- enemy: bazyliszek
+  x: 21
   y: 6
   strategy: random
   speed: medium
-  color: gray
+  color: magenta

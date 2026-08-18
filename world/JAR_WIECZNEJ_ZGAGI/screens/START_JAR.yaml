@@ -25,13 +25,6 @@ objects:
 - object: RIVER_BL_2
   x: 16
   y: 8
-- object: RIVER_TR_2
-  x: 26
-  y: 8
-- object: RIVER_HORIZONTAL
-  x: 20
-  y: 8
-  repeat-x: 3
 - object: PALM_SWAMP
   x: 2
   y: 4
@@ -150,4 +143,18 @@ objects:
 - object: WATERFALL
   x: 22
   y: 6
+- object: WATER_ANIM_2
+  x: 24
+  y: 8
+- object: WAVES_UP
+  x: 20
+  y: 8
+  repeat-x: 2
+- object: WAVES_DOWN
+  x: 20
+  y: 10
+  repeat-x: 3
+- object: RIVER_TR_2
+  x: 26
+  y: 8
 enemies: []

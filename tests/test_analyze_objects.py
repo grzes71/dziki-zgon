@@ -36,3 +36,15 @@ def test_analyze_objects_cli_stats(monkeypatch, capsys):
     assert "=== STATYSTYKI ŚWIATA GRY (OGÓŁEM) [region: WHITE_FIELD] ===" in output
     assert "=== STATYSTYKI W ROZBICIU NA POSZCZEGÓLNE REGIONY [region: WHITE_FIELD] ===" in output
     assert "--- Region: WHITE_FIELD ---" in output
+
+def test_analyze_objects_cli_unused_objects(monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["analyze_objects.py", "--unused-objects"])
+    main()
+    captured = capsys.readouterr()
+    output = captured.out
+
+    assert "=== ANALIZA NIEUŻYWANYCH OBIEKTÓW I MOŻLIWOŚCI PRZEPROJEKTOWANIA ZNAKÓW ===" in output
+    assert "1. OBIEKTY W 100% BEZPIECZNE DO USUNIĘCIA" in output
+    assert "2. NIEUŻYWANE OBIEKTY O CZĘŚCIOWO WOLNYCH ZNAKACH" in output
+    assert "3. NIEUŻYWANE OBIEKTY O CAŁKOWICIE ZABLOKOWANYCH ZNAKACH" in output
+

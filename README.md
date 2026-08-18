@@ -2,8 +2,10 @@
 
 Przygodowo-zręcznościowa gra z widokiem z góry na **Atari 800 XL / 65 XE** — humorystyczna parodia Wiedźmina.
 
+- Tytuł AAA (Atari Action Adventure)
 - Otwarty Świat
 - Nieliniowa fabuła
+- Kraftowe poziomy i grafika
 
 ![Game cover](/cover.png)
 
