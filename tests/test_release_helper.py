@@ -5,7 +5,8 @@ from scripts.release_helper import (
     parse_semver,
     compute_next_version,
     generate_changelog,
-    process_github_pr_event
+    process_github_pr_event,
+    get_pr_commit_messages
 )
 
 def test_parse_commit_message_feat():
@@ -109,3 +110,8 @@ def test_process_github_pr_event_merged_feat():
     assert res["bump_type"] == "minor"
     assert res["tag_name"] == "v0.1.0" or res["tag_name"].startswith("v")
     assert "quest" in res["changelog"]
+
+def test_get_pr_commit_messages_none():
+    assert get_pr_commit_messages(None) == []
+    assert get_pr_commit_messages("") == []
+

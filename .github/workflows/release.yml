@@ -53,15 +53,33 @@ jobs:
             Write-Host "Skipping release: No releasing conventional commit types (feat/fix/breaking) found."
           }
 
+      - name: Install GNU Make
+        if: steps.semver.outputs.should_release == 'true'
+        run: choco install make -y
+
       - name: Install Mad-Assembler (MADS)
         if: steps.semver.outputs.should_release == 'true'
         run: |
           $madsDir = "C:\Apps\Mad-Assembler-2.1.6\bin\windows_x86_64"
-          New-Item -ItemType Directory -Force -Path $madsDir
-          Invoke-WebRequest -Uri "https://github.com/tebe6502/Mad-Assembler/releases/download/v2.1.6/mads-2.1.6-windows_x86_64.zip" -OutFile "mads.zip"
-          Expand-Archive -Path "mads.zip" -DestinationPath "mads_extracted"
-          Copy-Item "mads_extracted\mads.exe" -Destination "$madsDir\mads.exe" -Force
-          & "$madsDir\mads.exe"
+          New-Item -ItemType Directory -Force -Path $madsDir | Out-Null
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/windows_x86_64/mads.exe" -OutFile "$madsDir\mads.exe"
+          if (!(Test-Path "$madsDir\mads.exe")) { throw "MADS download failed" }
+
+      - name: Install ASAP and rmt2atasm
+        if: steps.semver.outputs.should_release == 'true'
+        run: |
+          New-Item -ItemType Directory -Force -Path "C:\Apps" | Out-Null
+
+          $asapDir = "C:\Apps\ASAP"
+          New-Item -ItemType Directory -Force -Path $asapDir | Out-Null
+          Invoke-WebRequest -Uri "https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download" -OutFile "asap.zip"
+          Expand-Archive -Path "asap.zip" -DestinationPath "asap_extracted" -Force
+          $asapconv = Get-ChildItem -Path "asap_extracted" -Recurse -Filter "asapconv.exe" | Select-Object -First 1
+          if (-not $asapconv) { throw "asapconv.exe not found in ASAP archive" }
+          Copy-Item $asapconv.FullName -Destination "$asapDir\asapconv.exe" -Force
+
+          Invoke-WebRequest -Uri "https://github.com/CycoPH/rmt2atasm/releases/download/Version1/rmt2atasm.exe" -OutFile "C:\Apps\rmt2atasm.exe"
+          if (!(Test-Path "C:\Apps\rmt2atasm.exe")) { throw "rmt2atasm.exe download failed" }
 
       - name: Run Tests & Build Atari XEX
         if: steps.semver.outputs.should_release == 'true'

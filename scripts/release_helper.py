@@ -117,6 +117,45 @@ def get_latest_git_tag(cwd: Optional[Path] = None) -> Optional[str]:
     except Exception:
         return None
 
+def get_pr_commit_messages(merge_sha: Optional[str]) -> List[str]:
+    """
+    Returns the commit messages introduced by the merged PR, using its merge
+    commit. This avoids analyzing an arbitrary window of the target branch.
+
+    - For a merge commit (two parents), `merge_sha^1..merge_sha` lists exactly
+      the commits brought in by the PR.
+    - For squash/rebase merges (one parent) the merge commit itself is the PR
+      commit, so we fall back to that single message.
+    """
+    if not merge_sha:
+        return []
+
+    messages = []
+    try:
+        res = subprocess.run(
+            ["git", "log", "--format=%B%x1e", f"{merge_sha}^1..{merge_sha}"],
+            capture_output=True,
+            text=True
+        )
+        if res.returncode == 0:
+            messages = [c.strip() for c in res.stdout.split("\x1e") if c.strip()]
+    except Exception:
+        messages = []
+
+    if not messages:
+        try:
+            res = subprocess.run(
+                ["git", "log", "-n", "1", "--format=%B", merge_sha],
+                capture_output=True,
+                text=True
+            )
+            if res.returncode == 0 and res.stdout.strip():
+                messages = [res.stdout.strip()]
+        except Exception:
+            messages = []
+
+    return messages
+
 def compute_next_version(latest_tag: Optional[str], bump_type: str) -> str:
     """
     Computes the next tag given the latest tag and bump type ('major', 'minor', 'patch').
@@ -257,19 +296,11 @@ def main():
     with open(args.event_path, "r", encoding="utf-8") as f:
         event_data = json.load(f)
         
-    # Get commits from git log if available
-    git_commits = []
-    try:
-        res = subprocess.run(
-            ["git", "log", "-n", "20", "--pretty=format:%B%x1e"],
-            capture_output=True,
-            text=True
-        )
-        if res.returncode == 0:
-            git_commits = [c.strip() for c in res.stdout.split("\x1e") if c.strip()]
-    except Exception:
-        pass
-        
+    # Analyze only the commits brought in by this PR (via its merge commit),
+    # not an arbitrary window of the target branch history.
+    merge_sha = event_data.get("pull_request", {}).get("merge_commit_sha")
+    git_commits = get_pr_commit_messages(merge_sha)
+
     result = process_github_pr_event(event_data, git_commits)
     print(f"Release Decision: {json.dumps(result, indent=2)}")
     
