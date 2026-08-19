@@ -1,4 +1,4 @@
-# Mapa Pamięci i Zużycie RAM — Wiedźmin: Dziki Zgon
+# Mapa Pamięci i Zużycie RAM — Dziki Zgon
 
 Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65 XE (64 KB) w projekcie gry. 
 

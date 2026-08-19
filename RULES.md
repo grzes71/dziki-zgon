@@ -1,6 +1,6 @@
-# Reguły i Założenia Gry — Wiedźmin: Dziki Zgon (Atari 8-bit)
+# Reguły i Założenia Gry — Dziki Zgon (Atari 8-bit)
 
-Dokument stanowi oficjalne **Single Source of Truth (SSOT)** dla wszystkich reguł rozgrywki, parametrów mechanik, ograniczeń sprzętowych i logiki gry zaimplementowanej w projekcie *Wiedźmin: Dziki Zgon*.
+Dokument stanowi oficjalne **Single Source of Truth (SSOT)** dla wszystkich reguł rozgrywki, parametrów mechanik, ograniczeń sprzętowych i logiki gry zaimplementowanej w projekcie *Dziki Zgon*.
 
 ---
 

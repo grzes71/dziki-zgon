@@ -1,4 +1,4 @@
-# Makefile — Wiedźmin: Dziki Zgon
+# Makefile — Dziki Zgon
 # Budowanie projektu na Atari 800 XL / 65 XE
 
 # ---- Narzędzia ----
@@ -77,10 +77,12 @@ WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 # ---- Cele ----
 .PHONY: all xex bg sprites texts fonts music world clean run smoke-test test
 
-all: texts sprites bg fonts music world xex test
+all: texts sprites bg fonts music world $(XEX_OUT) test
 
 # Updated Makefile rules
-xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
+xex: $(XEX_OUT)
+
+$(XEX_OUT): $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
 	@echo "=== Weryfikacja mapy pamięci ==="

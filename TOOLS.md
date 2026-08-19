@@ -1,4 +1,4 @@
-# Narzędzia i Skrypty — Wiedźmin: Dziki Zgon
+# Narzędzia i Skrypty — Dziki Zgon
 
 Projekt używa szeregu dedykowanych narzędzi (napisanych w Pythonie) do przygotowania zasobów graficznych, tekstowych oraz całego świata gry, by zamienić je w dane binarne zdatne dla układu 6502 (Atari 8-bit).
 

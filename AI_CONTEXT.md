@@ -1,4 +1,4 @@
-# AI Context — Wiedźmin: Dziki Zgon
+# AI Context — Dziki Zgon
 
 ## Projekt
 

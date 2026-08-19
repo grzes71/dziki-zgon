@@ -1,4 +1,4 @@
-# Wiedźmin: Dziki Zgon — System Sprite'ów
+# Dziki Zgon — System Sprite'ów
 
 Dokument opisuje system wyświetlania duszka (sprite'a) w grze "Dziki Zgon" na platformę Atari XL/XE, format plików źródłowych, potok budowania oraz instrukcję krok po kroku jak dodać nową postać/przeciwnika do silnika gry.
 

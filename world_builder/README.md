@@ -1,6 +1,6 @@
 # World Builder
 
-**World Builder** to autorskie narzędzie typu kompilator służące do konwersji definicji świata i map dla gry *Wiedźmin: Dziki Zgon* z czytelnego formatu YAML na wysoce zoptymalizowane struktury asemblerowe dla procesora MOS 6502 (tablice wskaźników LO/HI, format Structure of Arrays).
+**World Builder** to autorskie narzędzie typu kompilator służące do konwersji definicji świata i map dla gry *Dziki Zgon* z czytelnego formatu YAML na wysoce zoptymalizowane struktury asemblerowe dla procesora MOS 6502 (tablice wskaźników LO/HI, format Structure of Arrays).
 
 Narzędzie stanowi w projekcie **Pojedyncze Źródło Prawdy (SSOT)**. Programiści operują wyłącznie na plikach `.yaml`, a kod asemblera do wklejenia w kompilator MADS jest generowany automatycznie.
 

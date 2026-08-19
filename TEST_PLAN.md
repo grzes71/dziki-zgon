@@ -1,4 +1,4 @@
-# Plan: Rozszerzenie testów dla Wiedźmin: Dziki Zgon
+# Plan: Rozszerzenie testów dla Dziki Zgon
 
 ## TL;DR
 

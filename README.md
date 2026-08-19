@@ -1,4 +1,4 @@
-# Wiedźmin: Dziki Zgon 🐺💀
+# Dziki Zgon 🐺💀
 
 Przygodowo-zręcznościowa gra z widokiem z góry na **Atari 800 XL / 65 XE** — humorystyczna parodia Wiedźmina.
 
@@ -11,7 +11,7 @@ Przygodowo-zręcznościowa gra z widokiem z góry na **Atari 800 XL / 65 XE** �
 
 ## Fabuła
 
-Po wielodniowej imprezie w karczmie "Pod Trzema Kuflami" wiedźmin **Gerwant** budzi się z potężnym kacem. Nie pamięta gdzie jest Plotka, gdzie są miecze, ani skąd wziął się rachunek na 18 000 orenów. Wyrusza w podróż przez 5 regionów, by odzyskać swój dobytek, wspomnienia i resztki godności.
+Po wielodniowej imprezie w karczmie "Pod Trzema Kuflami" wiedźman **Gerwant** budzi się z potężnym kacem. Nie pamięta gdzie jest Plotka, gdzie są miecze, ani skąd wziął się rachunek na 18 000 orenów. Wyrusza w podróż przez 5 regionów, by odzyskać swój dobytek, wspomnienia i resztki godności.
 
 ## Development z AI agentami
 

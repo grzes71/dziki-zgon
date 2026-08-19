@@ -278,7 +278,7 @@ def process_github_pr_event(event_data: dict, git_commits: Optional[List[str]] =
         "previous_tag": latest_tag or "none",
         "tag_name": new_tag,
         "version": new_tag.lstrip("v"),
-        "release_title": f"Wiedźmin: Dziki Zgon {new_tag}",
+        "release_title": f"Dziki Zgon {new_tag}",
         "changelog": changelog
     }
 
