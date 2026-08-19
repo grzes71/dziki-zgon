@@ -164,4 +164,16 @@ objects:
 - object: SWAMP_BLOCK
   x: 32
   y: 0
-enemies: []
+enemies:
+- enemy: strzyga
+  x: 26
+  y: 1
+  strategy: patrol
+  speed: medium
+  color: green
+- enemy: sukkub
+  x: 3
+  y: 2
+  strategy: patrol
+  speed: medium
+  color: yellow

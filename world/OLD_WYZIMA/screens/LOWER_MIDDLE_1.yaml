@@ -151,3 +151,15 @@ enemies:
   strategy: random
   speed: fast
   color: red
+- enemy: kikimora
+  x: 8
+  y: 7
+  strategy: patrol
+  speed: medium
+  color: blue
+- enemy: bazyliszek
+  x: 15
+  y: 1
+  strategy: patrol
+  speed: medium
+  color: yellow

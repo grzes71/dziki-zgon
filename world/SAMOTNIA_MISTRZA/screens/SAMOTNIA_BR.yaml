@@ -11,14 +11,11 @@ objects:
   x: 24
   y: 6
 - object: TREE_SMALL
-  x: 10
+  x: 12
   y: 2
 - object: TREE_SMALL
   x: 34
   y: 2
-- object: TREE_2
-  x: 8
-  y: 8
 - object: TREE_2
   x: 16
   y: 4
@@ -94,10 +91,6 @@ objects:
 - object: BROWN_DOWN_2
   x: 18
   y: 10
-- object: GROUND_GREEN_UP_2
-  x: 10
-  y: 4
-  repeat-x: 2
 - object: GROUND_GREEN_UP_2
   x: 0
   y: 6
@@ -193,6 +186,43 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 10
   y: 0
+- object: SWAMP_BLOCK_2
+  x: 14
+  y: 8
+- object: SWAMP_BLOCK
+  x: 6
+  y: 8
+- object: GROUND_GREEN_UP_2
+  x: 10
+  y: 4
+  repeat-x: 2
+- object: BUSH
+  x: 10
+  y: 2
+- object: SWAMP
+  x: 16
+  y: 8
+- object: SWAMP
+  x: 16
+  y: 10
+- object: SWAMP
+  x: 8
+  y: 8
+- object: SWAMP
+  x: 8
+  y: 10
+- object: SWAMP_2_WEED
+  x: 30
+  y: 10
+- object: SWAMP_BLOCK_2
+  x: 32
+  y: 10
+- object: SWAMP_BLOCK_2
+  x: 26
+  y: 2
+- object: SWAMP
+  x: 26
+  y: 4
 enemies:
 - enemy: bazyliszek
   x: 19

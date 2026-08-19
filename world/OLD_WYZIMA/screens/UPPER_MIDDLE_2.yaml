@@ -209,6 +209,18 @@ objects:
 - object: GROUND_BROWN_DOWN_3
   x: 8
   y: 0
+- object: BARREL_2
+  x: 10
+  y: 8
+- object: BARREL_1_2
+  x: 26
+  y: 10
+- object: CROSS_2
+  x: 14
+  y: 0
+- object: CROSS_1_COPY
+  x: 32
+  y: 10
 enemies:
 - enemy: kikimora
   x: 10

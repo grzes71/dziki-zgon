@@ -73,9 +73,6 @@ objects:
 - object: SAND_2
   x: 38
   y: 2
-- object: BARREL_2_2
-  x: 26
-  y: 10
 - object: GROUND_GREEN_UP_2
   x: 12
   y: 4
@@ -117,9 +114,6 @@ objects:
   x: 8
   y: 8
 - object: BUSH_2
-  x: 22
-  y: 2
-- object: BUSH_2
   x: 38
   y: 8
 - object: BUSH_2_2
@@ -150,6 +144,51 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 24
   y: 0
+- object: SWAMP_BLOCK
+  x: 12
+  y: 6
+- object: SWAMP_BLOCK
+  x: 14
+  y: 4
+- object: SWAMP_BLOCK_2
+  x: 28
+  y: 10
+- object: SWAMP_BLOCK
+  x: 26
+  y: 10
+- object: SWAMP_2_WEED
+  x: 24
+  y: 10
+- object: SWAMP_2_WEED
+  x: 30
+  y: 10
+- object: SWAMP_BLOCK_2
+  x: 38
+  y: 4
+- object: SWAMP_BLOCK_2
+  x: 24
+  y: 4
+- object: SWAMP_BLOCK
+  x: 22
+  y: 2
+- object: SWAMP
+  x: 26
+  y: 4
+- object: SWAMP
+  x: 22
+  y: 4
+- object: SWAMP
+  x: 24
+  y: 2
+- object: SWAMP
+  x: 16
+  y: 6
+- object: SWAMP
+  x: 16
+  y: 4
+- object: SWAMP
+  x: 14
+  y: 6
 enemies:
 - enemy: kikimora
   x: 27

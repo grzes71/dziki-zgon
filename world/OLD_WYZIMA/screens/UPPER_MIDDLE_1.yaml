@@ -150,3 +150,9 @@ enemies:
   strategy: random
   speed: medium
   color: blue
+- enemy: strzyga
+  x: 9
+  y: 9
+  strategy: snake
+  speed: slow
+  color: brown

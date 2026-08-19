@@ -129,6 +129,9 @@ objects:
 - object: MUSHROOM
   x: 6
   y: 10
+- object: GROUND_BROWN_UP_3
+  x: 0
+  y: 6
 enemies:
 - enemy: strzyga
   x: 33

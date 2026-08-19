@@ -146,9 +146,6 @@ objects:
 - object: ROCK_1_2
   x: 16
   y: 8
-- object: ROCK_1_2
-  x: 14
-  y: 4
 - object: BUSH_2
   x: 38
   y: 8
@@ -177,4 +174,14 @@ objects:
 - object: SWAMP_2_WEED
   x: 28
   y: 0
+- object: SWAMP_BLOCK_2
+  x: 14
+  y: 6
+- object: SWAMP_2_WEED
+  x: 14
+  y: 4
+  repeat-x: 2
+- object: ROCK_1_2
+  x: 14
+  y: 2
 enemies: []
