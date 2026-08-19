@@ -119,7 +119,7 @@ W grze nie ma tradycyjnego paska zdrowia (HP) — **czas jest jedynym zasobem ż
 2. **`portal` (Podróże międzyregionalne)**:
    - Dwuetapowa aktywacja zapobiegająca przypadkowemu teleportowaniu:
      - **1. naciśnięcie FIRE**: Wyświetla komunikat podróży (`message_travel`) na pasku wiadomości.
-     - **2. naciśnięcie FIRE** (podczas gdy komunikat jest widoczny): Zamyka komunikat i uruchamia 5-sekundowy ekran podróży (`travel_screen`), przenosząc gracza na punkt wejścia (`Portal Entry`) w regionie docelowym.
+     - **2. naciśnięcie FIRE** (podczas gdy komunikat jest widoczny): Zamyka komunikat i uruchamia ekran podróży (`travel_screen`), przenosząc gracza na punkt wejścia (`Portal Entry`) w regionie docelowym po ponownym wciśnięciu FIRE.
 
 ---
 
@@ -163,8 +163,8 @@ W grze nie ma tradycyjnego paska zdrowia (HP) — **czas jest jedynym zasobem ż
 | `JAR_WIECZNEJ_ZGAGI` | jar wiecznej zgagi | 1 × 6 | **25 s** | `JAR_WIECZNEJ_ZGAGI` |
 
 - **Ekran Podróży (`travel_screen`)**:
-  - Podczas podróży portalem wyświetlany jest statyczny ekran w trybie ANTIC 2 przez **5 sekund (250 klatek)**.
-  - Wyświetla 8-wierszowy, skompresowany RLE tekst klimatyczny opisujący dotarcie do nowego regionu.
+  - Podczas podróży portalem wyświetlany jest statyczny ekran w trybie ANTIC 2 oczekujący na naciśnięcie przycisku FIRE przez gracza.
+  - Wyświetla nagłówek z nazwą docelowego regionu oraz 8-wierszowy, skompresowany RLE tekst klimatyczny.
 
 ---
 

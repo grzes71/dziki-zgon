@@ -3,8 +3,6 @@
 ;----------------------------------------
 
 ; --- Zmienne lokalne ---
-travel_frame_count
-    dta $00
 travel_screen_active
     dta $00
 
@@ -24,7 +22,7 @@ TRAVEL_TEXTS_HI
     dta >text_contents_travel_WHITE_FIELD
 
 ;==============================================================
-; travel_screen_show — Wyświetla 5-sekundowy statyczny ekran podróży (ANTIC mode 2)
+; travel_screen_show — Wyświetla ekran podróży i czeka na FIRE (ANTIC mode 2)
 ;==============================================================
 .proc travel_screen_show
     ; Ustaw flagę aktywności ekranu podróży i wyłącz wyliczanie animacji charsetu
@@ -105,19 +103,19 @@ TRAVEL_TEXTS_HI
     sta SDMCTL
     sta DMACTL
 
-    ; 8. Czekaj 250 klatek (5.0 s przy 50 Hz PAL)
-    lda #0
-    sta travel_frame_count
-
-@wait_loop
+    ; 8. Czekaj na puszczenie przycisku FIRE (jeśli gracz trzyma go po wejściu w portal)
+@wait_release
     jsr Engine_WaitFrame
+    lda TRIG0
+    beq @wait_release
 
-    inc travel_frame_count
-    lda travel_frame_count
-    cmp #250
-    bcc @wait_loop
+    ; 9. Czekaj na wciśnięcie przycisku FIRE, aby zakończyć ekran podróży
+@wait_press
+    jsr Engine_WaitFrame
+    lda TRIG0
+    bne @wait_press
 
-    ; 9. Zakończ ekran podróży
+    ; 10. Zakończ ekran podróży
     lda #0
     sta travel_screen_active
     lda #$40

@@ -3,7 +3,6 @@
 ;----------------------------------------
 
     icl "gen/header-story_text.asm"
-    icl "gen/header-travel_text.asm"
     icl "gen/header-gameover-fail_text.asm"
     icl "gen/header-gameover-success_text.asm"
 
@@ -104,7 +103,25 @@ gameover_success_icons
     lda #>travel_icons
     sta SRC_PTR+1
     jsr init_icon_header
-    mRLE_Depack text_header_travel (ICON_ADDR+42)
+
+    ; Pobierz ID docelowego regionu dla NEW_SCREEN_ID
+    ldx NEW_SCREEN_ID
+    lda SCREEN_REGION,x
+    tax                     ; X = RegionId
+
+    ; Pobierz wskaźnik do 20-bajtowej nazwy regionu
+    lda REGION_NAMES_LO,x
+    sta SRC_PTR
+    lda REGION_NAMES_HI,x
+    sta SRC_PTR+1
+
+    ; Kopiuj 20 znaków nazwy regionu na środek 2. linii (ICON_ADDR + 50)
+    ldy #19
+@copy_name
+    lda (SRC_PTR),y
+    sta ICON_ADDR + 50,y
+    dey
+    bpl @copy_name
     rts
 .endp
 

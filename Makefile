@@ -77,7 +77,7 @@ WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 # ---- Cele ----
 .PHONY: all xex bg sprites texts fonts music world clean run smoke-test test
 
-all: texts sprites bg fonts music world test xex
+all: texts sprites bg fonts music world xex test
 
 # Updated Makefile rules
 xex: $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
@@ -174,7 +174,7 @@ smoke-test: all
 	@echo "=== Uruchamianie atari-smoke-test ==="
 	$(PYTHON) -m atari_smoke_test.main --xex $(XEX_OUT) --timeout 5
 
-test: $(ANIM_CHARS_ASM)
+test: $(ANIM_CHARS_ASM) $(XEX_OUT)
 	@echo "=== Uruchamianie testów jednostkowych (Py65) ==="
 	$(PYTHON) -m pytest tests/
 

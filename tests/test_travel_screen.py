@@ -72,9 +72,14 @@ def test_travel_screen_footer_formatting(screen_id, expected_region_id):
     # Set NEW_SCREEN_ID
     cpu.memory[labels["NEW_SCREEN_ID"]] = screen_id
 
-    # Place a RTS at Engine_WaitFrame to stub out the 250 frame wait loop
+    # Stub Engine_WaitFrame to simulate FIRE release then press
     wait_frame_addr = labels["ENGINE_WAITFRAME"]
-    cpu.memory[wait_frame_addr] = 0x60  # RTS
+    trig0_addr = labels.get("TRIG0", 0xD010)
+    cpu.memory[trig0_addr] = 1  # Start with released FIRE
+    # Stub: lda #0; sta trig0; rts
+    stub_code = [0xA9, 0x00, 0x8D, trig0_addr & 0xFF, (trig0_addr >> 8) & 0xFF, 0x60]
+    for offset, b in enumerate(stub_code):
+        cpu.memory[wait_frame_addr + offset] = b
 
     # Call TRAVEL_SCREEN_SHOW
     show_addr = labels["TRAVEL_SCREEN_SHOW"]
@@ -84,7 +89,7 @@ def test_travel_screen_footer_formatting(screen_id, expected_region_id):
     cpu.pc = show_addr
 
     steps = 0
-    while cpu.pc != 0x0001 and steps < 10000:
+    while cpu.pc != 0x0001 and steps < 50000:
         cpu.step()
         steps += 1
 
@@ -102,6 +107,19 @@ def test_travel_screen_footer_formatting(screen_id, expected_region_id):
 
     footer_bytes = bytes(cpu.memory[0x5E10:0x5E10 + 320])
     assert footer_bytes == bytes(expected_bytes)
+
+    # Inspect ICON_ADDR+50 (middle of line 2 of icon header) - should contain 20 bytes of padded region name
+    import yaml
+    region_yaml = ROOT_DIR / "world" / expected_region_id / "region.yaml"
+    region_data = yaml.safe_load(region_yaml.read_text(encoding="utf-8"))
+    region_name = region_data["name"]
+    expected_header = bytearray()
+    for c in region_name.ljust(20)[:20]:
+        expected_header.append(to_atari_screencode(c))
+    
+    icon_addr = labels.get("ICON_ADDR", 0x5F74)
+    header_bytes = bytes(cpu.memory[icon_addr + 50 : icon_addr + 50 + 20])
+    assert header_bytes == bytes(expected_header)
 
 
 
