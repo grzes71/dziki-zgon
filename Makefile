@@ -2,10 +2,14 @@
 # Budowanie projektu na Atari 800 XL / 65 XE
 
 # ---- Narzędzia ----
-MADS    := c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
-PYTHON  := $(CURDIR)/.venv/Scripts/python.exe
-ASAPCONV  := C:/Apps/ASAP/asapconv.exe
-RMT2ATASM := C:/Apps/rmt2atasm.exe
+MADS      ?= c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
+ifeq ($(wildcard $(CURDIR)/.venv/Scripts/python.exe),)
+    PYTHON ?= python
+else
+    PYTHON ?= $(CURDIR)/.venv/Scripts/python.exe
+endif
+ASAPCONV  ?= C:/Apps/ASAP/asapconv.exe
+RMT2ATASM ?= C:/Apps/rmt2atasm.exe
 
 # ---- Cross-platform: wykrywanie OS (Windows vs Linux/macOS) ----
 ifeq ($(OS),Windows_NT)

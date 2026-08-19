@@ -1,0 +1,88 @@
+name: Release on PR Merge
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  release:
+    name: Conventional Commits Release & Build
+    if: github.event.pull_request.merged == true
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Analyze Conventional Commits & Determine Version
+        id: semver
+        run: |
+          python scripts/release_helper.py --event-path "$env:GITHUB_EVENT_PATH" --output-file "$env:GITHUB_OUTPUT" --changelog-file "changelog.md"
+
+      - name: Log Release Decision
+        run: |
+          Write-Host "Should Release: ${{ steps.semver.outputs.should_release }}"
+          if ("${{ steps.semver.outputs.should_release }}" -eq "true") {
+            Write-Host "New Version: ${{ steps.semver.outputs.version }}"
+            Write-Host "Tag Name: ${{ steps.semver.outputs.tag_name }}"
+            Write-Host "Bump Type: ${{ steps.semver.outputs.bump_type }}"
+            Write-Host "Previous Tag: ${{ steps.semver.outputs.previous_tag }}"
+            Write-Host "--- Changelog Preview ---"
+            Get-Content -Path "changelog.md"
+          } else {
+            Write-Host "Skipping release: No releasing conventional commit types (feat/fix/breaking) found."
+          }
+
+      - name: Install Mad-Assembler (MADS)
+        if: steps.semver.outputs.should_release == 'true'
+        run: |
+          $madsDir = "C:\Apps\Mad-Assembler-2.1.6\bin\windows_x86_64"
+          New-Item -ItemType Directory -Force -Path $madsDir
+          Invoke-WebRequest -Uri "https://github.com/tebe6502/Mad-Assembler/releases/download/v2.1.6/mads-2.1.6-windows_x86_64.zip" -OutFile "mads.zip"
+          Expand-Archive -Path "mads.zip" -DestinationPath "mads_extracted"
+          Copy-Item "mads_extracted\mads.exe" -Destination "$madsDir\mads.exe" -Force
+          & "$madsDir\mads.exe"
+
+      - name: Run Tests & Build Atari XEX
+        if: steps.semver.outputs.should_release == 'true'
+        run: |
+          make all
+          if (!(Test-Path "dziki_zgon.xex")) {
+            Write-Error "Build failed: dziki_zgon.xex was not generated!"
+            exit 1
+          }
+          Write-Host "Successfully built dziki_zgon.xex (`$((Get-Item dziki_zgon.xex).Length) bytes)"
+
+      - name: Create GitHub Release
+        if: steps.semver.outputs.should_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.semver.outputs.tag_name }}
+          name: ${{ steps.semver.outputs.release_title }}
+          body_path: changelog.md
+          files: |
+            dziki_zgon.xex
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

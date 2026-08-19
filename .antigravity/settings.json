@@ -1,0 +1,5 @@
+{
+    "antigravity.permissions.allow": [
+        "command(make all)"
+    ]
+}
