@@ -118,12 +118,14 @@ def test_get_pr_commit_messages_none():
 
 def test_update_title_version(tmp_path):
     title_file = tmp_path / "title.txt"
-    title_file.write_text("     wiedźmin dziki zgon wersja 0.1.0    \n  https://github.com/grzes71/dziki-zgon  \n", encoding="utf-8")
+    title_file.write_text("        dziki zgon wersja 0.1.0         \n  https://github.com/grzes71/dziki-zgon  \n          naciśnij fire by grać         \n", encoding="utf-8")
     
     assert update_title_version("v0.2.0", title_file) is True
     lines = title_file.read_text(encoding="utf-8").splitlines()
-    assert len(lines) == 2
+    assert len(lines) == 3
     assert "dziki zgon wersja 0.2.0" in lines[0]
     assert len(lines[0]) == 40
     assert len(lines[1]) == 40
+    assert len(lines[2]) == 40
     assert "https://github.com/grzes71/dziki-zgon" in lines[1]
+    assert "naciśnij fire by grać" in lines[2]

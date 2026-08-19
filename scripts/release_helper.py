@@ -286,6 +286,7 @@ def update_title_version(version: str, title_file: Optional[Path] = None) -> boo
     """
     Updates the first line of texts/title.txt to reflect the new release version.
     Centers the text in a 40-character line according to ANTIC 2 requirements.
+    Preserves all subsequent lines.
     """
     if title_file is None:
         title_file = Path("texts/title.txt")
@@ -296,14 +297,20 @@ def update_title_version(version: str, title_file: Optional[Path] = None) -> boo
         return False
         
     with open(title_file, "r", encoding="utf-8") as f:
-        lines = f.readlines()
+        lines = [l.rstrip("\r\n") for l in f.readlines() if l.rstrip("\r\n")]
         
     clean_version = version.lstrip("v").strip()
     line1 = f"dziki zgon wersja {clean_version}".center(40)
-    line2 = lines[1].rstrip("\r\n").ljust(40)[:40] if len(lines) > 1 else "  https://github.com/grzes71/dziki-zgon  "
     
+    output_lines = [line1]
+    if len(lines) > 1:
+        for extra in lines[1:]:
+            output_lines.append(extra.ljust(40)[:40])
+    else:
+        output_lines.append("  https://github.com/grzes71/dziki-zgon  ")
+        
     with open(title_file, "w", encoding="utf-8") as f:
-        f.write(f"{line1}\n{line2}\n")
+        f.write("\n".join(output_lines) + "\n")
     return True
 
 def main():

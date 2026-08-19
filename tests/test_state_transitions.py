@@ -281,27 +281,29 @@ def test_title_vbi_multi_line_cycling(game_binary) -> None:
     run_subroutine(cpu, labels["TITLE_INIT"], max_steps=100000)
 
     lms_addr = labels["TITLE_TEXT_LMS"] + 1
+    max_lines = mem[labels["TITLE_TEXT_MAX_LINES"]]
+    assert max_lines >= 2
+
+    # Line 0 starts at $5E10
     initial_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
     assert initial_lms == 0x5E10, f"Expected initial LMS $5E10, got ${initial_lms:04X}"
 
-    # Run VBI for 249 frames -> line should not change yet
+    # Cycle through lines 1 .. max_lines - 1
+    for line_idx in range(1, max_lines):
+        for _ in range(249):
+            run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
+        # 250th frame -> switches to next line
+        run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
+        expected_lms = 0x5E10 + line_idx * 40
+        current_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
+        assert current_lms == expected_lms, f"Expected LMS ${expected_lms:04X} for line {line_idx}, got ${current_lms:04X}"
+
+    # Next 250 frames wrap back to line 0 ($5E10)
     for _ in range(249):
         run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
-
-    mid_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
-    assert mid_lms == 0x5E10, f"LMS changed prematurely at frame 249 to ${mid_lms:04X}"
-
-    # 250th frame -> line switches to line 1 ($5E38)
     run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
-    switched_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
-    assert switched_lms == 0x5E38, f"Expected LMS $5E38 on frame 250, got ${switched_lms:04X}"
-
-    # Another 250 frames -> wraps back to line 0 ($5E10)
-    for _ in range(250):
-        run_subroutine(cpu, labels["TITLE_VBI"], max_steps=1000)
-
     wrapped_lms = mem[lms_addr] | (mem[lms_addr + 1] << 8)
-    assert wrapped_lms == 0x5E10, f"Expected LMS $5E10 on frame 500, got ${wrapped_lms:04X}"
+    assert wrapped_lms == 0x5E10, f"Expected LMS $5E10 on wrap-around, got ${wrapped_lms:04X}"
 
 
 
