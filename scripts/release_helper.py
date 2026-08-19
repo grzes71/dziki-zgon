@@ -282,15 +282,51 @@ def process_github_pr_event(event_data: dict, git_commits: Optional[List[str]] =
         "changelog": changelog
     }
 
+def update_title_version(version: str, title_file: Optional[Path] = None) -> bool:
+    """
+    Updates the first line of texts/title.txt to reflect the new release version.
+    Centers the text in a 40-character line according to ANTIC 2 requirements.
+    """
+    if title_file is None:
+        title_file = Path("texts/title.txt")
+    if isinstance(title_file, str):
+        title_file = Path(title_file)
+        
+    if not title_file.exists():
+        return False
+        
+    with open(title_file, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        
+    clean_version = version.lstrip("v").strip()
+    line1 = f"dziki zgon wersja {clean_version}".center(40)
+    line2 = lines[1].rstrip("\r\n").ljust(40)[:40] if len(lines) > 1 else "  https://github.com/grzes71/dziki-zgon  "
+    
+    with open(title_file, "w", encoding="utf-8") as f:
+        f.write(f"{line1}\n{line2}\n")
+    return True
+
 def main():
     parser = argparse.ArgumentParser(description="Analyze PR and determine release version")
     parser.add_argument("--event-path", help="Path to GITHUB_EVENT_PATH JSON file")
     parser.add_argument("--output-file", help="Path to save GITHUB_OUTPUT key-value pairs")
     parser.add_argument("--changelog-file", help="Path to save changelog markdown")
+    parser.add_argument("--update-title", action="store_true", help="Update texts/title.txt with the computed or specified version")
+    parser.add_argument("--version", help="Specific version string for --update-title")
+    parser.add_argument("--title-file", default="texts/title.txt", help="Path to title.txt (default: texts/title.txt)")
     args = parser.parse_args()
     
+    # Standalone title update mode
+    if args.version and args.update_title:
+        updated = update_title_version(args.version, Path(args.title_file))
+        if updated:
+            print(f"Updated {args.title_file} with version {args.version}")
+        else:
+            print(f"Failed to update {args.title_file}", file=sys.stderr)
+        return
+
     if not args.event_path:
-        print("Error: --event-path required", file=sys.stderr)
+        print("Error: --event-path or (--update-title --version ...) required", file=sys.stderr)
         sys.exit(1)
         
     with open(args.event_path, "r", encoding="utf-8") as f:
@@ -304,6 +340,11 @@ def main():
     result = process_github_pr_event(event_data, git_commits)
     print(f"Release Decision: {json.dumps(result, indent=2)}")
     
+    # Update title.txt if requested and release is approved
+    if args.update_title and result.get("should_release"):
+        update_title_version(result["version"], Path(args.title_file))
+        print(f"Updated {args.title_file} with version {result['version']}")
+
     # Write to GITHUB_OUTPUT if specified
     if args.output_file:
         with open(args.output_file, "a", encoding="utf-8") as f:

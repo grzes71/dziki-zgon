@@ -37,7 +37,7 @@ jobs:
       - name: Analyze Conventional Commits & Determine Version
         id: semver
         run: |
-          python scripts/release_helper.py --event-path "$env:GITHUB_EVENT_PATH" --output-file "$env:GITHUB_OUTPUT" --changelog-file "changelog.md"
+          python scripts/release_helper.py --event-path "$env:GITHUB_EVENT_PATH" --output-file "$env:GITHUB_OUTPUT" --changelog-file "changelog.md" --update-title
 
       - name: Log Release Decision
         run: |
@@ -47,10 +47,26 @@ jobs:
             Write-Host "Tag Name: ${{ steps.semver.outputs.tag_name }}"
             Write-Host "Bump Type: ${{ steps.semver.outputs.bump_type }}"
             Write-Host "Previous Tag: ${{ steps.semver.outputs.previous_tag }}"
+            Write-Host "--- Updated texts/title.txt ---"
+            Get-Content -Path "texts/title.txt"
             Write-Host "--- Changelog Preview ---"
             Get-Content -Path "changelog.md"
           } else {
             Write-Host "Skipping release: No releasing conventional commit types (feat/fix/breaking) found."
+          }
+
+      - name: Commit & Push updated title.txt to main
+        if: steps.semver.outputs.should_release == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add texts/title.txt
+          $status = git status --porcelain
+          if ($status) {
+            git commit -m "chore(release): bump title.txt version to ${{ steps.semver.outputs.version }} [skip ci]"
+            git push origin main
+          } else {
+            Write-Host "No changes in texts/title.txt to commit."
           }
 
       - name: Install GNU Make
