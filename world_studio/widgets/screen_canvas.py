@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (
     QWidget, QDialog, QVBoxLayout, QFormLayout, QComboBox, 
-    QDialogButtonBox, QMessageBox
+    QDialogButtonBox, QMessageBox, QMenu
 )
 from PySide6.QtGui import QPainter, QPen, QColor, QMouseEvent
 from PySide6.QtCore import Qt, Signal
@@ -304,16 +304,66 @@ class ScreenCanvasWidget(QWidget):
                     self.update()
                     return
 
-            # Delete enemy at this pos
-            enemy_to_remove = None
+            # Enemy context menu at this pos
+            enemy_idx = None
             for i, e in enumerate(self.screen_def.enemies):
                 if e.x == x and e.y == y:
-                    enemy_to_remove = i
+                    enemy_idx = i
                     break
                     
-            if enemy_to_remove is not None:
-                self.screen_def.enemies.pop(enemy_to_remove)
-                self.screen_changed.emit()
+            if enemy_idx is not None:
+                enemy = self.screen_def.enemies[enemy_idx]
+
+                def is_valid_enemy_pos(nx, ny):
+                    if nx < 0 or nx >= self.grid_width:
+                        return False
+                    if ny < 0 or ny >= self.grid_height:
+                        return False
+                    return not self._is_area_overlapping_entities(nx, ny, 1, 1, ignore_enemy_idx=enemy_idx)
+
+                right_x = enemy.x + 1
+                can_move_right = is_valid_enemy_pos(right_x, enemy.y)
+
+                left_x = enemy.x - 1
+                can_move_left = is_valid_enemy_pos(left_x, enemy.y)
+
+                up_y = enemy.y - 1
+                can_move_up = is_valid_enemy_pos(enemy.x, up_y)
+
+                down_y = enemy.y + 1
+                can_move_down = is_valid_enemy_pos(enemy.x, down_y)
+
+                menu = QMenu(self)
+
+                action_delete = menu.addAction("usuń")
+                action_right = menu.addAction("w prawo")
+                action_right.setEnabled(can_move_right)
+                action_left = menu.addAction("w lewo")
+                action_left.setEnabled(can_move_left)
+                action_up = menu.addAction("w górę")
+                action_up.setEnabled(can_move_up)
+                action_down = menu.addAction("w dół")
+                action_down.setEnabled(can_move_down)
+
+                # Show menu at the global cursor position
+                selected_action = menu.exec(event.globalPosition().toPoint())
+
+                if selected_action == action_delete:
+                    self.screen_def.enemies.pop(enemy_idx)
+                    self.screen_changed.emit()
+                elif selected_action == action_right:
+                    enemy.x = right_x
+                    self.screen_changed.emit()
+                elif selected_action == action_left:
+                    enemy.x = left_x
+                    self.screen_changed.emit()
+                elif selected_action == action_up:
+                    enemy.y = up_y
+                    self.screen_changed.emit()
+                elif selected_action == action_down:
+                    enemy.y = down_y
+                    self.screen_changed.emit()
+
                 self.update()
                 return
 
@@ -370,7 +420,6 @@ class ScreenCanvasWidget(QWidget):
                 down_y = inst.y + 2 if inst.y % 2 == 0 else inst.y + 1
                 can_move_down = is_valid_pos(inst.x, down_y)
 
-                from PySide6.QtWidgets import QMenu
                 menu = QMenu(self)
 
                 action_delete = menu.addAction("usuń")

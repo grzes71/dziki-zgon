@@ -41,7 +41,7 @@ objects:
   x: 34
   y: 10
 - object: TREE_3_2
-  x: 30
+  x: 32
   y: 4
 - object: TREE_3_2
   x: 16
@@ -53,7 +53,7 @@ objects:
   x: 4
   y: 4
 - object: TREE_2_2
-  x: 28
+  x: 26
   y: 4
 - object: BUSH_2
   x: 14
@@ -62,7 +62,7 @@ objects:
   x: 34
   y: 0
 - object: TREE_3_2
-  x: 10
+  x: 12
   y: 0
 - object: GROUND_BROWN_BL
   x: 0
@@ -82,9 +82,6 @@ objects:
 - object: GROUND_BROWN_UP_2V
   x: 0
   y: 8
-- object: GROUND_BROWN_DOWN_2
-  x: 36
-  y: 0
 - object: MUSHROOM
   x: 36
   y: 10
@@ -128,6 +125,18 @@ objects:
 - object: SIGNPOINT_BOTH
   x: 10
   y: 10
+- object: CHAIN_2_2
+  x: 36
+  y: 0
+  repeat-y: 2
+- object: CHAIN_2_2
+  x: 10
+  y: 0
+  repeat-y: 2
+- object: CHAIN_3_2
+  x: 30
+  y: 4
+  repeat-y: 2
 enemies:
 - enemy: bazyliszek
   x: 20
@@ -135,3 +144,9 @@ enemies:
   strategy: snake
   speed: medium
   color: brown
+- enemy: sukkub
+  x: 13
+  y: 7
+  strategy: random
+  speed: medium
+  color: blue

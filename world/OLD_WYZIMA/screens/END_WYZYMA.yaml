@@ -7,33 +7,6 @@ exits:
   east: MIDDLE_CENTER_2
   west: null
 objects:
-- object: CHAIN_1
-  x: 36
-  y: 4
-- object: CHAIN_1
-  x: 36
-  y: 6
-- object: CHAIN_1
-  x: 36
-  y: 8
-- object: REED
-  x: 28
-  y: 6
-- object: REED
-  x: 30
-  y: 6
-- object: WATER_UP
-  x: 32
-  y: 0
-- object: CROSS_2
-  x: 30
-  y: 4
-- object: BUSH
-  x: 30
-  y: 10
-- object: BUSH_2
-  x: 38
-  y: 4
 - object: RIVER_HORIZONTAL
   x: 0
   y: 0
@@ -64,4 +37,80 @@ objects:
   x: 6
   y: 4
   repeat-y: 2
-enemies: []
+- object: GROUND_BROWN_TR
+  x: 38
+  y: 0
+- object: GROUND_BROWN_BR
+  x: 38
+  y: 10
+- object: GROUND_BROWN_UP_TL
+  x: 26
+  y: 0
+- object: GROUND_BROWN_BL
+  x: 26
+  y: 10
+- object: BUSH_2
+  x: 28
+  y: 2
+- object: BUSH_2_2
+  x: 28
+  y: 8
+- object: TREE_2
+  x: 32
+  y: 6
+- object: TREE_2
+  x: 36
+  y: 4
+- object: TREE_2
+  x: 32
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 32
+  y: 8
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 36
+  y: 6
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 30
+  y: 4
+  repeat-x: 2
+- object: CROSS_1_COPY
+  x: 38
+  y: 4
+- object: MUSHROOM
+  x: 34
+  y: 6
+- object: MUSHROOM
+  x: 30
+  y: 2
+- object: GROUND_BROWN_UP_2V
+  x: 0
+  y: 4
+  repeat-y: 2
+- object: BUSH
+  x: 32
+  y: 10
+- object: BUSH_0
+  x: 30
+  y: 0
+enemies:
+- enemy: bazyliszek
+  x: 28
+  y: 6
+  strategy: patrol
+  speed: medium
+  color: red
+- enemy: bazyliszek
+  x: 35
+  y: 1
+  strategy: patrol
+  speed: medium
+  color: green
+- enemy: bazyliszek
+  x: 35
+  y: 10
+  strategy: patrol
+  speed: medium
+  color: green

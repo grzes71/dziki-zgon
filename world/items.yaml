@@ -1,18 +1,18 @@
 items:
 - id: 1
-  description: Fałszywe pieniądze
+  description: fałszywe pieniądze
   charset_position: 35
 - id: 2
-  description: Miecz na potwory
+  description: miecz na potwory
   charset_position: 33
 - id: 3
-  description: Miecz na ludzi
+  description: miecz na ludzi
   charset_position: 34
 - id: 4
-  description: Sznurek
+  description: sznurek
   charset_position: 41
 - id: 5
-  description: Podarty rachunek
+  description: podarty rachunek
   charset_position: 74
 - id: 6
   description: wiosła

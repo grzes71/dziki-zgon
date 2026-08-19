@@ -2191,3 +2191,39 @@ objects:
     secret: false
   tiles: [241, 241, 241, 241]
   tags: [animacja]
+- object: CHAIN_2_3_3
+  id: CHAIN_2_3_3
+  code: 181
+  size:
+    width: 3
+    height: 3
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [0, 241, 241, 0, 241, 241, 0, 241, 241]
+  tags: [animacja]
+- object: BUSH_0
+  id: BUSH_0
+  code: 182
+  size:
+    width: 1
+    height: 1
+  flags:
+    blocking: false
+    interactive: false
+    secret: false
+  tiles: [68]
+  tags: [drzewo, tło]
+- object: ROCK_2x4
+  id: ROCK_2x4
+  code: 183
+  size:
+    width: 4
+    height: 2
+  flags:
+    blocking: true
+    interactive: false
+    secret: false
+  tiles: [0, 10, 12, 0, 10, 11, 9, 12]
+  tags: [woda, skała]

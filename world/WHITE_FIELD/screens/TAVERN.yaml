@@ -235,4 +235,9 @@ objects:
   x: 28
   y: 8
   repeat-x: 2
+- object: SECRET2
+  x: 2
+  y: 10
+  items_provided:
+  - 1
 enemies: []
