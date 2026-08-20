@@ -197,3 +197,52 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
     assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_HARBOUR"]
 
 
+def test_iis_persistent_item_not_removed(game_binary) -> None:
+    """Verifies that non-consumable (persistent) items are NOT removed from inventory upon interaction."""
+    xex_file, labels = game_binary
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
+
+    # Set active screen to TAVERN
+    mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_TAVERN"]
+
+    # Verify Item 2 (miecz na potwory) is persistent in ITEM_FLAGS
+    assert mem[labels["ITEM_FLAGS"] + 2] == 0
+
+    # Put Item 2 in scratch memory buffer and point TAVERN requirements to it
+    req_buf_addr = 0x0500
+    mem[req_buf_addr] = 2  # Requires Item 2 (persistent)
+    tavern_id = labels["SCREEN_ID_TAVERN"]
+    mem[labels["INTERACTIVE_OBJ_REQ_PTR_LO"] + tavern_id] = req_buf_addr & 0xFF
+    mem[labels["INTERACTIVE_OBJ_REQ_PTR_HI"] + tavern_id] = (req_buf_addr >> 8) & 0xFF
+    mem[labels["INTERACTIVE_OBJ_REQ_COUNT"] + tavern_id] = 1
+
+    # Add Item 2 to inventory
+    cpu.a = 2
+    run_subroutine(cpu, labels["INVENTORY_ADD_ITEM"])
+    assert mem[labels["INVENTORY_COUNT"]] == 1
+
+    # Position Gerwalt below The Tavern facing UP (ACTOR_DIR = 2)
+    mem[labels["ACTOR_X"]] = 120
+    mem[labels["ACTOR_Y"]] = 128
+    mem[labels["ACTOR_HEIGHT"]] = 16
+    mem[labels["ACTOR_DIR"]] = 2
+
+    # Press Fire button
+    mem[labels["INPUTSTATE_TRIG"]] = 0
+    mem[labels["IIS_FIRE_WAS_PRESSED"]] = 0
+
+    # Execute IIS_Update
+    run_subroutine(cpu, labels["IIS_UPDATE"])
+
+    # Item 2 is persistent, so it must still be in inventory!
+    # Item 5 ("Podarty rachunek") was also provided by Tavern.
+    assert mem[labels["INVENTORY_COUNT"]] == 2
+    items_in_inv = [mem[labels["INVENTORY_ITEMS"] + i] for i in range(2)]
+    assert 2 in items_in_inv
+    assert 5 in items_in_inv
+
+

@@ -269,8 +269,14 @@ INTERACTIVE_OBJ_COMPLETE .ds SCREEN_COUNT
 @remove_req_loop
     tya
     pha                         ; save Y loop index on stack
-    lda (SRC_PTR),y
+    lda (SRC_PTR),y             ; A = item ID
+    tax
+    lda ITEM_FLAGS,x            ; Check item flags
+    and #ITEM_FLAG_CONSUMABLE   ; Is it consumable?
+    beq @skip_remove_req        ; No -> keep in inventory!
+    txa                         ; A = item ID
     jsr inventory_remove_item
+@skip_remove_req
     pla
     tay                         ; restore Y loop index
     iny

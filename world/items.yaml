@@ -1,31 +1,41 @@
 items:
 - id: 1
-  description: fałszywe pieniądze
+  description: 18000 orenów
   charset_position: 35
+  consumable: true
 - id: 2
   description: miecz na potwory
   charset_position: 33
+  consumable: false
 - id: 3
   description: miecz na ludzi
   charset_position: 34
+  consumable: false
 - id: 4
   description: sznurek
   charset_position: 41
+  consumable: true
 - id: 5
   description: podarty rachunek
   charset_position: 74
+  consumable: true
 - id: 6
   description: wiosła
   charset_position: 78
+  consumable: false
 - id: 7
   description: rękopis <czas podagry>
   charset_position: 42
+  consumable: true
 - id: 8
   description: plotka
   charset_position: 32
+  consumable: false
 - id: 9
   description: pochodnia
   charset_position: 43
+  consumable: false
 - id: 10
   description: lotnia
   charset_position: 44
+  consumable: false

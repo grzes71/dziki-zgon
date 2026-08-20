@@ -156,3 +156,6 @@ TRANSITION_SPAWN_RIGHT  = 199  ; Pozycja X po wejściu na ekran z prawej strony 
 TRANSITION_SPAWN_TOP    = 32   ; Pozycja Y po wejściu na ekran od góry (południowy transition)
 TRANSITION_SPAWN_BOTTOM = 209  ; Pozycja Y po wejściu na ekran od dołu (północny transition)
 
+; ---- Flagi przedmiotów (Item Flags) ----
+ITEM_FLAG_CONSUMABLE    = 1    ; Bit 0: 1 = usuwaj z ekwipunku po użyciu, 0 = przedmiot wielorazowy/trwały
+

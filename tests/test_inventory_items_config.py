@@ -19,8 +19,8 @@ def test_inventory_items_load_save(tmp_path):
     assert len(pm.inventory_items) == 0
 
     # Add items to PM
-    item1 = InventoryItemDef(id=1, description="Klucz do kwatery", charset_position=15)
-    item2 = InventoryItemDef(id=2, description="Mieszek złota", charset_position=20)
+    item1 = InventoryItemDef(id=1, description="Klucz do kwatery", charset_position=15, consumable=True)
+    item2 = InventoryItemDef(id=2, description="Mieszek złota", charset_position=20, consumable=False)
     pm.inventory_items = [item1, item2]
 
     # Save project
@@ -33,6 +33,7 @@ def test_inventory_items_load_save(tmp_path):
     content = items_yaml_path.read_text(encoding="utf-8")
     assert "Klucz do kwatery" in content
     assert "charset_position: 15" in content
+    assert "consumable: true" in content or "consumable: True" in content or "consumable: false" in content
 
     # Reload in fresh ProjectManager
     pm2 = ProjectManager()
@@ -41,8 +42,10 @@ def test_inventory_items_load_save(tmp_path):
     assert pm2.inventory_items[0].id == 1
     assert pm2.inventory_items[0].description == "Klucz do kwatery"
     assert pm2.inventory_items[0].charset_position == 15
+    assert pm2.inventory_items[0].consumable is True
     assert pm2.inventory_items[1].id == 2
     assert pm2.inventory_items[1].description == "Mieszek złota"
+    assert pm2.inventory_items[1].consumable is False
 
 def test_world_builder_parse_items_yaml(tmp_path):
     world_dir = tmp_path / "world"
@@ -53,8 +56,8 @@ def test_world_builder_parse_items_yaml(tmp_path):
     
     items_data = {
         "items": [
-            {"id": 1, "description": "Miecz wiedźmiński", "charset_position": 40},
-            {"id": 2, "description": "Eliksir Jaskółka", "charset_position": 41}
+            {"id": 1, "description": "Miecz wiedźmiński", "charset_position": 40, "consumable": False},
+            {"id": 2, "description": "Eliksir Jaskółka", "charset_position": 41, "consumable": True}
         ]
     }
     with open(world_dir / "items.yaml", "w", encoding="utf-8") as f:
@@ -73,3 +76,5 @@ def test_world_builder_parse_items_yaml(tmp_path):
     assert game_world.inventory_items[0].id == 1
     assert game_world.inventory_items[0].description == "Miecz wiedźmiński"
     assert game_world.inventory_items[0].charset_position == 40
+    assert game_world.inventory_items[0].consumable is False
+    assert game_world.inventory_items[1].consumable is True

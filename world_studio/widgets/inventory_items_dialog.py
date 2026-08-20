@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem,
-                               QPushButton, QFormLayout, QLineEdit, QSpinBox, QMessageBox,
+                               QPushButton, QFormLayout, QLineEdit, QSpinBox, QCheckBox, QMessageBox,
                                QHeaderView, QDialogButtonBox)
 from PySide6.QtCore import Qt
 from typing import List, Optional
@@ -19,7 +19,7 @@ class InventoryItemEditDialog(QDialog):
         else:
             self.setWindowTitle("Add Inventory Item")
             
-        self.resize(350, 180)
+        self.resize(350, 200)
         layout = QVBoxLayout(self)
         form = QFormLayout()
 
@@ -52,6 +52,14 @@ class InventoryItemEditDialog(QDialog):
             self.spin_charset_pos.setValue(14)
         form.addRow("Pozycja w charset:", self.spin_charset_pos)
 
+        # Consumable checkbox
+        self.check_consumable = QCheckBox("Tak (usuwany przy użyciu)")
+        if item:
+            self.check_consumable.setChecked(item.consumable)
+        else:
+            self.check_consumable.setChecked(True)
+        form.addRow("Zużywalny:", self.check_consumable)
+
         layout.addLayout(form)
 
         btns = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
@@ -63,6 +71,7 @@ class InventoryItemEditDialog(QDialog):
         item_id = self.spin_id.value()
         desc = self.edit_description.text().strip()
         charset_pos = self.spin_charset_pos.value()
+        consumable = self.check_consumable.isChecked()
 
         if not desc:
             QMessageBox.warning(self, "Błąd walidacji", "Pole 'Opis' jest wymagane.")
@@ -77,7 +86,8 @@ class InventoryItemEditDialog(QDialog):
         self.result_item = InventoryItemDef(
             id=item_id,
             description=desc,
-            charset_position=charset_pos
+            charset_position=charset_pos,
+            consumable=consumable
         )
         self.accept()
 
@@ -89,14 +99,14 @@ class InventoryItemsDialog(QDialog):
         self.items = [item.model_copy() for item in project.inventory_items]
         
         self.setWindowTitle("Inventory Items")
-        self.resize(500, 350)
+        self.resize(550, 350)
         
         layout = QVBoxLayout(self)
         
         # Table widget
         self.table = QTableWidget()
-        self.table.setColumnCount(3)
-        self.table.setHorizontalHeaderLabels(["ID", "Opis", "Pozycja w charset"])
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels(["ID", "Opis", "Pozycja w charset", "Zużywalny"])
         self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setSelectionMode(QTableWidget.SingleSelection)
@@ -141,9 +151,13 @@ class InventoryItemsDialog(QDialog):
             item_pos = QTableWidgetItem(str(item.charset_position))
             item_pos.setTextAlignment(Qt.AlignCenter)
             
+            item_consumable = QTableWidgetItem("Tak" if item.consumable else "Nie")
+            item_consumable.setTextAlignment(Qt.AlignCenter)
+            
             self.table.setItem(row, 0, item_id)
             self.table.setItem(row, 1, item_desc)
             self.table.setItem(row, 2, item_pos)
+            self.table.setItem(row, 3, item_consumable)
 
     def _on_add_item(self):
         existing_ids = [it.id for it in self.items]

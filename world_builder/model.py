@@ -10,6 +10,7 @@ class InventoryItemDef(BaseModel):
     id: int = Field(ge=1, le=255)
     description: str
     charset_position: int = Field(ge=0, le=255, alias="charset_position")
+    consumable: bool = Field(default=True, alias="consumable")
 
 class EnemyDef(BaseModel):
     id: str

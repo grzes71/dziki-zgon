@@ -288,12 +288,19 @@ class AsmGenerator:
         # Item Charset Position Table
         max_item_id = max((item.id for item in self.world.inventory_items), default=0)
         item_pos_map = {item.id: item.charset_position for item in self.world.inventory_items}
+        item_flag_map = {item.id: (1 if item.consumable else 0) for item in self.world.inventory_items}
         
         out.append("ITEM_CHARSET_POS")
         out.append("    dta 14 ; ID 0 (Empty slot)")
         for item_id in range(1, max_item_id + 1):
             pos = item_pos_map.get(item_id, 14)
             out.append(f"    dta {pos} ; Item ID {item_id}")
+            
+        out.append("\nITEM_FLAGS")
+        out.append("    dta 0 ; ID 0 (Empty slot)")
+        for item_id in range(1, max_item_id + 1):
+            flag = item_flag_map.get(item_id, 1)
+            out.append(f"    dta {flag} ; Item ID {item_id}")
             
         out.append("\n; Interactive Objects Table (Indexed by ScreenId)")
         objects_by_id = {obj.id: obj for obj in self.world.objects}
