@@ -22,9 +22,6 @@ objects:
 - object: TREE_3
   x: 12
   y: 0
-- object: GROUND_BROWN_UP_TL
-  x: 0
-  y: 10
 - object: GROUND_BROWN_TR
   x: 38
   y: 10
@@ -89,9 +86,6 @@ objects:
   y: 6
   repeat-x: 2
 - object: CLAW_2_2
-  x: 4
-  y: 10
-- object: CLAW_2_2
   x: 12
   y: 10
 - object: CLAW_2_2
@@ -102,9 +96,6 @@ objects:
   y: 10
 - object: CLAW_2_2
   x: 26
-  y: 10
-- object: CHAIN_1_2
-  x: 6
   y: 10
 - object: CHAIN_1_2
   x: 14

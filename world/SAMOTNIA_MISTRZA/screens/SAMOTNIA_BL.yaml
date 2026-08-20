@@ -23,7 +23,7 @@ objects:
   x: 12
   y: 0
 - object: TREE_4
-  x: 34
+  x: 36
   y: 0
 - object: BARREL_2_2
   x: 30
@@ -44,7 +44,7 @@ objects:
   x: 12
   y: 2
 - object: BROWN_DOWN_2
-  x: 34
+  x: 36
   y: 2
 - object: BROWN_DOWN_2
   x: 36
@@ -79,6 +79,7 @@ objects:
 - object: SWAMP_2_WEED
   x: 8
   y: 2
+  repeat-x: 2
 - object: SWAMP_BLOCK
   x: 8
   y: 0
@@ -91,6 +92,7 @@ objects:
 - object: SWAMP_2_WEED
   x: 28
   y: 0
+  repeat-y: 2
 - object: CASTLE_BIGGEST
   x: 14
   y: 4
@@ -204,9 +206,31 @@ objects:
 - object: ROCK_1_2
   x: 26
   y: 0
+- object: SWAMP_BLOCK
+  x: 12
+  y: 4
+- object: SWAMP_BLOCK
+  x: 14
+  y: 2
+- object: SWAMP_BLOCK
+  x: 24
+  y: 2
+  repeat-x: 2
+- object: SWAMP_BLOCK_2
+  x: 22
+  y: 2
+- object: SWAMP_BLOCK_2
+  x: 30
+  y: 4
+- object: SWAMP_BLOCK_2
+  x: 32
+  y: 0
+- object: SWAMP_2_WEED
+  x: 10
+  y: 0
 enemies:
 - enemy: bazyliszek
-  x: 30
+  x: 33
   y: 3
   strategy: snake
   speed: medium

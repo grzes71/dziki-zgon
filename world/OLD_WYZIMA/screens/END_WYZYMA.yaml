@@ -33,10 +33,6 @@ objects:
   x: 12
   y: 4
   repeat-y: 2
-- object: CHAIN_1_2
-  x: 6
-  y: 4
-  repeat-y: 2
 - object: GROUND_BROWN_TR
   x: 38
   y: 0
@@ -85,10 +81,6 @@ objects:
 - object: MUSHROOM
   x: 30
   y: 2
-- object: GROUND_BROWN_UP_2V
-  x: 0
-  y: 4
-  repeat-y: 2
 - object: BUSH
   x: 32
   y: 10

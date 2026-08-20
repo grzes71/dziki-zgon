@@ -23,3 +23,9 @@ items:
 - id: 8
   description: plotka
   charset_position: 32
+- id: 9
+  description: pochodnia
+  charset_position: 43
+- id: 10
+  description: lotnia
+  charset_position: 44

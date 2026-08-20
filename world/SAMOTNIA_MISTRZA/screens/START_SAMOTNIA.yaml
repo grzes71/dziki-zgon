@@ -194,6 +194,24 @@ objects:
 - object: SWAMP
   x: 30
   y: 6
+- object: GROUND_BROWN_DOWN
+  x: 6
+  y: 6
+- object: GROUND_BROWN_DOWN
+  x: 6
+  y: 4
+- object: GROUND_BROWN_DOWN
+  x: 6
+  y: 2
+- object: GROUND_BROWN_DOWN
+  x: 6
+  y: 8
+- object: GROUND_BROWN_DOWN
+  x: 6
+  y: 10
+- object: GROUND_BROWN_DOWN
+  x: 2
+  y: 10
 enemies:
 - enemy: kikimora
   x: 15
