@@ -7,15 +7,6 @@ exits:
   east: SAMOTNIA_BR
   west: null
 objects:
-- object: TREE_SMALL
-  x: 18
-  y: 6
-- object: TREE_SMALL
-  x: 24
-  y: 2
-- object: TREE_SMALL
-  x: 10
-  y: 4
 - object: TREE_2
   x: 32
   y: 8
@@ -26,41 +17,14 @@ objects:
   x: 36
   y: 4
 - object: TREE_4
-  x: 30
-  y: 4
-- object: TREE_4
-  x: 18
-  y: 2
-- object: TREE_4
-  x: 12
-  y: 8
-- object: TREE_4
-  x: 6
-  y: 8
-- object: TREE_4
-  x: 2
-  y: 6
-- object: TREE_4
   x: 24
   y: 10
-- object: TREE_4
-  x: 24
-  y: 6
 - object: TREE_4
   x: 12
   y: 0
 - object: TREE_4
   x: 34
   y: 0
-- object: ROCK_2_2
-  x: 0
-  y: 10
-- object: ROCK_2_2
-  x: 18
-  y: 10
-- object: STONE_BIG_2
-  x: 8
-  y: 10
 - object: BARREL_2_2
   x: 30
   y: 10
@@ -80,37 +44,11 @@ objects:
   x: 12
   y: 2
 - object: BROWN_DOWN_2
-  x: 18
-  y: 4
-- object: BROWN_DOWN_2
   x: 34
   y: 2
 - object: BROWN_DOWN_2
   x: 36
   y: 6
-- object: BROWN_DOWN_2
-  x: 30
-  y: 6
-- object: BROWN_DOWN_2
-  x: 24
-  y: 8
-- object: BROWN_DOWN_2
-  x: 12
-  y: 10
-- object: BROWN_DOWN_2
-  x: 6
-  y: 10
-- object: BROWN_DOWN_2
-  x: 2
-  y: 8
-- object: GROUND_GREEN_UP_2
-  x: 8
-  y: 6
-  repeat-x: 2
-- object: GROUND_GREEN_UP_2
-  x: 24
-  y: 4
-  repeat-x: 2
 - object: GROUND_GREEN_UP_2
   x: 2
   y: 4
@@ -128,24 +66,9 @@ objects:
 - object: BUSH
   x: 28
   y: 10
-- object: BUSH
-  x: 16
-  y: 10
-- object: BUSH
-  x: 4
-  y: 10
 - object: BUSH_2_2
   x: 22
   y: 10
-- object: BUSH_2_2
-  x: 26
-  y: 2
-- object: BUSH_2_2
-  x: 8
-  y: 4
-- object: ROCK_1_2
-  x: 16
-  y: 8
 - object: BUSH_2
   x: 38
   y: 8
@@ -162,26 +85,129 @@ objects:
 - object: SWAMP_BLOCK_2
   x: 6
   y: 0
-- object: SWAMP_BLOCK_2
-  x: 20
-  y: 8
-- object: SWAMP_BLOCK_2
-  x: 28
-  y: 8
 - object: SWAMP_BLOCK
   x: 30
   y: 0
 - object: SWAMP_2_WEED
   x: 28
   y: 0
-- object: SWAMP_BLOCK_2
-  x: 14
-  y: 6
-- object: SWAMP_2_WEED
+- object: CASTLE_BIGGEST
   x: 14
   y: 4
+  type: kwatera
+  conditions_met: bierz pieniądze i znikaj!
+  conditions_unmet: masz mój rękopis chłopcze?
+  items_required:
+  - 7
+  items_provided:
+  - 1
+  game_over: false
+- object: BUSH_2_2
+  x: 0
+  y: 4
+- object: BUSH
+  x: 16
+  y: 0
+- object: BUSH
+  x: 34
+  y: 4
+- object: SWAMP_BLOCK_2
+  x: 28
+  y: 6
+  repeat-y: 2
+- object: SWAMP_BLOCK_2
+  x: 8
+  y: 8
   repeat-x: 2
+- object: SWAMP_BLOCK
+  x: 6
+  y: 8
+- object: SWAMP_BLOCK
+  x: 8
+  y: 6
+  repeat-x: 2
+- object: SWAMP_2_WEED
+  x: 6
+  y: 6
+- object: SWAMP_2_WEED
+  x: 4
+  y: 8
+- object: SWAMP_2_WEED
+  x: 30
+  y: 6
+- object: SWAMP_2_WEED
+  x: 26
+  y: 8
+- object: SWAMP_BLOCK
+  x: 28
+  y: 4
+- object: SWAMP_BLOCK
+  x: 8
+  y: 10
+- object: SWAMP_2_WEED
+  x: 6
+  y: 10
+- object: GROUND_BROWN_BL
+  x: 0
+  y: 10
+- object: GROUND_BROWN_UP_2V
+  x: 0
+  y: 8
+- object: TREE_2
+  x: 16
+  y: 10
+- object: TREE_SMALL
+  x: 20
+  y: 10
+- object: TREE_SMALL
+  x: 12
+  y: 10
+- object: BARREL_2_2
+  x: 10
+  y: 10
+- object: CROSS_1
+  x: 4
+  y: 6
+- object: CROSS_1
+  x: 4
+  y: 10
+- object: CROSS_1
+  x: 4
+  y: 0
+- object: CROSS_1
+  x: 6
+  y: 2
+- object: MUSHROOM
+  x: 18
+  y: 10
 - object: ROCK_1_2
   x: 14
+  y: 10
+- object: ROCK_1_2
+  x: 26
+  y: 10
+- object: ROCK_1_2
+  x: 36
+  y: 10
+- object: ROCK_1_2
+  x: 2
+  y: 10
+- object: ROCK_2
+  x: 18
   y: 2
-enemies: []
+- object: ROCK_1
+  x: 26
+  y: 4
+- object: ROCK_1_2
+  x: 10
+  y: 4
+- object: ROCK_1_2
+  x: 26
+  y: 0
+enemies:
+- enemy: bazyliszek
+  x: 30
+  y: 3
+  strategy: snake
+  speed: medium
+  color: white

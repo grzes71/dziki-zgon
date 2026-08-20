@@ -11,6 +11,10 @@ portal_entries:
     screen: FOREST_0_0
     x: 26
     y: 4
+  SAMOTNIA_MISTRZA:
+    screen: FOREST_1_2
+    x: 36
+    y: 2
 colors:
   BACKGROUND:
     rgb:

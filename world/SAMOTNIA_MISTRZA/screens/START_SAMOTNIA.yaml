@@ -194,4 +194,16 @@ objects:
 - object: SWAMP
   x: 30
   y: 6
-enemies: []
+enemies:
+- enemy: kikimora
+  x: 15
+  y: 8
+  strategy: patrol
+  speed: fast
+  color: orange
+- enemy: strzyga
+  x: 35
+  y: 7
+  strategy: pacing
+  speed: fast
+  color: orange

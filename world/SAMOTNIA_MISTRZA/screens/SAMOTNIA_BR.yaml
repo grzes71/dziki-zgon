@@ -5,7 +5,7 @@ exits:
   north: START_SAMOTNIA
   south: null
   east: null
-  west: SAMOTNIA_EXIT
+  west: SAMOTNIA_BL
 objects:
 - object: TREE_SMALL
   x: 24
@@ -19,9 +19,6 @@ objects:
 - object: TREE_2
   x: 16
   y: 4
-- object: TREE_2
-  x: 34
-  y: 8
 - object: TREE_2
   x: 2
   y: 4
@@ -86,19 +83,12 @@ objects:
   x: 30
   y: 8
 - object: BROWN_DOWN_2
-  x: 38
-  y: 8
-- object: BROWN_DOWN_2
   x: 18
   y: 10
 - object: GROUND_GREEN_UP_2
   x: 0
   y: 6
   repeat-x: 3
-- object: GROUND_GREEN_UP_2
-  x: 34
-  y: 10
-  repeat-x: 2
 - object: GROUND_GREEN_UP_2
   x: 22
   y: 8
@@ -140,12 +130,6 @@ objects:
 - object: MUSHROOM
   x: 0
   y: 4
-- object: MUSHROOM
-  x: 36
-  y: 8
-- object: ROCK_1_2
-  x: 38
-  y: 10
 - object: ROCK_GREEN_2
   x: 36
   y: 2
@@ -215,14 +199,18 @@ objects:
   x: 30
   y: 10
 - object: SWAMP_BLOCK_2
-  x: 32
-  y: 10
-- object: SWAMP_BLOCK_2
   x: 26
   y: 2
 - object: SWAMP
   x: 26
   y: 4
+- object: TOWER
+  x: 34
+  y: 6
+  type: portal
+  message_travel: podróż do las pijanego zająca
+  target_region: LAS_PIJANEGO_ZAJACA
+  cost_of_travel: 10
 enemies:
 - enemy: bazyliszek
   x: 19

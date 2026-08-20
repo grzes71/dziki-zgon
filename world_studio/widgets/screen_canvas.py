@@ -56,7 +56,7 @@ class ScreenCanvasWidget(QWidget):
             py = y * self.tile_h_px * self.zoom
             painter.drawLine(0, py, self.grid_width * self.tile_w_px * self.zoom, py)
 
-    def _is_area_overlapping_entities(self, x: int, y: int, w: int, h: int, ignore_obj_idx: int = None, ignore_player_start: bool = False, ignore_enemy_idx: int = None) -> bool:
+    def _is_area_overlapping_entities(self, x: int, y: int, w: int, h: int, ignore_obj_idx: int = None, ignore_player_start: bool = False, ignore_enemy_idx: int = None, ignore_portal_entry_key: str = None) -> bool:
         if not self.screen_def or not self.project:
             return False
 
@@ -84,7 +84,9 @@ class ScreenCanvasWidget(QWidget):
         if self.region_id and self.project and self.region_id in self.project.regions:
             region = self.project.regions[self.region_id]
             if getattr(region, 'portal_entries', None):
-                for entry in region.portal_entries.values():
+                for from_reg, entry in region.portal_entries.items():
+                    if ignore_portal_entry_key is not None and from_reg == ignore_portal_entry_key:
+                        continue
                     es = getattr(entry, 'screen', None) if not isinstance(entry, dict) else entry.get('screen')
                     ex = getattr(entry, 'x', None) if not isinstance(entry, dict) else entry.get('x')
                     ey = getattr(entry, 'y', None) if not isinstance(entry, dict) else entry.get('y')
@@ -106,13 +108,35 @@ class ScreenCanvasWidget(QWidget):
         if not self.screen_def or not self.project:
             return
             
-        x = event.position().x() // (self.tile_w_px * self.zoom)
-        y = event.position().y() // (self.tile_h_px * self.zoom)
+        x = int(event.position().x() // (self.tile_w_px * self.zoom))
+        y = int(event.position().y() // (self.tile_h_px * self.zoom))
         
         if x < 0 or x >= self.grid_width or y < 0 or y >= self.grid_height:
             return
             
         if event.button() == Qt.LeftButton:
+            # 0. Check if clicking on an existing portal entry -> show info dialog
+            if self.region_id and self.project and self.region_id in self.project.regions:
+                region = self.project.regions[self.region_id]
+                if getattr(region, 'portal_entries', None):
+                    for from_reg, entry in region.portal_entries.items():
+                        es = getattr(entry, 'screen', None) if not isinstance(entry, dict) else entry.get('screen')
+                        ex = getattr(entry, 'x', None) if not isinstance(entry, dict) else entry.get('x')
+                        ey = getattr(entry, 'y', None) if not isinstance(entry, dict) else entry.get('y')
+                        if es == self.screen_def.id and ex == x and ey == y:
+                            reg_info = from_reg
+                            if from_reg in self.project.regions:
+                                r_def = self.project.regions[from_reg]
+                                r_n = getattr(r_def, 'name', None) or (r_def.get('name') if isinstance(r_def, dict) else None)
+                                if r_n:
+                                    reg_info = f"{r_n} ({from_reg})"
+                            QMessageBox.information(
+                                self,
+                                "Portal Entry",
+                                f"Punkt wejścia portalu (Portal Entry)\n\nRegion źródłowy: {reg_info}\nEkran docelowy: {self.screen_def.id}\nPozycja: ({x}, {y})"
+                            )
+                            return
+
             # 1. Check if there is an existing enemy at this coordinate to edit
             existing_enemy = next((e for e in self.screen_def.enemies if e.x == x and e.y == y), None)
             if existing_enemy:
@@ -287,20 +311,87 @@ class ScreenCanvasWidget(QWidget):
                         self.update()
                 
         elif event.button() == Qt.RightButton:
-            # Delete portal entry at this pos if matching
+            # Context menu for portal entry at this pos
             if self.region_id and self.project and self.region_id in self.project.regions:
                 region = self.project.regions[self.region_id]
-                portal_to_remove = None
-                for from_reg, entry in region.portal_entries.items():
-                    es = getattr(entry, 'screen', None) if not isinstance(entry, dict) else entry.get('screen')
-                    ex = getattr(entry, 'x', None) if not isinstance(entry, dict) else entry.get('x')
-                    ey = getattr(entry, 'y', None) if not isinstance(entry, dict) else entry.get('y')
-                    if es == self.screen_def.id and ex == x and ey == y:
-                        portal_to_remove = from_reg
-                        break
-                if portal_to_remove:
-                    del region.portal_entries[portal_to_remove]
-                    self.screen_changed.emit()
+                matching_portal_key = None
+                matching_portal_entry = None
+                if getattr(region, 'portal_entries', None):
+                    for from_reg, entry in region.portal_entries.items():
+                        es = getattr(entry, 'screen', None) if not isinstance(entry, dict) else entry.get('screen')
+                        ex = getattr(entry, 'x', None) if not isinstance(entry, dict) else entry.get('x')
+                        ey = getattr(entry, 'y', None) if not isinstance(entry, dict) else entry.get('y')
+                        if es == self.screen_def.id and ex == x and ey == y:
+                            matching_portal_key = from_reg
+                            matching_portal_entry = entry
+                            break
+
+                if matching_portal_key is not None:
+                    curr_x = getattr(matching_portal_entry, 'x', None) if not isinstance(matching_portal_entry, dict) else matching_portal_entry.get('x')
+                    curr_y = getattr(matching_portal_entry, 'y', None) if not isinstance(matching_portal_entry, dict) else matching_portal_entry.get('y')
+
+                    def is_valid_portal_pos(nx, ny):
+                        if nx < 0 or nx >= self.grid_width:
+                            return False
+                        if ny < 0 or ny >= self.grid_height:
+                            return False
+                        return not self._is_area_overlapping_entities(nx, ny, 1, 1, ignore_portal_entry_key=matching_portal_key)
+
+                    right_x = curr_x + 1
+                    can_move_right = is_valid_portal_pos(right_x, curr_y)
+
+                    left_x = curr_x - 1
+                    can_move_left = is_valid_portal_pos(left_x, curr_y)
+
+                    up_y = curr_y - 1
+                    can_move_up = is_valid_portal_pos(curr_x, up_y)
+
+                    down_y = curr_y + 1
+                    can_move_down = is_valid_portal_pos(curr_x, down_y)
+
+                    menu = QMenu(self)
+
+                    action_delete = menu.addAction("usuń")
+                    action_right = menu.addAction("w prawo")
+                    action_right.setEnabled(can_move_right)
+                    action_left = menu.addAction("w lewo")
+                    action_left.setEnabled(can_move_left)
+                    action_up = menu.addAction("w górę")
+                    action_up.setEnabled(can_move_up)
+                    action_down = menu.addAction("w dół")
+                    action_down.setEnabled(can_move_down)
+
+                    # Show menu at the global cursor position
+                    selected_action = menu.exec(event.globalPosition().toPoint())
+
+                    if selected_action == action_delete:
+                        del region.portal_entries[matching_portal_key]
+                        self.screen_changed.emit()
+                    elif selected_action == action_right:
+                        if isinstance(matching_portal_entry, dict):
+                            matching_portal_entry['x'] = right_x
+                        else:
+                            matching_portal_entry.x = right_x
+                        self.screen_changed.emit()
+                    elif selected_action == action_left:
+                        if isinstance(matching_portal_entry, dict):
+                            matching_portal_entry['x'] = left_x
+                        else:
+                            matching_portal_entry.x = left_x
+                        self.screen_changed.emit()
+                    elif selected_action == action_up:
+                        if isinstance(matching_portal_entry, dict):
+                            matching_portal_entry['y'] = up_y
+                        else:
+                            matching_portal_entry.y = up_y
+                        self.screen_changed.emit()
+                    elif selected_action == action_down:
+                        if isinstance(matching_portal_entry, dict):
+                            matching_portal_entry['y'] = down_y
+                        else:
+                            matching_portal_entry.y = down_y
+                        self.screen_changed.emit()
+
                     self.update()
                     return
 

@@ -6,11 +6,7 @@ layout:
   columns: 4
 start_screen: START_WYZYMA
 music: OLD_WYZIMA
-portal_entries:
-  LAS_PIJANEGO_ZAJACA:
-    screen: START_WYZYMA
-    x: 7
-    y: 5
+portal_entries: {}
 colors:
   BACKGROUND:
     rgb:

@@ -2227,3 +2227,28 @@ objects:
     secret: false
   tiles: [0, 10, 12, 0, 10, 11, 9, 12]
   tags: [woda, skała]
+- object: PORT_MIKRO
+  id: PORT_MIKRO
+  code: 184
+  size:
+    width: 10
+    height: 2
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [96, 17, 17, 17, 17, 17, 17, 17, 17, 97, 250, 33, 163, 164, 87, 88, 163,
+    164, 33, 251]
+  tags: [portal, interakcja]
+- object: CAVE_PORTAL_2
+  id: CAVE_PORTAL_2
+  code: 185
+  size:
+    width: 6
+    height: 2
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [0, 10, 11, 34, 12, 0, 10, 11, 27, 28, 9, 12]
+  tags: [portal, interakcja]

@@ -9,7 +9,7 @@ music: WHITE_FIELD
 portal_entries:
   LAS_PIJANEGO_ZAJACA:
     screen: HARBOUR
-    x: 22
+    x: 25
     y: 7
 colors:
   PF0:

@@ -184,7 +184,7 @@ def test_screen_canvas_entity_object_overlap_prevention(qapp):
     event = MagicMock()
     event.button.return_value = Qt.LeftButton
     
-    with patch.object(QDialog, 'exec', return_value=QDialog.Accepted):
+    with patch.object(QDialog, 'exec', return_value=QDialog.Accepted), patch("world_studio.widgets.screen_canvas.QMessageBox.information"):
         # 1. Try placing 2x2 object overlapping Player Start at (4, 4) -> click at (4, 4) -> (4*16, 4*32) = (64, 128)
         event.position.return_value = QPointF(64.0, 128.0)
         canvas.mousePressEvent(event)

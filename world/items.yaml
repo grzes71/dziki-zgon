@@ -17,3 +17,9 @@ items:
 - id: 6
   description: wiosła
   charset_position: 78
+- id: 7
+  description: rękopis <czas podagry>
+  charset_position: 42
+- id: 8
+  description: plotka
+  charset_position: 32
