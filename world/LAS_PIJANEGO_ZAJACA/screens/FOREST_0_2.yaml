@@ -11,8 +11,12 @@ objects:
   x: 16
   y: 6
   type: kwatera
-  conditions_met: hello
-  conditions_unmet: world
+  conditions_met: nie masz może mojego klucza?
+  conditions_unmet: w nagrodę masz mój miecz!
+  items_required:
+  - 11
+  items_provided:
+  - 3
   game_over: false
 - object: GROUND_BROWN_UP
   x: 0
@@ -28,7 +32,7 @@ objects:
   y: 4
 - object: TREE_2
   x: 14
-  y: 6
+  y: 2
 - object: WATERFALL_GREEN
   x: 28
   y: 6
@@ -175,9 +179,6 @@ objects:
 - object: BUSH_2_2
   x: 8
   y: 2
-- object: BUSH_2_2
-  x: 14
-  y: 0
 - object: BUSH_2
   x: 38
   y: 4
@@ -199,9 +200,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 16
   y: 0
-- object: GROUND_BROWN_DOWN
-  x: 14
-  y: 4
 - object: GROUND_BROWN_DOWN
   x: 10
   y: 4
@@ -232,6 +230,12 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 0
   y: 2
+- object: GROUND_GREEN_UP_2
+  x: 14
+  y: 4
+- object: BUSH_2_2
+  x: 14
+  y: 6
 enemies:
 - enemy: kikimora
   x: 12

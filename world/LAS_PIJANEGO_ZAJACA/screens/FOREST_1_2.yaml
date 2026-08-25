@@ -51,9 +51,6 @@ objects:
   x: 20
   y: 10
 - object: TREE_SMALL
-  x: 38
-  y: 4
-- object: TREE_SMALL
   x: 14
   y: 10
 - object: TREE_2
@@ -97,9 +94,6 @@ objects:
   x: 4
   y: 10
   repeat-x: 2
-- object: GROUND_GREEN_UP_2
-  x: 38
-  y: 6
 - object: CROSS_1_COPY
   x: 38
   y: 10
@@ -110,14 +104,8 @@ objects:
 - object: CROSS_1_COPY
   x: 32
   y: 10
-- object: BARREL_2_2
-  x: 38
-  y: 8
 - object: GROUND_BROWN_DOWN
   x: 18
-  y: 4
-- object: CHURCH_SMALL
-  x: 34
   y: 4
 - object: MUSHROOM
   x: 26
@@ -182,10 +170,7 @@ objects:
   x: 24
   y: 8
 - object: CROSS_1
-  x: 26
-  y: 6
-- object: CROSS_1
-  x: 30
+  x: 28
   y: 6
 - object: CROSS_1
   x: 34
@@ -206,6 +191,26 @@ objects:
 - object: CROSS_1
   x: 24
   y: 0
+- object: CASTLE_MID
+  x: 32
+  y: 6
+  type: kwatera
+  conditions_met: masz swój amulet gerwalcie!
+  conditions_unmet: butelka okowity za mną chodzi od rana
+  items_required:
+  - 15
+  items_provided:
+  - 16
+  game_over: false
+- object: TREE_2
+  x: 38
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 38
+  y: 4
+- object: SWAMP_BLOCK_2
+  x: 24
+  y: 4
 enemies:
 - enemy: bazyliszek
   x: 21

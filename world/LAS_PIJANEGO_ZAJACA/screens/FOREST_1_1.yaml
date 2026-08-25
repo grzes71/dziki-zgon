@@ -27,7 +27,7 @@ objects:
   y: 2
 - object: TREE_2
   x: 28
-  y: 10
+  y: 8
 - object: TREE_3
   x: 38
   y: 6
@@ -166,9 +166,6 @@ objects:
 - object: CROSS_1
   x: 12
   y: 6
-- object: CROSS_1
-  x: 28
-  y: 8
 - object: STONE_BIG_2
   x: 16
   y: 10

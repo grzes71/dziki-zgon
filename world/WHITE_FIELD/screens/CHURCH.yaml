@@ -11,12 +11,12 @@ objects:
   x: 18
   y: 2
   type: kwatera
-  conditions_met: dziękujemy za sznurek! oto kasa.
-  conditions_unmet: nie masz czasem sznurka?
+  conditions_met: oto nagroda - miecz na potwory!
+  conditions_unmet: nie masz nic dla nas cennego
   items_required:
-  - 4
+  - 13
   items_provided:
-  - 1
+  - 2
   game_over: false
 - object: WAVES_DOWN
   x: 20

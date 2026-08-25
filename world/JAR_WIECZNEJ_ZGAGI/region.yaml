@@ -6,7 +6,11 @@ layout:
   columns: 1
 start_screen: START_JAR
 music: JAR_WIECZNEJ_ZGAGI
-portal_entries: {}
+portal_entries:
+  LAS_PIJANEGO_ZAJACA:
+    screen: START_JAR
+    x: 28
+    y: 5
 colors:
   BACKGROUND:
     rgb:

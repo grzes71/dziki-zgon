@@ -2,7 +2,7 @@ id: START_JAR
 grid_x: 0
 grid_y: 2
 exits:
-  north: JAR_TOP_1
+  north: null
   south: JAR_BOTTOM_1
   east: null
   west: null
@@ -157,4 +157,10 @@ objects:
 - object: RIVER_TR_2
   x: 26
   y: 8
-enemies: []
+enemies:
+- enemy: strzyga
+  x: 7
+  y: 6
+  strategy: pacing
+  speed: fast
+  color: purple

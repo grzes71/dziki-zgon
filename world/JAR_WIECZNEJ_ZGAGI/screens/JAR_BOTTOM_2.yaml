@@ -145,4 +145,10 @@ objects:
   x: 22
   y: 8
   repeat-x: 4
-enemies: []
+enemies:
+- enemy: kikimora
+  x: 35
+  y: 6
+  strategy: patrol
+  speed: fast
+  color: yellow

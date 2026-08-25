@@ -18,11 +18,11 @@ objects:
   y: 6
   type: portal
   conditions_met: pięknie, płyniemy!
-  conditions_unmet: bez wioseł nie popłyniemy
+  conditions_unmet: bez miecza na potwory nie płynę!
   message_travel: las pijanego zająca - 10 pacierzy
   target_region: LAS_PIJANEGO_ZAJACA
   items_required:
-  - 6
+  - 2
   cost_of_travel: 10
 - object: TREE_3
   x: 30

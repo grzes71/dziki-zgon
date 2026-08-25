@@ -3,7 +3,7 @@ grid_x: 0
 grid_y: 5
 exits:
   north: JAR_BOTTOM_2
-  south: null
+  south: JAR_TOP_2
   east: null
   west: null
 objects:
@@ -37,9 +37,6 @@ objects:
   y: 2
 - object: PALM_SWAMP
   x: 20
-  y: 6
-- object: PALM_SWAMP
-  x: 36
   y: 6
 - object: PALM_SWAMP
   x: 36
@@ -84,9 +81,6 @@ objects:
 - object: SWAMP_BLOCK
   x: 34
   y: 2
-- object: SAND_3_BR
-  x: 38
-  y: 10
 - object: SAND_3_TR
   x: 38
   y: 0
@@ -161,4 +155,27 @@ objects:
   x: 10
   y: 8
   repeat-x: 3
-enemies: []
+- object: TOWER
+  x: 38
+  y: 6
+  type: portal
+  conditions_met: naprzód przygodo!
+  conditions_unmet: bez amuletu nie wchodzę!
+  message_travel: stara wyżyma za 20 pacierzy
+  target_region: OLD_WYZIMA
+  items_required:
+  - 16
+  cost_of_travel: 20
+- object: PALM_SWAMP
+  x: 34
+  y: 8
+- object: BUSH_0
+  x: 36
+  y: 6
+enemies:
+- enemy: strzyga
+  x: 13
+  y: 5
+  strategy: patrol
+  speed: fast
+  color: white

@@ -15,20 +15,8 @@ objects:
   x: 2
   y: 2
 - object: PALM_SWAMP
-  x: 14
-  y: 2
-- object: PALM_SWAMP
-  x: 10
-  y: 4
-- object: PALM_SWAMP
-  x: 4
-  y: 8
-- object: PALM_SWAMP
   x: 18
   y: 6
-- object: PALM_SWAMP
-  x: 12
-  y: 8
 - object: PALM_SWAMP
   x: 0
   y: 6
@@ -57,20 +45,11 @@ objects:
   x: 0
   y: 10
 - object: PALM_TREE
-  x: 10
-  y: 2
-- object: PALM_TREE
   x: 34
   y: 4
 - object: PALM_TREE
   x: 30
   y: 8
-- object: PALM_TREE
-  x: 20
-  y: 2
-- object: PALM_TREE
-  x: 6
-  y: 6
 - object: SAND_2
   x: 36
   y: 0
@@ -94,46 +73,10 @@ objects:
   x: 20
   y: 0
 - object: SWAMP
-  x: 8
-  y: 4
-- object: SWAMP
-  x: 8
-  y: 2
-- object: SWAMP
-  x: 10
-  y: 8
-- object: SWAMP
-  x: 10
-  y: 10
-- object: SWAMP
   x: 18
   y: 10
-- object: SWAMP
-  x: 16
-  y: 6
-- object: SWAMP
-  x: 12
-  y: 2
 - object: GROUND_BROWN_DOWN
   x: 12
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 8
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 6
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 16
-  y: 0
-- object: GROUND_BROWN_DOWN
-  x: 18
-  y: 0
-- object: GROUND_BROWN_DOWN_2
-  x: 14
-  y: 0
-- object: GROUND_BROWN_DOWN_2
-  x: 10
   y: 0
 - object: GROUND_BROWN_DOWN_2
   x: 28
@@ -173,15 +116,93 @@ objects:
   x: 34
   y: 2
 - object: PYRAMID_SMALL
-  x: 6
-  y: 2
-- object: PYRAMID_SMALL
   x: 38
   y: 6
-- object: PYRAMID_SMALL
+- object: PYRAMID_BIG
+  x: 6
+  y: 4
+  type: kwatera
+  conditions_met: napij się za nasze zdrowie gerwalt!
+  conditions_unmet: czego tu szukasz wiedźmanie?
+  items_required:
+  - 12
+  - 14
+  items_provided:
+  - 15
+  game_over: false
+- object: PALM_SWAMP
+  x: 6
+  y: 8
+- object: PALM_SWAMP
+  x: 12
+  y: 8
+- object: PALM_SWAMP
+  x: 16
+  y: 2
+- object: SWAMP_2_WEED
+  x: 20
+  y: 2
+- object: SWAMP_BLOCK
+  x: 8
+  y: 0
+- object: SWAMP_BLOCK
+  x: 14
+  y: 0
+- object: SWAMP_BLOCK_2
+  x: 6
+  y: 0
+- object: SWAMP_BLOCK_2
+  x: 8
+  y: 2
+- object: SWAMP
+  x: 14
+  y: 2
+- object: SWAMP
+  x: 10
+  y: 2
+- object: SWAMP
+  x: 16
+  y: 0
+- object: CROSS_1_COPY
+  x: 12
+  y: 2
+- object: CROSS_1
+  x: 18
+  y: 0
+- object: CROSS_1
+  x: 10
+  y: 0
+- object: CROSS_1_COPY
+  x: 4
+  y: 0
+- object: CROSS_1_COPY
+  x: 4
+  y: 10
+- object: CROSS_1
+  x: 10
+  y: 10
+- object: CROSS_1
   x: 16
   y: 8
-- object: PYRAMID_SMALL
-  x: 18
-  y: 4
-enemies: []
+- object: REED
+  x: 4
+  y: 6
+- object: REED
+  x: 4
+  y: 8
+- object: REED
+  x: 34
+  y: 10
+- object: REED
+  x: 32
+  y: 2
+- object: REED
+  x: 34
+  y: 0
+enemies:
+- enemy: kikimora
+  x: 3
+  y: 9
+  strategy: patrol
+  speed: fast
+  color: orange

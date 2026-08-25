@@ -157,4 +157,10 @@ objects:
   x: 4
   y: 6
   repeat-x: 3
-enemies: []
+enemies:
+- enemy: sukkub
+  x: 18
+  y: 1
+  strategy: patrol
+  speed: fast
+  color: cyan

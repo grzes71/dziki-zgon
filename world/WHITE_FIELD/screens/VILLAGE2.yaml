@@ -16,11 +16,6 @@ objects:
 - object: TREE_2
   x: 38
   y: 10
-- object: SECRET1
-  x: 8
-  y: 2
-  items_provided:
-  - 6
 - object: TREE_SMALL
   x: 0
   y: 6
@@ -212,6 +207,11 @@ objects:
 - object: CROSS_3
   x: 12
   y: 4
+- object: SECRET1
+  x: 8
+  y: 2
+  items_provided:
+  - 12
 enemies:
 - enemy: strzyga
   x: 37

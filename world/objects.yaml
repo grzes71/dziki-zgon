@@ -2252,3 +2252,16 @@ objects:
     secret: false
   tiles: [0, 10, 11, 34, 12, 0, 10, 11, 27, 28, 9, 12]
   tags: [portal, interakcja]
+- object: FORGERY
+  id: FORGERY
+  code: 186
+  size:
+    width: 8
+    height: 3
+  flags:
+    blocking: true
+    interactive: true
+    secret: false
+  tiles: [232, 55, 55, 30, 31, 55, 55, 233, 122, 33, 33, 34, 195, 34, 195, 123, 122,
+    27, 28, 157, 98, 98, 157, 123]
+  tags: [dom]

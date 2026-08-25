@@ -72,9 +72,6 @@ objects:
   x: 12
   y: 0
 - object: TREE_SMALL
-  x: 34
-  y: 6
-- object: TREE_SMALL
   x: 4
   y: 4
 - object: TREE_2
@@ -148,14 +145,11 @@ objects:
   x: 0
   y: 6
 - object: ROCK_GREEN
-  x: 24
+  x: 26
   y: 2
 - object: CROSS_1
   x: 12
   y: 6
-- object: GROUND_GREEN_UP_2
-  x: 34
-  y: 8
 - object: GROUND_GREEN_UP_2
   x: 12
   y: 2
@@ -168,9 +162,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 28
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 28
-  y: 2
 - object: GROUND_BROWN_DOWN
   x: 28
   y: 0
@@ -232,6 +223,17 @@ objects:
 - object: REED_2
   x: 36
   y: 6
+- object: SECRET2
+  x: 26
+  y: 4
+  items_provided:
+  - 13
+- object: MUSHROOM
+  x: 34
+  y: 6
+- object: BUSH
+  x: 34
+  y: 10
 enemies:
 - enemy: kikimora
   x: 10

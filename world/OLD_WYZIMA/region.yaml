@@ -6,7 +6,11 @@ layout:
   columns: 4
 start_screen: START_WYZYMA
 music: OLD_WYZIMA
-portal_entries: {}
+portal_entries:
+  JAR_WIECZNEJ_ZGAGI:
+    screen: START_WYZYMA
+    x: 6
+    y: 6
 colors:
   BACKGROUND:
     rgb:
