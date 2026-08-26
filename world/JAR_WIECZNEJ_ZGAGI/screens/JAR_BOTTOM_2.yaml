@@ -32,9 +32,6 @@ objects:
   x: 34
   y: 2
 - object: PALM_SWAMP
-  x: 24
-  y: 4
-- object: PALM_SWAMP
   x: 20
   y: 2
 - object: PALM_SWAMP
@@ -116,7 +113,7 @@ objects:
   x: 18
   y: 2
 - object: WATERFALL
-  x: 18
+  x: 20
   y: 6
 - object: CROSS_2
   x: 18
@@ -125,13 +122,13 @@ objects:
   x: 38
   y: 4
 - object: CROSS_2
-  x: 28
+  x: 26
   y: 6
 - object: CROSS_2
   x: 4
   y: 8
 - object: WAVE_UP
-  x: 20
+  x: 22
   y: 8
 - object: WAVES_DOWN
   x: 12
@@ -140,11 +137,22 @@ objects:
 - object: WAVES_UP
   x: 12
   y: 8
-  repeat-x: 4
+  repeat-x: 5
+- object: SWAMP_BLOCK
+  x: 8
+  y: 0
+- object: SWAMP_BLOCK_2
+  x: 10
+  y: 0
+- object: SECRET2
+  x: 16
+  y: 6
+  items_provided:
+  - 14
 - object: WAVES_UP
-  x: 22
+  x: 24
   y: 8
-  repeat-x: 4
+  repeat-x: 3
 enemies:
 - enemy: kikimora
   x: 35

@@ -172,6 +172,10 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
     mem[labels["ACTOR_HEIGHT"]] = 16
     mem[labels["ACTOR_DIR"]] = 2
 
+    # Initialize timer to 12:00
+    mem[labels["TIMER_MINUTES"]] = 12
+    mem[labels["TIMER_SECONDS"]] = 0
+
     mem[labels["REQ_SCREEN_TRANSITION"]] = 0
     mem[labels["MSG_STATE"]] = 0
 
@@ -180,9 +184,11 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
     mem[labels["IIS_FIRE_WAS_PRESSED"]] = 0
     run_subroutine(cpu, labels["IIS_UPDATE"])
 
-    # 1st press result: message_travel shown (MSG_STATE=1), no transition yet
+    # 1st press result: message_travel shown (MSG_STATE=1), no transition yet, timer unchanged
     assert mem[labels["MSG_STATE"]] == 1
     assert mem[labels["REQ_SCREEN_TRANSITION"]] == 0
+    assert mem[labels["TIMER_MINUTES"]] == 12
+    assert mem[labels["TIMER_SECONDS"]] == 0
 
     # Release Fire button
     mem[labels["INPUTSTATE_TRIG"]] = 1
@@ -195,6 +201,57 @@ def test_portal_interaction_shows_message_and_transitions(game_binary) -> None:
     # 2nd press result: REQ_SCREEN_TRANSITION=1, targeting HARBOUR (WHITE_FIELD portal entry)
     assert mem[labels["REQ_SCREEN_TRANSITION"]] == 1
     assert mem[labels["NEW_SCREEN_ID"]] == labels["SCREEN_ID_HARBOUR"]
+
+    # Travel cost (10s) deducted from timer: 12:00 - 10s = 11:50
+    assert mem[labels["TIMER_MINUTES"]] == 11
+    assert mem[labels["TIMER_SECONDS"]] == 50
+
+
+def test_iis_portal_travel_cost_expiration(game_binary) -> None:
+    """Verifies that traveling through a portal when remaining time < travel cost triggers Game Over."""
+    xex_file, labels = game_binary
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
+
+    # Set active screen to FOREST_0_0 (portal with cost_of_travel = 10)
+    mem[labels["GAME_SCREEN_ID"]] = labels["SCREEN_ID_FOREST_0_0"]
+
+    # Position Gerwalt below PORT_2 at grid x=28, y=3 facing UP
+    mem[labels["ACTOR_X"]] = 160
+    mem[labels["ACTOR_Y"]] = 80
+    mem[labels["ACTOR_HEIGHT"]] = 16
+    mem[labels["ACTOR_DIR"]] = 2
+
+    # Set timer close to expiration: 00:05 (less than 10 seconds cost)
+    mem[labels["TIMER_MINUTES"]] = 0
+    mem[labels["TIMER_SECONDS"]] = 5
+    mem[labels["ENGINE_REQUESTSTAGEADVANCE"]] = 0
+    mem[labels["GAME_RESULT_STATUS"]] = 0
+    mem[labels["REQ_SCREEN_TRANSITION"]] = 0
+    mem[labels["MSG_STATE"]] = 0
+
+    # 1st press to show travel message
+    mem[labels["INPUTSTATE_TRIG"]] = 0
+    mem[labels["IIS_FIRE_WAS_PRESSED"]] = 0
+    run_subroutine(cpu, labels["IIS_UPDATE"])
+    assert mem[labels["MSG_STATE"]] == 1
+
+    # Release Fire
+    mem[labels["INPUTSTATE_TRIG"]] = 1
+    run_subroutine(cpu, labels["IIS_UPDATE"])
+
+    # 2nd press to trigger transition
+    mem[labels["INPUTSTATE_TRIG"]] = 0
+    run_subroutine(cpu, labels["IIS_UPDATE"])
+
+    # Time should have run out -> Game Over requested (GAME_RESULT_STATUS = 2)
+    assert mem[labels["TIMER_MINUTES"]] == 0
+    assert mem[labels["TIMER_SECONDS"]] == 0
+    assert mem[labels["ENGINE_REQUESTSTAGEADVANCE"]] == 1
+    assert mem[labels["GAME_RESULT_STATUS"]] == 2
 
 
 def test_iis_persistent_item_not_removed(game_binary) -> None:

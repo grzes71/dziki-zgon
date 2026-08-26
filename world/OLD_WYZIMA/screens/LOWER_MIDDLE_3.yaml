@@ -68,10 +68,6 @@ objects:
 - object: REED_2V
   x: 14
   y: 4
-- object: REED_2
-  x: 22
-  y: 4
-  repeat-x: 2
 - object: TREE_SMALL
   x: 4
   y: 2
@@ -132,6 +128,11 @@ objects:
 - object: GROUND_BROWN_UP_3
   x: 0
   y: 6
+- object: SECRET2
+  x: 26
+  y: 4
+  items_provided:
+  - 18
 enemies:
 - enemy: strzyga
   x: 33

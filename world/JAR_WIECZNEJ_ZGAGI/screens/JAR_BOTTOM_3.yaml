@@ -67,13 +67,6 @@ objects:
 - object: REED_2V
   x: 34
   y: 0
-- object: GROUND_BROWN_DOWN_2V
-  x: 24
-  y: 6
-  repeat-y: 2
-- object: SAND
-  x: 8
-  y: 0
 - object: SWAMP_BLOCK_2
   x: 30
   y: 10
@@ -90,9 +83,6 @@ objects:
 - object: SAND_3
   x: 2
   y: 10
-- object: SAND_3_TR
-  x: 28
-  y: 0
 - object: SAND_3_BR
   x: 28
   y: 2
@@ -109,26 +99,14 @@ objects:
   x: 4
   y: 0
   repeat-x: 2
-- object: SAND_3_TR
-  x: 18
-  y: 0
-- object: SAND_3_TL
-  x: 20
-  y: 0
 - object: PALM_TREE
   x: 14
   y: 10
 - object: PALM_TREE
   x: 10
   y: 10
-- object: PALM_TREE
-  x: 20
-  y: 10
 - object: BUSH
   x: 12
-  y: 10
-- object: BARREL_1_2
-  x: 24
   y: 10
 - object: PALM_SWAMP
   x: 16
@@ -145,12 +123,6 @@ objects:
 - object: PYRAMID_SMALL
   x: 16
   y: 6
-- object: GROUND_BROWN_DOWN_3
-  x: 12
-  y: 0
-- object: GROUND_BROWN_DOWN_3
-  x: 24
-  y: 0
 - object: BROWN_DOWN_2
   x: 10
   y: 8
@@ -172,6 +144,20 @@ objects:
 - object: BUSH_0
   x: 36
   y: 6
+- object: FENCE_6
+  x: 10
+  y: 0
+  repeat-x: 10
+- object: BRICKS_2
+  x: 8
+  y: 0
+- object: BRICK_WALL_2
+  x: 22
+  y: 10
+  repeat-x: 2
+- object: SAND_2
+  x: 24
+  y: 8
 enemies:
 - enemy: strzyga
   x: 13

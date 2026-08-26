@@ -21,7 +21,7 @@ Dokument stanowi oficjalne **Single Source of Truth (SSOT)** dla wszystkich regu
 
 W grze nie ma tradycyjnego paska zdrowia (HP) — **czas jest jedynym zasobem życiowym Gerwalta**.
 
-- **Czas startowy**: `12:00` (12 minut = 720 sekund).
+- **Czas startowy**: `24:00` (24 minuty = 1440 sekund).
 - **Naturalny upływ czasu**: Zegar odlicza dokładnie 1 sekundę co 50 ramek (1 sekunda czasu rzeczywistego w standardzie PAL 50 Hz).
 - **Obrażenia jako redukcja czasu**:
   - Każde uderzenie przeciwnika lub kontakt z niebezpiecznym terenem odejmuje określoną liczbę sekund bezpośrednio z licznika `MM:SS`.

@@ -41,9 +41,6 @@ objects:
 - object: SAND
   x: 0
   y: 4
-- object: SAND_4
-  x: 0
-  y: 10
 - object: PALM_TREE
   x: 34
   y: 4
@@ -57,9 +54,6 @@ objects:
 - object: SAND_3
   x: 26
   y: 0
-- object: SAND_3
-  x: 2
-  y: 10
 - object: SAND_2V
   x: 26
   y: 10
@@ -72,9 +66,6 @@ objects:
 - object: REED_2
   x: 20
   y: 0
-- object: SWAMP
-  x: 18
-  y: 10
 - object: GROUND_BROWN_DOWN
   x: 12
   y: 0
@@ -100,9 +91,6 @@ objects:
 - object: SWAMP_BLOCK
   x: 20
   y: 4
-- object: SWAMP_BLOCK
-  x: 20
-  y: 10
 - object: SWAMP_BLOCK
   x: 34
   y: 8
@@ -131,12 +119,6 @@ objects:
   - 15
   game_over: false
 - object: PALM_SWAMP
-  x: 6
-  y: 8
-- object: PALM_SWAMP
-  x: 12
-  y: 8
-- object: PALM_SWAMP
   x: 16
   y: 2
 - object: SWAMP_2_WEED
@@ -175,15 +157,9 @@ objects:
 - object: CROSS_1_COPY
   x: 4
   y: 0
-- object: CROSS_1_COPY
-  x: 4
-  y: 10
-- object: CROSS_1
-  x: 10
-  y: 10
 - object: CROSS_1
   x: 16
-  y: 8
+  y: 6
 - object: REED
   x: 4
   y: 6
@@ -199,6 +175,26 @@ objects:
 - object: REED
   x: 34
   y: 0
+- object: FENCE_6
+  x: 0
+  y: 10
+  repeat-x: 11
+- object: SWAMP_BLOCK
+  x: 10
+  y: 8
+- object: SWAMP_BLOCK_2
+  x: 12
+  y: 8
+- object: SWAMP_BLOCK_2
+  x: 6
+  y: 8
+  repeat-x: 2
+- object: SWAMP_2_WEED
+  x: 14
+  y: 8
+- object: SWAMP
+  x: 16
+  y: 8
 enemies:
 - enemy: kikimora
   x: 3

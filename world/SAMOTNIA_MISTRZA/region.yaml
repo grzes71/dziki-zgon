@@ -6,7 +6,11 @@ layout:
   columns: 2
 start_screen: START_SAMOTNIA
 music: SAMOTNIA_MISTRZA
-portal_entries: {}
+portal_entries:
+  OLD_WYZIMA:
+    screen: START_SAMOTNIA
+    x: 37
+    y: 2
 colors:
   BACKGROUND:
     rgb:

@@ -7,10 +7,6 @@ exits:
   east: null
   west: null
 objects:
-- object: RIVER_VERTICAL
-  x: 26
-  y: 0
-  repeat-y: 3
 - object: RIVER_BR_2
   x: 26
   y: 6
@@ -59,12 +55,6 @@ objects:
 - object: REED_2V
   x: 18
   y: 10
-- object: REED_3
-  x: 22
-  y: 0
-- object: REED_2
-  x: 24
-  y: 2
 - object: SAND_2
   x: 22
   y: 10
@@ -95,12 +85,6 @@ objects:
   x: 8
   y: 0
   repeat-x: 2
-- object: CROSS_1
-  x: 14
-  y: 0
-- object: CROSS_1
-  x: 18
-  y: 0
 - object: SWAMP_2_WEED
   x: 26
   y: 10
@@ -125,9 +109,6 @@ objects:
 - object: SWAMP_BLOCK_2
   x: 38
   y: 4
-- object: CROSS_1
-  x: 16
-  y: 2
 - object: CROSS_1
   x: 4
   y: 10
@@ -157,10 +138,21 @@ objects:
   x: 4
   y: 6
   repeat-x: 3
+- object: RIVER_VERTICAL
+  x: 26
+  y: 0
+  repeat-y: 3
+- object: WELL
+  x: 16
+  y: 0
+- object: FENCE_6
+  x: 18
+  y: 0
+  repeat-x: 4
 enemies:
 - enemy: sukkub
-  x: 18
-  y: 1
+  x: 17
+  y: 2
   strategy: patrol
   speed: fast
   color: cyan

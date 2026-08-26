@@ -49,7 +49,7 @@ items:
   consumable: true
 - id: 13
   description: krucyfiks
-  charset_position: 81
+  charset_position: 48
   consumable: true
 - id: 14
   description: pusta butelka
@@ -62,4 +62,12 @@ items:
 - id: 16
   description: amulet
   charset_position: 35
+  consumable: true
+- id: 17
+  description: mapa starej wyżymy
+  charset_position: 46
+  consumable: true
+- id: 18
+  description: kompas
+  charset_position: 47
   consumable: true

@@ -285,6 +285,8 @@ VRAM_ARENA = SCREEN
     icl "gen/world/regions.asm"
     icl "gen/world/screens.asm"
     icl "gen/world/exits.asm"
+    icl "gen/world/interactive_objects.asm"
+INTERACTIVE_OBJECTS_END
 
 ; --- Teksty GameOver ---
     icl "gen/contents-gameover-fail_text.asm"
@@ -330,9 +332,7 @@ SpriteData = DzikizgonData
     icl "gen/kikimora.sprite.asm"
     icl "gen/strzyga.sprite.asm"
     icl "gen/sukkub.sprite.asm"
-
-; --- Dane obiektów interaktywnych ---
-    icl "gen/world/interactive_objects.asm"
+SPRITES_END
 
 ; Tekst "GAME OVER" pod ekranem (współdzielony FOOTER_ADDR $5E10)
 GO_TEXT = FOOTER_ADDR

@@ -372,6 +372,10 @@ INTERACTIVE_OBJ_COMPLETE .ds SCREEN_COUNT
     lda INTERACTIVE_OBJ_PORTAL_Y,x
     sta NEW_ACTOR_Y
 
+    ; Odejmij koszt podrozy (w sekundach) od czasu gry
+    lda INTERACTIVE_OBJ_COST_OF_TRAVEL,x
+    jsr subtract_seconds
+
     lda #1
     sta REQ_SCREEN_TRANSITION
     sta IS_PORTAL_TRANSITION

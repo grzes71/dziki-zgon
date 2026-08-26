@@ -420,6 +420,10 @@ class AsmGenerator:
         out.append("INTERACTIVE_OBJ_PORTAL_Y")
         out.append("    dta " + ", ".join(portal_y_list))
 
+        # Cost of Travel (in seconds, for portals)
+        out.append("INTERACTIVE_OBJ_COST_OF_TRAVEL")
+        out.append("    dta " + ", ".join(str(d[0].cost_of_travel or 0) if (d and d[0].cost_of_travel is not None) else "0" for d in interactive_data))
+
         out.append("\n; Dummy Data Labels")
         out.append("EMPTY_ITEM_LIST")
         out.append("    dta 0")

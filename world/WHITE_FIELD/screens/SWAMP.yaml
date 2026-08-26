@@ -205,9 +205,6 @@ objects:
   x: 2
   y: 6
   repeat-x: 2
-- object: REED_2V
-  x: 18
-  y: 0
 - object: SWAMP_2
   x: 18
   y: 2
@@ -234,6 +231,9 @@ objects:
 - object: BUSH
   x: 34
   y: 10
+- object: GROUND_BROWN_UP_2
+  x: 16
+  y: 0
 enemies:
 - enemy: kikimora
   x: 10

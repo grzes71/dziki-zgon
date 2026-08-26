@@ -20,16 +20,10 @@ objects:
   x: 32
   y: 4
 - object: HOME_SMALL_2
-  x: 14
-  y: 4
-- object: HOME_SMALL_2
   x: 32
   y: 10
 - object: HOME_NEW_2
   x: 2
-  y: 2
-- object: BARN_SMALL
-  x: 22
   y: 2
 - object: OUTHOUSE_2
   x: 28
@@ -40,20 +34,8 @@ objects:
 - object: HOUSE_MEDIUM_BLUE
   x: 32
   y: 0
-- object: HOME_NEW
-  x: 24
-  y: 6
-- object: GROUND_GREEN_UP_2
-  x: 22
-  y: 4
-- object: GROUND_GREEN_UP
-  x: 24
-  y: 4
 - object: BUSH_2
-  x: 10
-  y: 6
-- object: BUSH_2
-  x: 0
+  x: 8
   y: 6
 - object: BROWN_DOWN_2
   x: 2
@@ -68,26 +50,12 @@ objects:
   y: 6
   repeat-x: 3
 - object: BROWN_DOWN_2
-  x: 24
-  y: 8
-  repeat-x: 3
-- object: BROWN_DOWN_2
   x: 12
   y: 10
   repeat-x: 5
-- object: BROWN_DOWN_2
-  x: 14
-  y: 6
-  repeat-x: 3
-- object: BROWN_DOWN_2
-  x: 4
-  y: 8
 - object: BROWN_DOWN
   x: 6
   y: 8
-- object: BROWN_DOWN
-  x: 20
-  y: 6
 - object: SIGNPOINT_BOTH
   x: 4
   y: 10
@@ -97,9 +65,6 @@ objects:
 - object: BROWN_DOWN_2
   x: 18
   y: 2
-- object: BARREL_1_2
-  x: 20
-  y: 4
 - object: BARREL_1_2
   x: 8
   y: 2
@@ -162,11 +127,61 @@ objects:
   x: 34
   y: 8
 - object: CROSS_1
-  x: 38
-  y: 8
-- object: CROSS_1
   x: 10
   y: 0
+- object: FORGERY
+  x: 14
+  y: 4
+  type: kwatera
+  conditions_met: w zamian otrzymujesz konia!
+  conditions_unmet: nie masz nic ciekawego na handel
+  items_required:
+  - 17
+  - 18
+  items_provided:
+  - 8
+  game_over: false
+- object: TREE_SMALL
+  x: 24
+  y: 6
+- object: BUSH_2_2
+  x: 30
+  y: 6
+- object: BUSH_2_2
+  x: 22
+  y: 0
+- object: BUSH_2_2
+  x: 24
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 24
+  y: 8
+  repeat-x: 2
+- object: GROUND_GREEN_UP_2
+  x: 24
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 30
+  y: 8
+- object: BARREL_2
+  x: 12
+  y: 6
+- object: MUSHROOM
+  x: 2
+  y: 6
+- object: BROWN_DOWN_2
+  x: 2
+  y: 8
+  repeat-x: 2
+- object: BUSH_2_2
+  x: 10
+  y: 10
+- object: MUSHROOM
+  x: 26
+  y: 6
+- object: CROSS_2
+  x: 36
+  y: 8
 enemies:
 - enemy: strzyga
   x: 28

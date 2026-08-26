@@ -20,6 +20,7 @@ objects:
   x: 26
   y: 0
   type: portal
+  conditions_met: czas wrócić do białego pola
   message_travel: białe pole za 10 pacierzy
   target_region: WHITE_FIELD
   cost_of_travel: 10
@@ -148,9 +149,6 @@ objects:
   x: 10
   y: 10
 - object: GROUND_BROWN_DOWN
-  x: 12
-  y: 10
-- object: GROUND_BROWN_DOWN
   x: 22
   y: 10
 - object: GROUND_BROWN_DOWN
@@ -189,8 +187,17 @@ objects:
 - object: TREE_2
   x: 0
   y: 10
-- object: TREE_2
+- object: BUSH_2_2
   x: 28
+  y: 10
+- object: MUSHROOM
+  x: 30
+  y: 10
+- object: MUSHROOM
+  x: 12
+  y: 10
+- object: BUSH
+  x: 2
   y: 10
 enemies:
 - enemy: kikimora

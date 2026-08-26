@@ -11,8 +11,8 @@ objects:
   x: 16
   y: 6
   type: kwatera
-  conditions_met: nie masz może mojego klucza?
-  conditions_unmet: w nagrodę masz mój miecz!
+  conditions_met: w nagrodę masz mój miecz!
+  conditions_unmet: nie masz może mojego klucza?
   items_required:
   - 11
   items_provided:
@@ -51,9 +51,6 @@ objects:
 - object: TREE_2
   x: 6
   y: 8
-- object: TREE_SMALL
-  x: 36
-  y: 6
 - object: TREE_SMALL_2
   x: 22
   y: 0
@@ -73,9 +70,6 @@ objects:
   x: 26
   y: 10
 - object: MUSHROOM
-  x: 38
-  y: 6
-- object: MUSHROOM
   x: 4
   y: 2
 - object: BUSH_2_2
@@ -93,10 +87,6 @@ objects:
 - object: GROUND_BROWN_BR
   x: 38
   y: 10
-- object: GROUND_GREEN_UP_2
-  x: 36
-  y: 8
-  repeat-x: 2
 - object: GROUND_GREEN_UP_2
   x: 2
   y: 4
@@ -136,9 +126,6 @@ objects:
   y: 0
 - object: GROUND_BROWN_DOWN
   x: 6
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 12
   y: 6
 - object: SIGNPOINT_RIGHT
   x: 18
@@ -190,9 +177,6 @@ objects:
   y: 6
 - object: CROSS_1_COPY
   x: 34
-  y: 6
-- object: CROSS_1_COPY
-  x: 34
   y: 2
 - object: GROUND_BROWN_DOWN
   x: 18
@@ -203,9 +187,6 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 10
   y: 4
-- object: GROUND_BROWN_DOWN
-  x: 12
-  y: 8
 - object: GROUND_BROWN_DOWN
   x: 12
   y: 10
@@ -234,7 +215,19 @@ objects:
   x: 14
   y: 4
 - object: BUSH_2_2
-  x: 14
+  x: 36
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 36
+  y: 8
+- object: GROUND_GREEN_UP_2
+  x: 12
+  y: 8
+- object: BUSH_2_2
+  x: 12
+  y: 6
+- object: MUSHROOM
+  x: 34
   y: 6
 enemies:
 - enemy: kikimora

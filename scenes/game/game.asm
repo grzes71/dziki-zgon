@@ -56,7 +56,7 @@ MSG_START_GAME
 
 
 timer_minutes
-    dta 12
+    dta 24
 timer_seconds
     dta 0
 timer_frames
@@ -472,7 +472,7 @@ temp_sub
 
 
     ; --- Inicjalizacja czasu i regionu ---
-    lda #12
+    lda #24
     sta timer_minutes
     lda #0
     sta timer_seconds

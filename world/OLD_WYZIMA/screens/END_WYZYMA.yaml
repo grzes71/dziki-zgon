@@ -26,11 +26,11 @@ objects:
   y: 4
   repeat-y: 2
 - object: CHAIN_1_2
-  x: 18
+  x: 16
   y: 4
   repeat-y: 2
 - object: CHAIN_1_2
-  x: 12
+  x: 8
   y: 4
   repeat-y: 2
 - object: GROUND_BROWN_TR
@@ -87,6 +87,79 @@ objects:
 - object: BUSH_0
   x: 30
   y: 0
+- object: CAVE_PORTAL_2
+  x: 0
+  y: 6
+  type: portal
+  conditions_met: na koń i do samotni kłusem pędź!
+  conditions_unmet: podróż tam tylko konno!
+  message_travel: Samotnia Mistrza za 30 pacierzy
+  target_region: SAMOTNIA_MISTRZA
+  items_required:
+  - 8
+  cost_of_travel: 30
+- object: TREE_SMALL
+  x: 12
+  y: 4
+- object: TREE_3
+  x: 20
+  y: 6
+- object: GROUND_GREEN_UP_2
+  x: 12
+  y: 6
+- object: CROSS_1
+  x: 22
+  y: 4
+- object: CROSS_1
+  x: 18
+  y: 4
+- object: CROSS_1_COPY
+  x: 14
+  y: 6
+- object: CROSS_1_COPY
+  x: 10
+  y: 6
+- object: CLAW_2_2
+  x: 6
+  y: 6
+- object: SWAMP_2_WEED
+  x: 0
+  y: 4
+- object: SWAMP_BLOCK
+  x: 2
+  y: 4
+- object: SWAMP_BLOCK_2
+  x: 4
+  y: 4
+- object: REED_2V
+  x: 6
+  y: 4
+- object: BUSH_0
+  x: 38
+  y: 8
+- object: BUSH_0
+  x: 38
+  y: 2
+- object: BUSH_0
+  x: 30
+  y: 6
+- object: GROUND_BROWN_DOWN_2
+  x: 26
+  y: 4
+  repeat-x: 2
+- object: GROUND_BROWN_DOWN_2
+  x: 30
+  y: 8
+- object: GROUND_BROWN_DOWN_2
+  x: 26
+  y: 8
+- object: GROUND_GREEN_UP_2
+  x: 28
+  y: 10
+- object: GROUND_BROWN_DOWN_2
+  x: 34
+  y: 0
+  repeat-x: 2
 enemies:
 - enemy: bazyliszek
   x: 28

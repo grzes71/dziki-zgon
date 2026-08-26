@@ -9,7 +9,7 @@ exits:
 objects:
 - object: TREE_SMALL
   x: 12
-  y: 2
+  y: 0
 - object: RIVER_TL_2
   x: 6
   y: 6
@@ -61,21 +61,15 @@ objects:
 - object: REED_2V
   x: 10
   y: 10
-- object: GROUND_BROWN_BR
-  x: 38
-  y: 6
 - object: BUSH_2_2
   x: 22
   y: 4
-- object: CROSS_1_COPY
-  x: 38
-  y: 8
 - object: BARREL_2_2
   x: 12
   y: 10
 - object: GROUND_GREEN_UP_2
   x: 12
-  y: 4
+  y: 2
 - object: GROUND_BROWN_TR
   x: 38
   y: 0
@@ -105,11 +99,8 @@ objects:
 - object: GROUND_BROWN_DOWN_2
   x: 26
   y: 10
-- object: BUSH_2_2
-  x: 20
-  y: 10
 - object: BUSH_2
-  x: 16
+  x: 18
   y: 10
 - object: BUSH
   x: 24
@@ -122,10 +113,10 @@ objects:
   y: 4
 - object: PORTAL_2
   x: 4
-  y: 2
+  y: 0
   type: portal
-  conditions_met: bez miecza na ludzi nie idę!
-  conditions_unmet: brawo, ruszamy!
+  conditions_met: jar wiecznej zgagi nie brzmi źle!
+  conditions_unmet: bez miecza na ludzi nie idę!
   message_travel: jar wiecznej zgagi za 15 pacierzy
   target_region: JAR_WIECZNEJ_ZGAGI
   items_required:
@@ -136,13 +127,13 @@ objects:
   y: 6
 - object: TREE_2
   x: 38
-  y: 2
+  y: 6
 - object: GROUND_GREEN_UP_2
   x: 34
   y: 6
 - object: GROUND_GREEN_UP_2
   x: 38
-  y: 4
+  y: 8
 - object: GROUND_GREEN_UP_2
   x: 2
   y: 8
@@ -162,34 +153,60 @@ objects:
 - object: SWAMP
   x: 36
   y: 4
-- object: TREE_3
-  x: 2
-  y: 0
-- object: GROUND_GREEN_UP_2
-  x: 2
-  y: 2
-- object: GROUND_BROWN_UP_2V
-  x: 0
-  y: 0
-  repeat-y: 5
-- object: GROUND_BROWN_UP_2
-  x: 8
-  y: 0
-- object: GROUND_BROWN_DOWN_2
-  x: 6
-  y: 0
-- object: GROUND_BROWN_DOWN_2
-  x: 10
-  y: 0
-  repeat-x: 2
 - object: GROUND_BROWN_DOWN_2
   x: 28
   y: 0
   repeat-x: 2
+- object: BUSH_2_2
+  x: 8
+  y: 4
+- object: MUSHROOM
+  x: 10
+  y: 4
+- object: BUSH
+  x: 6
+  y: 4
+- object: GROUND_BROWN_UP_2V
+  x: 0
+  y: 6
+  repeat-y: 2
+- object: GROUND_BROWN_UP_TL
+  x: 0
+  y: 4
+- object: GROUND_BROWN_DOWN_2
+  x: 12
+  y: 4
+- object: GROUND_BROWN_DOWN_2
+  x: 16
+  y: 4
+- object: GROUND_BROWN_DOWN_2
+  x: 24
+  y: 4
+- object: GROUND_BROWN_DOWN_2
+  x: 22
+  y: 10
+- object: GROUND_BROWN_DOWN_2
+  x: 14
+  y: 10
+- object: MUSHROOM
+  x: 20
+  y: 10
+- object: TREE_3_2
+  x: 0
+  y: 0
+- object: TREE_4_2
+  x: 2
+  y: 0
+- object: SWAMP_2_WEED
+  x: 38
+  y: 2
+- object: SWAMP
+  x: 38
+  y: 4
 enemies:
 - enemy: sukkub
   x: 36
   y: 2
-  strategy: random
+  strategy: patrol
   speed: fast
   color: gray

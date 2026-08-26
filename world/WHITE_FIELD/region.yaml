@@ -11,6 +11,10 @@ portal_entries:
     screen: HARBOUR
     x: 25
     y: 7
+  SAMOTNIA_MISTRZA:
+    screen: VILLAGE2
+    x: 24
+    y: 6
 colors:
   PF0:
     rgb:

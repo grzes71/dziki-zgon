@@ -38,9 +38,6 @@ objects:
   x: 6
   y: 0
 - object: TREE_4
-  x: 38
-  y: 6
-- object: TREE_4
   x: 2
   y: 8
 - object: TREE_4
@@ -196,7 +193,7 @@ objects:
   x: 8
   y: 10
 - object: SWAMP_2_WEED
-  x: 30
+  x: 32
   y: 10
 - object: SWAMP_BLOCK_2
   x: 26
@@ -204,13 +201,29 @@ objects:
 - object: SWAMP
   x: 26
   y: 4
-- object: TOWER
-  x: 34
+- object: CAVE_PORTAL
+  x: 32
   y: 6
   type: portal
-  message_travel: podróż do las pijanego zająca
-  target_region: LAS_PIJANEGO_ZAJACA
-  cost_of_travel: 10
+  conditions_met: białe pole, przybywam!
+  conditions_unmet: z czym do ludzi?
+  message_travel: białe pole za 60 pacierzy
+  target_region: WHITE_FIELD
+  items_required:
+  - 8
+  cost_of_travel: 60
+- object: GROUND_BROWN_BR
+  x: 38
+  y: 10
+- object: SWAMP_BLOCK_2
+  x: 36
+  y: 10
+- object: SWAMP_BLOCK
+  x: 34
+  y: 10
+- object: SWAMP_BLOCK_2
+  x: 30
+  y: 10
 enemies:
 - enemy: bazyliszek
   x: 19

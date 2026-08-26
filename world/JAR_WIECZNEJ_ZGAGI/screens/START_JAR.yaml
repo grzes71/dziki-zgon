@@ -35,13 +35,6 @@ objects:
   x: 6
   y: 8
 - object: PALM_SWAMP
-  x: 30
-  y: 6
-- object: PALM_SWAMP
-  x: 26
-  y: 2
-  repeat-x: 2
-- object: PALM_SWAMP
   x: 34
   y: 4
 - object: PALM_SWAMP
@@ -50,9 +43,6 @@ objects:
 - object: SAND_2V
   x: 20
   y: 6
-- object: SAND_2V
-  x: 26
-  y: 0
 - object: SAND_4
   x: 0
   y: 10
@@ -62,13 +52,6 @@ objects:
 - object: SAND_3
   x: 2
   y: 10
-- object: SAND_2
-  x: 0
-  y: 0
-  repeat-x: 3
-- object: REED_2
-  x: 20
-  y: 0
 - object: REED_2
   x: 14
   y: 10
@@ -91,22 +74,12 @@ objects:
   x: 0
   y: 6
 - object: BUSH
-  x: 18
-  y: 0
-- object: BUSH
   x: 8
   y: 6
-- object: CROSS_1
-  x: 10
-  y: 0
-  repeat-x: 3
 - object: SAND_2
   x: 36
   y: 0
   repeat-x: 2
-- object: SAND_2
-  x: 28
-  y: 0
 - object: SWAMP
   x: 12
   y: 2
@@ -135,17 +108,11 @@ objects:
   x: 32
   y: 10
 - object: BUSH_2_2
-  x: 34
-  y: 0
-- object: BUSH_2_2
   x: 10
   y: 10
 - object: WATERFALL
   x: 22
   y: 6
-- object: WATER_ANIM_2
-  x: 24
-  y: 8
 - object: WAVES_UP
   x: 20
   y: 8
@@ -154,9 +121,46 @@ objects:
   x: 20
   y: 10
   repeat-x: 3
+- object: PALM_SWAMP
+  x: 30
+  y: 2
+- object: CROSS_2_COPY
+  x: 28
+  y: 2
+- object: SAND_4
+  x: 26
+  y: 0
+- object: SAND_3_TL
+  x: 28
+  y: 0
+- object: SAND_2V
+  x: 26
+  y: 2
+- object: SAND_2
+  x: 30
+  y: 0
+- object: SWAMP_BLOCK_2
+  x: 32
+  y: 0
+- object: SWAMP_BLOCK
+  x: 34
+  y: 0
+- object: SWAMP_BLOCK
+  x: 36
+  y: 2
+- object: SWAMP_BLOCK
+  x: 34
+  y: 8
 - object: RIVER_TR_2
   x: 26
   y: 8
+- object: WAVE_UP
+  x: 24
+  y: 8
+- object: FENCE_6_2
+  x: 0
+  y: 0
+  repeat-x: 11
 enemies:
 - enemy: strzyga
   x: 7
