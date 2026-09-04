@@ -78,7 +78,7 @@ jobs:
         run: |
           $madsDir = "C:\Apps\Mad-Assembler-2.1.6\bin\windows_x86_64"
           New-Item -ItemType Directory -Force -Path $madsDir | Out-Null
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/windows_x86_64/mads.exe" -OutFile "$madsDir\mads.exe"
+          curl.exe -L -f -s -S "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/windows_x86_64/mads.exe" -o "$madsDir\mads.exe"
           if (!(Test-Path "$madsDir\mads.exe")) { throw "MADS download failed" }
 
       - name: Install ASAP and rmt2atasm
@@ -88,13 +88,13 @@ jobs:
 
           $asapDir = "C:\Apps\ASAP"
           New-Item -ItemType Directory -Force -Path $asapDir | Out-Null
-          Invoke-WebRequest -Uri "https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download" -OutFile "asap.zip"
+          curl.exe -L -f -s -S "https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download" -o "asap.zip"
           Expand-Archive -Path "asap.zip" -DestinationPath "asap_extracted" -Force
           $asapconv = Get-ChildItem -Path "asap_extracted" -Recurse -Filter "asapconv.exe" | Select-Object -First 1
           if (-not $asapconv) { throw "asapconv.exe not found in ASAP archive" }
           Copy-Item $asapconv.FullName -Destination "$asapDir\asapconv.exe" -Force
 
-          Invoke-WebRequest -Uri "https://github.com/CycoPH/rmt2atasm/releases/download/Version1/rmt2atasm.exe" -OutFile "C:\Apps\rmt2atasm.exe"
+          curl.exe -L -f -s -S "https://github.com/CycoPH/rmt2atasm/releases/download/Version1/rmt2atasm.exe" -o "C:\Apps\rmt2atasm.exe"
           if (!(Test-Path "C:\Apps\rmt2atasm.exe")) { throw "rmt2atasm.exe download failed" }
 
       - name: Run Tests & Build Atari XEX
