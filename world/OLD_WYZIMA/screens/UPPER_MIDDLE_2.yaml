@@ -107,13 +107,13 @@ objects:
   x: 20
   y: 8
 - object: TREE_3
-  x: 30
+  x: 28
   y: 4
 - object: TREE_2
   x: 28
   y: 8
 - object: TREE_2
-  x: 36
+  x: 34
   y: 4
 - object: TREE_2
   x: 26
@@ -145,11 +145,11 @@ objects:
   y: 10
   repeat-x: 2
 - object: GROUND_GREEN_UP_2
-  x: 36
+  x: 34
   y: 6
   repeat-x: 2
 - object: GROUND_GREEN_UP_2
-  x: 30
+  x: 28
   y: 6
   repeat-x: 2
 - object: BUSH
@@ -165,7 +165,7 @@ objects:
   x: 36
   y: 8
 - object: BUSH_2_2
-  x: 38
+  x: 36
   y: 4
 - object: BUSH_2_2
   x: 16
@@ -194,9 +194,6 @@ objects:
 - object: GROUND_BROWN_DOWN_3
   x: 20
   y: 6
-- object: GROUND_BROWN_DOWN_3
-  x: 26
-  y: 4
 - object: GROUND_BROWN_DOWN_3
   x: 22
   y: 0
@@ -229,9 +226,9 @@ enemies:
   speed: fast
   color: orange
 - enemy: sukkub
-  x: 34
+  x: 32
   y: 3
-  strategy: patrol
+  strategy: snake
   speed: medium
   color: yellow
 - enemy: bazyliszek

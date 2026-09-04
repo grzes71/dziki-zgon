@@ -94,3 +94,50 @@ def test_secret_object_pickup_success(game_binary):
     assert mem[labels["SECRET_COLLECTED_FLAGS"] + screen_id] == 1
     assert mem[labels["INVENTORY_COUNT"]] == 2
     assert mem[labels["INVENTORY_ITEMS"] + 1] == 7
+
+
+def test_secret_object_pickup_kompas_displays_full_message(game_binary):
+    """Verifies that picking up secret Item 18 (kompas) on LOWER_MIDDLE_3 screen shows 'znalazłeś kompas'."""
+    xex_file, labels = game_binary
+    cpu = MPU()
+    tst.load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    # Call GAME_INIT to initialize system & clean message line
+    tst.run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
+
+    screen_id = labels["SCREEN_ID_LOWER_MIDDLE_3"]
+    mem[labels["GAME_SCREEN_ID"]] = screen_id
+
+    # Verify that screen 17 has secret item 18 (kompas) at x=26, y=4
+    assert mem[labels["SECRET_OBJ_PRESENT"] + screen_id] == 1
+    assert mem[labels["SECRET_OBJ_ITEM"] + screen_id] == 18
+
+    # Place Gerwalt on the secret object position (x=26 -> px=26*4+48=152, y=4 -> py=4*16+32=96)
+    mem[labels["ACTOR_X"]] = 152
+    mem[labels["ACTOR_Y"]] = 96
+    mem[labels["ACTOR_HEIGHT"]] = 16
+
+    # Call Secret_Check_Pickup
+    tst.run_subroutine(cpu, labels["SECRET_CHECK_PICKUP"], max_steps=50000)
+
+    # Item 18 should be collected
+    assert mem[labels["SECRET_COLLECTED_FLAGS"] + screen_id] == 1
+    assert mem[labels["INVENTORY_COUNT"]] == 1
+    assert mem[labels["INVENTORY_ITEMS"]] == 18
+
+    # Check secret_msg_buf string at $5F50
+    buf_addr = 0x5F50
+    # Read null-terminated string from buffer
+    msg_bytes = []
+    for i in range(36):
+        b = mem[buf_addr + i]
+        if b == 0:
+            break
+        msg_bytes.append(b)
+    msg_text = bytes(msg_bytes).decode("utf-8")
+    assert msg_text == "znalazłeś kompas"
+
+    # Verify message line state
+    assert mem[labels["MSG_STATE"]] == 1
+

@@ -81,18 +81,9 @@ objects:
 - object: TREE_3
   x: 8
   y: 0
-- object: TREE_3
-  x: 8
-  y: 10
 - object: TREE_2
   x: 8
   y: 4
-- object: TREE_2
-  x: 2
-  y: 10
-- object: GROUND_BROWN_UP_TL
-  x: 0
-  y: 0
 - object: GROUND_BROWN_UP_2V
   x: 0
   y: 2
@@ -139,10 +130,25 @@ objects:
   y: 4
   items_provided:
   - 17
+- object: BUSH_2_2
+  x: 8
+  y: 10
+- object: BUSH
+  x: 0
+  y: 8
+- object: GROUND_BROWN_UP_TL
+  x: 0
+  y: 0
+- object: BARREL_2_2
+  x: 8
+  y: 8
+- object: BARREL_2_2
+  x: 30
+  y: 4
 enemies:
 - enemy: strzyga
   x: 29
   y: 4
-  strategy: pacing
+  strategy: patrol
   speed: slow
   color: green

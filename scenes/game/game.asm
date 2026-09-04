@@ -43,7 +43,7 @@ default_status_bar
     dta d'                    '
     dta 59, 14, 14, 14, 14, 14, 14, 14, 14, 61
     dta d' '
-    dta d'12:00'
+    dta d'59:59'
     dta INFO_LINE_CHAR_R0, INFO_LINE_CHAR_R1
     dta MSG_LINE_CHAR_L0, MSG_LINE_CHAR_L1
     dta d'                                    '
@@ -56,9 +56,9 @@ MSG_START_GAME
 
 
 timer_minutes
-    dta 24
+    dta 59
 timer_seconds
-    dta 0
+    dta 59
 timer_frames
     dta 50
 temp_units
@@ -472,9 +472,9 @@ temp_sub
 
 
     ; --- Inicjalizacja czasu i regionu ---
-    lda #24
+    lda #59
     sta timer_minutes
-    lda #0
+    lda #59
     sta timer_seconds
     lda #50
     sta timer_frames

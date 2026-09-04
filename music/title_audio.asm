@@ -47,6 +47,8 @@ title_audio_init
 
 ; --- Immediate VBI Music player handler ---
 vblank_player
+    lda #0
+    sta ATRACT
     jsr RASTERMUSICTRACKER+3 ; Play one frame
     jmp SYSVBV              ; Exit to OS VBI processing (SYSVBV)
 

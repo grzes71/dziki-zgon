@@ -28,6 +28,9 @@ TitleLineAddrHi
 ; - Liczy klatki i co 5 sekund (250 klatek przy 50 Hz) cyklicznie przełącza linię tekstu
 ;==============================================================
 .proc title_vbi
+    lda #0
+    sta ATRACT
+
     jsr RASTERMUSICTRACKER+3 ; Odtwórz 1 klatkę muzyki RMT
 
     inc title_timer_frames

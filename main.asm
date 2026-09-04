@@ -286,6 +286,7 @@ VRAM_ARENA = SCREEN
     icl "gen/world/screens.asm"
     icl "gen/world/exits.asm"
     icl "gen/world/interactive_objects.asm"
+    icl "gen/world/secret_objects.asm"
 INTERACTIVE_OBJECTS_END
 
 ; --- Teksty GameOver ---
@@ -303,10 +304,6 @@ INTERACTIVE_OBJECTS_END
     org $9D20
     icl "scenes/story/story.asm"
 STORY_END
-
-; --- Sekrety ($A800 - wolna pamięć przed RMT player) ---
-    org $A800
-    icl "gen/world/secret_objects.asm"
 
 StoryText_RAM = FOOTER_ADDR
 StoryText_Data = text_contents_story

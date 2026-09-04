@@ -250,9 +250,9 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
         "font.asm": ("FONTDATA", ("size", 1024)),
         "game_font.asm": ("GAMEFONTDATA", ("size", 1024)),
         "world builder data": ("OBJ_SIZE", ("before", "ITEM_CHARSET_POS")),
-        "interactive_objects.asm": ("ITEM_CHARSET_POS", ("before", "INTERACTIVE_OBJECTS_END")),
+        "interactive_objects.asm": ("ITEM_CHARSET_POS", ("before", "SECRET_OBJ_PRESENT")),
+        "secret_objects.asm": ("SECRET_OBJ_PRESENT", ("before", "INTERACTIVE_OBJECTS_END")),
         "all_gameover_texts": ("TEXT_CONTENTS_GAMEOVER_FAIL", ("before", "STORY_INIT")),
-        "secret_objects.asm": ("SECRET_OBJ_PRESENT", ("before", "TRACK_VARIABLES")),
         "sprites": ("GERWALT_RIGHT_FRAME_0", ("before", "SPRITES_END")),
         "all_texts": ("TEXT_TITLE", ("size", 350)),
         "gameover.asm": ("GAMEOVER_INIT", ("before", "TRAVEL_SCREEN_ACTIVE")),
@@ -378,14 +378,11 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
         free_world_ram = 0x9D20 - 1 - world_end
         free_world_pct = (free_world_ram / main_world_budget) * 100.0 if main_world_budget > 0 else 0
 
-        secret_ram = (symbols.get("TRACK_VARIABLES") - symbols.get("SECRET_OBJ_PRESENT")) if ("SECRET_OBJ_PRESENT" in symbols and "TRACK_VARIABLES" in symbols) else 0
-        interactive_ram = 1258 if "ITEM_CHARSET_POS" in symbols else 0
-        total_world_ram = main_world_ram + secret_ram + interactive_ram
+        total_world_ram = main_world_ram
 
         print("\n=== Statystyki Pamięci Świata Gry w RAM (MADS) ===")
         print(f"  * Rozmiar danych Świata Gry w RAM: {total_world_ram:,} B".replace(",", " "))
         print(f"    - Główny blok świata ($6800-$9D1F): {main_world_ram:,} B / {main_world_budget:,} B".replace(",", " "))
-        print(f"    - Bloki pomocnicze (sekrety / obiekty interaktywne): {secret_ram + interactive_ram:,} B".replace(",", " "))
         print(f"  * Wolne miejsce na dalszą rozbudowę Świata: {free_world_ram:,} B ({free_world_pct:.1f}% zapasu wolnego miejsca w bloku)")
         print(f"  * Całkowity wolny RAM w systemie: {total_free:,} B\n".replace(",", " "))
 

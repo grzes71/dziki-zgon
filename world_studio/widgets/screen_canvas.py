@@ -170,8 +170,9 @@ class ScreenCanvasWidget(QWidget):
                     elif is_secret:
                         from world_studio.widgets.secret_item_dialog import SecretItemSelectionDialog
                         inv_items = self.project.inventory_items if self.project else []
+                        placed_secrets = self.project.get_placed_secret_items() if self.project else {}
                         current_item_id = inst.items_provided[0] if (inst.items_provided and len(inst.items_provided) > 0) else None
-                        dialog = SecretItemSelectionDialog(inv_items, initial_item_id=current_item_id, parent=self)
+                        dialog = SecretItemSelectionDialog(inv_items, initial_item_id=current_item_id, placed_secrets=placed_secrets, parent=self)
                         if dialog.exec() == QDialog.Accepted and dialog.selected_item_id is not None:
                             inst.items_provided = [dialog.selected_item_id]
                             self.screen_changed.emit()
@@ -299,7 +300,18 @@ class ScreenCanvasWidget(QWidget):
                     elif is_secret:
                         from world_studio.widgets.secret_item_dialog import SecretItemSelectionDialog
                         inv_items = self.project.inventory_items if self.project else []
-                        dialog = SecretItemSelectionDialog(inv_items, parent=self)
+                        placed_secrets = self.project.get_placed_secret_items() if self.project else {}
+
+                        free_items = [it for it in inv_items if it.id not in placed_secrets]
+                        if not free_items and inv_items:
+                            QMessageBox.warning(
+                                self,
+                                "Brak dostępnych przedmiotów Secret",
+                                "Wszystkie przedmioty z ekwipunku zostały już przypisane do obiektów typu Secret w Świecie Gry.\n\nDany obiekt typu Secret można dodać do Świata Gry tylko raz."
+                            )
+                            return
+
+                        dialog = SecretItemSelectionDialog(inv_items, placed_secrets=placed_secrets, parent=self)
                         if dialog.exec() == QDialog.Accepted and dialog.selected_item_id is not None:
                             new_obj.items_provided = [dialog.selected_item_id]
                             self.screen_def.objects.append(new_obj)

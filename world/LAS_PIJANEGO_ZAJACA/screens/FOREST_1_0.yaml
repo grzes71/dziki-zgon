@@ -140,16 +140,6 @@ objects:
 - object: BUSH_2_2
   x: 34
   y: 4
-- object: SWAMP_BLOCK
-  x: 34
-  y: 0
-  repeat-x: 2
-- object: SWAMP_BLOCK_2
-  x: 32
-  y: 0
-- object: SWAMP_BLOCK
-  x: 34
-  y: 2
 - object: SWAMP
   x: 36
   y: 4
@@ -203,10 +193,29 @@ objects:
 - object: SWAMP
   x: 38
   y: 4
+- object: SWAMP_BLOCK_2
+  x: 36
+  y: 0
+  repeat-y: 2
+- object: SWAMP_2_WEED
+  x: 34
+  y: 0
+- object: SWAMP_BLOCK_2
+  x: 32
+  y: 0
+- object: SWAMP_BLOCK
+  x: 34
+  y: 2
 enemies:
 - enemy: sukkub
-  x: 36
-  y: 2
-  strategy: patrol
-  speed: fast
-  color: gray
+  x: 31
+  y: 1
+  strategy: snake
+  speed: medium
+  color: orange
+- enemy: kikimora
+  x: 4
+  y: 4
+  strategy: snake
+  speed: medium
+  color: cyan

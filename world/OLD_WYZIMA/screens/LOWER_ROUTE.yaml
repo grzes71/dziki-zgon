@@ -155,6 +155,21 @@ objects:
 - object: SWAMP_BLOCK
   x: 32
   y: 0
+- object: SECRET2
+  x: 0
+  y: 10
+  items_provided:
+  - 7
+- object: BARREL_2_2
+  x: 36
+  y: 10
+- object: CHAIN_2_3
+  x: 2
+  y: 10
+- object: CROSS_1_COPY
+  x: 6
+  y: 10
+  repeat-x: 2
 enemies:
 - enemy: strzyga
   x: 26

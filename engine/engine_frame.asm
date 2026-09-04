@@ -3,6 +3,10 @@
 ;----------------------------------------
 
 .proc Engine_FrameHandler
+    ; 0. Zerowanie rejestru Attract Mode (wyłączenie wygaszacza / zmiany kolorów)
+    lda #0
+    sta ATRACT
+
     ; 1. Odtwarzacz muzyki/dźwięku
     jsr Audio_Update
 

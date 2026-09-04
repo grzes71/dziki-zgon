@@ -98,7 +98,7 @@ objects:
   y: 4
   type: kwatera
   conditions_met: bierz pieniądze i znikaj!
-  conditions_unmet: masz mój rękopis chłopcze?
+  conditions_unmet: znalazłeś mój rękopis chłopcze?
   items_required:
   - 7
   items_provided:

@@ -34,6 +34,7 @@ objects:
 - object: PALM_SWAMP
   x: 20
   y: 2
+  repeat-x: 2
 - object: PALM_SWAMP
   x: 36
   y: 8

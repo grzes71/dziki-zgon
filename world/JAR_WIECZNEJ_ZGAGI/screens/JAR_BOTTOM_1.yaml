@@ -149,6 +149,11 @@ objects:
   x: 18
   y: 0
   repeat-x: 4
+- object: SECRET2
+  x: 36
+  y: 6
+  items_provided:
+  - 9
 enemies:
 - enemy: sukkub
   x: 17

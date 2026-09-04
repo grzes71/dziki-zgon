@@ -17,7 +17,7 @@ objects:
   x: 20
   y: 8
 - object: HOME_NEW_2
-  x: 32
+  x: 28
   y: 4
 - object: HOME_SMALL_2
   x: 32
@@ -46,7 +46,7 @@ objects:
   y: 2
   repeat-x: 2
 - object: BROWN_DOWN_2
-  x: 32
+  x: 28
   y: 6
   repeat-x: 3
 - object: BROWN_DOWN_2
@@ -80,9 +80,6 @@ objects:
 - object: GROUND_BROWN_BL
   x: 0
   y: 10
-- object: GROUND_BROWN_UP_2V
-  x: 0
-  y: 8
 - object: GROUND_BROWN_UP_2V
   x: 0
   y: 2
@@ -124,28 +121,10 @@ objects:
   x: 28
   y: 0
 - object: CROSS_1
-  x: 34
-  y: 8
-- object: CROSS_1
   x: 10
   y: 0
-- object: FORGERY
-  x: 14
-  y: 4
-  type: kwatera
-  conditions_met: w zamian otrzymujesz konia!
-  conditions_unmet: nie masz nic ciekawego na handel
-  items_required:
-  - 17
-  - 18
-  items_provided:
-  - 8
-  game_over: false
 - object: TREE_SMALL
   x: 24
-  y: 6
-- object: BUSH_2_2
-  x: 30
   y: 6
 - object: BUSH_2_2
   x: 22
@@ -157,12 +136,6 @@ objects:
   x: 24
   y: 8
   repeat-x: 2
-- object: GROUND_GREEN_UP_2
-  x: 24
-  y: 4
-- object: GROUND_GREEN_UP_2
-  x: 30
-  y: 8
 - object: BARREL_2
   x: 12
   y: 6
@@ -179,13 +152,40 @@ objects:
 - object: MUSHROOM
   x: 26
   y: 6
-- object: CROSS_2
+- object: HOUSE_MEDIUM
+  x: 16
+  y: 4
+- object: GROUND_GREEN_UP_2
+  x: 22
+  y: 4
+  repeat-x: 2
+- object: MUSHROOM
+  x: 22
+  y: 2
+- object: CROSS_1
   x: 36
+  y: 4
+- object: TREE_2
+  x: 30
+  y: 10
+- object: SWAMP_BLOCK_2
+  x: 34
   y: 8
+- object: SWAMP_BLOCK
+  x: 36
+  y: 6
+  repeat-y: 2
+- object: SWAMP_BLOCK
+  x: 32
+  y: 8
+- object: GROUND_BROWN_UP_4
+  x: 38
+  y: 4
+  repeat-y: 3
 enemies:
 - enemy: strzyga
-  x: 28
-  y: 4
+  x: 30
+  y: 8
   strategy: patrol
   speed: slow
   color: purple

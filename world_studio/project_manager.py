@@ -193,6 +193,25 @@ class ProjectManager:
     def get_interactive_object_ids(self) -> set:
         return {o.id for o in self.objects if o.flags and getattr(o.flags, 'interactive', False)}
 
+    def get_secret_object_ids(self) -> set:
+        return {o.id for o in self.objects if o.flags and getattr(o.flags, 'secret', False)}
+
+    def get_placed_secret_items(self) -> Dict[int, Dict[str, Any]]:
+        secret_ids = self.get_secret_object_ids()
+        placed = {}
+        for region_id, screens_dict in self.screens.items():
+            for screen_id, screen_def in screens_dict.items():
+                for inst in screen_def.objects:
+                    if inst.object in secret_ids and inst.items_provided:
+                        for i_id in inst.items_provided:
+                            placed[i_id] = {
+                                "region_id": region_id,
+                                "screen_id": screen_id,
+                                "instance": inst,
+                                "object": inst.object
+                            }
+        return placed
+
     def find_object_instances(self, obj_id: str) -> List[tuple]:
         results = []
         for region_id, screens_dict in self.screens.items():
@@ -201,6 +220,24 @@ class ProjectManager:
                     if inst.object == obj_id:
                         results.append((region_id, screen_id, inst))
         return results
+
+    def validate_secret_objects(self) -> List[str]:
+        secret_ids = self.get_secret_object_ids()
+        placed = {}
+        errors = []
+        for region_id, screens_dict in self.screens.items():
+            for screen_id, screen_def in screens_dict.items():
+                for inst in screen_def.objects:
+                    if inst.object in secret_ids and inst.items_provided:
+                        for i_id in inst.items_provided:
+                            if i_id in placed:
+                                orig = placed[i_id]
+                                errors.append(
+                                    f"• Secret item ID {i_id} ('{inst.object}') on screen '{screen_id}' in region '{region_id}' is already placed on screen '{orig['screen_id']}' in region '{orig['region_id']}'."
+                                )
+                            else:
+                                placed[i_id] = {"region_id": region_id, "screen_id": screen_id}
+        return errors
 
     def validate_interactive_objects(self) -> List[str]:
         interactive_ids = self.get_interactive_object_ids()

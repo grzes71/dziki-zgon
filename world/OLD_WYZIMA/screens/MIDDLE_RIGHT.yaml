@@ -50,12 +50,6 @@ objects:
 - object: TREE_2
   x: 24
   y: 0
-- object: ROCK_2x4
-  x: 10
-  y: 10
-- object: ROCK_2x4
-  x: 10
-  y: 0
 - object: BROWN_DOWN_2
   x: 14
   y: 2
@@ -75,18 +69,11 @@ objects:
   x: 18
   y: 6
 - object: TREE_2
-  x: 24
-  y: 4
-- object: TREE_2
   x: 32
   y: 2
 - object: TREE_2
   x: 38
   y: 4
-- object: GROUND_GREEN_UP_2
-  x: 24
-  y: 6
-  repeat-x: 2
 - object: GROUND_GREEN_UP_2
   x: 32
   y: 4
@@ -104,9 +91,6 @@ objects:
 - object: BUSH
   x: 16
   y: 6
-- object: BUSH_2_2
-  x: 26
-  y: 4
 - object: TREE_2
   x: 6
   y: 2
@@ -116,9 +100,6 @@ objects:
 - object: TREE_2
   x: 6
   y: 6
-- object: TREE_2
-  x: 4
-  y: 10
 - object: BUSH_2_2
   x: 6
   y: 10
@@ -158,17 +139,11 @@ objects:
   x: 4
   y: 0
 - object: BUSH_0
-  x: 30
-  y: 8
-- object: BUSH_0
   x: 28
   y: 2
 - object: BUSH_0
   x: 38
   y: 2
-- object: BUSH_0
-  x: 16
-  y: 4
 - object: GROUND_BROWN_DOWN_3
   x: 26
   y: 8
@@ -176,17 +151,49 @@ objects:
   x: 2
   y: 2
 - object: CROSS_1_COPY
-  x: 30
-  y: 4
-- object: CROSS_1_COPY
   x: 36
   y: 6
-- object: CROSS_2
+- object: FORGERY
+  x: 24
+  y: 4
+  type: kwatera
+  conditions_met: otrzymujesz plotkę!
+  conditions_unmet: nie masz nic dla gildii
+  items_required:
+  - 17
+  - 18
+  items_provided:
+  - 8
+  game_over: false
+- object: GROUND_GREEN_UP_2
+  x: 2
+  y: 10
+- object: TREE_3
   x: 2
   y: 8
+- object: BUSH_2_2
+  x: 22
+  y: 4
+- object: BUSH
+  x: 34
+  y: 6
+- object: MUSHROOM
+  x: 14
+  y: 4
+- object: MUSHROOM
+  x: 30
+  y: 8
+- object: BRICKS_2
+  x: 10
+  y: 10
+  repeat-x: 2
+- object: BRICKS_2
+  x: 10
+  y: 0
+  repeat-x: 2
 enemies:
 - enemy: bazyliszek
-  x: 32
+  x: 33
   y: 6
   strategy: homing
   speed: medium
@@ -200,6 +207,6 @@ enemies:
 - enemy: strzyga
   x: 20
   y: 4
-  strategy: vertical
+  strategy: patrol
   speed: slow
   color: magenta

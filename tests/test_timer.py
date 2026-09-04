@@ -347,6 +347,27 @@ def test_pf3_collision_timer_acceleration(game_binary) -> None:
     # In hardware it would clear P0PF. In Py65 it wrote 0 to HITCLR.
     assert mem[labels["HITCLR"]] == 0
 
+def test_game_init_sets_starting_timer_59_59(game_binary) -> None:
+    """Verifies that GAME_INIT initializes the starting time to 59:59 and renders it to HUD."""
+    xex_file, labels = game_binary
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+    mem = cpu.memory
+
+    run_subroutine(cpu, labels["GAME_INIT"], max_steps=100000)
+
+    assert mem[labels["TIMER_MINUTES"]] == 59
+    assert mem[labels["TIMER_SECONDS"]] == 59
+    assert mem[labels["TIMER_FRAMES"]] == 50
+
+    # Check that the HUD Info Line displays '59:59' (internal screencodes $15, $19, $1A, $15, $19)
+    # Positions: GAME_SCREEN_A2 + 33..37
+    info_line_addr = labels["GAME_SCREEN_A2"]
+    hud_timer_chars = [mem[info_line_addr + 33 + i] for i in range(5)]
+    # Screencodes for '5', '9', ':', '5', '9' are 0x15, 0x19, 0x1A, 0x15, 0x19
+    assert hud_timer_chars == [0x15, 0x19, 0x1A, 0x15, 0x19]
+
+
 
 
 

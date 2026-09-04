@@ -34,7 +34,7 @@ items:
 - id: 9
   description: pochodnia
   charset_position: 43
-  consumable: true
+  consumable: false
 - id: 10
   description: lotnia
   charset_position: 44
@@ -58,11 +58,11 @@ items:
 - id: 15
   description: butelka okowity
   charset_position: 74
-  consumable: true
+  consumable: false
 - id: 16
   description: amulet
-  charset_position: 35
-  consumable: true
+  charset_position: 41
+  consumable: false
 - id: 17
   description: mapa starej wyżymy
   charset_position: 46

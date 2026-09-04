@@ -9,9 +9,6 @@ exits:
 objects:
 - object: ROCK_2
   x: 16
-  y: 2
-- object: BUSH
-  x: 4
   y: 0
 - object: HOUSE_SMALL_BLUE
   x: 8
@@ -21,7 +18,7 @@ objects:
   y: 6
 - object: TREE_SMALL
   x: 4
-  y: 2
+  y: 0
 - object: CROSS_1
   x: 10
   y: 8
@@ -67,9 +64,6 @@ objects:
 - object: TREE_2
   x: 22
   y: 0
-- object: TREE_2
-  x: 30
-  y: 0
 - object: WATER_TL
   x: 16
   y: 10
@@ -93,12 +87,6 @@ objects:
   x: 14
   y: 10
 - object: GROUND_BROWN_DOWN_3
-  x: 10
-  y: 6
-- object: GROUND_BROWN_DOWN_3
-  x: 14
-  y: 6
-- object: GROUND_BROWN_DOWN_3
   x: 18
   y: 6
 - object: GROUND_BROWN_DOWN_3
@@ -112,15 +100,7 @@ objects:
   y: 10
 - object: GROUND_GREEN_UP_2
   x: 4
-  y: 4
-- object: GROUND_GREEN_UP_2
-  x: 26
-  y: 4
-  repeat-x: 2
-- object: GROUND_GREEN_UP_2
-  x: 8
   y: 2
-  repeat-x: 3
 - object: GROUND_GREEN_UP_2
   x: 22
   y: 2
@@ -134,15 +114,6 @@ objects:
 - object: GROUND_GREEN_UP_2
   x: 2
   y: 8
-- object: GROUND_GREEN_UP_2
-  x: 30
-  y: 2
-- object: BUSH
-  x: 20
-  y: 0
-- object: BUSH
-  x: 12
-  y: 4
 - object: BUSH
   x: 22
   y: 8
@@ -177,12 +148,6 @@ objects:
   x: 0
   y: 2
 - object: GROUND_BROWN_DOWN
-  x: 8
-  y: 6
-- object: GROUND_BROWN_DOWN
-  x: 6
-  y: 6
-- object: GROUND_BROWN_DOWN
   x: 4
   y: 6
 - object: GROUND_BROWN_DOWN
@@ -191,8 +156,42 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 34
   y: 6
-- object: CROSS_1
+- object: TREE_SMALL
   x: 18
+  y: 2
+- object: GROUND_GREEN_UP_2
+  x: 18
+  y: 4
+- object: GROUND_BROWN_DOWN_2
+  x: 34
+  y: 0
+  repeat-x: 2
+- object: BROWN_DOWN_2
+  x: 2
+  y: 4
+- object: BROWN_DOWN_2
+  x: 26
+  y: 4
+  repeat-x: 2
+- object: BROWN_DOWN_2
+  x: 8
+  y: 2
+  repeat-x: 3
+- object: CROSS_1
+  x: 30
+  y: 0
+- object: CROSS_1
+  x: 26
+  y: 0
+- object: CROSS_1_COPY
+  x: 6
+  y: 4
+- object: BROWN_DOWN_2
+  x: 6
+  y: 6
+  repeat-x: 5
+- object: BARREL_2_2
+  x: 12
   y: 4
 enemies:
 - enemy: sukkub

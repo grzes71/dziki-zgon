@@ -11,6 +11,9 @@ gameover_fire_released
 ; - Odtwarza muzykę RMT
 ;==============================================================
 .proc gameover_vbi
+    lda #0
+    sta ATRACT
+
     jsr RASTERMUSICTRACKER+3 ; Odtwórz 1 klatkę muzyki RMT
     jmp SYSVBV
 .endp

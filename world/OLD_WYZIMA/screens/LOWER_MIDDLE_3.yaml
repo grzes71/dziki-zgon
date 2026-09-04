@@ -128,15 +128,15 @@ objects:
 - object: GROUND_BROWN_UP_3
   x: 0
   y: 6
-- object: SECRET2
-  x: 26
-  y: 4
+- object: SECRET1
+  x: 34
+  y: 6
   items_provided:
   - 18
 enemies:
 - enemy: strzyga
-  x: 33
-  y: 6
-  strategy: pacing
-  speed: medium
+  x: 22
+  y: 5
+  strategy: patrol
+  speed: slow
   color: brown

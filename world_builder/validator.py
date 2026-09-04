@@ -21,12 +21,30 @@ class WorldValidator:
     def validate(self):
         self._check_duplicates()
         self._check_interactive_objects()
+        self._check_secret_objects()
         self._check_portal_integrity()
         self._check_region_dirs()
         self._check_references()
         self._check_bounds()
         self._check_reachability()
         self._check_overlaps()
+
+    def _check_secret_objects(self):
+        secret_items: Dict[int, tuple] = {}
+        for region in self.world.regions:
+            for screen in region.screens:
+                for inst in screen.objects:
+                    obj_def = self.objects_by_id.get(inst.object)
+                    if obj_def and obj_def.flags and getattr(obj_def.flags, 'secret', False):
+                        if inst.items_provided:
+                            for item_id in inst.items_provided:
+                                if item_id in secret_items:
+                                    orig_reg, orig_scr = secret_items[item_id]
+                                    raise ValidationError(
+                                        f"Duplicate secret item ID {item_id} provided by '{inst.object}' on screen '{screen.id}' in region '{region.id}'. "
+                                        f"Already provided on screen '{orig_scr}' in region '{orig_reg}'."
+                                    )
+                                secret_items[item_id] = (region.id, screen.id)
 
     def _check_portal_integrity(self):
         regions_by_id = {r.id: r for r in self.world.regions}

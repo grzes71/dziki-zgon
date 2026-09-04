@@ -8,9 +8,6 @@ exits:
   west: LOWER_ROUTE
 objects:
 - object: HOUSE_BIG_2
-  x: 2
-  y: 8
-- object: HOUSE_BIG_2
   x: 28
   y: 8
 - object: HOUSE_TALLEST
@@ -65,9 +62,6 @@ objects:
 - object: MUSHROOM
   x: 38
   y: 10
-- object: BUSH
-  x: 8
-  y: 10
 - object: CROSS_1
   x: 8
   y: 6
@@ -92,9 +86,6 @@ objects:
 - object: BUSH
   x: 38
   y: 2
-- object: BUSH
-  x: 0
-  y: 6
 - object: CHAIN_2_2
   x: 24
   y: 0
@@ -144,6 +135,27 @@ objects:
 - object: TREE_2
   x: 24
   y: 10
+- object: HOUSE_BIG
+  x: 4
+  y: 8
+- object: BUSH_2
+  x: 24
+  y: 8
+- object: BUSH_2_2
+  x: 38
+  y: 8
+- object: GROUND_BROWN_UP_4
+  x: 0
+  y: 10
+- object: GROUND_BROWN_UP_2V
+  x: 0
+  y: 8
+- object: GROUND_BROWN_BL
+  x: 2
+  y: 10
+- object: CROSS_1_COPY
+  x: 2
+  y: 6
 enemies:
 - enemy: kikimora
   x: 32

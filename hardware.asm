@@ -64,6 +64,7 @@ IRQEN   = $D20E     ; włączenie przerwań IRQ z POKEY
 ; UWAGA: Jeśli NMIEN=$C0 (VBI włączone), OS przepisuje cienie do sprzętu w każdej klatce.
 ; Dlatego inicjalizacje scen muszą pisać do cieni. Zapis bezpośredni do hardware ma sens 
 ; tylko przy wyłączonym VBI (NMIEN=$00) lub wewnątrz DLI.
+ATRACT  = $4D       ; rejestr Attract Mode (OS ZP) — zerowanie wyłącza wygaszacz/zmianę kolorów
 VDSLST  = $0200     ; wektor przerwania DLI
 VVBLKD  = $0222     ; wektor przerwania VBI (Immediate VBLANK)
 VVBLKI  = $0224     ; wektor przerwania VBI (Deferred VBLANK)
