@@ -104,7 +104,7 @@ def main():
             line_count = 1
         for idx, line in enumerate(valid_lines):
             if len(line) != 40:
-                print(f"Uwaga: Plik {input_file} linia {idx+1} ma długość {len(line)} zamiast 40 znaków.", file=sys.stderr)
+                print(f"Uwaga: Plik {input_file} linia {idx+1} ma dlugosc {len(line)} zamiast 40 znakow.", file=sys.stderr)
             line = line.ljust(40)[:40]
             for c in line:
                 raw_bytes.append(to_atari_screencode(c))
@@ -134,7 +134,7 @@ def main():
             bytes_str = ", ".join(f"${b:02x}" for b in chunk)
             f.write(f"    .byte {bytes_str}\n")
 
-    print(f"Skompresowano {input_file} -> {args.output} ({len(compressed)} B, oszczędność {len(raw_bytes) - len(compressed)} B)")
+    print(f"Skompresowano {input_file} -> {args.output} ({len(compressed)} B, oszczednosc {len(raw_bytes) - len(compressed)} B)")
 
 if __name__ == "__main__":
     main()
