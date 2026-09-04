@@ -51,11 +51,11 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$5FEC` – `$5FFF`** | 20 B | — | **WOLNY RAM** | Pozostały wolny RAM przed własną czcionką. |
 | **`$6000` – `$63FF`** | 1024 B | `font.asm` | Dane (Charset) | Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`. |
 | **`$6400` – `$67FF`** | 1024 B | `game_font.asm` | Dane (Charset) | Czcionka graficzna do rysowania planszy w ANTIC 5. |
-| **`$6800` – `$8955`** | 8534 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
-| **`$9336` – `$9D20`** | 2539 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
-| **`$6800` – `$8955`** | 8534 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
+| **`$6800` – `$89A7`** | 8616 B | `World Builder Data` | Dane (World) | Tabele świata (obiekty, ekrany, wyjścia). |
+| **`$9389` – `$9D20`** | 2456 B | `all_gameover_texts` | Dane (Teksty) | Teksty komunikatów wygranej i przegranej. |
+| **`$6800` – `$89A7`** | 8616 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
 | **`$1E2E` – `$1F8B`** | 350 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story). |
-| **`$912C` – `$9335`** | 522 B | `secret_objects.asm` | Dane (World) | Obiekty sekretów na planszach. |
+| **`$917F` – `$9388`** | 522 B | `secret_objects.asm` | Dane (World) | Obiekty sekretów na planszach. |
 | **`$B79E` – `$B83E`** | 161 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
 | **`$A000` – `$A7FF`** | 2048 B | `PMG` | Pamięć PMG | Pamięć Player/Missile Graphics (M0-M3, P0-P3). |
 | **`$B6F2` – `$B79D`** | 172 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
@@ -65,7 +65,7 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$B300` – `$B610`** | 785 B | `title_music.asm` | Dane (Muzyka) | Moduł muzyczny RMT. |
 | **`$B61C` – `$B6F1`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
 | **`$B83F` – `$B9C2`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
-| **`$8956` – `$912B`** | 2006 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
+| **`$89A8` – `$917E`** | 2007 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
 
 ---
 

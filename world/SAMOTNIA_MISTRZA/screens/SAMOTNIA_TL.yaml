@@ -2,25 +2,22 @@ id: SAMOTNIA_TL
 grid_x: 0
 grid_y: 0
 exits:
-  north: null
+  north: SAMOTNIA_BL
   south: SAMOTNIA_BL
   east: START_SAMOTNIA
-  west: null
+  west: START_SAMOTNIA
 objects:
 - object: TREE_SMALL
   x: 12
   y: 2
 - object: TREE_SMALL
   x: 30
-  y: 6
+  y: 4
 - object: TREE_2
   x: 22
   y: 6
 - object: TREE_2
   x: 2
-  y: 4
-- object: TREE_4
-  x: 18
   y: 4
 - object: TREE_4
   x: 8
@@ -32,23 +29,17 @@ objects:
   x: 34
   y: 2
 - object: TREE_4
-  x: 26
-  y: 0
-- object: TREE_4
   x: 4
-  y: 0
+  y: 2
 - object: TREE_4
-  x: 4
-  y: 10
+  x: 2
+  y: 8
 - object: TREE_4
-  x: 12
-  y: 10
+  x: 10
+  y: 8
 - object: TREE_4
   x: 34
-  y: 10
-- object: SAND_3_TL
-  x: 0
-  y: 0
+  y: 8
 - object: SAND_3_TR
   x: 36
   y: 0
@@ -81,7 +72,7 @@ objects:
   y: 6
 - object: GROUND_GREEN_UP_2
   x: 30
-  y: 8
+  y: 6
 - object: GROUND_GREEN_UP_2
   x: 22
   y: 8
@@ -91,28 +82,16 @@ objects:
   y: 6
 - object: BROWN_DOWN_2
   x: 4
-  y: 2
-- object: BROWN_DOWN_2
-  x: 18
-  y: 6
+  y: 4
 - object: BROWN_DOWN_2
   x: 18
   y: 10
-- object: BROWN_DOWN_2
-  x: 26
-  y: 2
 - object: BROWN_DOWN_2
   x: 34
   y: 4
 - object: BUSH
-  x: 8
-  y: 10
-- object: BUSH
   x: 22
   y: 10
-- object: BUSH_2
-  x: 8
-  y: 8
 - object: BUSH_2
   x: 38
   y: 8
@@ -120,19 +99,13 @@ objects:
   x: 24
   y: 6
 - object: ROCK_2
-  x: 4
+  x: 6
   y: 8
-- object: ROCK_2
-  x: 16
-  y: 2
 - object: ROCK_2
   x: 34
   y: 6
 - object: ROCK_2
   x: 8
-  y: 0
-- object: ROCK_1_2
-  x: 30
   y: 2
 - object: GROUND_BROWN_DOWN_2
   x: 16
@@ -141,15 +114,9 @@ objects:
 - object: GROUND_BROWN_DOWN
   x: 14
   y: 0
-- object: GROUND_BROWN_DOWN
-  x: 24
-  y: 0
 - object: SWAMP_BLOCK
   x: 12
   y: 6
-- object: SWAMP_BLOCK
-  x: 14
-  y: 4
 - object: SWAMP_BLOCK_2
   x: 28
   y: 10
@@ -181,24 +148,79 @@ objects:
   x: 24
   y: 2
 - object: SWAMP
-  x: 16
-  y: 6
-- object: SWAMP
-  x: 16
-  y: 4
-- object: SWAMP
   x: 14
   y: 6
+- object: SWAMP_BLOCK_2
+  x: 26
+  y: 0
+  repeat-y: 2
+- object: SWAMP_BLOCK
+  x: 24
+  y: 0
+- object: SWAMP
+  x: 28
+  y: 2
+- object: SWAMP
+  x: 28
+  y: 0
+- object: BROWN_DOWN_2
+  x: 2
+  y: 10
+- object: BROWN_DOWN_2
+  x: 10
+  y: 10
+- object: BUSH_2_2
+  x: 6
+  y: 10
+- object: TREE_4
+  x: 16
+  y: 4
+  repeat-x: 2
+- object: BROWN_DOWN_2
+  x: 16
+  y: 6
+  repeat-x: 2
+- object: REED_2
+  x: 8
+  y: 0
+  repeat-x: 2
+- object: REED_2
+  x: 30
+  y: 0
+- object: REED_2
+  x: 32
+  y: 10
+- object: ROCK_1
+  x: 28
+  y: 8
+- object: STONE_BIG
+  x: 16
+  y: 2
+- object: SAND_4
+  x: 0
+  y: 0
+- object: SAND_3_TL
+  x: 2
+  y: 0
+- object: SAND_2
+  x: 4
+  y: 0
+- object: MUSHROOM
+  x: 36
+  y: 10
+- object: MUSHROOM
+  x: 14
+  y: 10
 enemies:
 - enemy: kikimora
   x: 27
-  y: 4
+  y: 5
   strategy: patrol
   speed: fast
   color: blue
 - enemy: strzyga
   x: 14
-  y: 7
+  y: 9
   strategy: snake
   speed: fast
   color: brown
