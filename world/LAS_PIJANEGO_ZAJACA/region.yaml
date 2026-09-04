@@ -12,9 +12,9 @@ portal_entries:
     x: 26
     y: 4
   JAR_WIECZNEJ_ZGAGI:
-    screen: FOREST_1_2
-    x: 36
-    y: 3
+    screen: FOREST_0_1
+    x: 4
+    y: 8
 colors:
   BACKGROUND:
     rgb:

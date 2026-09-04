@@ -12,7 +12,7 @@ objects:
   y: 6
   type: kwatera
   conditions_met: otrzymałeś miecz-na-ludzi!
-  conditions_unmet: nie masz może mojego klucza?
+  conditions_unmet: czy masz może klucz do zamku?
   items_required:
   - 11
   items_provided:
