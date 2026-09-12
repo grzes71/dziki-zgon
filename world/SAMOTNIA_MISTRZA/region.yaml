@@ -20,21 +20,21 @@ colors:
     atari: 0
   PF0:
     rgb:
-    - 132
-    - 59
-    - 0
-    atari: 34
+    - 80
+    - 80
+    - 80
+    atari: 2
   PF1:
     rgb:
-    - 193
-    - 120
-    - 29
-    atari: 38
+    - 162
+    - 162
+    - 162
+    atari: 8
   PF2:
     rgb:
-    - 3
-    - 80
     - 0
+    - 85
+    - 3
     atari: 192
   PF3_INV:
     rgb:
