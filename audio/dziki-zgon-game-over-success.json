@@ -1,0 +1,930 @@
+{
+  "format": "atari-music-composition",
+  "version": 1,
+  "metadata": {
+    "title": "Witcher's Pathetic Victory",
+    "author": "AI Composer",
+    "description": null,
+    "key": "A",
+    "mode": "minor",
+    "bpm": 120,
+    "duration_seconds": 18.0
+  },
+  "form_plan": {
+    "form_type": "A-B-A",
+    "primary_theme_description": "A heroic but slightly pathetic fanfare in A minor, with a nostalgic bridge that resolves back to the theme.",
+    "contrast_theme_description": null,
+    "sections": [
+      {
+        "section_id": "A",
+        "pattern_id": "patA",
+        "role": "theme",
+        "variation_of": null,
+        "description": "Main triumphant but pathetic melody with arpeggiated accompaniment."
+      },
+      {
+        "section_id": "B",
+        "pattern_id": "patB",
+        "role": "bridge",
+        "variation_of": null,
+        "description": "Nostalgic, descending melody with soft pad and simple bass."
+      },
+      {
+        "section_id": "A'",
+        "pattern_id": "patA2",
+        "role": "theme_variation",
+        "variation_of": null,
+        "description": "Variation of the main theme, ending with a softer, pathetic resolution."
+      }
+    ]
+  },
+  "hardware": {
+    "channels": 3,
+    "use_16bit_bass": false
+  },
+  "instruments": [
+    {
+      "id": "lead",
+      "name": "Bright Lead",
+      "character": "bright_lead",
+      "distortion": null,
+      "attack_frames": null,
+      "decay_frames": null,
+      "sustain_vol": null,
+      "release_frames": null
+    },
+    {
+      "id": "pad",
+      "name": "Soft Pad",
+      "character": "soft_pad",
+      "distortion": null,
+      "attack_frames": null,
+      "decay_frames": null,
+      "sustain_vol": null,
+      "release_frames": null
+    },
+    {
+      "id": "bass",
+      "name": "Bass",
+      "character": "bass",
+      "distortion": null,
+      "attack_frames": null,
+      "decay_frames": null,
+      "sustain_vol": null,
+      "release_frames": null
+    },
+    {
+      "id": "bell",
+      "name": "Bell",
+      "character": "bell",
+      "distortion": null,
+      "attack_frames": null,
+      "decay_frames": null,
+      "sustain_vol": null,
+      "release_frames": null
+    },
+    {
+      "id": "harm",
+      "name": "Harmony",
+      "character": "harmony",
+      "distortion": null,
+      "attack_frames": null,
+      "decay_frames": null,
+      "sustain_vol": null,
+      "release_frames": null
+    }
+  ],
+  "patterns": [
+    {
+      "id": "patA",
+      "length_steps": 48,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "A4",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 4,
+            "note": "C5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 6,
+            "note": "E5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 8,
+            "note": "D5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 12,
+            "note": "C5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 14,
+            "note": "B4",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 16,
+            "note": "A4",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 20,
+            "note": "F5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 24,
+            "note": "E5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 28,
+            "note": "D5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 32,
+            "note": "B4",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 36,
+            "note": "D5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 38,
+            "note": "G5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 40,
+            "note": "F5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 44,
+            "note": "E5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 46,
+            "note": "D5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "A2",
+            "instrument": "bass",
+            "duration": 8,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "E3",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 12,
+            "note": "A2",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 16,
+            "note": "F2",
+            "instrument": "bass",
+            "duration": 8,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "C3",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 28,
+            "note": "F2",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 32,
+            "note": "G2",
+            "instrument": "bass",
+            "duration": 8,
+            "volume": 12
+          },
+          {
+            "step": 40,
+            "note": "D3",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 44,
+            "note": "G2",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          }
+        ],
+        "2": [
+          {
+            "step": 0,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 2,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 4,
+            "note": "E4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 6,
+            "note": "A4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 8,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 10,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 12,
+            "note": "E4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 14,
+            "note": "A4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "F3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 18,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 20,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 22,
+            "note": "F4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 24,
+            "note": "F3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 26,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 28,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 30,
+            "note": "F4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "G3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 34,
+            "note": "B3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 36,
+            "note": "D4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 38,
+            "note": "G4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 40,
+            "note": "G3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 42,
+            "note": "B3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 44,
+            "note": "D4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 46,
+            "note": "G4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          }
+        ]
+      },
+      "role": "theme",
+      "variation_of": null,
+      "texture_notes": null
+    },
+    {
+      "id": "patB",
+      "length_steps": 48,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "A4",
+            "instrument": "pad",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 6,
+            "note": "G4",
+            "instrument": "pad",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 8,
+            "note": "F4",
+            "instrument": "pad",
+            "duration": 8,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "E4",
+            "instrument": "pad",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 22,
+            "note": "D4",
+            "instrument": "pad",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 24,
+            "note": "C4",
+            "instrument": "pad",
+            "duration": 8,
+            "volume": 11
+          },
+          {
+            "step": 32,
+            "note": "B3",
+            "instrument": "pad",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 36,
+            "note": "A3",
+            "instrument": "pad",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 40,
+            "note": "G#3",
+            "instrument": "pad",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 44,
+            "note": "A3",
+            "instrument": "pad",
+            "duration": 4,
+            "volume": 11
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "D2",
+            "instrument": "bass",
+            "duration": 16,
+            "volume": 12
+          },
+          {
+            "step": 16,
+            "note": "A2",
+            "instrument": "bass",
+            "duration": 16,
+            "volume": 12
+          },
+          {
+            "step": 32,
+            "note": "E2",
+            "instrument": "bass",
+            "duration": 16,
+            "volume": 12
+          }
+        ],
+        "2": [
+          {
+            "step": 0,
+            "note": "F4",
+            "instrument": "harm",
+            "duration": 8,
+            "volume": 10
+          },
+          {
+            "step": 8,
+            "note": "D4",
+            "instrument": "harm",
+            "duration": 8,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "C4",
+            "instrument": "harm",
+            "duration": 8,
+            "volume": 10
+          },
+          {
+            "step": 24,
+            "note": "A3",
+            "instrument": "harm",
+            "duration": 8,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "B3",
+            "instrument": "harm",
+            "duration": 8,
+            "volume": 10
+          },
+          {
+            "step": 40,
+            "note": "G#3",
+            "instrument": "harm",
+            "duration": 8,
+            "volume": 10
+          }
+        ]
+      },
+      "role": "bridge",
+      "variation_of": null,
+      "texture_notes": null
+    },
+    {
+      "id": "patA2",
+      "length_steps": 48,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "A4",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 4,
+            "note": "C5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 6,
+            "note": "E5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 8,
+            "note": "D5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 12,
+            "note": "C5",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 14,
+            "note": "B4",
+            "instrument": "lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 16,
+            "note": "A4",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 20,
+            "note": "F5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 24,
+            "note": "E5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 28,
+            "note": "D5",
+            "instrument": "lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 32,
+            "note": "B4",
+            "instrument": "pad",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 36,
+            "note": "A4",
+            "instrument": "pad",
+            "duration": 8,
+            "volume": 11
+          },
+          {
+            "step": 44,
+            "note": "G4",
+            "instrument": "pad",
+            "duration": 4,
+            "volume": 11
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "A2",
+            "instrument": "bass",
+            "duration": 8,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "E3",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 12,
+            "note": "A2",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 16,
+            "note": "F2",
+            "instrument": "bass",
+            "duration": 8,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "C3",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 28,
+            "note": "F2",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 32,
+            "note": "G2",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 36,
+            "note": "E2",
+            "instrument": "bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 40,
+            "note": "A2",
+            "instrument": "bass",
+            "duration": 8,
+            "volume": 12
+          }
+        ],
+        "2": [
+          {
+            "step": 0,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 2,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 4,
+            "note": "E4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 6,
+            "note": "A4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 8,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 10,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 12,
+            "note": "E4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 14,
+            "note": "A4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "F3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 18,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 20,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 22,
+            "note": "F4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 24,
+            "note": "F3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 26,
+            "note": "A3",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 28,
+            "note": "C4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 30,
+            "note": "F4",
+            "instrument": "bell",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "G3",
+            "instrument": "harm",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 36,
+            "note": "E3",
+            "instrument": "harm",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 40,
+            "note": "A3",
+            "instrument": "harm",
+            "duration": 8,
+            "volume": 10
+          }
+        ]
+      },
+      "role": "theme_variation",
+      "variation_of": null,
+      "texture_notes": null
+    }
+  ],
+  "sequence": [
+    "patA",
+    "patB",
+    "patA2"
+  ],
+  "loop_point": 0,
+  "intent": {
+    "style": "chiptune",
+    "mood": [
+      "victory",
+      "pathetic",
+      "nostalgic"
+    ],
+    "structure": "A-B-A",
+    "composition_notes": "A humorous 8-bit game over piece for a fantasy Witcher adventure. The melody is memorable and slightly off-kilter, balancing triumph with a sense of defeat. Channels are used economically: lead, bass, and a third voice for arpeggios or harmony. The B section provides contrast with a softer pad and descending line, leading back to a varied A section that fades into a pathetic ending."
+  },
+  "provenance": {
+    "source": "ai",
+    "provider": "openai",
+    "model": "deepseek-flash",
+    "generated_at": null,
+    "request_id": "38f40f9d-b32f-4913-a768-e1ebd22e5b85"
+  }
+}

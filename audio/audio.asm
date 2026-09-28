@@ -19,10 +19,21 @@ audio_play_intro
     ldy #>music_intro_data
     jmp audio_start_song
 
-audio_play_gameover
-    ldx #<music_gameover_data
-    ldy #>music_gameover_data
+audio_play_gameover_failure
+    ldx #<music_gameover_failure_data
+    ldy #>music_gameover_failure_data
     jmp audio_start_song
+
+audio_play_gameover_success
+    ldx #<music_gameover_success_data
+    ldy #>music_gameover_success_data
+    jmp audio_start_song
+
+audio_play_gameover
+    lda GAME_RESULT_STATUS
+    cmp #1                      ; 1 = Sukces
+    beq audio_play_gameover_success
+    jmp audio_play_gameover_failure
 
 ; Alias dla zachowania wstecznej kompatybilności
 title_audio_init = audio_play_title
