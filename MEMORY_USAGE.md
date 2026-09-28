@@ -28,7 +28,7 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$00A2` – `$00A2`** | 1 B | `MSG_STATE` | Zero Page | Stan linii komunikatów (0=brak, 1=wyświetlanie, 2=1s do końca). |
 | **`$00A6` – `$00A6`** | 1 B | `IS_PORTAL_TRANSITION` | Zero Page | Flaga przejścia przez portal (0=zwykłe wyjście, 1=ekran podróży). |
 
-| **`$00CB` – `$00DD`** | 19 B | `p_tis` .. `tmp` | Zero Page | Rejestry robocze odtwarzacza muzyki RMT (zmienne mono playera). |
+| **`$00CB` – `$00D4`** | 10 B | `PLAYER_ZP_BASE` | Zero Page | Wskaźniki i rejestry robocze 4-kanałowego odtwarzacza muzyki POKEY. |
 | **`$0200` – `$0201`** | 2 B | `VDSLST` | OS RAM | Wektor przerwania DLI (Display List Interrupt) w pamięci cieni OS. |
 | **`$0600` – `$1D35`** | 5942 B | `TitleScreen_Data` | Dane (ROM) | Skompresowany obrazek tytułowy (`title.rle`). |
 | **`$1D36` – `$1DCA`** | 149 B | `DzikizgonData` | Dane (Sprites) | Skompresowane RLE dane graficzne logo "Dziki Zgon". |
@@ -56,15 +56,15 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$6800` – `$89A7`** | 8616 B | — | **WOLNY RAM** | Wolna pamięć RAM w bloku `$6800–$9FFF`. |
 | **`$1E2E` – `$1F8B`** | 350 B | `all_texts` | Dane (Teksty) | Skompresowane tekstualne zasoby gry (title, story). |
 | **`$917F` – `$9388`** | 522 B | `secret_objects.asm` | Dane (World) | Obiekty sekretów na planszach. |
-| **`$B79E` – `$B83E`** | 161 B | `title_audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
 | **`$A000` – `$A7FF`** | 2048 B | `PMG` | Pamięć PMG | Pamięć Player/Missile Graphics (M0-M3, P0-P3). |
-| **`$B6F2` – `$B79D`** | 172 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
-| **`$9DC5` – `$9FFF`** | 571 B | — | **WOLNY RAM** | Wolna pamięć przed zmiennymi RMT. |
-| **`$A9E0` – `$ACFF`** | 800 B | `rmtplayr_vars` | Dane (Odtwarzacz) | Zmienne i tabele odtwarzacza RMT. |
-| **`$AD00` – `$B241`** | 1346 B | `rmtplayr.asm` | Kod (Odtwarzacz) | Moduł odtwarzacza RMT. |
-| **`$B300` – `$B610`** | 785 B | `title_music.asm` | Dane (Muzyka) | Moduł muzyczny RMT. |
+| **`$A800` – `$AB6F`** | 880 B | `audio_player.asm` | Kod (Odtwarzacz) | 4-kanałowy relokowalny odtwarzacz muzyki POKEY. |
+| **`$AB70` – `$B14D`** | 1502 B | `music_title.asm` | Dane (Muzyka) | Moduł muzyczny ekranu tytułowego (Tajemnica Starego Zamku). |
+| **`$B14E` – `$B2EC`** | 415 B | `music_intro.asm` | Dane (Muzyka) | Moduł muzyczny ekranu fabularnego (Karczma pod Kwiczącym Dzikiem). |
+| **`$B2ED` – `$B4D2`** | 486 B | `music_gameover.asm` | Dane (Muzyka) | Moduł muzyczny ekranu Game Over (Koniec Przygody). |
+| **`$B4D3` – `$B56E`** | 156 B | `audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
 | **`$B61C` – `$B6F1`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
-| **`$B83F` – `$B9C2`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
+| **`$B6F2` – `$B79D`** | 172 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
+| **`$B79E` – `$B921`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
 | **`$89A8` – `$917E`** | 2007 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
 
 ---
@@ -78,9 +78,8 @@ Dostępne wolne obszary RAM (zgodne z tabelą powyżej):
 3.  **`$3FE8` – `$3FFF` (24 B)**: Mały bufor pomiędzy Display Listami a areną VRAM.
 4.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionkami.
 5.  **`$84F4` – `$8FFF` (2 828 B)** & **`$9ED8` – `$9FFF` (296 B)**: **Obszar wolnej pamięci RAM** w bloku `$8000–$9FFF` dostępny na rozbudowę danych świata, logiki i ekranów.
-6.  **`$A800` – `$A9DF` (480 B)**: Wolny bufor przed zmiennymi odtwarzacza RMT.
-7.  **`$B242` – `$B2FF` (190 B)**: Wolny obszar pomiędzy kodem playera RMT a modułem muzycznym.
-8.  **`$BEF9` – `$BFFF` (263 B)**: Wolna pamięć pod ROM-em BASIC-a za sprite'ami postaci.
+6.  **`$B55B` – `$B61B` (193 B)**: Wolny obszar za modułami audio przed procedurami gry pod ROM-em BASIC.
+7.  **`$BEF9` – `$BFFF` (263 B)**: Wolna pamięć pod ROM-em BASIC-a za sprite'ami postaci.
 
 Łącznie czysty, bezpośrednio dostępny wolny RAM w tej chwili to **5 265 B**.
 

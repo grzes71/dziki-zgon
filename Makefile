@@ -57,12 +57,15 @@ ROT_CHARS_JSON := chars/rotated.json
 ROT_CHARS_GLOBAL_ASM := $(GEN_DIR)/rotated_chars_global.asm
 ROT_CHARS_PROC_ASM := $(GEN_DIR)/rotated_chars_proc.asm
 
-# Muzyka
-MUSIC_SAP       := music/title.sap
-MUSIC_RMT       := $(GEN_DIR)/title.rmt
-MUSIC_ASM_ATASM := $(GEN_DIR)/title_atasm.asm
-MUSIC_ASM       := $(GEN_DIR)/title_music.asm
-PLAYR_ASM       := $(GEN_DIR)/rmtplayr.asm
+# Muzyka (Atari POKEY Music)
+MUSIC_TITLE_JSON    := audio/dziki-zgon-title.json
+MUSIC_INTRO_JSON    := audio/dziki-zgon-intro.json
+MUSIC_GAMEOVER_JSON := audio/dziki-zgon-game-over.json
+
+MUSIC_TITLE_ASM     := $(GEN_DIR)/music_title.asm
+MUSIC_INTRO_ASM     := $(GEN_DIR)/music_intro.asm
+MUSIC_GAMEOVER_ASM  := $(GEN_DIR)/music_gameover.asm
+ALL_MUSIC_ASM       := $(MUSIC_TITLE_ASM) $(MUSIC_INTRO_ASM) $(MUSIC_GAMEOVER_ASM)
 
 TEXTS_SRC := $(wildcard texts/*.txt)
 TEXTS_ASM := $(patsubst texts/%.txt, $(GEN_DIR)/%_text.asm, $(TEXTS_SRC))
@@ -82,7 +85,7 @@ all: texts sprites bg fonts music world $(XEX_OUT) test
 # Updated Makefile rules
 xex: $(XEX_OUT)
 
-$(XEX_OUT): $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(MUSIC_ASM) $(PLAYR_ASM) $(WORLD_INC) $(ASM_MAIN)
+$(XEX_OUT): $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(FONT_ASM) $(GAME_FONT_ASM) $(ANIM_CHARS_ASM) $(ROT_CHARS_GLOBAL_ASM) $(ROT_CHARS_PROC_ASM) $(ALL_MUSIC_ASM) audio/player.asm audio/audio.asm $(WORLD_INC) $(ASM_MAIN)
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
 	@echo "=== Weryfikacja mapy pamięci ==="
@@ -157,20 +160,22 @@ $(ANIM_CHARS_ASM): $(ANIM_CHARS_JSON) $(ROT_CHARS_JSON) scripts/gen_animated_cha
 	$(PYTHON) scripts/gen_animated_charset.py -i $(ANIM_CHARS_JSON) -o $@
 
 # Generowanie muzyki
-music: $(MUSIC_ASM) $(PLAYR_ASM)
+music: $(ALL_MUSIC_ASM)
 
-$(MUSIC_RMT): $(MUSIC_SAP)
+$(MUSIC_TITLE_ASM): $(MUSIC_TITLE_JSON) scripts/compile_music.py
 	-@mkdir $(GEN_DIR)
-	@echo "=== Konwersja SAP → RMT ==="
-	-$(ASAPCONV) -o $@ $<
+	@echo "=== Kompilacja muzyki Title ($< → $@) ==="
+	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_title_data
 
-$(MUSIC_ASM_ATASM): $(MUSIC_RMT)
-	@echo "=== Konwersja RMT → ATasm ==="
-	$(RMT2ATASM) $< > $@
+$(MUSIC_INTRO_ASM): $(MUSIC_INTRO_JSON) scripts/compile_music.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Kompilacja muzyki Intro ($< → $@) ==="
+	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_intro_data
 
-$(MUSIC_ASM): $(MUSIC_ASM_ATASM) scripts/atasm2mads.py
-	@echo "=== Konwersja ATasm → MADS ==="
-	$(PYTHON) scripts/atasm2mads.py -i $< -o $@
+$(MUSIC_GAMEOVER_ASM): $(MUSIC_GAMEOVER_JSON) scripts/compile_music.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Kompilacja muzyki GameOver ($< → $@) ==="
+	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_gameover_data
 
 smoke-test: all
 	@echo "=== Uruchamianie atari-smoke-test ==="
@@ -179,11 +184,6 @@ smoke-test: all
 test: $(ANIM_CHARS_ASM) $(XEX_OUT)
 	@echo "=== Uruchamianie testów jednostkowych (Py65) ==="
 	$(PYTHON) -m pytest tests/
-
-$(PLAYR_ASM): music/rmtplayr.asm scripts/atasm2mads.py
-	-@mkdir $(GEN_DIR)
-	@echo "=== Konwersja Player ATasm → MADS ==="
-	$(PYTHON) scripts/atasm2mads.py -i $< -o $@
 
 # Sprzątanie
 clean:
@@ -199,7 +199,7 @@ help:
 	@echo "  make bg       — konwertuje obraz tła ($(BG_IMG))"
 	@echo "  make sprites  — konwertuje sprite'y (moon + dziki-zgon)"
 	@echo "  make fonts    — konwertuje czcionki (.fnt → .asm)"
-	@echo "  make music    — konwertuje muzykę (.sap → .rmt → .asm → MADS)"
+	@echo "  make music    — konwertuje muzykę (.json → .asm)"
 	@echo "  make clean    — usuwa pliki wygenerowane"
 	@echo "  make help     — ta pomoc"
 	@echo ""

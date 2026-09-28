@@ -1,0 +1,2145 @@
+{
+  "format": "atari-music-composition",
+  "version": 1,
+  "metadata": {
+    "title": "Tajemnica Starego Zamku",
+    "author": "AI Composer",
+    "description": "Title theme in the classic Polish 1980s 8-bit adventure game style (evoking LK Avalon and Mirage Software). Combines a proud, rustic medieval motif with mischievous fantasy swagger.",
+    "key": "D",
+    "mode": "minor",
+    "bpm": 125,
+    "duration_seconds": 61.44
+  },
+  "form_plan": {
+    "form_type": "ternary_variation",
+    "primary_theme_description": "Theme A: Stately yet slightly rustic D minor march with a bouncy heroic motif, driving chiptune bass, and playful counter-arpeggios.",
+    "contrast_theme_description": "Theme B: Mischievous F major/G dorian divertimento, characterized by syncopated call-and-response and humorous staccato ornamentations.",
+    "sections": [
+      {
+        "section_id": "Intro",
+        "pattern_id": "pat_intro",
+        "role": "intro",
+        "variation_of": null,
+        "description": "Rustic fanfaric call in D minor with rising staccato bass pulses."
+      },
+      {
+        "section_id": "Theme_A",
+        "pattern_id": "pat_a1",
+        "role": "theme",
+        "variation_of": null,
+        "description": "Full heroic main melody on Channel 0, walking bass on Channel 1, arpeggiated support on Channel 2, and rhythmic noise percussion on Channel 3."
+      },
+      {
+        "section_id": "Theme_A_Var",
+        "pattern_id": "pat_a2",
+        "role": "variation",
+        "variation_of": "pat_a1",
+        "description": "Theme A continuing with more adventurous melodic leaps and octave embellishments."
+      },
+      {
+        "section_id": "Theme_B",
+        "pattern_id": "pat_b1",
+        "role": "contrast",
+        "variation_of": null,
+        "description": "Humorous, mischievous B theme in relative major/dorian with bouncy rhythms and sudden dynamic drops."
+      },
+      {
+        "section_id": "Theme_B_Var",
+        "pattern_id": "pat_b2",
+        "role": "variation",
+        "variation_of": "pat_b1",
+        "description": "Theme B escalation with rapid lead ornaments and driving percussion leading back to D minor."
+      },
+      {
+        "section_id": "Theme_A_Return",
+        "pattern_id": "pat_a1",
+        "role": "theme",
+        "variation_of": null,
+        "description": "Triumphant return of the main heroic adventure theme."
+      },
+      {
+        "section_id": "Theme_A_Climax",
+        "pattern_id": "pat_a2",
+        "role": "variation",
+        "variation_of": "pat_a1",
+        "description": "Climactic restatement with full energy and resolved cadence."
+      },
+      {
+        "section_id": "Outro",
+        "pattern_id": "pat_outro",
+        "role": "outro",
+        "variation_of": "pat_intro",
+        "description": "Humorous concluding flourish with a definitive Picardy third cadence."
+      }
+    ]
+  },
+  "hardware": {
+    "channels": 4,
+    "use_16bit_bass": false
+  },
+  "instruments": [
+    {
+      "id": "hero_lead",
+      "name": "Knight Lead",
+      "character": "bright_lead",
+      "distortion": 160,
+      "attack_frames": 1,
+      "decay_frames": 4,
+      "sustain_vol": 12,
+      "release_frames": 2
+    },
+    {
+      "id": "wood_flute",
+      "name": "Rustic Counter",
+      "character": "soft_pad",
+      "distortion": 160,
+      "attack_frames": 2,
+      "decay_frames": 6,
+      "sustain_vol": 8,
+      "release_frames": 3
+    },
+    {
+      "id": "goblin_bass",
+      "name": "Chiptune Bass",
+      "character": "bass",
+      "distortion": 192,
+      "attack_frames": 0,
+      "decay_frames": 3,
+      "sustain_vol": 11,
+      "release_frames": 2
+    },
+    {
+      "id": "castle_snare",
+      "name": "Percussion Noise",
+      "character": "percussion",
+      "distortion": 128,
+      "attack_frames": 0,
+      "decay_frames": 3,
+      "sustain_vol": 0,
+      "release_frames": 1
+    }
+  ],
+  "patterns": [
+    {
+      "id": "pat_intro",
+      "length_steps": 64,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 4,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 8,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 12,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "E4",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 13
+          },
+          {
+            "step": 24,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 28,
+            "note": "E4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 32,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 36,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 40,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 14
+          },
+          {
+            "step": 48,
+            "note": "C#5",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 13
+          },
+          {
+            "step": 56,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 60,
+            "note": "E4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 11
+          }
+        ],
+        "1": [
+          {
+            "step": 16,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 24,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 9
+          },
+          {
+            "step": 32,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 40,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 48,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 56,
+            "note": "A1",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 60,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 12
+          }
+        ],
+        "2": [
+          {
+            "step": 32,
+            "note": "F3",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 36,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 40,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 6,
+            "volume": 8
+          },
+          {
+            "step": 48,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 6,
+            "volume": 8
+          },
+          {
+            "step": 56,
+            "note": "C#4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          }
+        ],
+        "3": [
+          {
+            "step": 32,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 40,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 48,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 56,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 60,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 62,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 13
+          }
+        ]
+      },
+      "role": "intro",
+      "variation_of": null,
+      "texture_notes": "Sparse opening call building into full ensemble rhythm."
+    },
+    {
+      "id": "pat_a1",
+      "length_steps": 64,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 4,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 6,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 8,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 14
+          },
+          {
+            "step": 14,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 16,
+            "note": "C5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 20,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 28,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 32,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 14
+          },
+          {
+            "step": 38,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 40,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 44,
+            "note": "E4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 48,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 13
+          },
+          {
+            "step": 54,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 56,
+            "note": "E4",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 12
+          },
+          {
+            "step": 62,
+            "note": "C#4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 11
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 4,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 8,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 12,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 20,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 24,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 10
+          },
+          {
+            "step": 28,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 32,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 36,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 40,
+            "note": "Bb2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 44,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 48,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 52,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 56,
+            "note": "A1",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 60,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 11
+          }
+        ],
+        "2": [
+          {
+            "step": 0,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 4,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 8,
+            "note": "F4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 12,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 16,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 20,
+            "note": "C4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 24,
+            "note": "B3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 28,
+            "note": "C#4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 32,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 36,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 40,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 44,
+            "note": "Bb3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 48,
+            "note": "F3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 52,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 56,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 60,
+            "note": "C#4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 7
+          }
+        ],
+        "3": [
+          {
+            "step": 0,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 12,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 16,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 40,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 44,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 48,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 56,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 60,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          }
+        ]
+      },
+      "role": "theme",
+      "variation_of": null,
+      "texture_notes": "Main adventurous theme with full 4-voice Polish 8-bit orchestration."
+    },
+    {
+      "id": "pat_a2",
+      "length_steps": 64,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 4,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 6,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 8,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 12,
+            "note": "Bb4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 16,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 20,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 24,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 28,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 32,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 36,
+            "note": "Bb4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 40,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 44,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 48,
+            "note": "E4",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 12
+          },
+          {
+            "step": 54,
+            "note": "C#4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 56,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 8,
+            "volume": 14
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 4,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 8,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 12,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "C2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 20,
+            "note": "C3",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 24,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 28,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 36,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 40,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 44,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 48,
+            "note": "A1",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 52,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 56,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 6,
+            "volume": 12
+          },
+          {
+            "step": 62,
+            "note": "C2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          }
+        ],
+        "2": [
+          {
+            "step": 0,
+            "note": "F3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 4,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 8,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 12,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 16,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 20,
+            "note": "C4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 24,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 28,
+            "note": "F3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 32,
+            "note": "Bb3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 36,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 40,
+            "note": "F4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 44,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 48,
+            "note": "C#4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 52,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 7
+          },
+          {
+            "step": 56,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 6,
+            "volume": 9
+          }
+        ],
+        "3": [
+          {
+            "step": 0,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 40,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          },
+          {
+            "step": 48,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 56,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          }
+        ]
+      },
+      "role": "variation",
+      "variation_of": "pat_a1",
+      "texture_notes": "Second phrase of Theme A with complete tonic resolution in D minor."
+    },
+    {
+      "id": "pat_b1",
+      "length_steps": 64,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 4,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "C5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 14,
+            "note": "B4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 16,
+            "note": "C5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 22,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 30,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 32,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 36,
+            "note": "B4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 40,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 46,
+            "note": "C5",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 48,
+            "note": "B4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 54,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 56,
+            "note": "C5",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 14
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 4,
+            "note": "C3",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 8,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 12,
+            "note": "C3",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 16,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 20,
+            "note": "C3",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 24,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 28,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 32,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 36,
+            "note": "D3",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 40,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 44,
+            "note": "D3",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 48,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 52,
+            "note": "D3",
+            "instrument": "goblin_bass",
+            "duration": 2,
+            "volume": 9
+          },
+          {
+            "step": 56,
+            "note": "C2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 60,
+            "note": "E2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 10
+          }
+        ],
+        "2": [
+          {
+            "step": 2,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 6,
+            "note": "C4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 10,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 18,
+            "note": "F4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 26,
+            "note": "C4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 34,
+            "note": "B3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 38,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 42,
+            "note": "B3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 50,
+            "note": "G4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 56,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 60,
+            "note": "G4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          }
+        ],
+        "3": [
+          {
+            "step": 0,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 1,
+            "volume": 10
+          },
+          {
+            "step": 8,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 1,
+            "volume": 10
+          },
+          {
+            "step": 24,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 32,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 1,
+            "volume": 10
+          },
+          {
+            "step": 40,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 48,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 1,
+            "volume": 10
+          },
+          {
+            "step": 56,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          }
+        ]
+      },
+      "role": "contrast",
+      "variation_of": null,
+      "texture_notes": "Playful, light-footed B section with oom-pah style chiptune accompaniment."
+    },
+    {
+      "id": "pat_b2",
+      "length_steps": 64,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 4,
+            "note": "G4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 14,
+            "note": "Bb4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 16,
+            "note": "C5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 22,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 14
+          },
+          {
+            "step": 24,
+            "note": "E5",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 14
+          },
+          {
+            "step": 32,
+            "note": "F5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 38,
+            "note": "E5",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 40,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 46,
+            "note": "C#5",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 48,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 14
+          },
+          {
+            "step": 56,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 60,
+            "note": "E4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 12
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 4,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 8,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 12,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 16,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 20,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 24,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 12
+          },
+          {
+            "step": 28,
+            "note": "E2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 12
+          },
+          {
+            "step": 36,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 10
+          },
+          {
+            "step": 40,
+            "note": "Bb2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 11
+          },
+          {
+            "step": 44,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 3,
+            "volume": 9
+          },
+          {
+            "step": 48,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 56,
+            "note": "A1",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 60,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 11
+          }
+        ],
+        "2": [
+          {
+            "step": 0,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 4,
+            "note": "C4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 7
+          },
+          {
+            "step": 8,
+            "note": "F4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 16,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 2,
+            "volume": 8
+          },
+          {
+            "step": 24,
+            "note": "C#4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 32,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 9
+          },
+          {
+            "step": 40,
+            "note": "G4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 48,
+            "note": "F4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 9
+          },
+          {
+            "step": 56,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 60,
+            "note": "C#4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          }
+        ],
+        "3": [
+          {
+            "step": 0,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 8,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 32,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 40,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 48,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 56,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 60,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 14
+          }
+        ]
+      },
+      "role": "variation",
+      "variation_of": "pat_b1",
+      "texture_notes": "Dramatic escalation and harmonic turnaround preparing the heroic Theme A restatement."
+    },
+    {
+      "id": "pat_outro",
+      "length_steps": 64,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "D4",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 6,
+            "note": "F4",
+            "instrument": "hero_lead",
+            "duration": 2,
+            "volume": 13
+          },
+          {
+            "step": 8,
+            "note": "A4",
+            "instrument": "hero_lead",
+            "duration": 6,
+            "volume": 14
+          },
+          {
+            "step": 16,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 8,
+            "volume": 15
+          },
+          {
+            "step": 28,
+            "note": "C#5",
+            "instrument": "hero_lead",
+            "duration": 4,
+            "volume": 14
+          },
+          {
+            "step": 32,
+            "note": "D5",
+            "instrument": "hero_lead",
+            "duration": 12,
+            "volume": 15
+          },
+          {
+            "step": 48,
+            "note": "F#4",
+            "instrument": "hero_lead",
+            "duration": 14,
+            "volume": 14
+          }
+        ],
+        "1": [
+          {
+            "step": 0,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "F2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "Bb2",
+            "instrument": "goblin_bass",
+            "duration": 6,
+            "volume": 12
+          },
+          {
+            "step": 24,
+            "note": "G2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 28,
+            "note": "A2",
+            "instrument": "goblin_bass",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 32,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 14,
+            "volume": 14
+          },
+          {
+            "step": 48,
+            "note": "D2",
+            "instrument": "goblin_bass",
+            "duration": 14,
+            "volume": 13
+          }
+        ],
+        "2": [
+          {
+            "step": 0,
+            "note": "F3",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 8,
+            "note": "D4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 8
+          },
+          {
+            "step": 16,
+            "note": "F4",
+            "instrument": "wood_flute",
+            "duration": 6,
+            "volume": 9
+          },
+          {
+            "step": 28,
+            "note": "E4",
+            "instrument": "wood_flute",
+            "duration": 4,
+            "volume": 9
+          },
+          {
+            "step": 32,
+            "note": "F#4",
+            "instrument": "wood_flute",
+            "duration": 12,
+            "volume": 10
+          },
+          {
+            "step": 48,
+            "note": "A3",
+            "instrument": "wood_flute",
+            "duration": 14,
+            "volume": 9
+          }
+        ],
+        "3": [
+          {
+            "step": 0,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 8,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 4,
+            "volume": 13
+          },
+          {
+            "step": 28,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 12
+          },
+          {
+            "step": 32,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 6,
+            "volume": 14
+          },
+          {
+            "step": 48,
+            "note": "C4",
+            "instrument": "castle_snare",
+            "duration": 2,
+            "volume": 10
+          }
+        ]
+      },
+      "role": "outro",
+      "variation_of": "pat_intro",
+      "texture_notes": "Triumphant final cadential flourish resolving with a warm Picardy D major third."
+    }
+  ],
+  "sequence": [
+    "pat_intro",
+    "pat_a1",
+    "pat_a2",
+    "pat_b1",
+    "pat_b2",
+    "pat_a1",
+    "pat_a2",
+    "pat_outro"
+  ],
+  "loop_point": 1,
+  "intent": {
+    "style": "1980s Polish 8-bit adventure game title theme",
+    "mood": [
+      "heroic",
+      "adventurous",
+      "humorous",
+      "mischievous"
+    ],
+    "structure": "A-B-A",
+    "composition_notes": "Crafted with authentic POKEY polyphonic voice leading. Features a gallant Slavic minor theme on Channel 0, punchy monophonic basslines on Channel 1, airy counterpoint on Channel 2, and energetic noise percussion accents on Channel 3. The 8 patterns of 64 steps at 125 BPM produce an exact runtime of 61.44 seconds."
+  },
+  "provenance": {
+    "source": "manual_prompt",
+    "provider": "anthropic",
+    "model": "claude-3-7-sonnet",
+    "generated_at": "2025-02-15T12:00:00Z",
+    "request_id": "req_pl_adventure_001"
+  }
+}

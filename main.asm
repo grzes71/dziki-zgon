@@ -154,7 +154,7 @@ main_loop
     lda GAME_STATE
     cmp #STATE_TITLE
     beq @tl
-    jsr title_audio_stop          ; Stop the music on state exit
+    jsr audio_stop                ; Stop the music on state exit
     jmp main_loop
 
 @chk_story
@@ -166,7 +166,7 @@ main_loop
     lda GAME_STATE
     cmp #STATE_STORY
     beq @st
-    jsr title_audio_stop          ; Stop the music on state exit
+    jsr audio_stop                ; Stop the music on state exit
     jmp main_loop
 
 @chk_game
@@ -199,7 +199,7 @@ main_loop
     lda GAME_STATE
     cmp #STATE_OVER
     beq @go
-    jsr title_audio_stop          ; Stop the music on state exit
+    jsr audio_stop                ; Stop the music on state exit
     jmp main_loop
 
 ; ===================================================================
@@ -313,15 +313,32 @@ GO_TEXT_Data = text_contents_gameover_fail
 TitleFooterROM = text_title
 SpriteData = DzikizgonData
 
-; --- RMT Tracker Player & Module ($A9E0 - $B610) ---
-    org $A9E0
-    icl "music/title_audio_player.asm"
+; --- System Audio (Player + 3 utwory + sterownik) ($A800) ---
+    org $A800
+AUDIO_PLAYER_START
+    icl "audio/player.asm"
+AUDIO_PLAYER_END
+
+MUSIC_TITLE_START
+    icl "gen/music_title.asm"
+MUSIC_TITLE_END
+
+MUSIC_INTRO_START
+    icl "gen/music_intro.asm"
+MUSIC_INTRO_END
+
+MUSIC_GAMEOVER_START
+    icl "gen/music_gameover.asm"
+MUSIC_GAMEOVER_END
+
+AUDIO_DRIVER_START
+    icl "audio/audio.asm"
+AUDIO_DRIVER_END
 
 ; --- Procedury i dane pod ROM BASIC ($B611) ---
     org $B611
     icl "scenes/gameover/gameover.asm"
     icl "engine/travel_screen.asm"
-    icl "music/title_audio.asm"
 
 ; --- Sprite'y (Gerwalt + Przeciwnicy) ---
     icl "gen/gerwalt.sprite.asm"

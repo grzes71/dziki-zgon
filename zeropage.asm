@@ -46,6 +46,10 @@ Request_SFX_Step      equ $A7 ; Flaga skrzynki pocztowej: 1 = żądanie odegrani
 Request_SFX_Item      equ $A8 ; Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku podniesienia przedmiotu
 Request_SFX_Interact  equ $A9 ; Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku interakcji z obiektem
 
+;--- Audio Player Zero Page Variables ($CB - $D4: 10 bajtów) ---
+PLAYER_ZP_BASE        equ $CB
+
+
 
 
 

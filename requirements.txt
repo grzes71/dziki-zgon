@@ -1,4 +1,5 @@
 annotated-types==0.7.0
+atari-music @ https://github.com/grzes71/atari-music-composer/releases/download/v0.5.1/atari_music-0.5.1-py3-none-any.whl
 atari-image-converter @ https://github.com/grzes71/py-image-converter/releases/download/v0.3.0/atari_image_converter-0.3.0-py3-none-any.whl
 iniconfig==2.3.0
 numpy==2.5.1

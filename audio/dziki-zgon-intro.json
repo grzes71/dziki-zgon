@@ -1,0 +1,450 @@
+{
+  "format": "atari-music-composition",
+  "version": 1,
+  "metadata": {
+    "title": "Karczma pod Kwicz\u0105cym Dzikiem",
+    "author": "AI Composer",
+    "description": "Sparse, atmospheric medieval intro for a humorous fantasy adventure text game.",
+    "key": "D",
+    "mode": "dorian",
+    "bpm": 60,
+    "duration_seconds": 30.0
+  },
+  "form_plan": {
+    "form_type": "ternary_variation",
+    "primary_theme_description": "Subtle medieval Dorian recorder melody over a warm 16-bit bass drone.",
+    "contrast_theme_description": "Quirky ascending tavern theme with an unexpected leading-tone shift.",
+    "sections": [
+      {
+        "section_id": "A",
+        "pattern_id": "pat_a",
+        "role": "theme",
+        "variation_of": null,
+        "description": "Atmospheric text-intro theme with spacious pacing"
+      },
+      {
+        "section_id": "B",
+        "pattern_id": "pat_b",
+        "role": "contrast",
+        "variation_of": null,
+        "description": "Humorous medieval contrast pattern with playful intervals"
+      },
+      {
+        "section_id": "A_reprise",
+        "pattern_id": "pat_a_reprise",
+        "role": "variation",
+        "variation_of": "pat_a",
+        "description": "Gentle return and resolution of the main theme"
+      }
+    ]
+  },
+  "hardware": {
+    "channels": 3,
+    "use_16bit_bass": true
+  },
+  "instruments": [
+    {
+      "id": "bass",
+      "name": "16-Bit Drone Bass",
+      "character": "bass",
+      "distortion": 160,
+      "attack_frames": 2,
+      "decay_frames": 8,
+      "sustain_vol": 10,
+      "release_frames": 6
+    },
+    {
+      "id": "flute",
+      "name": "Wooden Flute",
+      "character": "dark_lead",
+      "distortion": 160,
+      "attack_frames": 3,
+      "decay_frames": 4,
+      "sustain_vol": 11,
+      "release_frames": 4
+    }
+  ],
+  "patterns": [
+    {
+      "id": "pat_a",
+      "length_steps": 80,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "D2",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "D2",
+            "instrument": "bass",
+            "duration": 10,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "C2",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 10
+          },
+          {
+            "step": 48,
+            "note": "D2",
+            "instrument": "bass",
+            "duration": 14,
+            "volume": 11
+          },
+          {
+            "step": 64,
+            "note": "A1",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 9
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "step": 4,
+            "note": "D3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 12,
+            "note": "F3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "G3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 24,
+            "note": "A3",
+            "instrument": "flute",
+            "duration": 8,
+            "volume": 12
+          },
+          {
+            "step": 36,
+            "note": "B3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 40,
+            "note": "A3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 10
+          },
+          {
+            "step": 48,
+            "note": "F3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 56,
+            "note": "E3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 10
+          },
+          {
+            "step": 64,
+            "note": "D3",
+            "instrument": "flute",
+            "duration": 12,
+            "volume": 12
+          }
+        ]
+      },
+      "role": "theme",
+      "variation_of": null,
+      "texture_notes": "Sparse recorder melody over gentle 16-bit bass drones"
+    },
+    {
+      "id": "pat_b",
+      "length_steps": 80,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "F2",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "G2",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "A2",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 11
+          },
+          {
+            "step": 48,
+            "note": "C2",
+            "instrument": "bass",
+            "duration": 10,
+            "volume": 10
+          },
+          {
+            "step": 64,
+            "note": "A1",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 10
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "step": 4,
+            "note": "A3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 8,
+            "note": "C4",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 12
+          },
+          {
+            "step": 16,
+            "note": "B3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 20,
+            "note": "G3",
+            "instrument": "flute",
+            "duration": 8,
+            "volume": 11
+          },
+          {
+            "step": 32,
+            "note": "A3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 40,
+            "note": "E3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 10
+          },
+          {
+            "step": 48,
+            "note": "G3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 52,
+            "note": "F3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 56,
+            "note": "E3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 9
+          },
+          {
+            "step": 64,
+            "note": "C#3",
+            "instrument": "flute",
+            "duration": 10,
+            "volume": 10
+          }
+        ]
+      },
+      "role": "contrast",
+      "variation_of": null,
+      "texture_notes": "Subtle tavern character with humorous harmonic twists"
+    },
+    {
+      "id": "pat_a_reprise",
+      "length_steps": 88,
+      "channels": {
+        "0": [
+          {
+            "step": 0,
+            "note": "D2",
+            "instrument": "bass",
+            "duration": 14,
+            "volume": 11
+          },
+          {
+            "step": 16,
+            "note": "D2",
+            "instrument": "bass",
+            "duration": 10,
+            "volume": 10
+          },
+          {
+            "step": 32,
+            "note": "G1",
+            "instrument": "bass",
+            "duration": 14,
+            "volume": 10
+          },
+          {
+            "step": 48,
+            "note": "A1",
+            "instrument": "bass",
+            "duration": 12,
+            "volume": 10
+          },
+          {
+            "step": 64,
+            "note": "D2",
+            "instrument": "bass",
+            "duration": 20,
+            "volume": 11
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "step": 4,
+            "note": "D3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 12,
+            "note": "F3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 16,
+            "note": "G3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 11
+          },
+          {
+            "step": 20,
+            "note": "A3",
+            "instrument": "flute",
+            "duration": 10,
+            "volume": 12
+          },
+          {
+            "step": 32,
+            "note": "B3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 11
+          },
+          {
+            "step": 40,
+            "note": "D4",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 12
+          },
+          {
+            "step": 48,
+            "note": "C4",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 10
+          },
+          {
+            "step": 52,
+            "note": "A3",
+            "instrument": "flute",
+            "duration": 6,
+            "volume": 10
+          },
+          {
+            "step": 60,
+            "note": "F3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 9
+          },
+          {
+            "step": 64,
+            "note": "E3",
+            "instrument": "flute",
+            "duration": 4,
+            "volume": 9
+          },
+          {
+            "step": 68,
+            "note": "D3",
+            "instrument": "flute",
+            "duration": 16,
+            "volume": 11
+          }
+        ]
+      },
+      "role": "variation",
+      "variation_of": "pat_a",
+      "texture_notes": "Peaceful resolution with a longer resting pause"
+    }
+  ],
+  "sequence": [
+    "pat_a",
+    "pat_b",
+    "pat_a_reprise"
+  ],
+  "loop_point": 0,
+  "intent": {
+    "style": "medieval fantasy chiptune",
+    "mood": [
+      "mysterious",
+      "atmospheric",
+      "humorous",
+      "subdued"
+    ],
+    "structure": "A-B-A",
+    "composition_notes": "Tailored for comfortable text reading during an introductory screen, with spacious breath pauses and gentle antique harmony."
+  },
+  "provenance": {
+    "source": "composer-assistant",
+    "provider": "atari-pokey-ai",
+    "model": "composer-v1",
+    "generated_at": "2025-01-01T00:00:00Z",
+    "request_id": "req-tavern-intro-01"
+  }
+}
