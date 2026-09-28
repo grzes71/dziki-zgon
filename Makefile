@@ -62,12 +62,14 @@ MUSIC_TITLE_JSON    := audio/dziki-zgon-title.json
 MUSIC_INTRO_JSON    := audio/dziki-zgon-intro.json
 MUSIC_GAMEOVER_FAIL_JSON := audio/dziki-zgon-game-over-failure.json
 MUSIC_GAMEOVER_SUCC_JSON := audio/dziki-zgon-game-over-success.json
+MUSIC_TRAVEL_JSON   := audio/dziki-zgon-travel.json
 
 MUSIC_TITLE_ASM     := $(GEN_DIR)/music_title.asm
 MUSIC_INTRO_ASM     := $(GEN_DIR)/music_intro.asm
 MUSIC_GAMEOVER_FAIL_ASM  := $(GEN_DIR)/music_gameover_failure.asm
 MUSIC_GAMEOVER_SUCC_ASM  := $(GEN_DIR)/music_gameover_success.asm
-ALL_MUSIC_ASM       := $(MUSIC_TITLE_ASM) $(MUSIC_INTRO_ASM) $(MUSIC_GAMEOVER_FAIL_ASM) $(MUSIC_GAMEOVER_SUCC_ASM)
+MUSIC_TRAVEL_ASM    := $(GEN_DIR)/music_travel.asm
+ALL_MUSIC_ASM       := $(MUSIC_TITLE_ASM) $(MUSIC_INTRO_ASM) $(MUSIC_GAMEOVER_FAIL_ASM) $(MUSIC_GAMEOVER_SUCC_ASM) $(MUSIC_TRAVEL_ASM)
 
 TEXTS_SRC := $(wildcard texts/*.txt)
 TEXTS_ASM := $(patsubst texts/%.txt, $(GEN_DIR)/%_text.asm, $(TEXTS_SRC))
@@ -183,6 +185,11 @@ $(MUSIC_GAMEOVER_SUCC_ASM): $(MUSIC_GAMEOVER_SUCC_JSON) scripts/compile_music.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Kompilacja muzyki GameOver Success ($< → $@) ==="
 	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_gameover_success_data
+
+$(MUSIC_TRAVEL_ASM): $(MUSIC_TRAVEL_JSON) scripts/compile_music.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Kompilacja muzyki Travel ($< → $@) ==="
+	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_travel_data
 
 smoke-test: all
 	@echo "=== Uruchamianie atari-smoke-test ==="

@@ -59,20 +59,6 @@ jobs:
             Write-Host "Skipping release: No releasing conventional commit types (feat/fix/breaking) found."
           }
 
-      - name: Commit & Push updated title.txt to main
-        if: steps.semver.outputs.should_release == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add texts/title.txt
-          $status = git status --porcelain
-          if ($status) {
-            git commit -m "chore(release): bump title.txt version to ${{ steps.semver.outputs.version }} [skip ci]"
-            git push origin main
-          } else {
-            Write-Host "No changes in texts/title.txt to commit."
-          }
-
       - name: Install GNU Make
         if: steps.semver.outputs.should_release == 'true'
         run: choco install make -y
@@ -110,6 +96,20 @@ jobs:
             exit 1
           }
           Write-Host "Successfully built dziki_zgon.xex (`$((Get-Item dziki_zgon.xex).Length) bytes)"
+
+      - name: Commit & Push updated title.txt to main
+        if: steps.semver.outputs.should_release == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add texts/title.txt
+          $status = git status --porcelain
+          if ($status) {
+            git commit -m "chore(release): bump title.txt version to ${{ steps.semver.outputs.version }} [skip ci]"
+            git push origin main
+          } else {
+            Write-Host "No changes in texts/title.txt to commit."
+          }
 
       - name: Create GitHub Release
         if: steps.semver.outputs.should_release == 'true'
