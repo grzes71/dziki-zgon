@@ -24,14 +24,14 @@ TitleLineAddrHi
 
 ;==============================================================
 ; title_vbi — Obsługa Immediate VBI dla ekranu tytułowego
-; - Odtwarza muzykę RMT
+; - Odtwarza muzykę w VBI
 ; - Liczy klatki i co 5 sekund (250 klatek przy 50 Hz) cyklicznie przełącza linię tekstu
 ;==============================================================
 .proc title_vbi
     lda #0
     sta ATRACT
 
-    jsr RASTERMUSICTRACKER+3 ; Odtwórz 1 klatkę muzyki RMT
+    jsr music_update ; Odtwórz 1 klatkę muzyki
 
     inc title_timer_frames
     lda title_timer_frames
@@ -239,7 +239,7 @@ TitleLineAddrHi
     ora #$80
     sta DLIST_TITLE+2
 
-    jsr title_audio_init
+    jsr audio_play_title
 
     ; --- Podepnij własny VBI handler (wywołuje tracker + odliczanie klatek) ---
     lda #<title_vbi

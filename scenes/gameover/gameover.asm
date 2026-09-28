@@ -8,13 +8,13 @@ gameover_fire_released
 
 ;==============================================================
 ; gameover_vbi — Obsługa Immediate VBI dla ekranu Game Over
-; - Odtwarza muzykę RMT
+; - Odtwarza muzykę w VBI
 ;==============================================================
 .proc gameover_vbi
     lda #0
     sta ATRACT
 
-    jsr RASTERMUSICTRACKER+3 ; Odtwórz 1 klatkę muzyki RMT
+    jsr music_update ; Odtwórz 1 klatkę muzyki
     jmp SYSVBV
 .endp
 
@@ -64,7 +64,7 @@ gameover_fire_released
     sta SDMCTL
     sta DMACTL
 
-    jsr title_audio_init
+    jsr audio_play_gameover
 
     ; --- Podepnij VBI handler dla muzyki RMT ---
     lda #0

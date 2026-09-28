@@ -45,8 +45,8 @@ fire_released_flag
     sta COLOR1
     sta COLPF1           ; biały tekst (COLPF1 w ANTIC mode 2)
 
-    ; --- Audio ---
-    jsr title_audio_init
+    ; --- Audio (Muzyka Intro / Story) ---
+    jsr audio_play_intro
 
     ; --- DMA ON (playfield, bez PMG) ---
     lda #$22

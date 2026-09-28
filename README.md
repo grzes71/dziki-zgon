@@ -48,11 +48,12 @@ witcher-atari-game/
 ├── lib/
 │   ├── pmg.asm                  # Procedury pomocnicze PMG
 │   └── rle.asm                  # Wspólny dekompresor RLE (6502)
-├── music/                       # Silnik audio i utwory muzyczne
-│   ├── title.sap                # Oryginalny plik muzyki w formacie ASAP (.sap)
-│   ├── title_audio.asm          # Integracja odtwarzacza w VBI, start/stop, wyciszanie POKEY
-│   ├── rmt_feat.asm             # Konfiguracja funkcji (features) odtwarzacza RMT
-│   └── rmtplayr.asm             # Kod asemblera odtwarzacza RMT (mono, relocatable)
+├── audio/                       # Silnik audio i utwory muzyczne (POKEY)
+│   ├── dziki-zgon-title.json    # Motyw ekranu tytułowego
+│   ├── dziki-zgon-intro.json    # Motyw ekranu intro / story
+│   ├── dziki-zgon-game-over.json# Motyw ekranu game over
+│   ├── player.asm               # 4-kanałowy relokowalny odtwarzacz POKEY
+│   └── audio.asm                # Sterownik audio dla scen gry
 ├── scenes/
 │   ├── title/title.asm          # Ekran tytułowy (init + run + DLI + tęcza)
 │   ├── story/story.asm          # Ekran opisu (dekompresja story do stopki)
@@ -137,7 +138,7 @@ make
 make world     # kompiluje wejściowe mapy YAML do zoptymalizowanych struktur ASM
 make sprites   # generuje gen/moon.asm + gen/dziki-zgon.asm
 make bg        # generuje m.in. gen/title.bin, gen/title.rle, gen/title_colors.asm, gen/title_displaylist.asm
-make music     # konwertuje muzykę: music/title.sap -> gen/title_music.asm + music/rmtplayr.asm -> gen/rmtplayr.asm
+make music     # kompiluje utwory: audio/*.json -> gen/music_*.asm za pomocą atari-music
 make clean     # usuwa katalog gen/ oraz plik XEX
 
 # Zmiana obrazu tła
