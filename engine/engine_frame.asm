@@ -8,7 +8,13 @@
     sta ATRACT
 
     ; 1. Odtwarzacz muzyki/dźwięku
+    lda travel_screen_active
+    beq @do_sfx
+    jsr music_update
+    jmp @audio_done
+@do_sfx
     jsr Audio_Update
+@audio_done
 
     ; Animowanie wybranych znaków charsetu podczas gry i aktualizacja czasu
     lda GAME_STATE

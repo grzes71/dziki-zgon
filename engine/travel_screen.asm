@@ -103,6 +103,9 @@ TRAVEL_TEXTS_HI
     sta SDMCTL
     sta DMACTL
 
+    ; Uruchomienie muzyki podróży
+    jsr audio_play_travel
+
     ; 8. Czekaj na puszczenie przycisku FIRE (jeśli gracz trzyma go po wejściu w portal)
 @wait_release
     jsr Engine_WaitFrame
@@ -115,7 +118,8 @@ TRAVEL_TEXTS_HI
     lda TRIG0
     bne @wait_press
 
-    ; 10. Zakończ ekran podróży
+    ; 10. Zakończ ekran podróży i zatrzymaj muzykę
+    jsr audio_stop
     lda #0
     sta travel_screen_active
     lda #$40
