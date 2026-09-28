@@ -51,7 +51,8 @@ witcher-atari-game/
 ├── audio/                       # Silnik audio i utwory muzyczne (POKEY)
 │   ├── dziki-zgon-title.json    # Motyw ekranu tytułowego
 │   ├── dziki-zgon-intro.json    # Motyw ekranu intro / story
-│   ├── dziki-zgon-game-over.json# Motyw ekranu game over
+│   ├── dziki-zgon-game-over-failure.json # Motyw końca gry (porażka)
+│   ├── dziki-zgon-game-over-success.json # Motyw końca gry (sukces)
 │   ├── player.asm               # 4-kanałowy relokowalny odtwarzacz POKEY
 │   └── audio.asm                # Sterownik audio dla scen gry
 ├── scenes/

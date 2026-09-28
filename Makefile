@@ -60,12 +60,14 @@ ROT_CHARS_PROC_ASM := $(GEN_DIR)/rotated_chars_proc.asm
 # Muzyka (Atari POKEY Music)
 MUSIC_TITLE_JSON    := audio/dziki-zgon-title.json
 MUSIC_INTRO_JSON    := audio/dziki-zgon-intro.json
-MUSIC_GAMEOVER_JSON := audio/dziki-zgon-game-over.json
+MUSIC_GAMEOVER_FAIL_JSON := audio/dziki-zgon-game-over-failure.json
+MUSIC_GAMEOVER_SUCC_JSON := audio/dziki-zgon-game-over-success.json
 
 MUSIC_TITLE_ASM     := $(GEN_DIR)/music_title.asm
 MUSIC_INTRO_ASM     := $(GEN_DIR)/music_intro.asm
-MUSIC_GAMEOVER_ASM  := $(GEN_DIR)/music_gameover.asm
-ALL_MUSIC_ASM       := $(MUSIC_TITLE_ASM) $(MUSIC_INTRO_ASM) $(MUSIC_GAMEOVER_ASM)
+MUSIC_GAMEOVER_FAIL_ASM  := $(GEN_DIR)/music_gameover_failure.asm
+MUSIC_GAMEOVER_SUCC_ASM  := $(GEN_DIR)/music_gameover_success.asm
+ALL_MUSIC_ASM       := $(MUSIC_TITLE_ASM) $(MUSIC_INTRO_ASM) $(MUSIC_GAMEOVER_FAIL_ASM) $(MUSIC_GAMEOVER_SUCC_ASM)
 
 TEXTS_SRC := $(wildcard texts/*.txt)
 TEXTS_ASM := $(patsubst texts/%.txt, $(GEN_DIR)/%_text.asm, $(TEXTS_SRC))
@@ -172,10 +174,15 @@ $(MUSIC_INTRO_ASM): $(MUSIC_INTRO_JSON) scripts/compile_music.py
 	@echo "=== Kompilacja muzyki Intro ($< → $@) ==="
 	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_intro_data
 
-$(MUSIC_GAMEOVER_ASM): $(MUSIC_GAMEOVER_JSON) scripts/compile_music.py
+$(MUSIC_GAMEOVER_FAIL_ASM): $(MUSIC_GAMEOVER_FAIL_JSON) scripts/compile_music.py
 	-@mkdir $(GEN_DIR)
-	@echo "=== Kompilacja muzyki GameOver ($< → $@) ==="
-	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_gameover_data
+	@echo "=== Kompilacja muzyki GameOver Failure ($< → $@) ==="
+	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_gameover_failure_data
+
+$(MUSIC_GAMEOVER_SUCC_ASM): $(MUSIC_GAMEOVER_SUCC_JSON) scripts/compile_music.py
+	-@mkdir $(GEN_DIR)
+	@echo "=== Kompilacja muzyki GameOver Success ($< → $@) ==="
+	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_gameover_success_data
 
 smoke-test: all
 	@echo "=== Uruchamianie atari-smoke-test ==="

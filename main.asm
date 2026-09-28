@@ -327,16 +327,20 @@ MUSIC_INTRO_START
     icl "gen/music_intro.asm"
 MUSIC_INTRO_END
 
-MUSIC_GAMEOVER_START
-    icl "gen/music_gameover.asm"
-MUSIC_GAMEOVER_END
+MUSIC_GAMEOVER_FAIL_START
+    icl "gen/music_gameover_failure.asm"
+MUSIC_GAMEOVER_FAIL_END
+
+MUSIC_GAMEOVER_SUCC_START
+    icl "gen/music_gameover_success.asm"
+MUSIC_GAMEOVER_SUCC_END
 
 AUDIO_DRIVER_START
     icl "audio/audio.asm"
 AUDIO_DRIVER_END
 
-; --- Procedury i dane pod ROM BASIC ($B611) ---
-    org $B611
+; --- Procedury i dane pod ROM BASIC ($B800) ---
+    org $B800
     icl "scenes/gameover/gameover.asm"
     icl "engine/travel_screen.asm"
 

@@ -60,11 +60,12 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$A800` – `$AB6F`** | 880 B | `audio_player.asm` | Kod (Odtwarzacz) | 4-kanałowy relokowalny odtwarzacz muzyki POKEY. |
 | **`$AB70` – `$B14D`** | 1502 B | `music_title.asm` | Dane (Muzyka) | Moduł muzyczny ekranu tytułowego (Tajemnica Starego Zamku). |
 | **`$B14E` – `$B2EC`** | 415 B | `music_intro.asm` | Dane (Muzyka) | Moduł muzyczny ekranu fabularnego (Karczma pod Kwiczącym Dzikiem). |
-| **`$B2ED` – `$B4D2`** | 486 B | `music_gameover.asm` | Dane (Muzyka) | Moduł muzyczny ekranu Game Over (Koniec Przygody). |
-| **`$B4D3` – `$B56E`** | 156 B | `audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
-| **`$B61C` – `$B6F1`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
-| **`$B6F2` – `$B79D`** | 172 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
-| **`$B79E` – `$B921`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
+| **`$B2ED` – `$B4D2`** | 486 B | `music_gameover_failure.asm` | Dane (Muzyka) | Moduł muzyczny ekranu Game Over Porażka. |
+| **`$B4D3` – `$B668`** | 406 B | `music_gameover_success.asm` | Dane (Muzyka) | Moduł muzyczny ekranu Game Over Sukces. |
+| **`$B669` – `$B714`** | 172 B | `audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
+| **`$B80B` – `$B8E0`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
+| **`$B8E1` – `$B98C`** | 172 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
+| **`$B98D` – `$BB10`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
 | **`$89A8` – `$917E`** | 2007 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
 
 ---
@@ -78,8 +79,8 @@ Dostępne wolne obszary RAM (zgodne z tabelą powyżej):
 3.  **`$3FE8` – `$3FFF` (24 B)**: Mały bufor pomiędzy Display Listami a areną VRAM.
 4.  **`$5F50` – `$5FFF` (176 B)**: Wolny bufor przed czcionkami.
 5.  **`$84F4` – `$8FFF` (2 828 B)** & **`$9ED8` – `$9FFF` (296 B)**: **Obszar wolnej pamięci RAM** w bloku `$8000–$9FFF` dostępny na rozbudowę danych świata, logiki i ekranów.
-6.  **`$B55B` – `$B61B` (193 B)**: Wolny obszar za modułami audio przed procedurami gry pod ROM-em BASIC.
-7.  **`$BEF9` – `$BFFF` (263 B)**: Wolna pamięć pod ROM-em BASIC-a za sprite'ami postaci.
+6.  **`$B715` – `$B80A` (246 B)**: Wolny obszar za modułami audio przed procedurami gry pod ROM-em BASIC.
+7.  **`$BB11` – `$BFFF` (1 263 B)**: Wolna pamięć pod ROM-em BASIC-a za sprite'ami postaci.
 
 Łącznie czysty, bezpośrednio dostępny wolny RAM w tej chwili to **5 265 B**.
 
