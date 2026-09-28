@@ -37,11 +37,11 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$1FFD` – `$1FFF`** | 3 B | `start` (jump) | Kod programu | Jawny skok `jmp start` uruchamiający inicjalizację gry. |
 | **`$2000` – `$2007`** | 8 B | `disable_basic_loader` | INI Loader | Wyłączenie BASICa (obsługa INI na starcie xex). |
 | **`$2000` – `$202A`** | 43 B | `pmg.asm` | Kod programu | Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`). |
-| **`$202B` – `$3631`** | 5639 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
-| **`$3632` – `$3B6B`** | 1338 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
+| **`$202B` – `$363C`** | 5650 B | `rle.asm` | Kod programu | Wspólna procedura dekompresji RLE (`RLE_Depack`). |
+| **`$363D` – `$3B76`** | 1338 B | `title.asm` | Kod programu | Inicjalizacja, pętla ekranu tytułowego, kolory, DLI. |
 | **`$9D21` – `$9DC4`** | 164 B | `story.asm` | Kod programu | Logika i inicjalizacja ekranu opisu fabularnego (*Story*). |
-| **`$3B6C` – `$3D42`** | 471 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
-| **`$3D43` – `$3E7F`** | 317 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
+| **`$3B77` – `$3D4D`** | 471 B | `game.asm` | Kod programu | Logika gry właściwej (inicjalizacja, ruch gracza, mapa). |
+| **`$3D4E` – `$3E7F`** | 306 B | `main.asm` | Kod programu | Maszyna stanów, pętla główna, `system_init`, `advance_stage`. |
 | **`$3E80` – `$3FE7`** | 360 B | Display Lists | Display Lists | Skonsolidowane Display Listy gry ($3E80-$3FE7, dopasowane do strony 1 KB). |
 | **`$3FE8` – `$3FFF`** | 24 B | — | **WOLNY RAM** | Mały bufor wolnej pamięci przed buforem ekranu. |
 | **`$4000` – `$5E0F`** | 7696 B | `VRAM_ARENA` | VRAM / Bufor | Współdzielona arena wideo (title, game, gameover). |
@@ -62,10 +62,11 @@ Dokument ten opisuje bieżący podział pamięci RAM komputera Atari 800 XL / 65
 | **`$B14E` – `$B2EC`** | 415 B | `music_intro.asm` | Dane (Muzyka) | Moduł muzyczny ekranu fabularnego (Karczma pod Kwiczącym Dzikiem). |
 | **`$B2ED` – `$B4D2`** | 486 B | `music_gameover_failure.asm` | Dane (Muzyka) | Moduł muzyczny ekranu Game Over Porażka. |
 | **`$B4D3` – `$B668`** | 406 B | `music_gameover_success.asm` | Dane (Muzyka) | Moduł muzyczny ekranu Game Over Sukces. |
-| **`$B669` – `$B714`** | 172 B | `audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
-| **`$B80B` – `$B8E0`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
-| **`$B8E1` – `$B98C`** | 172 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
-| **`$B98D` – `$BB10`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
+| **`$B669` – `$B8E5`** | 637 B | `music_travel.asm` | Dane (Muzyka) | Moduł muzyczny ekranu podróży. |
+| **`$B8E6` – `$B991`** | 172 B | `audio.asm` | Kod programu | Sterownik odtwarzacza muzyki dla scen. |
+| **`$B99D` – `$BA72`** | 214 B | `gameover.asm` | Kod programu | Logika i sterowanie ekranu końca gry (GameOver). |
+| **`$BA73` – `$BB24`** | 178 B | `travel_screen.asm` | Kod programu | Logika i renderowanie ekranu podróży. |
+| **`$BB25` – `$BCA8`** | 388 B | `sprites` | Dane (Sprites) | Klatki sprite'ów postaci (Gerwalt + przeciwnicy). |
 | **`$89A8` – `$917E`** | 2007 B | `interactive_objects.asm` | Dane (World) | Obiekty interaktywne na planszach. |
 
 ---

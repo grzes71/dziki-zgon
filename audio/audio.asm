@@ -19,6 +19,13 @@ audio_play_intro
     ldy #>music_intro_data
     jmp audio_start_song
 
+audio_play_travel
+    ldx #<music_travel_data
+    ldy #>music_travel_data
+    jsr music_init
+    jsr music_play
+    rts
+
 audio_play_gameover_failure
     ldx #<music_gameover_failure_data
     ldy #>music_gameover_failure_data
@@ -84,31 +91,24 @@ audio_vblank_handler
 ; --- Zatrzymanie muzyki i wyciszenie POKEY ---
 audio_stop
 title_audio_stop
-    ; Przywróć oryginalny wektor Immediate VBI
-    lda #0
-    sta NMIEN               ; Wyłącz NMI podczas przywracania
-    
+    ; Przywróć oryginalny wektor Immediate VBI tylko, jeśli został wcześniej zapisany ($04+)
     lda orig_vbi+1
     cmp #$04
-    bcs @valid_orig
-    lda #<SYSVBV
-    sta $0222
-    lda #>SYSVBV
-    sta $0223
-    jmp @vbi_restored
+    bcc @vbi_done
 
-@valid_orig
+    lda #0
+    sta NMIEN               ; Wyłącz NMI podczas przywracania
     lda orig_vbi
     sta $0222
     lda orig_vbi+1
     sta $0223
-
-@vbi_restored
     lda #0
     sta orig_vbi
     sta orig_vbi+1
+    lda #$40
     sta NMIEN
 
+@vbi_done
     jsr music_stop
     jsr silence_pokey
     rts
