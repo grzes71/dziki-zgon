@@ -46,6 +46,8 @@
     sta DLISTH
     lda SDMCTL
     sta DMACTL
+    lda GPRIOR
+    sta PRIOR
     lda CHBAS
     sta CHBASE
     lda $02C0

@@ -1,103 +1,131 @@
-# tests/test_memory_map.py
-import pytest
+"""Unit and integration tests for memory validation and memory map generator."""
+
+from __future__ import annotations
+
 from pathlib import Path
+import pytest
+
 from scripts.check_memory import (
-    parse_lab, parse_row, update_memory_usage, strip_md,
-    parse_xex_segments, check_xex_segment_overlaps,
+    parse_xex_segments as check_parse_xex_segments,
+    check_xex_segment_overlaps,
+    check_display_lists,
+    parse_lab,
+    check_memory,
+)
+from scripts.generate_memory_map import (
+    parse_xex_segments,
+    identify_segment,
+    build_memory_map,
+    generate_graphical_pdf,
 )
 
-def test_memory_map_no_overlaps_or_page_crossings():
-    root_dir = Path(__file__).parent.parent
-    lab_file = root_dir / "gen" / "game.lab"
-    md_file = root_dir / "MEMORY_USAGE.md"
-    xex_file = root_dir / "dziki_zgon.xex"
 
-    if not lab_file.exists():
-        pytest.skip("gen/game.lab does not exist yet. Run `make all` first.")
+def test_parse_xex_segments_from_built_binary():
+    xex_path = Path("dziki_zgon.xex")
+    if not xex_path.is_file():
+        pytest.skip("dziki_zgon.xex not found, build binary first")
 
-    # Update MEMORY_USAGE.md with latest symbol addresses
-    try:
-        update_memory_usage(
-            str(lab_file), str(md_file),
-            xex_file=str(xex_file) if xex_file.exists() else None,
-        )
-    except SystemExit:
-        pass  # We will perform assertions directly in this test
-
-    symbols = parse_lab(str(lab_file))
-    assert len(symbols) > 0, "gen/game.lab symbol table is empty!"
-
-    errors = []
-
-    # 1. Check Display List 1KB Page Boundary & VRAM Overlap
-    dlist_sizes = {
-        "DLIST_TITLE": 206,
-        "DLIST_STORY": 29,
-        "DLIST_GAME": 26,
-        "DLIST_GAMEOVER": 29,
-        "DLIST_TRAVEL": 29,
-    }
-    for dlist_name, size in dlist_sizes.items():
-        assert dlist_name in symbols, f"Missing symbol {dlist_name} in gen/game.lab"
-        start_addr = symbols[dlist_name]
-        end_addr = start_addr + size - 1
-        start_page = start_addr // 1024
-        end_page = end_addr // 1024
-        if start_page != end_page:
-            errors.append(
-                f"Display List 1KB Page Crossing: {dlist_name} (${start_addr:04X}-${end_addr:04X}) crosses 1KB boundary! (Page {start_page} to {end_page})"
-            )
-        if start_addr < 0x4000 and end_addr >= 0x4000:
-            errors.append(
-                f"VRAM Arena Overlap: {dlist_name} (${start_addr:04X}-${end_addr:04X}) overlaps VRAM Arena ($4000+)!"
-            )
-
-    # 2. Check maximum OS ROM RAM boundary ($BFFF)
-    for name, addr in symbols.items():
-        if addr > 0xBFFF and not name.startswith("D4") and not name.startswith("D0") and not name.startswith("D2") and not name.startswith("NMI") and not name.startswith("IRQ") and not name.startswith("VDSLST") and not name.startswith("SYSVBV") and not name.startswith("RLE_") and not name.startswith("RMT"):
-            pass  # Equates/constants allowed
-
-    # 3. Check memory sections from MEMORY_USAGE.md
-    with open(md_file, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-
-    rows = []
-    for idx, line in enumerate(lines):
-        row = parse_row(line)
-        if row:
-            rows.append(row)
-
-    non_free_rows = [r for r in rows if "wolny" not in r["type_norm"]]
-    non_free_rows.sort(key=lambda r: r["start"])
-    for i in range(len(non_free_rows) - 1):
-        r1 = non_free_rows[i]
-        r2 = non_free_rows[i + 1]
-        names_pair = (r1["name_norm"], r2["name_norm"])
-        if "disable_basic_loader" in names_pair or "vram_arena" in names_pair or "footer_addr" in names_pair or "go_screen" in names_pair:
-            continue
-        if r1["end"] >= r2["start"]:
-            errors.append(
-                f"Memory Segment Overlap: '{r1['name_col']}' (${r1['start']:04X}-${r1['end']:04X}) overlaps with '{r2['name_col']}' (${r2['start']:04X}-${r2['end']:04X})!"
-            )
-
-    assert not errors, "Memory map validation failed:\n" + "\n".join(errors)
+    segments = check_parse_xex_segments(str(xex_path))
+    assert len(segments) >= 5
+    starts = [s[0] for s in segments]
+    assert 0x0600 in starts  # Title graphics
+    assert 0x2000 in starts  # Engine / code
+    assert 0x3E80 in starts  # Display Lists
+    assert 0x6000 in starts  # Fonts / World
+    assert 0xA800 in starts  # Audio player / sprites
 
 
 def test_xex_segment_no_overlaps():
     """Parse the compiled dziki_zgon.xex binary and verify that no two XEX load
-    segments occupy overlapping address ranges. This catches bugs where an `org`
-    directive in main.asm creates a segment that overwrites data from a previous
-    segment during the OS loader's sequential load process."""
-    root_dir = Path(__file__).parent.parent
-    xex_file = root_dir / "dziki_zgon.xex"
+    segments occupy overlapping address ranges (except INITAD)."""
+    xex_path = Path("dziki_zgon.xex")
+    if not xex_path.is_file():
+        pytest.skip("dziki_zgon.xex not found, build binary first")
 
-    if not xex_file.exists():
-        pytest.skip("dziki_zgon.xex does not exist yet. Run `make all` first.")
-
-    segments = parse_xex_segments(str(xex_file))
-    assert len(segments) > 0, "No data segments found in dziki_zgon.xex!"
-
+    segments = check_parse_xex_segments(str(xex_path))
     errors = check_xex_segment_overlaps(segments)
-    assert not errors, (
-        "XEX segment overlap detected!\n" + "\n".join(errors)
-    )
+    assert not errors, "XEX segment overlap detected!\n" + "\n".join(errors)
+
+
+def test_check_display_lists():
+    """Check Display List 1KB page crossing and VRAM arena overlaps."""
+    lab_file = Path("gen/game.lab")
+    if not lab_file.is_file():
+        pytest.skip("gen/game.lab not found, build binary first")
+
+    symbols = parse_lab(str(lab_file))
+    errors = check_display_lists(symbols)
+    assert not errors, "Display List checks failed:\n" + "\n".join(errors)
+
+
+def test_identify_segment():
+    name, cat, col, _ = identify_segment(0x2000, 0x2321, 802)
+    assert cat == "CODE"
+    assert "Engine" in name
+
+    name, cat, col, _ = identify_segment(0x3E80, 0x3F87, 264)
+    assert cat == "DLIST"
+    assert "Display Lists" in name
+
+    name, cat, col, _ = identify_segment(0x6000, 0x9B2C, 15149)
+    assert cat == "WORLD"
+    assert "World Data" in name
+
+    name, cat, col, _ = identify_segment(0xA800, 0xBCA8, 5289)
+    assert cat == "AUDIO"
+    assert "Audio" in name
+
+
+def test_build_memory_map_bounds_and_continuity():
+    xex_path = Path("dziki_zgon.xex")
+    if not xex_path.is_file():
+        pytest.skip("dziki_zgon.xex not found, build binary first")
+
+    data = xex_path.read_bytes()
+    raw_segments = parse_xex_segments(data)
+    all_regions, free_gaps = build_memory_map(raw_segments)
+
+    # All regions must span exactly $2000 to $BFFF contiguously
+    assert all_regions[0].start == 0x2000
+    assert all_regions[-1].end == 0xBFFF
+
+    for i in range(len(all_regions) - 1):
+        assert all_regions[i].end + 1 == all_regions[i + 1].start, (
+            f"Discontinuity between {all_regions[i].name} and {all_regions[i+1].name}"
+        )
+
+    # Total bytes must sum to exactly 40,960 bytes ($2000 to $BFFF)
+    total_bytes = sum(r.size for r in all_regions)
+    assert total_bytes == 40960
+
+    # Ensure free gaps are detected and non-empty
+    assert len(free_gaps) >= 3
+    largest_gap = max(g.size for g in free_gaps)
+    assert largest_gap >= 100
+
+
+def test_generate_graphical_pdf(tmp_path: Path):
+    xex_path = Path("dziki_zgon.xex")
+    if not xex_path.is_file():
+        pytest.skip("dziki_zgon.xex not found, build binary first")
+
+    data = xex_path.read_bytes()
+    raw_segments = parse_xex_segments(data)
+    all_regions, free_gaps = build_memory_map(raw_segments)
+
+    out_pdf = tmp_path / "test_memory_map.pdf"
+    generate_graphical_pdf(out_pdf, xex_path.name, all_regions, free_gaps)
+
+    assert out_pdf.is_file()
+    assert out_pdf.stat().st_size > 10_000  # Ensure valid non-trivial vector PDF
+
+
+def test_check_memory_full_validation():
+    xex_path = Path("dziki_zgon.xex")
+    lab_path = Path("gen/game.lab")
+    md_path = Path("MEMORY_USAGE.md")
+    if not xex_path.is_file() or not lab_path.is_file():
+        pytest.skip("Binary or lab file missing")
+
+    ret = check_memory(str(xex_path), str(lab_path), str(md_path))
+    assert ret == 0

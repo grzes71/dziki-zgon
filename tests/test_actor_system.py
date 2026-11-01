@@ -697,6 +697,8 @@ def test_player_step_sfx_trigger(harness):
     cpu.memory[labels["ACTOR_Y"]] = 50
     cpu.memory[labels["ACTOR_ANIM_SPEED"]] = 6
     cpu.memory[labels["ACTOR_ANIM_TIMER"]] = 5 # 1 frame away from incrementing anim frame!
+    if "PLAYER_STEP_TIMER" in labels:
+        cpu.memory[labels["PLAYER_STEP_TIMER"]] = 5
     cpu.memory[labels["ACTOR_ANIM_FRAME"]] = 0
     cpu.memory[labels["ACTOR_PTRS_TABLE_LO"]] = labels["GERWALT_PTRS_TABLE"] & 0xFF
     cpu.memory[labels["ACTOR_PTRS_TABLE_HI"]] = (labels["GERWALT_PTRS_TABLE"] >> 8) & 0xFF
@@ -733,6 +735,8 @@ def test_player_diagonal_movement(harness):
     cpu.memory[labels["ACTOR_Y"]] = 50
     cpu.memory[labels["ACTOR_ANIM_SPEED"]] = 6
     cpu.memory[labels["ACTOR_ANIM_TIMER"]] = 5 # 1 frame away from incrementing anim frame
+    if "PLAYER_STEP_TIMER" in labels:
+        cpu.memory[labels["PLAYER_STEP_TIMER"]] = 5
     cpu.memory[labels["ACTOR_ANIM_FRAME"]] = 0
     cpu.memory[labels["ACTOR_PTRS_TABLE_LO"]] = labels["GERWALT_PTRS_TABLE"] & 0xFF
     cpu.memory[labels["ACTOR_PTRS_TABLE_HI"]] = (labels["GERWALT_PTRS_TABLE"] >> 8) & 0xFF
@@ -762,3 +766,54 @@ def test_player_diagonal_movement(harness):
 
 
 
+
+
+def test_player_step_sfx_independent_cadence(harness):
+    """Verify that footstep sound fires every 6 frames while horizontal animation advances every 4 frames."""
+    xex_file, labels = harness
+    cpu = MPU()
+    load_xex(xex_file, cpu.memory)
+
+    # Init Hero facing right
+    cpu.memory[labels["ACTOR_ACTIVE"]] = 1
+    cpu.memory[labels["ACTOR_X"]] = 50
+    cpu.memory[labels["ACTOR_Y"]] = 50
+    cpu.memory[labels["ACTOR_ANIM_SPEED"]] = 4
+    cpu.memory[labels["ACTOR_ANIM_TIMER"]] = 0
+    cpu.memory[labels["ACTOR_ANIM_FRAME"]] = 0
+    if "PLAYER_STEP_TIMER" in labels:
+        cpu.memory[labels["PLAYER_STEP_TIMER"]] = 0
+    cpu.memory[labels["ACTOR_PTRS_TABLE_LO"]] = labels["GERWALT_PTRS_TABLE"] & 0xFF
+    cpu.memory[labels["ACTOR_PTRS_TABLE_HI"]] = (labels["GERWALT_PTRS_TABLE"] >> 8) & 0xFF
+    cpu.memory[labels["ACTOR_ANIM_LIMITS_LO"]] = labels["GERWALT_ANIM_LIMITS"] & 0xFF
+    cpu.memory[labels["ACTOR_ANIM_LIMITS_HI"]] = (labels["GERWALT_ANIM_LIMITS"] >> 8) & 0xFF
+
+    def run_frame():
+        cpu.memory[labels["INPUTSTATE_JOY"]] = 8  # Move Right
+        cpu.sp = 0xFF
+        cpu.pc = labels["START_TEST_PLAYER"]
+        steps = 0
+        while steps < 1000:
+            if cpu.memory[cpu.pc] == 0x00: break
+            cpu.step()
+            steps += 1
+
+    # Frames 1 to 3: anim timer advances, no frame change, no step sound
+    for f in range(1, 4):
+        run_frame()
+        assert cpu.memory[labels["ACTOR_ANIM_FRAME"]] == 0
+        assert cpu.memory[labels["REQUEST_SFX_STEP"]] == 0
+
+    # Frame 4: anim frame increments (speed = 4), but step sfx not yet (requires 6)
+    run_frame()
+    assert cpu.memory[labels["ACTOR_ANIM_FRAME"]] == 1
+    assert cpu.memory[labels["REQUEST_SFX_STEP"]] == 0
+
+    # Frame 5: anim frame 1, no step sfx
+    run_frame()
+    assert cpu.memory[labels["ACTOR_ANIM_FRAME"]] == 1
+    assert cpu.memory[labels["REQUEST_SFX_STEP"]] == 0
+
+    # Frame 6: step sfx triggers!
+    run_frame()
+    assert cpu.memory[labels["REQUEST_SFX_STEP"]] == 1

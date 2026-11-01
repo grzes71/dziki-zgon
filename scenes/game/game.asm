@@ -332,6 +332,14 @@ temp_sub
     inx
     cpx #9
     bne @loop
+
+    lda #HERO_COLOR_0
+    sta game_palette
+    sta ACTOR_COLOR
+    sta $02C0
+    lda #HERO_COLOR_1
+    sta game_palette+1
+    sta $02C1
     rts
 .endp
 
@@ -345,6 +353,7 @@ temp_sub
     sta game_fire_released  ; zresetuj stan przycisku FIRE
     sta GAME_RESULT_STATUS  ; zresetuj status gry (0 = w trakcie)
     sta Request_SFX_Step    ; zresetuj flagę dźwięku kroku
+    sta player_step_timer   ; zresetuj licznik kroku gracza
     sta Request_SFX_Item    ; zresetuj flagę dźwięku przedmiotu
     sta Request_SFX_Interact; zresetuj flagę dźwięku interakcji
 
@@ -375,7 +384,7 @@ temp_sub
     ldx #0
     lda #1
     sta ACTOR_ACTIVE,x
-    lda #6
+    lda #HERO_ANIM_SPEED_HORIZ
     sta ACTOR_ANIM_SPEED,x
     lda #SPRITE_GERWALT_RIGHT_HEIGHT
     sta ACTOR_HEIGHT,x
@@ -425,9 +434,12 @@ temp_sub
     ; --- Inicjalizacja kolorów wybranego etapu ---
     jsr update_stage_colors
 
-    ; Zainicjuj kolor gracza z wczytanej palety regionu
-    lda game_palette
+    ; Zainicjuj kolor gracza
+    lda #HERO_COLOR_0
+    sta game_palette
     sta ACTOR_COLOR
+    lda #HERO_COLOR_1
+    sta game_palette+1
 
     ; --- Display List gry (ANTIC 4/5) ---
     lda #<DLIST_GAME
@@ -494,21 +506,23 @@ temp_sub
     ; --- Inicjalizacja obiektów interaktywnych (INTERACTION_COMPLETE) ---
     jsr iis_init
 
-    ; --- PMG: rozmiar normalny dla gracza, włącz PMG ---
-    lda #$00
+    ; --- PMG: rozmiary normalne dla graczy i pocisków, włącz PMG ---
+    lda #
     sta SIZEP0
-    lda #PRIOR_5TH
+    sta SIZEP1
+    sta SIZEP2
+    sta SIZEP3
+    sta SIZEM
+    lda #PRIOR_HERO_4C_5TH
     sta GPRIOR
     sta PRIOR
     lda #>PMBASE_ADDR
     sta PMBASE
     lda #GRACTL_PM
     sta GRACTL
-    lda #$60
+    lda #
     sta HPOSP0
-
-    ; --- Inicjalizacja 4 pocisków (M0..M3: Y=216..226, X=50, SIZEM=x4) ---
-    jsr init_game_missiles
+    sta HPOSP1
 
 
 
@@ -558,23 +572,7 @@ temp_sub
 ;==============================================================
 ; init_game_missiles — Inicjalizuje 4 pociski (M0..M3)
 ; Wypełnia Y=216..226, pozycja X=50, maksymalna szerokość x4 ($FF)
-;==============================================================
-.proc init_game_missiles
-    ; Szerokość pocisków: x4 dla wszystkich 4 pocisków (M0..M3)
-    lda #$FF
-    sta SIZEM
 
-    ; Wypełnienie pamięci PMG dla pocisków (zakres Y = 216..226)
-    ldx #226
-    lda #$FF
-@loop
-    sta MISSILES,x
-    inx
-    cpx #242
-    bne @loop
-
-    rts
-.endp
 
 ;==============================================================
 ; Przerwania DLI
@@ -591,11 +589,7 @@ temp_sub
     lda #0
     sta HPOSM0
     sta HPOSM1
-
-    lda #48
     sta HPOSM2
-
-    lda #200
     sta HPOSM3
 
     ; Zmień font na font.fnt ($6000 -> CHBASE=$60)

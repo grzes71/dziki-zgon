@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import json
 import os
 import tempfile
 from pathlib import Path
-from dataclasses import asdict
+from typing import Any, Dict
 from sprite_studio.models import Project, Sprite, Animation, Frame
 
 def load_project(path: Path) -> Project:
@@ -22,14 +24,44 @@ def load_project(path: Path) -> Project:
         )
         
         frames = []
+        has_multi_color_pixels = False
         for f_data in s_data.get("frames", []):
-            frames.append(Frame(pixels=f_data.get("pixels", [])))
+            pixels = f_data.get("pixels", [])
+            for row in pixels:
+                if any(c in ('2', '3') for c in row):
+                    has_multi_color_pixels = True
+            frames.append(Frame(pixels=pixels))
             
+        raw_id = s_data.get("id", 1)
+        # Preserve int if numeric, otherwise preserve string
+        if isinstance(raw_id, int) and not isinstance(raw_id, bool):
+            sprite_id = raw_id
+        elif isinstance(raw_id, str) and raw_id.isdigit():
+            sprite_id = int(raw_id)
+        else:
+            sprite_id = str(raw_id)
+
+        description = str(s_data.get("description", ""))
+        
+        # Color mode: explicit or auto-detected if frame contains 2 or 3
+        raw_mode = s_data.get("color_mode")
+        if raw_mode is not None:
+            color_mode = int(raw_mode)
+        elif has_multi_color_pixels:
+            color_mode = 4
+        else:
+            color_mode = 2
+
+        color2 = int(s_data.get("color2", 0))
+
         sprite = Sprite(
-            id=s_data.get("id", "UNKNOWN"),
+            id=sprite_id,
+            description=description,
             width=s_data.get("width", 8),
             height=s_data.get("height", 24),
             color=s_data.get("color", 0),
+            color_mode=color_mode,
+            color2=color2,
             animation=animation,
             frames=frames
         )
@@ -38,25 +70,30 @@ def load_project(path: Path) -> Project:
     return project
 
 def save_project(path: Path, project: Project) -> bool:
-    data = {
+    data: Dict[str, Any] = {
         "version": project.version,
         "sprites": []
     }
     
     for sprite in project.sprites:
-        s_dict = {
+        s_dict: Dict[str, Any] = {
             "id": sprite.id,
+            "description": str(sprite.description),
             "width": sprite.width,
             "height": sprite.height,
             "color": sprite.color,
-            "animation": {
-                "frame_duration": sprite.animation.frame_duration,
-                "loop": sprite.animation.loop
-            },
-            "frames": [
-                {"pixels": frame.pixels} for frame in sprite.frames
-            ]
         }
+        if sprite.color_mode == 4:
+            s_dict["color_mode"] = 4
+            s_dict["color2"] = sprite.color2
+
+        s_dict["animation"] = {
+            "frame_duration": sprite.animation.frame_duration,
+            "loop": sprite.animation.loop
+        }
+        s_dict["frames"] = [
+            {"pixels": frame.pixels} for frame in sprite.frames
+        ]
         data["sprites"].append(s_dict)
         
     try:

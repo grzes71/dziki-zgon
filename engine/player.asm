@@ -29,6 +29,7 @@
     lda #0
     sta ACTOR_ANIM_TIMER,x
     sta ACTOR_ANIM_FRAME,x
+    sta player_step_timer
     jmp @done
 
 @is_moving
@@ -110,7 +111,7 @@
     inc ACTOR_ANIM_TIMER,x
     lda ACTOR_ANIM_TIMER,x
     cmp ACTOR_ANIM_SPEED,x
-    bne @done
+    bcc @check_step_sfx
     
     ; Reset timera
     lda #0
@@ -129,13 +130,20 @@
     inc ACTOR_ANIM_FRAME,x
     lda ACTOR_ANIM_FRAME,x
     cmp (SRC_PTR),y
-    bcc @step_sfx
+    bcc @check_step_sfx
     ; Przekroczono limit, wracamy do klatki 0
     lda #0
     sta ACTOR_ANIM_FRAME,x
 
-@step_sfx
-    ; Zgłoszenie żądania odtworzenia dźwięku kroku (Mailbox pattern)
+@check_step_sfx
+    ; Zgłoszenie żądania odtworzenia dźwięku kroku (stały interwał HERO_STEP_SFX_INTERVAL = 6)
+    inc player_step_timer
+    lda player_step_timer
+    cmp #HERO_STEP_SFX_INTERVAL
+    bcc @done
+    
+    lda #0
+    sta player_step_timer
     lda #1
     sta Request_SFX_Step
 
@@ -153,7 +161,17 @@
     lda #0
     sta ACTOR_ANIM_FRAME,x
     sta ACTOR_ANIM_TIMER,x
+    sta player_step_timer
 @same
+    lda ACTOR_DIR,x
+    cmp #2
+    bcs @vert
+    lda #HERO_ANIM_SPEED_HORIZ
+    sta ACTOR_ANIM_SPEED,x
+    rts
+@vert
+    lda #HERO_ANIM_SPEED_VERT
+    sta ACTOR_ANIM_SPEED,x
     rts
 .endp
 
@@ -188,6 +206,8 @@
 .endp
 
 player_frame_counter
+    dta 0
+player_step_timer
     dta 0
 
 GERWALT_ANIM_LIMITS

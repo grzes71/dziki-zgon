@@ -1,42 +1,63 @@
+from __future__ import annotations
+
+from typing import Optional
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QSlider
 from PySide6.QtGui import QPainter, QColor, QBrush
 from PySide6.QtCore import Qt, QTimer
 
+from sprite_studio.models import Frame, Sprite
+from sprite_studio.palette import get_atari_rgb, mix_atari_colors
+
 class PreviewCanvas(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.frame = None
-        self.sprite_color = QColor(255, 255, 255)
+    def __init__(self, parent: Optional[QWidget] = None):
+        super().__init__(parent)
+        self.frame: Optional[Frame] = None
+        self.color_mode = 2
+        self.color1 = 0
+        self.color2 = 0
+        self.color_mix = 0
         self.zoom = 4
         self.setMinimumSize(32, 100)
 
-    def set_data(self, frame, color_idx, zoom):
+    def set_data(self, frame: Optional[Frame], color_mode: int, color1: int, color2: int, zoom: int):
         self.frame = frame
-        self.sprite_color = QColor(255, 255, 255) # Placeholder mapping
+        self.color_mode = color_mode
+        self.color1 = color1
+        self.color2 = color2
+        self.color_mix = mix_atari_colors(color1, color2)
         self.zoom = zoom
-        self.setMinimumSize(8 * zoom, (len(frame.pixels) if frame else 0) * zoom)
+        h = len(frame.pixels) if frame else 0
+        self.setMinimumSize(8 * zoom, h * zoom)
         self.update()
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.fillRect(self.rect(), QColor(0, 0, 0))
+        painter.fillRect(self.rect(), QColor(0, 0, 0)) # Atari background
         
         if not self.frame:
             return
             
         h = len(self.frame.pixels)
-        painter.setBrush(QBrush(self.sprite_color))
         painter.setPen(Qt.NoPen)
+        rgb1 = get_atari_rgb(self.color1)
+        rgb2 = get_atari_rgb(self.color2)
+        rgb_mix = get_atari_rgb(self.color_mix)
+
         for y in range(h):
             row = self.frame.pixels[y]
             for x in range(8):
-                if row[x] == '1':
-                    painter.drawRect(x * self.zoom, y * self.zoom, self.zoom, self.zoom)
+                c = row[x]
+                if c == '1':
+                    painter.fillRect(x * self.zoom, y * self.zoom, self.zoom, self.zoom, rgb1)
+                elif c == '2' and self.color_mode == 4:
+                    painter.fillRect(x * self.zoom, y * self.zoom, self.zoom, self.zoom, rgb2)
+                elif c == '3' and self.color_mode == 4:
+                    painter.fillRect(x * self.zoom, y * self.zoom, self.zoom, self.zoom, rgb_mix)
 
 class PreviewWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.sprite = None
+    def __init__(self, parent: Optional[QWidget] = None):
+        super().__init__(parent)
+        self.sprite: Optional[Sprite] = None
         self.current_idx = 0
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._on_timeout)
@@ -46,7 +67,7 @@ class PreviewWidget(QWidget):
     def _setup_ui(self):
         layout = QVBoxLayout(self)
         
-        self.canvas = PreviewCanvas()
+        self.canvas = PreviewCanvas(self)
         layout.addWidget(self.canvas)
         
         zoom_layout = QHBoxLayout()
@@ -71,7 +92,7 @@ class PreviewWidget(QWidget):
         btn_layout.addWidget(self.btn_stop)
         layout.addLayout(btn_layout)
 
-    def set_sprite(self, sprite):
+    def set_sprite(self, sprite: Optional[Sprite]):
         self.sprite = sprite
         self.stop()
         
@@ -81,7 +102,7 @@ class PreviewWidget(QWidget):
             
         if not self.timer.isActive():
             duration_ticks = self.sprite.animation.frame_duration
-            ms = int((duration_ticks / self.preview_fps) * 1000)
+            ms = max(10, int((duration_ticks / self.preview_fps) * 1000))
             self.timer.start(ms)
 
     def pause(self):
@@ -108,7 +129,16 @@ class PreviewWidget(QWidget):
         self._update_canvas()
 
     def _update_canvas(self):
-        if self.sprite and self.sprite.frames and 0 <= self.current_idx < len(self.sprite.frames):
-            self.canvas.set_data(self.sprite.frames[self.current_idx], self.sprite.color, self.slider_zoom.value())
-        else:
-            self.canvas.set_data(None, 0, self.slider_zoom.value())
+        if not self.sprite or not self.sprite.frames:
+            self.canvas.set_data(None, 2, 0, 0, self.slider_zoom.value())
+            return
+            
+        idx = max(0, min(self.current_idx, len(self.sprite.frames) - 1))
+        frame = self.sprite.frames[idx]
+        self.canvas.set_data(
+            frame=frame,
+            color_mode=self.sprite.color_mode,
+            color1=self.sprite.color,
+            color2=self.sprite.color2,
+            zoom=self.slider_zoom.value()
+        )

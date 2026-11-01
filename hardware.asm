@@ -136,6 +136,18 @@ HPOS_M      = TITLE_X+$20    ; 5th player — M3 (lewy skraj)
 DMA_PMG_ON  = $3E            ; %00111110 = playfield ON + PMG single-line
 GRACTL_PM   = $03            ; włącz P/M + missiles
 PRIOR_5TH   = $11            ; 5th player mode + players over playfield
+PRIOR_HERO_4C_5TH = $31      ; bit 5 (P0/P1 color OR) + bit 4 (5th player) + bit 0 (players over playfield)
+
+; ---- Kolory bohatera (Gerwalt 4-kolorowy) ----
+HERO_COLOR_0      = $F4      ; kolor Player 0 (warstwa A)
+HERO_COLOR_1      = $18      ; kolor Player 1 (warstwa B)
+HERO_COLOR_MIX    = $FC      ; miks sprzętowy GTIA ($F4 | $18)
+HERO_COLOR_DAMAGE = $34      ; czerwony błysk obrażeń P0
+
+; ---- Szybkość animacji bohatera ----
+HERO_ANIM_SPEED_HORIZ  = 2    ; animacja lewo/prawo (~50% szybsza: co 2 klatki)
+HERO_ANIM_SPEED_VERT   = 4    ; animacja góra/dół (standardowa: co 4 klatek)
+HERO_STEP_SFX_INTERVAL = 8    ; stały interwał dźwięku kroku (co 6 klatek)
 
 ; ---- Stany gry ----
 STATE_TITLE = 0

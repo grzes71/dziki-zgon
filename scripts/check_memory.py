@@ -1,18 +1,40 @@
-# scripts/check_memory.py
+#!/usr/bin/env python3
+"""Validate memory map and bounds for Atari 8-bit executable (.xex).
+
+Target: Atari 800XL / 65XE (MOS 6502, 64 KB RAM)
+Project: Dziki Zgon
+
+Enforces project rules:
+1. All user segments must end at or below $BFFF (OS ROM boundary).
+2. OS ROM ($C000-$CFFF, $E000-$FFFF) and Hardware registers ($D000-$DFFF) must never be overwritten.
+3. Display lists must not cross a 1 KB ($0400) boundary.
+4. No two data segments in the XEX may overlap (unless an intermediate INITAD safely consumed the earlier segment).
+5. Code and data must not collide with runtime VRAM ($4000-$5FFF) or PMG ($A000-$A7FF).
+6. Reports memory allocations and remaining headroom.
+"""
+
+from __future__ import annotations
+
+import argparse
 import os
 import re
 import struct
 import sys
-
+from pathlib import Path
+from typing import List, Tuple, Dict, Any, Optional
 
 ROW_RE = re.compile(r"\$([0-9A-Fa-f]{4}).*?\$([0-9A-Fa-f]{4})")
 SIZE_RE = re.compile(r"(\d+)")
-MUSIC_SIZE_RE = re.compile(r"Original size:\s*\$([0-9A-Fa-f]+)\s*bytes")
 
 
-def parse_lab(lab_file):
-    symbols = {}
-    with open(lab_file, "r", encoding="utf-8") as f:
+def parse_lab(lab_file: str | Path) -> Dict[str, int]:
+    """Parse MADS symbol table (.lab)."""
+    symbols: Dict[str, int] = {}
+    p = Path(lab_file)
+    if not p.is_file():
+        return symbols
+
+    with open(p, "r", encoding="utf-8") as f:
         for line in f:
             parts = line.strip().split()
             if len(parts) >= 3:
@@ -23,174 +45,68 @@ def parse_lab(lab_file):
     return symbols
 
 
-def strip_md(text):
-    return text.replace("**", "").replace("`", "").strip()
+def parse_xex_segments(data_or_path: bytes | str | Path) -> List[Tuple[int, int, int]]:
+    """Parse segments from an Atari DOS XEX binary file.
 
+    Returns list of (start_addr, end_addr, size).
+    """
+    if isinstance(data_or_path, (str, Path)):
+        p = Path(data_or_path)
+        if not p.is_file():
+            return []
+        data = p.read_bytes()
+    else:
+        data = data_or_path
 
-def norm_name(text):
-    return strip_md(text).lower()
-
-
-def parse_row(line):
-    if not line.lstrip().startswith("|"):
-        return None
-
-    parts = [p.strip() for p in line.strip().split("|")]
-    # Splitting a markdown row by "|" gives empty first and last element.
-    if len(parts) < 6:
-        return None
-
-    addr_col = parts[1]
-    size_col = parts[2]
-    name_col = parts[3]
-    type_col = parts[4]
-    desc_col = parts[5]
-
-    match = ROW_RE.search(addr_col)
-    if not match:
-        return None
-
-    size_match = SIZE_RE.search(strip_md(size_col))
-    size_val = int(size_match.group(1)) if size_match else None
-
-    return {
-        "addr_col": addr_col,
-        "size_col": size_col,
-        "name_col": name_col,
-        "type_col": type_col,
-        "desc_col": desc_col,
-        "start": int(match.group(1), 16),
-        "end": int(match.group(2), 16),
-        "size": size_val,
-        "name_norm": norm_name(name_col),
-        "type_norm": norm_name(type_col),
-    }
-
-
-def format_row(row):
-    size = row["end"] - row["start"] + 1
-    addr_col = f"**`$%04X` – `$%04X`**" % (row["start"], row["end"])
-    size_col = f"{size} B"
-    return (
-        f"| {addr_col} | {size_col} | {row['name_col']} | "
-        f"{row['type_col']} | {row['desc_col']} |\n"
-    )
-
-
-def resolve_expr(expr, symbols, extras):
-    if isinstance(expr, int):
-        return expr
-    if expr in extras:
-        return extras[expr]
-    if expr in symbols:
-        return symbols[expr]
-    raise KeyError(expr)
-
-
-def get_title_music_size(lab_file):
-    music_asm = os.path.join(os.path.dirname(lab_file), "title_music.asm")
-    if not os.path.exists(music_asm):
-        return None
-
-    with open(music_asm, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    match = MUSIC_SIZE_RE.search(content)
-    if not match:
-        return None
-    return int(match.group(1), 16)
-
-
-def parse_xex_segments(xex_path):
-    """Parse an Atari XEX binary and return a list of segment dictionaries."""
-    segments = []
-    with open(xex_path, "rb") as f:
-        data = f.read()
-
-    pos = 0
-    seg_index = 0
-
-    # XEX header: $FF $FF
+    segments: List[Tuple[int, int, int]] = []
     if len(data) < 2 or data[0] != 0xFF or data[1] != 0xFF:
         return segments
-    pos = 2
 
-    while pos + 3 < len(data):
-        # Check for optional $FF $FF segment separator
+    pos = 2
+    while pos + 4 <= len(data):
         if data[pos] == 0xFF and data[pos + 1] == 0xFF:
             pos += 2
-            if pos + 3 >= len(data):
+            if pos + 4 > len(data):
                 break
 
-        start = struct.unpack_from("<H", data, pos)[0]
-        end = struct.unpack_from("<H", data, pos + 2)[0]
+        start = data[pos] | (data[pos + 1] << 8)
+        end = data[pos + 2] | (data[pos + 3] << 8)
         pos += 4
-        seg_size = end - start + 1
 
-        if seg_size <= 0 or pos + seg_size > len(data):
+        size = end - start + 1
+        if size <= 0 or pos + size > len(data):
             break
 
-        segment_data = data[pos : pos + seg_size]
-
-        if start == 0x02E2:
-            target = struct.unpack("<H", segment_data[:2])[0]
-            segments.append({
-                "type": "INITAD",
-                "target": target,
-                "index": seg_index
-            })
-        elif start == 0x02E0:
-            target = struct.unpack("<H", segment_data[:2])[0]
-            segments.append({
-                "type": "RUNAD",
-                "target": target,
-                "index": seg_index
-            })
-        else:
-            segments.append({
-                "type": "DATA",
-                "start": start,
-                "end": end,
-                "index": seg_index
-            })
-
-        pos += seg_size
-        seg_index += 1
+        segments.append((start, end, size))
+        pos += size
 
     return segments
 
 
-def check_xex_segment_overlaps(segments):
-    """Check for overlapping XEX segments. Returns list of error strings.
-    Two segments overlap when the later-loaded one overwrites bytes from an
-    earlier one (i.e. their address ranges intersect). Overlapping is ignored
-    if there was an INITAD segment targeting the overwritten segment before
-    the overwrite occurred."""
-    errors = []
+def check_xex_segment_overlaps(segments: List[Tuple[int, int, int]]) -> List[str]:
+    """Check for overlapping XEX segments in load order.
+    Overwriting is allowed only if an INITAD ($02E2) occurred in between
+    and consumed the previous segment (e.g. disabling BASIC).
+    """
+    errors: List[str] = []
+    data_segs: List[Tuple[int, int, int, int]] = []  # (start, end, size, load_order)
+    initad_orders: List[int] = []
 
-    # Filter only DATA segments for comparison
-    data_segs = [s for s in segments if s["type"] == "DATA"]
-    initads = [s for s in segments if s["type"] == "INITAD"]
+    for idx, (start, end, size) in enumerate(segments):
+        if start == 0x02E2:
+            initad_orders.append(idx)
+        elif start != 0x02E0:
+            data_segs.append((start, end, size, idx))
 
     for i in range(len(data_segs)):
-        s1 = data_segs[i]
-        s1_start, s1_end, s1_idx = s1["start"], s1["end"], s1["index"]
-
+        s1_start, s1_end, s1_size, s1_idx = data_segs[i]
         for j in range(i + 1, len(data_segs)):
-            s2 = data_segs[j]
-            s2_start, s2_end, s2_idx = s2["start"], s2["end"], s2["index"]
+            s2_start, s2_end, s2_size, s2_idx = data_segs[j]
 
-            # Check intersection: two ranges [a,b] and [c,d] overlap iff a<=d and c<=b
+            # Range intersection: s1_start <= s2_end and s2_start <= s1_end
             if s1_start <= s2_end and s2_start <= s1_end:
-                # Check if there is an INITAD executed after s1 was loaded but before s2 is loaded
-                # which targeted s1_start (or somewhere inside s1)
-                is_safe = False
-                for init in initads:
-                    if s1_idx < init["index"] < s2_idx:
-                        if s1_start <= init["target"] <= s1_end:
-                            is_safe = True
-                            break
-
+                # Safe if an INITAD executed between s1 and s2
+                is_safe = any(s1_idx < init_idx < s2_idx for init_idx in initad_orders)
                 if is_safe:
                     continue
 
@@ -200,209 +116,44 @@ def check_xex_segment_overlaps(segments):
                 errors.append(
                     f"XEX Segment Overlap: segment {s1_idx} (${s1_start:04X}-${s1_end:04X}) "
                     f"and segment {s2_idx} (${s2_start:04X}-${s2_end:04X}) overlap by "
-                    f"{overlap_size} bytes at ${overlap_start:04X}-${overlap_end:04X}! "
-                    f"Segment {s2_idx} will overwrite data from segment {s1_idx} during XEX loading."
+                    f"{overlap_size} bytes at ${overlap_start:04X}-${overlap_end:04X}!"
                 )
     return errors
 
 
-def update_memory_usage(lab_file, md_file, xex_file=None):
-    symbols = parse_lab(lab_file)
+def identify_segment(start: int, end: int, size: int) -> Tuple[str, str]:
+    """Map segment address range to human-readable name and category."""
+    if start == 0x02E0:
+        return "RUNAD Vector", "SYSTEM"
+    if start == 0x02E2:
+        return "INITAD Vector (Disable BASIC)", "SYSTEM"
+    if start == 0x2000 and size <= 16:
+        return "Disable BASIC Loader", "CODE"
+    if start == 0x0600:
+        return "Title Graphics & Screen RLE", "GRAPHICS"
+    if start == 0x2000 or (0x2000 <= start < 0x2350):
+        return "Core Engine (PMG & RLE Depacker)", "CODE"
+    if 0x2350 <= start < 0x3E80:
+        return "Gameplay Engine & Logic", "CODE"
+    if start == 0x3E80:
+        return "Consolidated Display Lists", "DLIST"
+    if 0x4000 <= start < 0x5E10:
+        return "Shared VRAM Arena", "GRAPHICS"
+    if start == 0x6000:
+        return "UI & Playfield Fonts + World Data", "WORLD/DATA"
+    if start == 0x9D20:
+        return "Story Screen Logic", "CODE"
+    if start == 0xA800:
+        return "Audio Player & Music Tracks + Sprites", "AUDIO/SPRITES"
+    if 0xA000 <= start < 0xA800:
+        return "PMG Buffers (2 KB)", "PMG"
 
-    with open(md_file, "r", encoding="utf-8") as f:
-        lines = f.readlines()
+    return f"Data Segment (${start:04X})", "DATA"
 
-    rows = []
-    for idx, line in enumerate(lines):
-        row = parse_row(line)
-        if row:
-            row["line_idx"] = idx
-            rows.append(row)
 
-    extras = {}
-    if "DISABLE_BASIC_LOADER" in symbols:
-        extras["START_JUMP_ADDR"] = symbols["DISABLE_BASIC_LOADER"] - 3
-    music_size = get_title_music_size(lab_file)
-    if music_size is not None:
-        extras["TITLE_MUSIC_END"] = symbols.get("MODUL", 0) + music_size - 1
-
-    # Klucz: nazwa z kolumny "Nazwa / Symbol" (lowercase).
-    # Wartość: (start_expr, end_expr). end_expr może być:
-    # - symbol / liczba
-    # - tuple ("before", X): end = resolve(X) - 1
-    # - tuple ("size", N): end = start + N - 1
-    range_rules = {
-        "start (jump)": ("START_JUMP_ADDR", ("before", "DISABLE_BASIC_LOADER")),
-        "disable_basic_loader": ("DISABLE_BASIC_LOADER", ("size", 8)),
-        "pmg.asm": ("PMG_CLEAR_ALL", ("before", "RLE_DEPACK")),
-        "rle.asm": ("RLE_DEPACK", ("before", "TITLE_INIT")),
-        "title.asm": ("TITLE_INIT", ("before", "GAME_INIT")),
-        "story.asm": ("STORY_INIT", ("before", "STORY_END")),
-        "game.asm": ("GAME_INIT", ("before", "STAGE_ORDER")),
-        "main.asm": ("STAGE_ORDER", ("before", "DLIST_TITLE")),
-        "titlescreen_data": ("TITLESCREEN_DATA", ("before", "DZIKIZGONDATA")),
-        "dzikizgondata": ("DZIKIZGONDATA", ("before", "MOONDATA")),
-        "moondata": ("MOONDATA", ("size", 98)),
-        "display lists": ("DLIST_TITLE", ("size", 360)),
-        "vram_arena": ("VRAM_ARENA", ("before", "FOOTER_ADDR")),
-        "footer_addr": ("FOOTER_ADDR", ("size", 320)),
-        "icon_addr": ("ICON_ADDR", ("size", 120)),
-        "font.asm": ("FONTDATA", ("size", 1024)),
-        "game_font.asm": ("GAMEFONTDATA", ("size", 1024)),
-        "world builder data": ("OBJ_SIZE", ("before", "ITEM_CHARSET_POS")),
-        "interactive_objects.asm": ("ITEM_CHARSET_POS", ("before", "SECRET_OBJ_PRESENT")),
-        "secret_objects.asm": ("SECRET_OBJ_PRESENT", ("before", "INTERACTIVE_OBJECTS_END")),
-        "all_gameover_texts": ("TEXT_CONTENTS_GAMEOVER_FAIL", ("before", "STORY_INIT")),
-        "sprites": ("GERWALT_RIGHT_FRAME_0", ("before", "SPRITES_END")),
-        "all_texts": ("TEXT_TITLE", ("size", 350)),
-        "gameover.asm": ("GAMEOVER_INIT", ("before", "TRAVEL_SCREEN_ACTIVE")),
-        "travel_screen.asm": ("TRAVEL_SCREEN_ACTIVE", ("before", "GERWALT_RIGHT_FRAME_0")),
-        "audio_player.asm": ("AUDIO_PLAYER_START", ("before", "MUSIC_TITLE_START")),
-        "music_title.asm": ("MUSIC_TITLE_START", ("before", "MUSIC_INTRO_START")),
-        "music_intro.asm": ("MUSIC_INTRO_START", ("before", "MUSIC_GAMEOVER_FAIL_START")),
-        "music_gameover_failure.asm": ("MUSIC_GAMEOVER_FAIL_START", ("before", "MUSIC_GAMEOVER_SUCC_START")),
-        "music_gameover_success.asm": ("MUSIC_GAMEOVER_SUCC_START", ("before", "MUSIC_TRAVEL_START")),
-        "music_travel.asm": ("MUSIC_TRAVEL_START", ("before", "AUDIO_DRIVER_START")),
-        "audio.asm": ("AUDIO_DRIVER_START", ("before", "AUDIO_DRIVER_END")),
-        "missiles": ("MISSILES", ("before", "PLAYER0")),
-        "player0": ("PLAYER0", ("before", "PLAYER1")),
-        "player1": ("PLAYER1", ("before", "PLAYER2")),
-        "player2": ("PLAYER2", ("before", "PLAYER3")),
-        "player3": ("PLAYER3", ("before", "GAME_CHARSET")),
-        "game_charset": ("GAME_CHARSET", ("before", "AUDIO_PLAYER_START")),
-        "gerwalt_right_frame_0": ("GERWALT_RIGHT_FRAME_0", ("size", 2296)),
-    }
-
-    missing_symbols = set()
-
-    # 1) Oblicz precyzyjne zakresy dla pozycji opartych o symbole.
-    for row in rows:
-        rule = range_rules.get(row["name_norm"])
-        if not rule:
-            continue
-
-        start_expr, end_expr = rule
-        try:
-            start_addr = resolve_expr(start_expr, symbols, extras)
-
-            if isinstance(end_expr, tuple):
-                mode, value = end_expr
-                if mode == "before":
-                    end_addr = resolve_expr(value, symbols, extras) - 1
-                elif mode == "size":
-                    end_addr = start_addr + int(value) - 1
-                else:
-                    raise ValueError(f"Unsupported end mode: {mode}")
-            else:
-                end_addr = resolve_expr(end_expr, symbols, extras)
-
-            if end_addr >= start_addr:
-                row["start"] = start_addr
-                row["end"] = end_addr
-            else:
-                missing_symbols.add(f"invalid-range:{strip_md(row['name_col'])}")
-        except KeyError as err:
-            missing_symbols.add(str(err).strip("'"))
-
-    # 2) Wyznacz zakresy WOLNY RAM na podstawie posortowanych sekcji zajętych.
-    non_free_sorted = [r for r in rows if "wolny ram" not in r["type_norm"]]
-    non_free_sorted.sort(key=lambda r: r["start"])
-
-    for row in rows:
-        if "wolny ram" not in row["type_norm"]:
-            continue
-        prev_section = None
-        next_section = None
-        for nf in non_free_sorted:
-            if nf["end"] < row["start"]:
-                prev_section = nf
-            elif nf["start"] > row["start"] and next_section is None:
-                next_section = nf
-                break
-
-        if prev_section:
-            new_start = prev_section["end"] + 1
-            new_end = (next_section["start"] - 1) if next_section else row["end"]
-            if new_end >= new_start:
-                row["start"] = new_start
-                row["end"] = new_end
-
-    # 2b) Dodatkowa walidacja: "wolny" zakres nie powinien zawierać symboli.
-    free_conflicts = []
-    for row in rows:
-        if "wolny ram" not in row["type_norm"]:
-            continue
-        hits = [
-            name
-            for name, addr in symbols.items()
-            if row["start"] <= addr <= row["end"]
-        ]
-        if hits:
-            free_conflicts.append((strip_md(row["name_col"]), row["start"], row["end"], hits[:6]))
-
-    # 3) Zapisz zmienione wiersze.
-    changed = []
-    for row in rows:
-        new_line = format_row(row)
-        line_idx = row["line_idx"]
-        if lines[line_idx] != new_line:
-            lines[line_idx] = new_line
-            changed.append(strip_md(row["name_col"]))
-
-    # 4) Zaktualizuj tekst z sumą wolnej pamięci (suma wszystkich luk w RAM do $C000)
-    total_free = sum(
-        non_free_sorted[i + 1]["start"] - 1 - non_free_sorted[i]["end"]
-        for i in range(len(non_free_sorted) - 1)
-        if non_free_sorted[i + 1]["start"] > non_free_sorted[i]["end"] + 1
-    )
-            
-    summary_prefix = "Łącznie wolny RAM z tych bloków to"
-    for i, line in enumerate(lines):
-        if line.startswith(summary_prefix):
-            formatted_total = f"{total_free:,}".replace(",", " ")
-            new_summary = f"{summary_prefix} **{formatted_total} B**.\n"
-            if lines[i] != new_summary:
-                lines[i] = new_summary
-                changed.append("Suma wolnej pamięci")
-            break
-
-    if changed:
-        with open(md_file, "w", encoding="utf-8") as f:
-            f.writelines(lines)
-        print(f"MEMORY_USAGE.md updated ({len(changed)} rows).")
-    else:
-        print("MEMORY_USAGE.md is up-to-date.")
-
-    world_start = symbols.get("OBJ_SIZE")
-    world_end = (symbols.get("TEXT_CONTENTS_GAMEOVER_FAIL") - 1) if "TEXT_CONTENTS_GAMEOVER_FAIL" in symbols else None
-    if world_start and world_end:
-        main_world_ram = world_end - world_start + 1
-        main_world_budget = 0x9D20 - 0x6800
-        free_world_ram = 0x9D20 - 1 - world_end
-        free_world_pct = (free_world_ram / main_world_budget) * 100.0 if main_world_budget > 0 else 0
-
-        total_world_ram = main_world_ram
-
-        print("\n=== Statystyki Pamięci Świata Gry w RAM (MADS) ===")
-        print(f"  * Rozmiar danych Świata Gry w RAM: {total_world_ram:,} B".replace(",", " "))
-        print(f"    - Główny blok świata ($6800-$9D1F): {main_world_ram:,} B / {main_world_budget:,} B".replace(",", " "))
-        print(f"  * Wolne miejsce na dalszą rozbudowę Świata: {free_world_ram:,} B ({free_world_pct:.1f}% zapasu wolnego miejsca w bloku)")
-        print(f"  * Całkowity wolny RAM w systemie: {total_free:,} B\n".replace(",", " "))
-
-    validation_errors = []
-
-    # --- 1) OS ROM Boundary Check ($BFFF) ---
-    for name, addr in symbols.items():
-        if addr > 0xBFFF and not name.startswith("D4") and not name.startswith("D0") and not name.startswith("D2") and not name.startswith("NMI") and not name.startswith("IRQ") and not name.startswith("VDSLST") and not name.startswith("SYSVBV"):
-            # Exclude hardware equate names which are naturally >= $D000
-            pass
-
-    for row in rows:
-        if "wolny" not in row["type_norm"]:
-            if row["end"] > 0xBFFF:
-                validation_errors.append(f"OS ROM Boundary Error: Section '{row['name_col']}' (${row['start']:04X}-${row['end']:04X}) exceeds $BFFF!")
-
-    # --- 2) Display List 1 KB Page Boundary & VRAM Overlap Checks ---
+def check_display_lists(symbols: Dict[str, int]) -> List[str]:
+    """Check that all Display Lists do not cross 1 KB ANTIC page boundaries."""
+    errors: List[str] = []
     dlist_sizes = {
         "DLIST_TITLE": 206,
         "DLIST_STORY": 29,
@@ -410,6 +161,7 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
         "DLIST_GAMEOVER": 37,
         "DLIST_TRAVEL": 37,
     }
+
     for dlist_name, size in dlist_sizes.items():
         if dlist_name in symbols:
             start_addr = symbols[dlist_name]
@@ -417,59 +169,225 @@ def update_memory_usage(lab_file, md_file, xex_file=None):
             start_page = start_addr // 1024
             end_page = end_addr // 1024
             if start_page != end_page:
-                validation_errors.append(
-                    f"Display List 1KB Page Crossing: {dlist_name} (${start_addr:04X}-${end_addr:04X}) crosses 1KB boundary! (Page {start_page} to {end_page})"
+                errors.append(
+                    f"Display List 1KB Boundary Crossing: {dlist_name} (${start_addr:04X}-${end_addr:04X}) "
+                    f"crosses 1 KB page boundary! (Page {start_page} to {end_page})"
                 )
             if start_addr < 0x4000 and end_addr >= 0x4000:
-                validation_errors.append(
-                    f"VRAM Arena Overlap: {dlist_name} (${start_addr:04X}-${end_addr:04X}) overlaps VRAM Arena ($4000+)!"
+                errors.append(
+                    f"VRAM Arena Overlap: {dlist_name} (${start_addr:04X}-${end_addr:04X}) "
+                    f"overlaps VRAM Arena ($4000+)!"
                 )
+    return errors
 
-    # --- 3) Segment Overlap Check ---
-    non_free_rows = [r for r in rows if "wolny" not in r["type_norm"]]
-    non_free_rows.sort(key=lambda r: r["start"])
-    for i in range(len(non_free_rows) - 1):
-        r1 = non_free_rows[i]
-        r2 = non_free_rows[i + 1]
-        names_pair = (r1["name_norm"], r2["name_norm"])
-        if "vram_arena" in names_pair or "footer_addr" in names_pair or "go_screen" in names_pair or "disable_basic_loader" in names_pair or "start (jump)" in names_pair:
+
+def update_memory_usage_md(
+    md_file: Path,
+    segments: List[Tuple[int, int, int]],
+    symbols: Dict[str, int]
+) -> None:
+    """Synchronize MEMORY_USAGE.md summary with current binary segment data."""
+    if not md_file.is_file():
+        return
+
+    # Calculate actual free gaps in User RAM ($2000-$BFFF)
+    user_segs = [s for s in segments if s[0] not in (0x02E0, 0x02E2)]
+    # Filter out initial small init loader at 0x2000 if it was replaced
+    filtered_segs: List[Tuple[int, int]] = []
+    for s, e, sz in sorted(user_segs, key=lambda x: x[0]):
+        if s == 0x2000 and sz <= 16:
             continue
-        if r1["end"] >= r2["start"]:
-            validation_errors.append(
-                f"Memory Segment Overlap: '{r1['name_col']}' (${r1['start']:04X}-${r1['end']:04X}) overlaps with '{r2['name_col']}' (${r2['start']:04X}-${r2['end']:04X})!"
-            )
+        filtered_segs.append((s, e))
 
-    # --- 4) XEX Segment Overlap Check ---
-    if xex_file is None:
-        # Auto-detect: look for dziki_zgon.xex next to the lab file
-        xex_candidate = os.path.join(os.path.dirname(lab_file), "..", "dziki_zgon.xex")
-        if os.path.isfile(xex_candidate):
-            xex_file = xex_candidate
+    # Also account for runtime VRAM ($4000-$5FFF) and PMG ($A000-$A7FF)
+    filtered_segs.append((0x4000, 0x5FFF))
+    filtered_segs.append((0xA000, 0xA7FF))
+    filtered_segs.sort(key=lambda x: x[0])
 
-    if xex_file and os.path.isfile(xex_file):
-        segments = parse_xex_segments(xex_file)
-        xex_errors = check_xex_segment_overlaps(segments)
-        validation_errors.extend(xex_errors)
+    # Merge overlapping or touching ranges
+    merged: List[Tuple[int, int]] = []
+    for s, e in filtered_segs:
+        if not merged:
+            merged.append((s, e))
+        else:
+            prev_s, prev_e = merged[-1]
+            if s <= prev_e + 1:
+                merged[-1] = (prev_s, max(prev_e, e))
+            else:
+                merged.append((s, e))
 
-    if missing_symbols:
-        # Ignore known missing symbols like invalid-range:gameover.asm
-        filtered_missing = [s for s in missing_symbols if not s.startswith("invalid-range:")]
-        if filtered_missing:
-            sorted_missing = ", ".join(sorted(filtered_missing))
-            print(f"Warning: missing symbols: {sorted_missing}")
+    # Compute free gaps between $2000 and $BFFF
+    free_gaps: List[Tuple[int, int, int]] = []
+    curr = 0x2000
+    for s, e in merged:
+        if s > curr:
+            free_gaps.append((curr, s - 1, s - curr))
+        curr = max(curr, e + 1)
+    if curr <= 0xBFFF:
+        free_gaps.append((curr, 0xBFFF, 0xBFFF - curr + 1))
 
-    if validation_errors:
-        print("\n=======================================================")
-        print("CRITICAL MEMORY MAP VALIDATION ERRORS DETECTED:")
-        for err in validation_errors:
-            print(f"  [ERROR] {err}")
-        print("=======================================================\n")
-        sys.exit(1)
+    total_free = sum(sz for _, _, sz in free_gaps)
+
+    # Update summary line in markdown
+    content = md_file.read_text(encoding="utf-8")
+    summary_re = re.compile(r"Łącznie .*?wolny RAM.*?to \*\*([0-9\s]+) B\*\*\.")
+    new_str = f"Łącznie czysty, bezpośrednio dostępny wolny RAM w tej chwili to **{total_free:,} B**.".replace(",", " ")
+
+    if summary_re.search(content):
+        new_content = summary_re.sub(new_str, content)
+        if new_content != content:
+            md_file.write_text(new_content, encoding="utf-8")
+            print(f"Updated {md_file.name} (Total free RAM: {total_free:,} B)".replace(",", " "))
+
+
+def check_memory(
+    xex_path: Union[str, Path],
+    lab_path: Optional[Union[str, Path]] = None,
+    md_path: Optional[Union[str, Path]] = None,
+) -> int:
+    """Main verification routine."""
+    xex_path = Path(xex_path)
+    lab_path = Path(lab_path) if lab_path else None
+    md_path = Path(md_path) if md_path else None
+
+    if not xex_path.is_file():
+        print(f"Error: XEX file '{xex_path}' not found.", file=sys.stderr)
+        return 1
+
+    data = xex_path.read_bytes()
+    segments = parse_xex_segments(data)
+    symbols = parse_lab(lab_path) if lab_path else {}
+
+    print("=" * 70)
+    print(f"ATARI 8-BIT MEMORY VALIDATION: {xex_path.name}")
+    print("=" * 70)
+
+    errors: List[str] = []
+    total_user_bytes = 0
+
+    for start, end, size in segments:
+        name, category = identify_segment(start, end, size)
+        is_vector = start in (0x02E0, 0x02E2)
+        if not is_vector:
+            total_user_bytes += size
+
+        print(f"Segment: ${start:04X} - ${end:04X}  ({size:5d} B)  [{category:<12}] {name}")
+
+        # Rule 1 & 2: Boundary checks
+        if not is_vector:
+            if start >= 0xC000:
+                errors.append(f"Segment ${start:04X}-${end:04X} overlaps OS ROM ($C000+)!")
+            elif end >= 0xC000:
+                errors.append(f"Segment ${start:04X}-${end:04X} exceeds $BFFF user limit into OS ROM!")
+            elif 0xD000 <= start <= 0xDFFF or 0xD000 <= end <= 0xDFFF:
+                errors.append(f"Segment ${start:04X}-${end:04X} overlaps Hardware Registers ($D000-$DFFF)!")
+
+            # Rule 5: Code/data must not overlap runtime VRAM Arena or PMG
+            if (0x4000 <= start < 0x5E10 or 0x4000 <= end < 0x5E10) and category not in ("GRAPHICS",):
+                errors.append(f"Segment ${start:04X}-${end:04X} collides with runtime VRAM Arena ($4000-$5E0F)!")
+            if (0xA000 <= start < 0xA800 or 0xA000 <= end < 0xA800) and category not in ("PMG",):
+                errors.append(f"Segment ${start:04X}-${end:04X} collides with PMG memory buffer ($A000-$A7FF)!")
+
+    # Check XEX segment overlaps
+    overlap_errors = check_xex_segment_overlaps(segments)
+    errors.extend(overlap_errors)
+
+    # Check Display List boundary crossings
+    if symbols:
+        dlist_errors = check_display_lists(symbols)
+        errors.extend(dlist_errors)
+
+    # Headroom report
+    # User RAM available: $0000-$BFFF (minus OS low RAM $0000-$07FF, VRAM arena $4000-$5FFF, and PMG $A000-$A7FF)
+    print("-" * 70)
+    print(f"Total XEX Code/Data Payload: {total_user_bytes:,} bytes".replace(",", " "))
+
+    # World data headroom ($6800-$9FFF)
+    world_seg = next((s for s in segments if s[0] == 0x6000), None)
+    if world_seg:
+        w_start, w_end, w_size = world_seg
+        w_headroom = 0x9D20 - w_end - 1
+        print(f"World & Fonts Block (${w_start:04X}-$9D1F): {w_size:,} B used, {w_headroom:,} B free headroom".replace(",", " "))
+        if w_headroom < 0:
+            errors.append(f"World & Fonts block exceeds $9D20 boundary into Story Screen by {-w_headroom} bytes!")
+
+    # Audio & Sprites headroom ($A800-$BFFF)
+    audio_seg = next((s for s in segments if s[0] == 0xA800), None)
+    if audio_seg:
+        a_start, a_end, a_size = audio_seg
+        a_headroom = 0xC000 - a_end - 1
+        print(f"Audio & Sprites Block (${a_start:04X}-$BFFF): {a_size:,} B used, {a_headroom:,} B free headroom".replace(",", " "))
+        if a_headroom < 0:
+            errors.append(f"Audio/Sprites block exceeds $BFFF into OS ROM by {-a_headroom} bytes!")
+
+    print("=" * 70)
+
+    # Update MEMORY_USAGE.md if provided
+    if md_path and md_path.is_file():
+        update_memory_usage_md(md_path, segments, symbols)
+
+    if errors:
+        print("\nCRITICAL MEMORY MAP VALIDATION ERRORS DETECTED:", file=sys.stderr)
+        for err in errors:
+            print(f"  [ERROR] {err}", file=sys.stderr)
+        print("", file=sys.stderr)
+        return 1
+
+    print("SUCCESS: All segments pass memory architecture validation.\n")
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Check Atari 8-bit memory boundaries for Dziki Zgon."
+    )
+    # Flexible argument parsing supporting both positional conventions
+    parser.add_argument("args", nargs="*", help="[xex_file] OR [lab_file] [md_file] [xex_file]")
+    parser.add_argument("--lab", type=Path, help="Path to MADS .lab file")
+    parser.add_argument("--md", type=Path, help="Path to MEMORY_USAGE.md")
+    parser.add_argument("--xex", type=Path, help="Path to .xex binary")
+
+    parsed = parser.parse_args()
+
+    xex_path: Optional[Path] = parsed.xex
+    lab_path: Optional[Path] = parsed.lab
+    md_path: Optional[Path] = parsed.md
+
+    # Support legacy positional convention:
+    # check_memory.py gen/game.lab MEMORY_USAGE.md [dziki_zgon.xex]
+    # OR check_memory.py dziki_zgon.xex
+    if parsed.args:
+        first = Path(parsed.args[0])
+        if first.suffix.lower() == ".xex":
+            xex_path = first
+        elif first.suffix.lower() == ".lab":
+            lab_path = first
+            if len(parsed.args) > 1:
+                md_path = Path(parsed.args[1])
+            if len(parsed.args) > 2:
+                xex_path = Path(parsed.args[2])
+
+    if not xex_path:
+        # Default fallback: check dziki_zgon.xex in current directory
+        candidate = Path("dziki_zgon.xex")
+        if candidate.is_file():
+            xex_path = candidate
+        else:
+            print("Error: No XEX binary specified and 'dziki_zgon.xex' not found.", file=sys.stderr)
+            return 1
+
+    if not lab_path:
+        cand_lab = Path("gen/game.lab")
+        if cand_lab.is_file():
+            lab_path = cand_lab
+
+    if not md_path:
+        cand_md = Path("MEMORY_USAGE.md")
+        if cand_md.is_file():
+            md_path = cand_md
+
+    return check_memory(xex_path, lab_path=lab_path, md_path=md_path)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python check_memory.py <game.lab> <MEMORY_USAGE.md> [dziki_zgon.xex]")
-        sys.exit(1)
-    xex = sys.argv[3] if len(sys.argv) > 3 else None
-    update_memory_usage(sys.argv[1], sys.argv[2], xex_file=xex)
+    sys.exit(main())

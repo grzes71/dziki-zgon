@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from typing import Optional
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QListWidget, QListWidgetItem, 
                                QPushButton, QHBoxLayout, QMessageBox)
 from PySide6.QtCore import Signal
@@ -9,9 +12,9 @@ class SpriteListWidget(QWidget):
     delete_requested = Signal(object) # emits Sprite
     copy_requested = Signal(object) # emits Sprite
 
-    def __init__(self):
-        super().__init__()
-        self.project = None
+    def __init__(self, parent: Optional[QWidget] = None):
+        super().__init__(parent)
+        self.project: Optional[Project] = None
         self._setup_ui()
 
     def _setup_ui(self):
@@ -37,9 +40,14 @@ class SpriteListWidget(QWidget):
         btn_layout.addWidget(self.btn_del)
         layout.addLayout(btn_layout)
 
-    def set_project(self, project: Project):
+    def set_project(self, project: Optional[Project]):
         self.project = project
         self.refresh_list()
+
+    def _make_label(self, sprite: Sprite) -> str:
+        mode_tag = "[4C]" if sprite.color_mode == 4 else "[2C]"
+        desc = f": {sprite.description}" if sprite.description else ""
+        return f"{mode_tag} {sprite.id}{desc}"
 
     def refresh_list(self, select_obj=None):
         self.list_widget.blockSignals(True)
@@ -47,7 +55,8 @@ class SpriteListWidget(QWidget):
         
         if self.project:
             for sprite in self.project.sprites:
-                item = QListWidgetItem(sprite.id)
+                label = self._make_label(sprite)
+                item = QListWidgetItem(label)
                 item.setData(100, sprite)
                 self.list_widget.addItem(item)
                 
@@ -63,6 +72,14 @@ class SpriteListWidget(QWidget):
                 self.sprite_selected.emit(self.list_widget.currentItem().data(100))
             else:
                 self.sprite_selected.emit(None)
+
+    def update_sprite_display(self, sprite: Sprite):
+        label = self._make_label(sprite)
+        for i in range(self.list_widget.count()):
+            item = self.list_widget.item(i)
+            if item.data(100) == sprite:
+                item.setText(label)
+                break
 
     def _on_item_changed(self, current: QListWidgetItem, previous: QListWidgetItem):
         if current:

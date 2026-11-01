@@ -82,9 +82,9 @@ WORLD_YAMLS := $(wildcard $(WORLD_DIR)/*.yaml) $(wildcard $(WORLD_DIR)/*/*.yaml)
 WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 
 # ---- Cele ----
-.PHONY: all xex bg sprites texts fonts music world clean run smoke-test test
+.PHONY: all xex bg sprites texts fonts music world clean run smoke-test test check_memory memory_map map
 
-all: texts sprites bg fonts music world $(XEX_OUT) test
+all: texts sprites bg fonts music world $(XEX_OUT) test check_memory
 
 # Updated Makefile rules
 xex: $(XEX_OUT)
@@ -93,7 +93,17 @@ $(XEX_OUT): $(GEN_DIR)/all_texts.asm $(MOON_ASM) $(TITLE_ASM) $(BG_BIN) $(FONT_A
 	@echo "=== Asemblacja $(ASM_MAIN) → $(XEX_OUT) ==="
 	$(MADS) $(ASM_MAIN) -o:$(XEX_OUT) -l:$(GEN_DIR)/game.lst -t:$(GEN_DIR)/game.lab
 	@echo "=== Weryfikacja mapy pamięci ==="
-	$(PYTHON) scripts/check_memory.py $(GEN_DIR)/game.lab MEMORY_USAGE.md
+	$(PYTHON) scripts/check_memory.py $(GEN_DIR)/game.lab MEMORY_USAGE.md $(XEX_OUT)
+
+check_memory: $(XEX_OUT)
+	@echo "=== Weryfikacja mapy pamieci XEX ==="
+	$(PYTHON) scripts/check_memory.py $(XEX_OUT) --lab $(GEN_DIR)/game.lab --md MEMORY_USAGE.md
+
+memory_map: $(XEX_OUT)
+	@echo "=== Generowanie mapy pamieci PDF oraz raportu ==="
+	$(PYTHON) scripts/generate_memory_map.py $(XEX_OUT) --pdf memory_map.pdf
+
+map: memory_map
 
 # Kompilator świata gry
 world: $(WORLD_INC)
