@@ -47,7 +47,6 @@ TitleScreen_Data
     icl "lib/pmg.asm"
     icl "lib/rle.asm"
     icl "lib/world_renderer.asm"
-    icl "lib/text_headers.asm"
     
     ; --- Silnik gry ---
     icl "engine/engine.asm"
@@ -302,6 +301,7 @@ INTERACTIVE_OBJECTS_END
 
 ; --- Scena Story (przeniesiona do wolnego bloku RAM $9D20-$9FFF) ---
     org $9D20
+    icl "lib/text_headers.asm"
     icl "scenes/story/story.asm"
 STORY_END
 
@@ -348,7 +348,7 @@ AUDIO_DRIVER_END
     icl "engine/travel_screen.asm"
 
 ; --- Sprite'y (Gerwalt + Przeciwnicy) ---
-    icl "gen/gerwalt.sprite.asm"
+    icl "gen/gerwalt-color.sprite.asm"
     icl "gen/bazyliszek.sprite.asm"
     icl "gen/kikimora.sprite.asm"
     icl "gen/strzyga.sprite.asm"

@@ -160,3 +160,36 @@ def test_non_indexed_conversion(tmp_path: Path) -> None:
     sprite = result["sprites"][0]
     # Check that it converted correctly and pixel values got mapped to 1
     assert sprite["frames"][0]["pixels"][0] == "01010000"
+
+def test_4color_conversion(tmp_path: Path) -> None:
+    """Test converting an image in 4-color mode."""
+    input_png = tmp_path / "4color.png"
+    # Create indexed image with 4 values: 0, 1, 2, 3
+    img = Image.new("P", (8, 8), 0)
+    palette = [
+        0, 0, 0,        # 0
+        255, 0, 0,      # 1
+        0, 255, 0,      # 2
+        255, 255, 0,    # 3
+    ]
+    palette += [0] * (768 - len(palette))
+    img.putpalette(palette)
+    # Row 0: 0, 1, 2, 3, 0, 1, 2, 3
+    pixels = [0, 1, 2, 3, 0, 1, 2, 3] + [0] * (8 * 7)
+    img.putdata(pixels)
+    img.save(input_png, format="PNG")
+
+    result = convert_png_to_sprite(
+        image_path=input_png,
+        num_frames=1,
+        sprite_id="TEST_4C",
+        color=0x24,
+        color2=0x88,
+        color_mode=4
+    )
+    sprite = result["sprites"][0]
+    assert sprite["id"] == "TEST_4C"
+    assert sprite["color_mode"] == 4
+    assert sprite["color"] == 0x24
+    assert sprite["color2"] == 0x88
+    assert sprite["frames"][0]["pixels"][0] == "01230123"

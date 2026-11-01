@@ -58,7 +58,6 @@
 
     ; Wyczyść pamięć PMG oraz fałszywe kolizje sprzętowe GTIA powstałe podczas rysowania
     jsr pmg_clear_all
-    jsr init_game_missiles
     lda #0
     sta HITCLR
 

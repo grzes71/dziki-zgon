@@ -1,0 +1,65 @@
+# Project History
+
+<!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
+
+## [2026-11-01] - Decouple Footstep SFX Cadence from Animation Speed
+
+- Introduced `HERO_STEP_SFX_INTERVAL = 6` in [hardware.asm](hardware.asm) to maintain standard footstep audio frequency (every 6 frames) independently of the hero's visual sprite animation speed.
+- Added `player_step_timer` in [engine/player.asm](engine/player.asm) to track footstep intervals, decoupling `Request_SFX_Step` from `ACTOR_ANIM_FRAME` increments.
+- Reset `player_step_timer` to 0 on direction change (`set_player_dir`), when stationary (`@move`), and during stage init in [scenes/game/game.asm](scenes/game/game.asm).
+- Updated mock equates in [tests/actor_test.asm](tests/actor_test.asm) and [tests/real_collision_test.asm](tests/real_collision_test.asm).
+- Added `test_player_step_sfx_independent_cadence` to [tests/test_actor_system.py](tests/test_actor_system.py) verifying 6-frame audio cadence during 4-frame sprite animation.
+
+## [2026-11-01] - Increase Hero Left/Right Animation Speed by ~50%
+
+- Added equates HERO_ANIM_SPEED_HORIZ = 4 (~50% faster, 4 frames/step) and HERO_ANIM_SPEED_VERT = 6 (standard, 6 frames/step) in [hardware.asm](hardware.asm).
+- Updated set_player_dir in [engine/player.asm](engine/player.asm) to dynamically set ACTOR_ANIM_SPEED,x to HERO_ANIM_SPEED_HORIZ for horizontal directions (RIGHT, LEFT) and HERO_ANIM_SPEED_VERT for vertical directions (UP, DOWN).
+- Updated animation step condition in [engine/player.asm](engine/player.asm) to cmp ACTOR_ANIM_SPEED,x; bcc @done for robust threshold comparison on speed changes.
+- Set initial hero speed in [scenes/game/game.asm](scenes/game/game.asm) to HERO_ANIM_SPEED_HORIZ matching initial facing direction (RIGHT).
+- Added HERO_ANIM_SPEED_HORIZ and HERO_ANIM_SPEED_VERT mock equates to [tests/actor_test.asm](tests/actor_test.asm) and [tests/real_collision_test.asm](tests/real_collision_test.asm).
+
+## [2026-11-01] - Implement 4-Color Hero (P0+P1) and 5th-Player Enemies (P2, P3, M0-M3)
+
+- Migrated Gerwalt hero sprite to 4-color mode defined in [sprites/gerwalt-color.sprite.json](sprites/gerwalt-color.sprite.json) with Color 1 `$F4` (`PCOLR0`), Color 2 `$18` (`PCOLR1`), and hardware GTIA OR-color mix `$FC`.
+- Updated [scripts/sprite2asm.py](scripts/sprite2asm.py) with label fallback to `description` when `id` is numeric, generating `{sid}_P0_PTRS`, `{sid}_P1_PTRS`, and backward-compatible alias `{sid}_PTRS`.
+- Updated [hardware.asm](hardware.asm) with `PRIOR_HERO_4C_5TH = $31` (enabling GTIA bit 5 color OR-mix, bit 4 fifth-player mode, and bit 0 PMG priority over playfield), alongside hero color equates `HERO_COLOR_0 = $F4`, `HERO_COLOR_1 = $18`, `HERO_COLOR_MIX = $FC`, and `HERO_COLOR_DAMAGE = $34`.
+- Updated [engine/engine_frame.asm](engine/engine_frame.asm) to copy `GPRIOR` to `PRIOR` at VBLANK every frame, preserving the 4-color overlap and 5th-player modes across mid-frame DLI changes.
+- Redesigned PMG rendering engine in [engine/render.asm](engine/render.asm):
+  - Actor 0 (Hero): Renders Layer 0 to `PLAYER0` ($A400) and Layer 1 to `PLAYER1` ($A500) simultaneously with damage flash on `PCOLR0`.
+  - Actors 1 & 2 (Enemies 1 & 2): Unified into an indexed loop rendering to `PLAYER2` ($A600) and `PLAYER3` ($A700) with independent colors `PCOLR2` and `PCOLR3`.
+  - Actor 3 (Enemy 3): Rendered as the 5th player using all 4 missiles in `MISSILES` ($A300) with positions `HPOSM3..0` spaced by 2 color clocks to form a seamless 8px sprite inheriting `COLPF3`.
+- Updated [scenes/game/game.asm](scenes/game/game.asm): configured `SIZEM = $00` (normal 1x missile width), initialized `PRIOR_HERO_4C_5TH`, removed obsolete `init_game_missiles`, hid missiles in `game_dli` status bar interrupt (`HPOSM0..3 = 0`), and updated `update_stage_colors` and `get_collision_damage` to maintain hero colors.
+- Relocated [lib/text_headers.asm](lib/text_headers.asm) to `$9D20` in [main.asm](main.asm), freeing 220 bytes in the lower code arena to resolve XEX segment bounds and ensure 179 bytes of headroom before the Display List at `$3E80`.
+- Updated test harnesses [tests/actor_test.asm](tests/actor_test.asm) and [engine/world.asm](engine/world.asm) to support multi-player equates and pointer tables; all 188 unit and integration tests pass.
+
+## [2026-11-01] - Add Memory Checker and Vector Memory Map Generator
+
+- Modernized [scripts/check_memory.py](scripts/check_memory.py) to parse Atari XEX DOS 2 binaries directly, validate hardware constraints ($BFFF OS ROM boundary, $D000-$DFFF hardware registers, non-overlapping segments with INITAD support, 1 KB Display List crossings), verify runtime arena isolation, and automatically update [MEMORY_USAGE.md](MEMORY_USAGE.md).
+- Created [scripts/generate_memory_map.py](scripts/generate_memory_map.py) providing terminal memory reports, detailed Zero Page allocations, top free memory headroom regions, and vector PDF diagrams (`memory_map.pdf`).
+- Updated [tests/test_memory_map.py](tests/test_memory_map.py) with unit and integration tests covering binary segment parsing, overlap validation, Display List boundary checks, memory map continuity, and PDF generation.
+- Added `check_memory`, `memory_map`, and `map` targets to [Makefile](Makefile), running automated memory validation on every build.
+
+## [2026-11-01] - Add 2-Color and 4-Color Auto-Detection and Thresholding to Image Import
+
+- Added `detect_image_color_mode` in [sprite_studio/image_import.py](sprite_studio/image_import.py) to automatically recognize whether an image is indexed 2-color or indexed 4-color based on palette entries and unique colors.
+- Implemented `convert_frame_to_pixels` in [sprite_studio/image_import.py](sprite_studio/image_import.py) supporting direct pixel-perfect palette extraction for indexed images, and multi-level thresholding (distributing luminance across 4 color levels `0`..`3`) in 4-color mode alongside classic 2-color binarization.
+- Extended [sprite_studio/widgets/import_dialog.py](sprite_studio/widgets/import_dialog.py) with automatic format detection display, `Color Mode` selector (2-color vs 4-color), 4-color thresholding sensitivity, and multi-color frame canvas preview.
+- Updated [sprite_studio/main.py](sprite_studio/main.py) to pass target sprite color context to import dialog and auto-upgrade sprites to 4-color mode when importing 4-color frames.
+- Added comprehensive unit tests in [tests/test_image_import_4color.py](tests/test_image_import_4color.py).
+
+## [2026-11-01] - Add 4-Color PMG Sprite Support to Sprite Studio
+
+- Created [sprite_studio/palette.py](sprite_studio/palette.py) with standard 256 Atari GTIA color palette lookup (`get_atari_rgb`), GTIA hardware OR-color mixing simulation (`mix_atari_colors`), and interactive `AtariColorDialog` picker.
+- Extended [sprite_studio/models.py](sprite_studio/models.py) with `color_mode` (2 or 4), `color2` (Layer 1 color), helper methods `is_4color()`, `get_layer_pixels(idx, layer)`, and static method `combine_layer_frames(p0, p1)`.
+- Updated [sprite_studio/validation.py](sprite_studio/validation.py) to validate `color_mode` (2 or 4), `color2` (0..255), frame pixel characters (`'0'..'3'` in 4-color mode, `'0'..'1'` in 2-color mode), and alphanumeric string or integer IDs.
+- Updated [sprite_studio/io.py](sprite_studio/io.py) to serialize and deserialize `color_mode` and `color2`, with auto-detection for multi-color pixel data and full backward compatibility for existing 2-color sprite files.
+- Extended [sprite_studio/widgets/pixel_editor.py](sprite_studio/widgets/pixel_editor.py) with `PaletteBar` (color swatches for pens 0..3 with Atari RGB colors), 4-color canvas rendering, numeric key shortcuts (`0`, `1`, `2`, `3`), and Layer View filtering (`Combined`, `Layer P0`, `Layer P1`).
+- Updated [sprite_studio/widgets/preview.py](sprite_studio/widgets/preview.py) to animate and render all 4 colors (transparent, color1, color2, overlap mix).
+- Updated [sprite_studio/widgets/properties.py](sprite_studio/widgets/properties.py) with a Color Mode selector, Atari color pickers for Color 1 and Color 2, and real-time computed overlap mix preview.
+- Updated [sprite_studio/widgets/sprite_list.py](sprite_studio/widgets/sprite_list.py) to display `[4C]` or `[2C]` indicators next to sprite IDs.
+- Added Tools menu in [sprite_studio/main.py](sprite_studio/main.py) with "Combine Two Sprites into 4-Color Sprite..." dialog and "Split 4-Color Sprite into Two 2-Color Sprites" actions, complete with Undo/Redo integration.
+- Updated [scripts/sprite2asm.py](scripts/sprite2asm.py) to generate dual-layer PMG bitplanes (`{id}_P0_FRAME_{n}`, `{id}_P1_FRAME_{n}`, `{id}_P0_PTRS`, `{id}_P1_PTRS`, `_IS_4COLOR = 1`, `_COLOR0`, `_COLOR1`, `_COLOR_MIX`) for 4-color sprites, while keeping 2-color output intact.
+- Updated [scripts/png2sprite.py](scripts/png2sprite.py) to support `--colors 4` and `--color2` arguments for converting 4-color PNGs.
+- Updated specification [.sdd/sprite-studio.md](.sdd/sprite-studio.md) to version 2.0 and documentation [SPRITES.md](SPRITES.md).
+- Added test suites in [tests/test_sprite_studio_models.py](tests/test_sprite_studio_models.py), [tests/test_sprite_studio_validation_io.py](tests/test_sprite_studio_validation_io.py), and [tests/test_sprite2asm_4color.py](tests/test_sprite2asm_4color.py).
+
