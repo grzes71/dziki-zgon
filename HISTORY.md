@@ -2,6 +2,14 @@
 
 <!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
 
+## [2026-11-02] - Switch Title Screen Music to Music DSL Format
+
+- Configured title screen audio to use [audio/dziki-zgon-title.dsl](audio/dziki-zgon-title.dsl) as the source of truth for the title theme ("Vaults of Nhyrmeth", 90 BPM, D minor, 16-bit bass).
+- Updated [scripts/compile_music.py](scripts/compile_music.py) to support both `.dsl` and `.json` files via `atari_music.ai.dsl.parse_music_dsl`.
+- Updated [Makefile](Makefile) `MUSIC_TITLE_DSL` and target dependency to build `gen/music_title.asm` from [audio/dziki-zgon-title.dsl](audio/dziki-zgon-title.dsl).
+- Updated [requirements.txt](requirements.txt) to `atari-music` v0.8.0.
+- Regenerated memory map and validated memory layout in [MEMORY_USAGE.md](MEMORY_USAGE.md). All 189 unit/integration tests and smoke test passed.
+
 ## [2026-11-01] - Decouple Footstep SFX Cadence from Animation Speed
 
 - Introduced `HERO_STEP_SFX_INTERVAL = 6` in [hardware.asm](hardware.asm) to maintain standard footstep audio frequency (every 6 frames) independently of the hero's visual sprite animation speed.

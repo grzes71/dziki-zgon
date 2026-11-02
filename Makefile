@@ -58,7 +58,7 @@ ROT_CHARS_GLOBAL_ASM := $(GEN_DIR)/rotated_chars_global.asm
 ROT_CHARS_PROC_ASM := $(GEN_DIR)/rotated_chars_proc.asm
 
 # Muzyka (Atari POKEY Music)
-MUSIC_TITLE_JSON    := audio/dziki-zgon-title.json
+MUSIC_TITLE_DSL     := audio/dziki-zgon-title.dsl
 MUSIC_INTRO_JSON    := audio/dziki-zgon-intro.json
 MUSIC_GAMEOVER_FAIL_JSON := audio/dziki-zgon-game-over-failure.json
 MUSIC_GAMEOVER_SUCC_JSON := audio/dziki-zgon-game-over-success.json
@@ -176,7 +176,7 @@ $(ANIM_CHARS_ASM): $(ANIM_CHARS_JSON) $(ROT_CHARS_JSON) scripts/gen_animated_cha
 # Generowanie muzyki
 music: $(ALL_MUSIC_ASM)
 
-$(MUSIC_TITLE_ASM): $(MUSIC_TITLE_JSON) scripts/compile_music.py
+$(MUSIC_TITLE_ASM): $(MUSIC_TITLE_DSL) scripts/compile_music.py
 	-@mkdir $(GEN_DIR)
 	@echo "=== Kompilacja muzyki Title ($< → $@) ==="
 	$(PYTHON) scripts/compile_music.py -i $< -o $@ -l music_title_data
