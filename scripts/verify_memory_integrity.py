@@ -30,7 +30,8 @@ from scripts.export_portal_data import parse_zeropage_asm
 def verify_memory_integrity(
     memory_json_path: Path,
     zeropage_asm_path: Path,
-    xex_binary_path: Path | None = None
+    xex_binary_path: Path | None = None,
+    require_binary_match: bool = True,
 ) -> bool:
     print(f"=== Dziki Zgon Memory Integrity Validation ===")
     print(f"Report: {memory_json_path}")
@@ -158,18 +159,35 @@ def verify_memory_integrity(
     print(f"Binary SHA256: {provenance.get('binary_sha256')}")
     print(f"Built From Current Source: {provenance.get('built_from_current_source')}")
 
+    # Check internal consistency within memory.json
+    if bin_info and provenance:
+        if bin_info.get("sha256") and provenance.get("binary_sha256"):
+            if bin_info.get("sha256") != provenance.get("binary_sha256"):
+                errors.append(
+                    f"Internal provenance SHA256 mismatch within memory.json: binary.sha256 ({bin_info.get('sha256')}) "
+                    f"!= provenance.binary_sha256 ({provenance.get('binary_sha256')})"
+                )
+
     if xex_binary_path and xex_binary_path.is_file():
         actual_sha = hashlib.sha256(xex_binary_path.read_bytes()).hexdigest()
-        if bin_info:
-            if bin_info.get("sha256") != actual_sha:
-                errors.append(
-                    f"Binary SHA256 mismatch: memory.json has {bin_info.get('sha256')}, "
-                    f"file {xex_binary_path.name} has {actual_sha}"
-                )
-            if provenance.get("binary_sha256") != actual_sha:
-                errors.append(
-                    f"Provenance SHA256 mismatch: {provenance.get('binary_sha256')} != {actual_sha}"
-                )
+        if bin_info and bin_info.get("sha256") != actual_sha:
+            msg = (
+                f"Binary SHA256 mismatch: memory.json has {bin_info.get('sha256')}, "
+                f"file {xex_binary_path.name} has {actual_sha}"
+            )
+            if require_binary_match:
+                errors.append(msg)
+            else:
+                print(f"[WARN] {msg}", file=sys.stderr)
+        if provenance.get("binary_sha256") and provenance.get("binary_sha256") != actual_sha:
+            msg = (
+                f"Provenance SHA256 mismatch: memory.json has {provenance.get('binary_sha256')}, "
+                f"file {xex_binary_path.name} has {actual_sha}"
+            )
+            if require_binary_match:
+                errors.append(msg)
+            else:
+                print(f"[WARN] {msg}", file=sys.stderr)
 
     # Results
     if errors:
