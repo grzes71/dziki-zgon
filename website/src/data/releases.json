@@ -12,11 +12,13 @@
       "date": "2026-11-03",
       "notes": [
         "Created build-time Python data exporter in [scripts/export_portal_data.py](scripts/export_portal_data.py) extracting verified data from single-source-of-truth files into [reports/portal/](reports/portal/) (`game.json`, `world.json`, `objects.json`, `sprites.json`, `assets.json`, `music.json`, `memory.json`, `releases.json`, `latest.json`).",
-        "Added `portal_data` phony target to [Makefile](Makefile) to regenerate and validate all reports without altering existing build steps.",
+        "Added rigorous memory integrity validation in [scripts/verify_memory_integrity.py](scripts/verify_memory_integrity.py) and [tests/test_memory_integrity.py](tests/test_memory_integrity.py): asserts non-overlapping runtime segments, disjoint free gaps, exact 48 KB user RAM arithmetic ($0000–$BFFF = 49,152 B), Zero Page SSOT match against [zeropage.asm](zeropage.asm), and binary SHA256 provenance tracking.",
+        "Clearly partitioned free headroom into Safe Usable Free Space (1,426 B) and Reserved Alignment Buffers (172 B), classifying sub-32B gaps and hardware page padding as unverified/reserved.",
+        "Added `portal_data` phony target to [Makefile](Makefile) to regenerate and validate all reports and memory integrity without altering existing build steps.",
         "Created static Astro & Tailwind CSS portal in [website/](website/) with base URL `/dziki-zgon/`, crisp pixel art rendering (`image-rendering: pixelated`), and toggleable CRT scanlines.",
         "Implemented 10 content pages: Homepage (`/`), Game Story & Controls (`/game/`), World Explorer with 40x12 screen maps and exits (`/world/`), Objects Catalogue (`/objects/`), Graphics & Sprites Gallery (`/gallery/`), POKEY Music Catalogue (`/music/`), 64 KB Memory Map & Zero Page (`/memory/`), Engine Architecture (`/technical/`), Releases & Downloads (`/releases/`), and Development Timeline (`/history/`).",
-        "Configured independent GitHub Actions deployment workflow in [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml) with GitHub Pages automation preserving [.github/workflows/release.yml](.github/workflows/release.yml).",
-        "Added comprehensive unit tests in [tests/test_portal_data.py](tests/test_portal_data.py) validating all schemas against Pydantic models; all 190 tests pass."
+        "Configured independent GitHub Actions deployment workflow in [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml): builds `dziki_zgon.xex` from current source on `push`, `workflow_dispatch`, and PR validation via MADS Linux x86_64, uses published release assets on `release`, and preserves [.github/workflows/release.yml](.github/workflows/release.yml).",
+        "All 191 unit and integration tests pass cleanly with exit code 0."
       ],
       "tag": "v0.5.0",
       "title": "Dziki Zgon v0.5.0",
@@ -155,14 +157,16 @@
     {
       "bullets": [
         "Created build-time Python data exporter in [scripts/export_portal_data.py](scripts/export_portal_data.py) extracting verified data from single-source-of-truth files into [reports/portal/](reports/portal/) (`game.json`, `world.json`, `objects.json`, `sprites.json`, `assets.json`, `music.json`, `memory.json`, `releases.json`, `latest.json`).",
-        "Added `portal_data` phony target to [Makefile](Makefile) to regenerate and validate all reports without altering existing build steps.",
+        "Added rigorous memory integrity validation in [scripts/verify_memory_integrity.py](scripts/verify_memory_integrity.py) and [tests/test_memory_integrity.py](tests/test_memory_integrity.py): asserts non-overlapping runtime segments, disjoint free gaps, exact 48 KB user RAM arithmetic ($0000–$BFFF = 49,152 B), Zero Page SSOT match against [zeropage.asm](zeropage.asm), and binary SHA256 provenance tracking.",
+        "Clearly partitioned free headroom into Safe Usable Free Space (1,426 B) and Reserved Alignment Buffers (172 B), classifying sub-32B gaps and hardware page padding as unverified/reserved.",
+        "Added `portal_data` phony target to [Makefile](Makefile) to regenerate and validate all reports and memory integrity without altering existing build steps.",
         "Created static Astro & Tailwind CSS portal in [website/](website/) with base URL `/dziki-zgon/`, crisp pixel art rendering (`image-rendering: pixelated`), and toggleable CRT scanlines.",
         "Implemented 10 content pages: Homepage (`/`), Game Story & Controls (`/game/`), World Explorer with 40x12 screen maps and exits (`/world/`), Objects Catalogue (`/objects/`), Graphics & Sprites Gallery (`/gallery/`), POKEY Music Catalogue (`/music/`), 64 KB Memory Map & Zero Page (`/memory/`), Engine Architecture (`/technical/`), Releases & Downloads (`/releases/`), and Development Timeline (`/history/`).",
-        "Configured independent GitHub Actions deployment workflow in [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml) with GitHub Pages automation preserving [.github/workflows/release.yml](.github/workflows/release.yml).",
-        "Added comprehensive unit tests in [tests/test_portal_data.py](tests/test_portal_data.py) validating all schemas against Pydantic models; all 190 tests pass."
+        "Configured independent GitHub Actions deployment workflow in [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml): builds `dziki_zgon.xex` from current source on `push`, `workflow_dispatch`, and PR validation via MADS Linux x86_64, uses published release assets on `release`, and preserves [.github/workflows/release.yml](.github/workflows/release.yml).",
+        "All 191 unit and integration tests pass cleanly with exit code 0."
       ],
       "date": "2026-11-03",
-      "title": "Implement Static Official Game Portal (Astro & Python Pipeline)"
+      "title": "Implement Static Official Game Portal & Memory Provenance Pipeline"
     },
     {
       "bullets": [
