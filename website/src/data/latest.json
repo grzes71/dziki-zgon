@@ -1,0 +1,18 @@
+{
+  "binary_name": "dziki_zgon.xex",
+  "binary_size_bytes": 35545,
+  "download_url": "https://github.com/grzes71/dziki-zgon/releases/download/v0.5.0/dziki_zgon.xex",
+  "highlights": [
+    "Created build-time Python data exporter in [scripts/export_portal_data.py](scripts/export_portal_data.py) extracting verified data from single-source-of-truth files into [reports/portal/](reports/portal/) (`game.json`, `world.json`, `objects.json`, `sprites.json`, `assets.json`, `music.json`, `memory.json`, `releases.json`, `latest.json`).",
+    "Added `portal_data` phony target to [Makefile](Makefile) to regenerate and validate all reports without altering existing build steps.",
+    "Created static Astro & Tailwind CSS portal in [website/](website/) with base URL `/dziki-zgon/`, crisp pixel art rendering (`image-rendering: pixelated`), and toggleable CRT scanlines.",
+    "Implemented 10 content pages: Homepage (`/`), Game Story & Controls (`/game/`), World Explorer with 40x12 screen maps and exits (`/world/`), Objects Catalogue (`/objects/`), Graphics & Sprites Gallery (`/gallery/`), POKEY Music Catalogue (`/music/`), 64 KB Memory Map & Zero Page (`/memory/`), Engine Architecture (`/technical/`), Releases & Downloads (`/releases/`), and Development Timeline (`/history/`).",
+    "Configured independent GitHub Actions deployment workflow in [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml) with GitHub Pages automation preserving [.github/workflows/release.yml](.github/workflows/release.yml)."
+  ],
+  "release_date": "2026-11-03",
+  "repository": "https://github.com/grzes71/dziki-zgon",
+  "requirements": "Atari 800 XL / 65 XE, 64 KB RAM, Joystick w porcie 1, telewizor / monitor PAL lub NTSC",
+  "sha256": "05f5510a177ebfd21b7cea319013ab8f3a0c8e488de885731442b84fdfdfdfa0",
+  "tag": "v0.5.0",
+  "version": "0.5.0"
+}

@@ -1,0 +1,241 @@
+---
+import Layout from '../layouts/Layout.astro';
+import objectsData from '../data/objects.json';
+---
+
+<Layout title="Katalog Obiektów" activeTab="objects">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">KATALOG OBIEKTÓW, PRZEDMIOTÓW I WROGÓW</h1>
+      <p class="text-xs text-atari-parchmentMuted">Pełne definicje z plików objects.yaml, items.yaml i enemies.yaml kompilowane do struktur SoA</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="pixel-badge text-xs">OBIEKTY: {objectsData.total_unique_objects}</span>
+      <span class="pixel-badge text-xs">PRZEDMIOTY: {objectsData.total_unique_items}</span>
+      <span class="pixel-badge text-xs">WROGOWIE: {objectsData.total_unique_enemies}</span>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="pixel-box p-4 bg-atari-panel">
+      <div class="text-xs text-atari-parchmentMuted">UNIKALNE OBIEKTY ŚWIATA</div>
+      <div class="text-2xl font-bold text-atari-gold mt-1">{objectsData.total_unique_objects}</div>
+      <p class="text-[11px] text-atari-parchmentMuted mt-1">
+        Drzewa, chaty, płoty, kamienie, mosty i elementy architektury o wymiarach od 1×1 do 6×5 kafli.
+      </p>
+    </div>
+
+    <div class="pixel-box p-4 bg-atari-panel">
+      <div class="text-xs text-atari-parchmentMuted">PRZEDMIOTY EKWIPUNKU</div>
+      <div class="text-2xl font-bold text-atari-gold mt-1">{objectsData.total_unique_items}</div>
+      <p class="text-[11px] text-atari-parchmentMuted mt-1">
+        Flasze bimbru, klucze, miecze, glejty i trofea zbierane do 8 slotów ekwipunku Gerwanta.
+      </p>
+    </div>
+
+    <div class="pixel-box p-4 bg-atari-panel">
+      <div class="text-xs text-atari-parchmentMuted">TYPY PRZECIWNIKÓW</div>
+      <div class="text-2xl font-bold text-atari-crimsonBright mt-1">{objectsData.total_unique_enemies}</div>
+      <p class="text-[11px] text-atari-parchmentMuted mt-1">
+        Potwory patrolujące ścieżki i lasy (Kikimora, Strzyga, Bazyliszek, Sukkub) o zróżnicowanych obrażeniach.
+      </p>
+    </div>
+  </div>
+
+  <!-- Objects Grid & Filter -->
+  <section class="space-y-4 mb-12">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>🧱</span>
+        <span>OBIEKTY ŚWIATA (OBJECT DEFINITIONS)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">{objectsData.objects.length} definicji</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {objectsData.objects.map((obj) => (
+        <div class="pixel-box p-4 space-y-3 bg-atari-dark hover:border-atari-gold transition-colors">
+          <div class="flex items-start justify-between border-b border-atari-border/50 pb-2">
+            <div>
+              <div class="font-bold text-atari-gold text-sm">{obj.id}</div>
+              <div class="text-[10px] text-atari-parchmentMuted">KOD ASM: <strong class="text-atari-parchment">${obj.code.toString(16).toUpperCase()}</strong> ({obj.code})</div>
+            </div>
+            <div class="text-right">
+              <span class="px-2 py-0.5 bg-atari-panel border border-atari-border text-[10px] text-atari-parchment">
+                {obj.size.width}×{obj.size.height} kafi
+              </span>
+            </div>
+          </div>
+
+          <!-- Flags & Attributes -->
+          <div class="flex flex-wrap gap-1.5 text-[10px]">
+            {obj.flags.blocking && (
+              <span class="px-1.5 py-0.5 bg-atari-crimson/20 border border-atari-crimson/50 text-atari-crimsonBright font-bold">
+                BLOKUJĄCY
+              </span>
+            )}
+            {obj.flags.interactive && (
+              <span class="px-1.5 py-0.5 bg-atari-green/20 border border-atari-green/50 text-atari-greenBright font-bold">
+                INTERAKTYWNY (IIS)
+              </span>
+            )}
+            {obj.flags.secret && (
+              <span class="px-1.5 py-0.5 bg-atari-gold/20 border border-atari-gold/50 text-atari-gold font-bold">
+                SEKRET
+              </span>
+            )}
+            {!obj.flags.blocking && !obj.flags.interactive && !obj.flags.secret && (
+              <span class="px-1.5 py-0.5 bg-atari-surface border border-atari-border text-atari-parchmentMuted">
+                TŁO / PASYWNY
+              </span>
+            )}
+          </div>
+
+          <!-- Tiles array -->
+          <div class="bg-atari-darkest p-2 border border-atari-border text-[10px] space-y-1">
+            <div class="text-atari-parchmentMuted flex justify-between">
+              <span>INDEKSY KAFELKÓW (GAME FONT):</span>
+              <span>{obj.tiles.length} znaków</span>
+            </div>
+            <div class="font-mono text-atari-parchment truncate">
+              [{obj.tiles.join(', ')}]
+            </div>
+          </div>
+
+          <!-- Tags & Placement stats -->
+          <div class="text-[11px] space-y-1.5 pt-1 border-t border-atari-border/40">
+            <div class="flex items-center justify-between text-atari-parchmentMuted">
+              <span>Użycie na mapie:</span>
+              <strong class="text-atari-gold">{obj.usage_count} razy</strong>
+            </div>
+
+            {obj.tags.length > 0 && (
+              <div class="flex flex-wrap gap-1 pt-1">
+                {obj.tags.map((tag) => (
+                  <span class="px-1.5 py-0.2 bg-atari-panel text-atari-parchmentMuted text-[9px] border border-atari-border/50">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {obj.regions_found.length > 0 && (
+              <div class="text-[10px] text-atari-parchmentMuted truncate">
+                Regiony: <span class="text-atari-parchment">{obj.regions_found.join(', ')}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Items Section -->
+  <section class="space-y-4 mb-12">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>🎒</span>
+        <span>PRZEDMIOTY EKWIPUNKU (INVENTORY ITEMS)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">{objectsData.items.length} przedmiotów</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {objectsData.items.map((item) => (
+        <div class="pixel-box p-4 space-y-2 bg-atari-dark border border-atari-border hover:border-atari-gold transition-colors">
+          <div class="flex items-center justify-between border-b border-atari-border/50 pb-1.5">
+            <div class="font-bold text-atari-gold text-sm">#{item.id} — {item.description}</div>
+            <span class={`px-1.5 py-0.5 text-[9px] font-bold border ${item.consumable ? 'bg-atari-green/20 border-atari-green text-atari-greenBright' : 'bg-atari-panel border-atari-border text-atari-parchment'}`}>
+              {item.consumable ? 'ZUŻYWALNY' : 'STAŁY'}
+            </span>
+          </div>
+
+          <div class="text-xs text-atari-parchmentMuted flex justify-between">
+            <span>Pozycja w czcionce:</span>
+            <span class="text-atari-parchment font-mono">znak #{item.charset_position}</span>
+          </div>
+
+          {item.placed_instances.length > 0 ? (
+            <div class="bg-atari-darkest p-2 border border-atari-border text-[10px] space-y-1">
+              <div class="text-atari-parchmentMuted font-bold">LOKALIZACJE W ŚWIECIE:</div>
+              <ul class="space-y-0.5">
+                {item.placed_instances.map((inst) => (
+                  <li class="text-atari-parchment truncate">
+                    • <strong class="text-atari-gold">{inst.region}</strong> / {inst.screen} ({inst.x}, {inst.y}) — <span class="italic text-atari-parchmentMuted">{inst.type}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div class="text-[10px] text-atari-parchmentMuted italic">
+              Brak bezpośredniej lokalizacji na mapie (przedmiot questowy / dynamiczny)
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Enemies Section -->
+  <section class="space-y-4">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-crimsonBright flex items-center gap-2">
+        <span>👹</span>
+        <span>BESTIARIUSZ (ENEMIES & MONSTERS)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">{objectsData.enemies.length} gatunków</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {objectsData.enemies.map((enemy) => (
+        <div class="pixel-box p-4 space-y-3 bg-atari-dark border border-atari-crimson/50 hover:border-atari-crimsonBright transition-colors">
+          <div class="flex items-center justify-between border-b border-atari-crimson/30 pb-2">
+            <div>
+              <div class="font-bold text-atari-goldBright text-base">{enemy.name.toUpperCase()}</div>
+              <div class="text-[10px] text-atari-parchmentMuted">ID: {enemy.id}</div>
+            </div>
+            <span class="px-2 py-1 bg-atari-crimson text-white text-xs font-bold">
+              {enemy.damage} DMG
+            </span>
+          </div>
+
+          <div class="space-y-1 text-xs">
+            <div class="flex justify-between">
+              <span class="text-atari-parchmentMuted">Wystąpienia w grze:</span>
+              <strong class="text-atari-parchment">{enemy.instances_count}</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-atari-parchmentMuted">Dedykowany duszek:</span>
+              <span class="text-atari-gold">{enemy.id}.sprite.json</span>
+            </div>
+          </div>
+
+          {enemy.regions_found.length > 0 && (
+            <div class="bg-atari-darkest p-2 border border-atari-border text-[10px] space-y-1">
+              <span class="text-atari-parchmentMuted block">OBSZAR WYSTĘPOWANIA:</span>
+              <div class="text-atari-parchment">{enemy.regions_found.join(', ')}</div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <!-- Enemy Palette Mapping -->
+    <div class="pixel-box p-4 bg-atari-panel mt-4">
+      <div class="text-xs font-bold text-atari-gold mb-2">MAPOWANIE KOLORÓW WROGÓW (GTIA HARDWARE REGISTERS)</div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 text-xs">
+        {Object.entries(objectsData.enemy_colors).map(([cName, cDef]) => (
+          <div class="p-2 bg-atari-dark border border-atari-border flex items-center gap-2">
+            <div class="w-4 h-4 border border-black flex-shrink-0" style={`background-color: ${cDef.hex};`}></div>
+            <div class="truncate">
+              <div class="font-bold text-atari-parchment text-[11px]">{cName}</div>
+              <div class="text-[9px] text-atari-parchmentMuted">${cDef.atari.toString(16).toUpperCase()}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

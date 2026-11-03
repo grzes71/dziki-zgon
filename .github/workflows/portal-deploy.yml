@@ -1,0 +1,111 @@
+name: Deploy Portal to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types:
+      - published
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Portal
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Mad-Assembler (MADS)
+        run: |
+          sudo curl -sSL -f "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/linux_x86_64/mads" -o /usr/local/bin/mads
+          sudo chmod +x /usr/local/bin/mads
+
+      # For push, workflow_dispatch, pull_request: build binary directly from current checked-out source
+      - name: Build Game Binary from Current Source
+        if: github.event_name != 'release'
+        run: |
+          make all
+
+      # For published release: fetch exact release asset, or build release tag source if asset missing
+      - name: Resolve Release Binary
+        if: github.event_name == 'release'
+        run: |
+          curl -sSL -f "https://github.com/grzes71/dziki-zgon/releases/download/${{ github.event.release.tag_name }}/dziki_zgon.xex" -o "dziki_zgon.xex" || {
+            echo "Release asset not available yet via direct download, building from tag source..."
+            make all
+          }
+
+      - name: Extract & Validate Portal Data (JSON)
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            python scripts/export_portal_data.py --root-dir . --out-dir reports/portal --binary-source release_asset --release-tag "${{ github.event.release.tag_name }}"
+          else
+            python scripts/export_portal_data.py --root-dir . --out-dir reports/portal --binary-source local_build
+          fi
+
+      - name: Verify Memory & Provenance Integrity
+        run: |
+          python scripts/verify_memory_integrity.py
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'website/package-lock.json'
+
+      - name: Install website dependencies
+        working-directory: website
+        run: npm ci
+
+      - name: Check & Build static Astro site
+        working-directory: website
+        run: npm run build
+
+      - name: Upload Pages Artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    if: github.event_name != 'pull_request'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

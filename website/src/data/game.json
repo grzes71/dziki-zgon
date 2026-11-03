@@ -1,0 +1,71 @@
+{
+  "controls": [
+    {
+      "action": "Płynne sterowanie Gerwantem w 4 kierunkach",
+      "input": "Joystick Góra / Dół / Lewo / Prawo"
+    },
+    {
+      "action": "Interakcja z obiektami, badanie świata, rozpoczęcie gry",
+      "input": "Przycisk FIRE (Spust)"
+    },
+    {
+      "action": "Start gry / pauza z poziomu konsoli Atari",
+      "input": "Klawisze konsoli (START/OPTION)"
+    }
+  ],
+  "features": [
+    "Otwarty świat złożony z 5 różnorodnych regionów i 35 autorskich ekranów",
+    "Struktury danych Structure-of-Arrays (SoA) zoptymalizowane pod bezpośrednie indeksowanie 6502",
+    "Wielowarstwowy bohater (P0 + P1) w trybie GTIA OR-mix (4 kolory) oraz wrogowie jako 5. gracz",
+    "Dynamiczne DLI podmieniające w locie zestaw znaków (CHBASE) oraz paletę kolorów HUD",
+    "Animowany zestaw znaków kafelków (płynąca woda, bagno, gorejące pochodnie) taktowany przerwaniem VBLANK",
+    "Autorski, relokowalny 4-kanałowy sterownik muzyki POKEY (50 Hz interrupt-driven)",
+    "Ścisłe zmieszczenie wszystkich danych i kodu gry poniżej granicy OS ROM ($BFFF)"
+  ],
+  "id": "dziki-zgon",
+  "platform": {
+    "controls": "Atari digital joystick (Port 1) + przycisk FIRE",
+    "cpu": "MOS 6502 @ 1.77 MHz (PAL) / 1.79 MHz (NTSC)",
+    "media": "Atari DOS 2 Binary Executable (.XEX)",
+    "ram": "64 KB RAM (bez rozszerzeń)",
+    "sound": "POKEY 4-channel sound synthesizer",
+    "system": "Atari 800 XL / 65 XE",
+    "tv_system": "PAL 50 Hz (zoptymalizowany timing)",
+    "video": "ANTIC + GTIA (ANTIC Modes 2, 3, 4, 5, D, E)"
+  },
+  "portal_url": "https://grzes71.github.io/dziki-zgon/",
+  "repository": "https://github.com/grzes71/dziki-zgon",
+  "stats": {
+    "binary_size_bytes": 35545,
+    "enemies_count": 4,
+    "items_count": 18,
+    "memory_headroom_bytes": 1834,
+    "music_tracks_count": 6,
+    "objects_count": 186,
+    "regions_count": 5,
+    "screens_count": 38,
+    "sprites_count": 5
+  },
+  "story": {
+    "game_over_fail": {
+      "header": "koniec gry!",
+      "text": "twój czas dobiegł końca gerwalcie!    \n   straż miejska nie zna litości...     \n  zamiast odzyskać dobytek i miecze,    \n   lądujesz w ciemnym, wilgotnym lochu. \n karczmarz przejął resztki twoich orenów\n a plotka pasie się u obcego kmiecia.   \n      kac minie, ale wstyd zostanie...  \n      spróbuj szczęścia jeszcze raz!"
+    },
+    "game_over_success": {
+      "header": "gratulacje !!!",
+      "text": "wielki sukces, mistrzu gerwalcie!   \n   odzyskałeś miecze, plotkę i honor,   \n    a dług w karczmie został spłacony!  \n  legendy o twojej niezłomnej głowie    \n    będą krążyć po wszystkich traktach. \n   czas na zasłużony odpoczynek...      \n      do zobaczenie w drugiej części... \n        nadchodzi >>czas podagry<< !"
+    },
+    "prologue": "po wielodniowej imprezie w karczmie   \n <pod trzema kuflami> wiedźman gerwant  \n budzi sie z potężnym kacem. nie pamięta\ngdzie jest plotka, gdzie są miecze, ani \nskąd wziął się rachunek na 18000 orenów.\n   wyrusza w podróż przez 5 regionów,   \n by odzyskać swój dobytek, wspomnienia i\n           resztki godności.",
+    "title": "źle zaczynają się twoje przygody...",
+    "travel_texts": {
+      "JAR_WIECZNEJ_ZGAGI": "gerwalt schodzi w jar głęboki,     \n        tutaj kwasem żrą potoki.        \n    mgła się snuje, wiatr się wije,     \n     coś bulgocze, ktoś tam gnije.      \n      ten ze zgagą wiecznie żyje        \n       kto z utopcem się napije!        \n     splunął gerwalt w jar ponuro:      \n     <niechaj leszy sra pod górą!>",
+      "LAS_PIJANEGO_ZAJACA": "wkracza gerwalt w gęste bory,     \n       tutaj strzygi kopią nory.        \n    bulgocze zacier, zioło zjarane,     \n     w trupa zające są dziś zalane.     \n     wśród paproci futrzak kroczy,      \n      chwiejny krok i mętne oczy.       \n     pilnuj miecza, patrz pod nogi,     \n       bo tu zając chleje srogi!",
+      "OLD_WYZIMA": "gerwalt zmęczony patrzy na grody,    \n   w starej wyżymie same przeszkody.    \n     mury spękane, uliczki ciemne,      \n  kryją wspomnienia niezbyt przyjemne.  \n   odór zgnilizny wszędzie się snuje,   \n    grabarz w zaułku trupa szykuje.     \npamiątki z karczmy gdzieś w dole gniją, \ngerwalt je znajdzie, choćby pod ziemią!",
+      "SAMOTNIA_MISTRZA": "trafia nasz gerwalt w podwoje dworu, \n  tam dumny starzec wciąż tkwi z uporu. \n     puka nasz heros w progi komnaty,   \n   a tam mistrz andrzej żąda zapłaty.   \n     wielki twórca, geniusz rzadki,     \n       wnet wyczyści ci manatki.        \n       grosz wydusi nawet z mary,       \n      byle w kieszeń szły talary!",
+      "WHITE_FIELD": "powraca gerwalt na białe pole,     \n    wiatr kłosy zbóż kołysze w kole.    \n   majaczy z dali karczma przeklęta,    \n gdzie czeka karczmarz, menda pamiętna! \n    za dawne trunki rachunek ściska,    \n  gerwalta kieszeń zaś pustki bliska.   \n  pod nosem mruczy nasz śmiałek cicho:  \n  niech tego drania wnet weźmie licho!"
+    }
+  },
+  "tagline": "Przygodowo-zręcznościowa gra z widokiem z góry na Atari 800 XL / 65 XE — humorystyczna parodia Wiedźmina",
+  "title": "Dziki Zgon",
+  "version": "0.5.0"
+}

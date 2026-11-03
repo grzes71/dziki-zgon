@@ -1,0 +1,215 @@
+---
+import Layout from '../layouts/Layout.astro';
+import spritesData from '../data/sprites.json';
+import assetsData from '../data/assets.json';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Galeria Grafiki & Sprity" activeTab="gallery">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">GALERIA GRAFIKI, DUSZKÓW (PMG) & CZCIONEK</h1>
+      <p class="text-xs text-atari-parchmentMuted">Pikselowa grafika ANTIC E/D, duszki 1- i 4-kolorowe oraz animowane kafelki zoptymalizowane pod PAL 50Hz</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="pixel-badge text-xs">SPRITY: {spritesData.sprites_count}</span>
+      <span class="pixel-badge text-xs">OBRAZY: {assetsData.images.length}</span>
+      <span class="pixel-badge text-xs">CZCIONKI: {assetsData.fonts.length}</span>
+    </div>
+  </div>
+
+  <!-- Fullscreen / Mode Screens Gallery -->
+  <section class="space-y-4 mb-12">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>🖼️</span>
+        <span>EKRANY GRAFICZNE (ANTIC E / ANTIC D)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">Renderowane piksel w piksel (bez rozmycia)</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {assetsData.images.map((img) => (
+        <div class="pixel-box p-4 space-y-3 bg-atari-dark">
+          <div class="flex items-center justify-between border-b border-atari-border/50 pb-2">
+            <div>
+              <div class="font-bold text-atari-gold text-sm">{img.description}</div>
+              <div class="text-[10px] text-atari-parchmentMuted">{img.filename} • {img.antic_mode}</div>
+            </div>
+            <span class="px-2 py-0.5 bg-atari-panel border border-atari-border text-[10px] text-atari-parchment">
+              {img.width}×{img.height} px
+            </span>
+          </div>
+
+          <!-- Image with Crisp Pixel Art Styling -->
+          <div class="bg-black p-2 border border-atari-border flex items-center justify-center overflow-hidden">
+            <img
+              src={`${baseUrl}/${img.path}`}
+              alt={img.description}
+              class="max-w-full h-auto pixelated border border-atari-border/40 transition-transform duration-200 hover:scale-[1.02]"
+            />
+          </div>
+
+          <div class="flex justify-between items-center text-[10px] text-atari-parchmentMuted pt-1">
+            <span>Rozmiar pliku: {img.bytes_size} B</span>
+            <span>Głębia: {img.color_mode}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- PMG Sprites & Player Characters -->
+  <section class="space-y-6 mb-12">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>👾</span>
+        <span>DUSZKI SPRZĘTOWE (PLAYER/MISSILE GRAPHICS)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">Gerwant (4 kolory OR-mix) & Bestiariusz</span>
+    </div>
+
+    <!-- Sprites Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {spritesData.sprites.map((sp) => (
+        <div class="pixel-box p-4 space-y-3 bg-atari-dark border border-atari-border/80">
+          <div class="flex items-center justify-between border-b border-atari-border/50 pb-2">
+            <div>
+              <div class="font-bold text-atari-gold text-sm">{sp.id}</div>
+              <div class="text-[10px] text-atari-parchmentMuted">{sp.source_file}</div>
+            </div>
+            <div class="text-right">
+              <span class={`px-1.5 py-0.5 text-[9px] font-bold border ${sp.color_mode === 4 ? 'bg-atari-gold/20 border-atari-gold text-atari-goldBright' : 'bg-atari-panel border-atari-border text-atari-parchment'}`}>
+                {sp.color_mode === 4 ? '4-KOLORY (P0+P1)' : '1-KOLOR (1bpp)'}
+              </span>
+            </div>
+          </div>
+
+          <!-- Sprite Frames Visualizer -->
+          <div class="bg-atari-darkest p-3 border border-atari-border space-y-2">
+            <div class="flex justify-between text-[10px] text-atari-parchmentMuted border-b border-atari-border/40 pb-1">
+              <span>KLATKI ANIMACJI ({sp.frames_count}):</span>
+              <span>{sp.animation ? `${sp.animation.frame_duration} klatek/krok` : 'Statyczny'}</span>
+            </div>
+
+            <!-- Frames row -->
+            <div class="flex flex-wrap gap-3 items-center justify-center py-2">
+              {sp.frames.map((frame, fIdx) => (
+                <div class="flex flex-col items-center gap-1">
+                  <!-- Pixel Grid SVG -->
+                  <svg
+                    width="64"
+                    height="128"
+                    viewBox={`0 0 ${sp.width} ${sp.height}`}
+                    class="border border-atari-border bg-black pixelated shadow-pixel"
+                    shape-rendering="crispEdges"
+                  >
+                    {frame.pixels.map((rowStr, y) =>
+                      rowStr.split('').map((pixelChar, x) => {
+                        let fill = 'transparent';
+                        if (sp.color_mode === 4) {
+                          if (pixelChar === '1') fill = '#f7b946'; // P0 Hero Color
+                          else if (pixelChar === '2') fill = '#8a5d24'; // P1 Hero Color
+                          else if (pixelChar === '3') fill = '#ffffff'; // OR-Mix Hardware Color
+                        } else {
+                          if (pixelChar === '1') fill = '#ded8c5';
+                        }
+                        return fill !== 'transparent' ? (
+                          <rect x={x} y={y} width="1" height="1" fill={fill} />
+                        ) : null;
+                      })
+                    )}
+                  </svg>
+                  <span class="text-[9px] text-atari-parchmentMuted">Klatka {fIdx + 1}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="flex justify-between text-[10px] text-atari-parchmentMuted pt-1">
+            <span>Rozmiar: {sp.width}×{sp.height} px</span>
+            <span>Kolor Atari: ${sp.color.toString(16).toUpperCase()}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- PMG Bitmaps (Moon & Title) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {spritesData.pmg_bitmaps.map((pmg) => (
+        <div class="pixel-box p-4 bg-atari-panel space-y-2">
+          <div class="flex items-center justify-between border-b border-atari-border pb-1.5">
+            <span class="font-bold text-atari-gold text-sm">{pmg.name}</span>
+            <span class="px-1.5 py-0.5 bg-atari-dark border border-atari-border text-[10px] text-atari-parchment">
+              {pmg.players_count} Graczy PMG
+            </span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-xs items-center pt-1">
+            <div class="bg-black p-2 border border-atari-border flex items-center justify-center col-span-1">
+              <img src={`${baseUrl}/${pmg.source_file}`} alt={pmg.name} class="max-h-16 w-auto pixelated" />
+            </div>
+            <div class="col-span-2 space-y-1 text-[11px] text-atari-parchmentMuted">
+              <div>Wymiary: <strong class="text-atari-parchment">{pmg.width}×{pmg.height} px</strong></div>
+              <div>Kompresja: <strong class="text-atari-parchment">{pmg.compression}</strong></div>
+              <div>Rozmiar w RAM: <strong class="text-atari-greenBright">{pmg.bytes_size} B</strong></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Animated and Custom Charsets -->
+  <section class="space-y-4">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>✨</span>
+        <span>ANIMOWANE KAFELKI ŚWIATA (CHARS / ANIMATED.JSON)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">Aktualizowane dynamicznie w przerwaniu VBLANK (50 Hz)</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {assetsData.animated_chars.map((anim) => (
+        <div class="pixel-box p-4 space-y-2 bg-atari-dark border border-atari-border">
+          <div class="flex items-center justify-between border-b border-atari-border/50 pb-1.5">
+            <span class="font-bold text-atari-gold text-sm">{anim.description}</span>
+            <span class="px-1.5 py-0.5 bg-atari-panel text-atari-parchment text-[10px] font-mono border border-atari-border">
+              Znak #{anim.index}
+            </span>
+          </div>
+          <div class="text-xs text-atari-parchmentMuted space-y-1">
+            <div class="flex justify-between">
+              <span>Liczba cykli animacji:</span>
+              <strong class="text-atari-parchment">{anim.cycles_count}</strong>
+            </div>
+            <div class="flex justify-between">
+              <span>Mechanizm:</span>
+              <span class="text-atari-greenBright">Pamięć RAM zestawu znaków</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Rotated Charset Info -->
+    <div class="pixel-box p-4 bg-atari-panel mt-4 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+      <div>
+        <strong class="text-atari-gold block">DYNAMICZNIE ROTOWANE ZNAKI (ROTATED CHARS):</strong>
+        <span class="text-atari-parchmentMuted text-[11px]">
+          Procedura rotated_chars_proc.asm generuje w locie obrócone warianty znaków (m.in. znaki #5 i #115), oszczędzając cenny RAM w tablicy zestawu znaków.
+        </span>
+      </div>
+      <div class="flex gap-2">
+        {assetsData.rotated_chars.map((rc) => (
+          <span class="px-2.5 py-1 bg-atari-dark border border-atari-border font-mono text-atari-parchment text-[11px]">
+            Znak #{rc.index} (czas: {rc.duration})
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+

@@ -1,0 +1,214 @@
+---
+import Layout from '../layouts/Layout.astro';
+import gameData from '../data/game.json';
+import worldData from '../data/world.json';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Gra & Fabuła" activeTab="game">
+  <!-- Section Title -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">GRA, FABUŁA & STEROWANIE</h1>
+      <p class="text-xs text-atari-parchmentMuted">Szczegółowy opis fabularny, mechanika rozgrywki, sterowanie joystickiem oraz interfejs HUD</p>
+    </div>
+    <div class="pixel-badge text-xs">
+      STAN SILNIKA: 50 FPS PAL
+    </div>
+  </div>
+
+  <!-- Story & Prologue Banner -->
+  <div class="pixel-box-gold p-6 mb-8 space-y-4">
+    <div class="flex items-center gap-2 text-atari-gold text-lg font-bold border-b border-atari-gold/40 pb-2">
+      <span>📜</span>
+      <span>PROLOG — PORANEK PO DZIWNEJ NOCY</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <div class="md:col-span-8 space-y-3 text-sm leading-relaxed text-atari-parchment">
+        <blockquote class="bg-atari-darkest p-4 border-l-4 border-atari-gold font-mono text-xs sm:text-sm italic text-atari-goldBright whitespace-pre-line">
+          {gameData.story.prologue}
+        </blockquote>
+
+        <p>
+          Wiedźman <strong>Gerwant z Niewiadomogrodu</strong>, legendarny pogromca potworów za skromne wynagrodzenie, staje w obliczu największego kryzysu w swojej karierze. Nie są to hordy potworów, ani czarna magia, lecz gigantyczny dług w karczmie oraz utrata mieczy i ulubionej klaczy Plotki.
+        </p>
+
+        <p>
+          Aby zmyć hańbę, odzyskać ekwipunek i opłacić karczmarza, Gerwant musi przemierzyć 5 niebezpiecznych krain, rozmawiać z podejrzanymi tubylcami, zbierać fanty i unikać potworów czających się na gościńcach.
+        </p>
+      </div>
+
+      <div class="md:col-span-4 flex flex-col items-center">
+        <div class="pixel-box p-3 bg-atari-dark text-center w-full space-y-2">
+          <img src={`${baseUrl}/img/travel.png`} alt="Gerwant w podróży" class="w-full h-auto pixelated border border-atari-border" />
+          <div class="text-[11px] text-atari-gold font-bold">EKRAN PODRÓŻY MIĘDZY REGIONAMI</div>
+          <div class="text-[10px] text-atari-parchmentMuted">Tryb graficzny ANTIC E (160×184, 4 kolory)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls and Hardware Interaction -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="pixel-box p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2">
+        <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+          <span>🕹️</span>
+          <span>STEROWANIE JOYSTICKIEM (PORT 1)</span>
+        </h2>
+        <span class="text-xs text-atari-parchmentMuted">BEZ KLAWIATURY</span>
+      </div>
+
+      <p class="text-xs text-atari-parchmentMuted">
+        Gra projektowana jest pod klasyczny 1-przyciskowy joystick Atari. Całość rozgrywki obsługiwana jest intuicyjnie jedną ręką:
+      </p>
+
+      <div class="space-y-3">
+        {gameData.controls.map((ctrl) => (
+          <div class="p-3 bg-atari-dark border border-atari-border flex items-start gap-3">
+            <span class="px-2 py-1 bg-atari-panel text-atari-gold text-xs font-bold border border-atari-borderLight whitespace-nowrap">
+              {ctrl.input}
+            </span>
+            <div class="text-xs text-atari-parchment pt-0.5">
+              {ctrl.action}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border text-xs text-atari-parchmentMuted space-y-1">
+        <div class="font-bold text-atari-parchment">💡 Wskazówka dla gracza:</div>
+        <div>Aby zbadać obiekt lub podjąć interakcję, podejdź do niego i wciśnij przycisk <strong>FIRE</strong>. Wynik badania pojawi się na dolnej linii komunikatów.</div>
+      </div>
+    </div>
+
+    <!-- HUD Layout and Status Panel -->
+    <div class="pixel-box p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2">
+        <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+          <span>🖥️</span>
+          <span>PANEL STATUSOWY (HUD) I EKWIPUNEK</span>
+        </h2>
+        <span class="text-xs text-atari-parchmentMuted">ANTIC 2 (40 ZNAKÓW)</span>
+      </div>
+
+      <p class="text-xs text-atari-parchmentMuted">
+        Na dole ekranu znajduje się dwuliniowy wyświetlacz operujący w trybie tekstowym ANTIC 2 z własną czcionką interfejsu (CHBASE = $6000):
+      </p>
+
+      <!-- Simulated HUD Display -->
+      <div class="p-3 bg-atari-darkest border-2 border-atari-border font-mono text-xs space-y-2 select-none shadow-pixel">
+        <div class="text-[10px] text-atari-parchmentMuted border-b border-atari-border/40 pb-1">SYMULACJA LINII STATUSOWEJ ATARI:</div>
+        <div class="bg-black p-2 border border-atari-border space-y-1 text-atari-goldBright">
+          <!-- Info Line -->
+          <div class="flex justify-between items-center text-[11px] font-bold tracking-wider">
+            <span class="text-atari-parchment">║ BIAŁE POLE</span>
+            <span class="text-atari-gold">[⚔️🍺🔑🗝️....]</span>
+            <span class="text-atari-greenBright">04:20 ║</span>
+          </div>
+          <!-- Message Line -->
+          <div class="text-[11px] text-atari-parchment border-t border-atari-border/50 pt-1 flex justify-between">
+            <span class="text-atari-parchmentMuted">«</span>
+            <span class="text-center truncate px-1">ODKRYŁEŚ ZGUBIONY MIESZEK ORENÓW!</span>
+            <span class="text-atari-parchmentMuted">»</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-2 text-xs text-atari-parchment leading-relaxed">
+        <div class="flex items-start gap-2">
+          <span class="text-atari-gold font-bold">1. Info Line (Górna linia):</span>
+          <span class="text-atari-parchmentMuted">Nazwa bieżącego regionu (do 20 znaków), 8 slotów ekwipunku `[........]` oraz licznik czasu gry (MM:SS).</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-atari-gold font-bold">2. Message Line (Dolna linia):</span>
+          <span class="text-atari-parchmentMuted">Dynamiczne komunikaty interakcji z obiektami, opisy otoczenia i wskazówki questowe wyświetlane przez 3 sekundy.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Endings (Win vs Defeat) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Defeat Card -->
+    <div class="pixel-box p-6 border-atari-crimson space-y-3 bg-gradient-to-b from-atari-panel to-atari-darkest">
+      <div class="flex items-center justify-between border-b border-atari-crimson/50 pb-2">
+        <h3 class="text-base font-bold text-atari-crimsonBright flex items-center gap-2">
+          <span>💀</span>
+          <span>ZAKOŃCZENIE: PORAŻKA (FAIL)</span>
+        </h3>
+        <span class="px-2 py-0.5 bg-atari-crimson text-white text-[10px] font-bold">GAME OVER</span>
+      </div>
+
+      <div class="text-xs text-atari-parchment space-y-2">
+        <div class="font-bold text-atari-gold text-xs">{gameData.story.game_over_fail.header}</div>
+        <blockquote class="bg-atari-darkest p-3 border border-atari-crimson/30 font-mono text-xs whitespace-pre-line text-atari-parchment">
+          {gameData.story.game_over_fail.text}
+        </blockquote>
+        <p class="text-[11px] text-atari-parchmentMuted">
+          Gdy Gerwant utraci wszystkie siły w walce z potworami lub w bagnach, budzi się w rynsztoku bez grosza, a karczmarz przejmuje jego ostatnie łachy.
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <img src={`${baseUrl}/img/game_over-fail.png`} alt="Game Over Fail" class="w-full h-auto pixelated border border-atari-crimson/40" />
+      </div>
+    </div>
+
+    <!-- Success Card -->
+    <div class="pixel-box p-6 border-atari-gold space-y-3 bg-gradient-to-b from-atari-panel to-atari-darkest">
+      <div class="flex items-center justify-between border-b border-atari-gold/50 pb-2">
+        <h3 class="text-base font-bold text-atari-goldBright flex items-center gap-2">
+          <span>🏆</span>
+          <span>ZAKOŃCZENIE: SUKCES (VICTORY)</span>
+        </h3>
+        <span class="px-2 py-0.5 bg-atari-green text-atari-darkest text-[10px] font-bold">SUKCES</span>
+      </div>
+
+      <div class="text-xs text-atari-parchment space-y-2">
+        <div class="font-bold text-atari-gold text-xs">{gameData.story.game_over_success.header}</div>
+        <blockquote class="bg-atari-darkest p-3 border border-atari-gold/30 font-mono text-xs whitespace-pre-line text-atari-parchment">
+          {gameData.story.game_over_success.text}
+        </blockquote>
+        <p class="text-[11px] text-atari-parchmentMuted">
+          Odzyskaj miecze, odszukaj Plotkę, spłać karczmarza co do miedziaka i opuść Wyzimę z dumnie podniesionym czołem oraz pełnym kuflem.
+        </p>
+      </div>
+
+      <div class="pt-2">
+        <img src={`${baseUrl}/img/game_over-success.png`} alt="Game Over Success" class="w-full h-auto pixelated border border-atari-gold/40" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Travel Narratives across Regions -->
+  <div class="pixel-box p-6 space-y-4">
+    <div class="flex items-center justify-between border-b border-atari-border pb-2">
+      <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+        <span>🐎</span>
+        <span>KRONIKI TRAKTÓW (OPISY PRZEJŚĆ MIĘDZY REGIONAMI)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">5 REGIONÓW</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+      {Object.entries(gameData.story.travel_texts).map(([regId, travelText]) => {
+        const reg = worldData.regions.find((r) => r.id === regId);
+        return (
+          <div class="pixel-box p-3 space-y-2 bg-atari-dark">
+            <div class="flex items-center justify-between border-b border-atari-border/50 pb-1">
+              <span class="font-bold text-atari-gold">{reg?.name.toUpperCase() || regId}</span>
+              <span class="text-[10px] text-atari-parchmentMuted">{regId}</span>
+            </div>
+            <p class="font-mono text-[11px] text-atari-parchment leading-relaxed italic bg-atari-darkest p-2 border border-atari-border/30 whitespace-pre-line">
+              "{travelText}"
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</Layout>
+

@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Architektura Silnika" activeTab="technical">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">ARCHITEKTURA SILNIKA & SPECYFIKACJA 6502</h1>
+      <p class="text-xs text-atari-parchmentMuted">Deterministyczny potok 50 FPS, wzorzec skrzynki pocztowej (Mailbox), grafika GTIA OR-mix oraz DLI</p>
+    </div>
+    <div class="pixel-badge text-xs">
+      ASEMBLER: MADS 2.1.x
+    </div>
+  </div>
+
+  <!-- Design Principles Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="pixel-box p-4 bg-atari-panel space-y-2">
+      <div class="font-bold text-atari-gold text-sm flex items-center gap-2">
+        <span>⏱️</span>
+        <span>1. Determinizm (Fixed Update)</span>
+      </div>
+      <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+        Silnik działa w sztywnym reżimie jednej aktualizacji logiki na każdą klatkę (50 FPS PAL). Brak zmiennego deltaTime eliminuje błędy zaokrągleń i zapewnia 100% powtarzalność fizyki.
+      </p>
+    </div>
+
+    <div class="pixel-box p-4 bg-atari-panel space-y-2">
+      <div class="font-bold text-atari-gold text-sm flex items-center gap-2">
+        <span>📬</span>
+        <span>2. Wzorzec Mailbox ($O(1)$)</span>
+      </div>
+      <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+        Moduły silnika nie wywołują się nawzajem w głębokich stosach wywołań. Zamiast tego ustawiają flagi żądań w komórkach RAM, a moduły nadrzędne konsumują je w swoich fazach.
+      </p>
+    </div>
+
+    <div class="pixel-box p-4 bg-atari-panel space-y-2">
+      <div class="font-bold text-atari-gold text-sm flex items-center gap-2">
+        <span>📐</span>
+        <span>3. Structure-of-Arrays (SoA)</span>
+      </div>
+      <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+        Wszystkie tablice wrogów, obiektów i ekranów zorganizowane są w równoległe wektory (SoA). Pozwala to procesorowi 6502 na natychmiastowe ładowanie danych instrukcją `LDA table,X`.
+      </p>
+    </div>
+  </div>
+
+  <!-- Frame Pipeline Diagram -->
+  <section class="pixel-box p-6 space-y-6 mb-8">
+    <div class="flex items-center justify-between border-b border-atari-border pb-2">
+      <h2 class="text-lg font-bold text-atari-gold flex items-center gap-2">
+        <span>⚙️</span>
+        <span>DETERMINISTYCZNY POTOK WYKONAWCZY (ENGINE SCHEDULER)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">engine/engine_scheduler.asm</span>
+    </div>
+
+    <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+      W każdej ramce obrazu (co 20 ms w systemie PAL) pętla główna uruchamia procedurę <code>EngineScheduler</code>, która wykonuje podsystemy w ściśle zdefiniowanej, niezmiennej kolejności:
+    </p>
+
+    <!-- Pipeline Steps Flow -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
+      <div class="p-3 bg-atari-dark border border-atari-border space-y-1">
+        <div class="text-atari-gold font-bold">1. Input_Update</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Odczyt i zatrzasnięcie rejestrów joysticka PORTA i przycisku TRIG0.</p>
+      </div>
+
+      <div class="p-3 bg-atari-dark border border-atari-border space-y-1">
+        <div class="text-atari-gold font-bold">2. Player_Update</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Obliczenie intencji ruchu gracza, zmiana animacji i kierunku zwrotu.</p>
+      </div>
+
+      <div class="p-3 bg-atari-dark border border-atari-border space-y-1">
+        <div class="text-atari-gold font-bold">3. NPC_Update</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Aktualizacja sztucznej inteligencji potworów (trajektorie, patrole).</p>
+      </div>
+
+      <div class="p-3 bg-atari-dark border border-atari-border space-y-1">
+        <div class="text-atari-gold font-bold">4. Collision_Update</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Weryfikacja intencji ruchu ze ścianami oraz kolizji z wrogami.</p>
+      </div>
+
+      <div class="p-3 bg-atari-dark border border-atari-border space-y-1">
+        <div class="text-atari-gold font-bold">5. IIS_Update</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Interactive Inspection System — obsługa interakcji klawiszem FIRE.</p>
+      </div>
+
+      <div class="p-3 bg-atari-dark border border-atari-border space-y-1">
+        <div class="text-atari-gold font-bold">6. Secret_Check</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Wykrywanie wejścia na pole z sekretnym fantem i dodanie do ekwipunku.</p>
+      </div>
+
+      <div class="p-3 bg-atari-dark border border-atari-border space-y-1">
+        <div class="text-atari-gold font-bold">7. Inventory_Update</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Aktualizacja slotów i konsumpcji przedmiotów questowych.</p>
+      </div>
+
+      <div class="p-3 bg-atari-dark border border-atari-greenBright space-y-1">
+        <div class="text-atari-greenBright font-bold">8. Render_Prepare</div>
+        <p class="text-[11px] text-atari-parchmentMuted">Zapisanie współrzędnych i klatek do buforów PMG przed VBLANK.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PMG Graphics and GTIA OR-mix Innovation -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="pixel-box p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2">
+        <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+          <span>🎨</span>
+          <span>4-KOLOROWY BOHATER (GTIA OR-MIX)</span>
+        </h2>
+        <span class="text-xs text-atari-parchment font-mono">PRIOR = $31</span>
+      </div>
+
+      <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+        Standardowy duszek Atari PMG (Player) jest 1-kolorowy. W grze Dziki Zgon zastosowano zaawansowany tryb nakładania graczy sprzętowych:
+      </p>
+
+      <ul class="space-y-2 text-xs text-atari-parchment">
+        <li class="p-2.5 bg-atari-darkest border border-atari-border">
+          <strong class="text-atari-gold">Gracz 0 (Warstwa 1):</strong> Kolor główny zbroi i ciała ($F4) przypisany do rejestru <code>PCOLR0</code>.
+        </li>
+        <li class="p-2.5 bg-atari-darkest border border-atari-border">
+          <strong class="text-atari-gold">Gracz 1 (Warstwa 2):</strong> Kolor cieni i miecza ($18) przypisany do rejestru <code>PCOLR1</code>.
+        </li>
+        <li class="p-2.5 bg-atari-darkest border border-atari-border">
+          <strong class="text-atari-greenBright">Sprzętowy OR-mix (Bit 5):</strong> Nakładające się piksele P0 i P1 tworzą trzeci kolor ($FC), dając łącznie 4 kolory (w tym przezroczystość tła).
+        </li>
+        <li class="p-2.5 bg-atari-darkest border border-atari-border">
+          <strong class="text-atari-crimsonBright">Flicker Obrażeń (12.5 Hz):</strong> W trakcie kolizji z potworem kolor P0 migocze z częstotliwością 12.5 Hz (co 2 ramki) przełączając na <code>HERO_COLOR_DAMAGE</code> ($34).
+        </li>
+      </ul>
+    </div>
+
+    <!-- DLI and Charset Switching -->
+    <div class="pixel-box p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2">
+        <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+          <span>⚡</span>
+          <span>INTERRUPTS: VBLANK & DLI HANDLERS</span>
+        </h2>
+        <span class="text-xs text-atari-parchment font-mono">NMI VECTOR</span>
+      </div>
+
+      <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+        Silnik wykorzystuje pełną moc procesora graficznego ANTIC poprzez precyzyjne przerwania linii obrazu:
+      </p>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3 bg-atari-darkest border border-atari-border space-y-1">
+          <div class="font-bold text-atari-gold">Przerwanie VBLANK (Pionowy Powrót Plamki):</div>
+          <p class="text-[11px] text-atari-parchmentMuted leading-relaxed">
+            Wykonywane 50 razy/s. Obsługuje driver muzyczny POKEY, podbija zegar klatek <code>FrameCounter</code>, odlicza czas komunikatów oraz przepisuje rejestry cieni do GTIA.
+          </p>
+        </div>
+
+        <div class="p-3 bg-atari-darkest border border-atari-border space-y-1">
+          <div class="font-bold text-atari-gold">Przerwanie DLI (Display List Interrupt):</div>
+          <p class="text-[11px] text-atari-parchmentMuted leading-relaxed">
+            W momencie gdy promień plamki kończy rysować planszę gry i wkracza w obszar panelu HUD, procedura DLI podmienia rejestr <code>CHBASE</code> z czcionki planszy ($64) na czcionkę HUD ($60) oraz ustawia kolory tekstu.
+          </p>
+        </div>
+
+        <div class="p-3 bg-atari-darkest border border-atari-border space-y-1">
+          <div class="font-bold text-atari-gold">Izolacja Rejestrów 6502:</div>
+          <p class="text-[11px] text-atari-parchmentMuted leading-relaxed">
+            Wszystkie handlery przerwań ściśle chronią rejestry procesora na stosie (<code>PHA/TXA/PHA/TYA/PHA</code>) i przywracają je przed <code>PLA/RTI</code>, gwarantując brak korupcji danych.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fifth Player Enemy Mode -->
+  <section class="pixel-box p-6 space-y-4">
+    <div class="border-b border-atari-border pb-2">
+      <h3 class="text-base font-bold text-atari-gold flex items-center gap-2">
+        <span>👾</span>
+        <span>5. GRACZ JAKO TRZECI WRÓG (MISSILES AS 5TH PLAYER)</span>
+      </h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-atari-parchmentMuted leading-relaxed">
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+        <strong class="text-atari-parchment block">Alokacja Duszków:</strong>
+        <p>
+          Gerwant zajmuje graczy P0 i P1. Wrogowie 1 i 2 otrzymują graczy P2 i P3. Dla wroga 3 zabrakłoby gracza sprzętowego.
+        </p>
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+        <strong class="text-atari-parchment block">Fuzja Pocisków M0–M3:</strong>
+        <p>
+          Włączenie bitu 4 rejestru PRIOR łączy 4 dwubitowe pociski (Missiles) w jeden 8-pikselowy duszek 5. gracza o niezależnej pozycji X/Y.
+        </p>
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+        <strong class="text-atari-parchment block">Kolorystyka:</strong>
+        <p>
+          5. gracz dziedziczy kolor z rejestru <code>COLPF3</code>, co pozwala na pełne wyświetlenie 3 wrogów i 4-kolorowego bohatera bez spowolnień i migotania.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

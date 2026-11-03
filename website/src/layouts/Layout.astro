@@ -1,0 +1,214 @@
+---
+import '../styles/global.css';
+import gameData from '../data/game.json';
+import latestData from '../data/latest.json';
+
+interface Props {
+  title: string;
+  description?: string;
+  activeTab?: string;
+}
+
+const { title, description = gameData.tagline, activeTab = 'home' } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const navLinks = [
+  { id: 'home', label: 'GŁÓWNA', href: `${baseUrl}/` },
+  { id: 'game', label: 'GRA & FABUŁA', href: `${baseUrl}/game/` },
+  { id: 'world', label: 'ŚWIAT', href: `${baseUrl}/world/` },
+  { id: 'objects', label: 'OBIEKTY', href: `${baseUrl}/objects/` },
+  { id: 'gallery', label: 'GALERIA', href: `${baseUrl}/gallery/` },
+  { id: 'music', label: 'MUZYKA', href: `${baseUrl}/music/` },
+  { id: 'memory', label: 'PAMIĘĆ 64KB', href: `${baseUrl}/memory/` },
+  { id: 'technical', label: 'ARCHITEKTURA', href: `${baseUrl}/technical/` },
+  { id: 'releases', label: 'WYDANIA', href: `${baseUrl}/releases/` },
+  { id: 'history', label: 'HISTORIA', href: `${baseUrl}/history/` },
+];
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} — Dziki Zgon (Atari 8-bit)</title>
+    <link rel="icon" type="image/png" href={`${baseUrl}/img/dziki-zgon.png`} />
+  </head>
+  <body class="bg-atari-darkest text-atari-parchment min-h-screen flex flex-col font-mono selection:bg-atari-gold selection:text-atari-darkest">
+    <!-- CRT Screen Overlay -->
+    <div id="crt-overlay" class="crt-overlay"></div>
+    <div class="crt-vignette"></div>
+
+    <!-- Retro System Bar -->
+    <header class="border-b-2 border-atari-border bg-atari-dark sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 py-1.5 flex flex-wrap items-center justify-between text-xs border-b border-atari-border/50 text-atari-parchmentMuted">
+        <div class="flex items-center space-x-3">
+          <span class="inline-block w-2.5 h-2.5 bg-atari-green animate-pulse"></span>
+          <span class="text-atari-gold font-bold">ATARI 800 XL / 65 XE</span>
+          <span>•</span>
+          <span>64 KB RAM</span>
+          <span>•</span>
+          <span>MOS 6502 @ 1.77 MHz (PAL)</span>
+          <span>•</span>
+          <span class="hidden sm:inline">ANTIC 4/5/D/E</span>
+        </div>
+        <div class="flex items-center space-x-4 mt-1 sm:mt-0">
+          <span class="text-atari-greenBright">WERSJA: {latestData.version}</span>
+          <button id="toggle-crt" class="px-2 py-0.5 border border-atari-border hover:border-atari-gold text-[10px] uppercase transition-colors" title="Włącz / wyłącz linie kineskopu">
+            CRT: <span id="crt-status" class="text-atari-gold">ON</span>
+          </button>
+          <a href={gameData.repository} target="_blank" rel="noopener noreferrer" class="hover:text-atari-gold transition-colors">
+            GITHUB ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Navigation Banner -->
+      <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+          <a href={`${baseUrl}/`} class="flex items-center space-x-3 group">
+            <img src={`${baseUrl}/img/dziki-zgon.png`} alt="Dziki Zgon Logo" class="h-10 w-auto pixelated border border-atari-border group-hover:border-atari-gold transition-colors" />
+            <div>
+              <div class="text-xl sm:text-2xl font-bold tracking-wider text-atari-gold group-hover:text-atari-goldBright flex items-center gap-2">
+                DZIKI ZGON
+                <span class="text-xs px-1.5 py-0.5 bg-atari-border text-atari-parchment font-normal border border-atari-borderLight">v{latestData.version}</span>
+              </div>
+              <div class="text-[11px] text-atari-parchmentMuted tracking-tight hidden sm:block">
+                Oficjalny Portal Gry na Atari 8-bit • Parodia Wiedźmina
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Download CTA -->
+        <div class="flex items-center space-x-2">
+          <a href={`${baseUrl}/download/dziki_zgon.xex`} download="dziki_zgon.xex" class="pixel-button text-xs flex items-center gap-1.5">
+            <span>POBIERZ .XEX</span>
+            {latestData.binary_size_bytes && (
+              <span class="text-[10px] text-atari-goldBright opacity-80">({Math.round(latestData.binary_size_bytes / 1024)} KB)</span>
+            )}
+          </a>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="bg-atari-surface border-t border-atari-border overflow-x-auto">
+        <div class="max-w-7xl mx-auto px-2 flex whitespace-nowrap">
+          {navLinks.map((link) => {
+            const isActive = activeTab === link.id;
+            return (
+              <a
+                href={link.href}
+                class={`px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold border-r border-atari-border/40 transition-colors flex items-center space-x-1.5 ${
+                  isActive
+                    ? 'bg-atari-panel text-atari-goldBright border-b-2 border-b-atari-gold'
+                    : 'text-atari-parchment hover:bg-atari-dark hover:text-atari-gold'
+                }`}
+              >
+                <span>{isActive ? '▶' : ' '}</span>
+                <span>{link.label}</span>
+              </a>
+            );
+          })}
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Content Slot -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-6 sm:py-8">
+      <slot />
+    </main>
+
+    <!-- Retro Footer -->
+    <footer class="border-t-2 border-atari-border bg-atari-dark text-xs text-atari-parchmentMuted py-8">
+      <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div>
+          <div class="text-sm font-bold text-atari-gold mb-2">DZIKI ZGON (WITCHER PARODY)</div>
+          <p class="leading-relaxed text-[11px]">
+            Nieliniowa gra przygodowo-zręcznościowa na komputer **Atari 800 XL / 65 XE** (64 KB RAM).
+            Brak cartridge'a, brak dodatkowego RAM-u, czysty asembler 6502 (MADS) i kraftowe audio POKEY.
+          </p>
+        </div>
+
+        <div>
+          <div class="text-sm font-bold text-atari-parchment mb-2">STATYSTYKI PROJEKTU</div>
+          <ul class="space-y-1 text-[11px]">
+            <li>Regiony świata: <strong class="text-atari-gold">{gameData.stats.regions_count}</strong></li>
+            <li>Ekrany mapy: <strong class="text-atari-gold">{gameData.stats.screens_count}</strong></li>
+            <li>Katalog obiektów: <strong class="text-atari-gold">{gameData.stats.objects_count}</strong></li>
+            <li>Utwory muzyczne POKEY: <strong class="text-atari-gold">{gameData.stats.music_tracks_count}</strong></li>
+            <li>Wolny RAM headroom: <strong class="text-atari-greenBright">{gameData.stats.memory_headroom_bytes} B</strong></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-sm font-bold text-atari-parchment mb-2">SPECYFIKACJA HARDWARE</div>
+          <ul class="space-y-1 text-[11px]">
+            <li>Procesor: <span class="text-atari-parchment">MOS 6502 @ 1.77 MHz</span></li>
+            <li>Grafika: <span class="text-atari-parchment">ANTIC + GTIA (OR-mix 4C)</span></li>
+            <li>Dźwięk: <span class="text-atari-parchment">POKEY 4-ch (50Hz VBLANK)</span></li>
+            <li>Pamięć: <span class="text-atari-parchment">64 KB RAM ($0000–$BFFF)</span></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-sm font-bold text-atari-parchment mb-2">POBIERZ & REPOZYTORIUM</div>
+          <div class="space-y-2 text-[11px]">
+            <a href={`${baseUrl}/download/dziki_zgon.xex`} download="dziki_zgon.xex" class="pixel-button text-[11px] block text-center py-1">
+              POBIERZ DZIKI_ZGON.XEX
+            </a>
+            <div class="pt-1">
+              <a href={gameData.repository} target="_blank" rel="noopener noreferrer" class="hover:text-atari-gold text-atari-parchment underline">
+                GitHub: grzes71/dziki-zgon
+              </a>
+            </div>
+            <div class="text-[10px] text-atari-parchmentMuted">
+              SHA256: <code class="text-[9px] text-atari-gold">{latestData.sha256.substring(0, 16)}...</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 mt-8 pt-4 border-t border-atari-border/50 text-center text-[10px] text-atari-parchmentMuted flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div>
+          © 2026 Dziki Zgon Dev Team. Projekt hobbystyczny na gołe Atari 64 KB RAM.
+        </div>
+        <div>
+          Wspierane emulatory: Altirra, Atari800, RespeQt, real hardware.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Interactive Scripts for CRT toggle -->
+    <script>
+      const crtOverlay = document.getElementById('crt-overlay');
+      const toggleBtn = document.getElementById('toggle-crt');
+      const crtStatus = document.getElementById('crt-status');
+
+      let crtEnabled = localStorage.getItem('dziki_crt') !== 'off';
+      function updateCrt() {
+        if (crtOverlay && crtStatus) {
+          if (crtEnabled) {
+            crtOverlay.style.display = 'block';
+            crtStatus.textContent = 'ON';
+            crtStatus.className = 'text-atari-gold';
+          } else {
+            crtOverlay.style.display = 'none';
+            crtStatus.textContent = 'OFF';
+            crtStatus.className = 'text-atari-parchmentMuted';
+          }
+        }
+      }
+
+      updateCrt();
+
+      toggleBtn?.addEventListener('click', () => {
+        crtEnabled = !crtEnabled;
+        localStorage.setItem('dziki_crt', crtEnabled ? 'on' : 'off');
+        updateCrt();
+      });
+    </script>
+  </body>
+</html>
+

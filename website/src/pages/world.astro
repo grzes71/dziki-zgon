@@ -1,0 +1,240 @@
+---
+import Layout from '../layouts/Layout.astro';
+import worldData from '../data/world.json';
+---
+
+<Layout title="Eksplorator Świata" activeTab="world">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">EKSPLORATOR ŚWIATA (WORLD EXPLORER)</h1>
+      <p class="text-xs text-atari-parchmentMuted">Interaktywna mapa 5 regionów, siatka ekranów, portale oraz punkty przejść wygenerowane z plików YAML</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="pixel-badge text-xs">REGIONÓW: {worldData.regions_count}</span>
+      <span class="pixel-badge text-xs">EKRANÓW: {worldData.screens_count}</span>
+    </div>
+  </div>
+
+  <!-- World Meta Overview -->
+  <div class="pixel-box-gold p-4 sm:p-6 mb-8 bg-atari-panel">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">PUNKT STARTOWY GRY:</span>
+        <strong class="text-atari-gold text-sm">{worldData.start_region}</strong>
+        <div class="text-atari-parchment mt-0.5">Ekran: <code class="text-atari-greenBright">{worldData.start_screen}</code></div>
+      </div>
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">WSPÓŁRZĘDNE GERWANTA:</span>
+        <strong class="text-atari-gold text-sm">X: {worldData.start_position.x}, Y: {worldData.start_position.y}</strong>
+        <div class="text-atari-parchment mt-0.5">Siatka ANTIC 4/5 (40×12)</div>
+      </div>
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">POŁĄCZENIA MIĘDZYEKRANOWE:</span>
+        <strong class="text-atari-gold text-sm">{worldData.transitions.filter(t => t.type === 'screen_exit').length} przejść</strong>
+        <div class="text-atari-parchment mt-0.5">Północ / Południe / Wschód / Zachód</div>
+      </div>
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">PORTALE REGIONALNE:</span>
+        <strong class="text-atari-gold text-sm">{worldData.transitions.filter(t => t.type === 'region_portal').length} traktów</strong>
+        <div class="text-atari-parchment mt-0.5">Dedykowane ekrany podróży</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Region Navigation Pills -->
+  <div class="flex flex-wrap gap-2 mb-8">
+    {worldData.regions.map((reg) => (
+      <a
+        href={`#region-${reg.id}`}
+        class="pixel-button text-xs py-1.5 px-3 border-atari-border hover:border-atari-gold text-atari-parchment hover:text-atari-gold"
+      >
+        <span>{reg.name.toUpperCase()}</span>
+        <span class="text-[10px] text-atari-parchmentMuted ml-1">({reg.screens_count})</span>
+      </a>
+    ))}
+  </div>
+
+  <!-- Region Detail Sections -->
+  <div class="space-y-12">
+    {worldData.regions.map((reg) => (
+      <section id={`region-${reg.id}`} class="pixel-box p-6 space-y-6 scroll-mt-24">
+        <!-- Region Title Bar -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between border-b-2 border-atari-border pb-3 gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl sm:text-2xl font-bold text-atari-gold">{reg.name.toUpperCase()}</h2>
+              <span class="px-2 py-0.5 bg-atari-dark border border-atari-border text-xs text-atari-parchmentMuted">{reg.id}</span>
+            </div>
+            <div class="text-xs text-atari-parchmentMuted mt-1">
+              Siatka: {reg.layout.rows}×{reg.layout.columns} • Obrażenia środowiska: {reg.damage} HP • Muzyka: <span class="text-atari-parchment">{reg.music}</span>
+            </div>
+          </div>
+
+          <!-- Color Palette Preview -->
+          <div class="flex items-center gap-2 bg-atari-darkest p-2 border border-atari-border">
+            <span class="text-[10px] text-atari-parchmentMuted mr-1">PALETA:</span>
+            {Object.entries(reg.palette).map(([colorKey, colorVal]) => (
+              <div class="flex flex-col items-center" title={`${colorKey}: Atari $${colorVal.atari.toString(16).toUpperCase()} (${colorVal.hex})`}>
+                <div class="w-5 h-5 border border-atari-border" style={`background-color: ${colorVal.hex};`}></div>
+                <span class="text-[9px] text-atari-parchmentMuted mt-0.5">{colorKey.substring(0, 3)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Travel narrative if present -->
+        {reg.travel_text && (
+          <div class="bg-atari-darkest p-3 border-l-2 border-atari-gold text-xs font-mono italic text-atari-goldBright">
+            "{reg.travel_text}"
+          </div>
+        )}
+
+        <!-- Portal Entries in this Region -->
+        {Object.keys(reg.portal_entries).length > 0 && (
+          <div class="bg-atari-dark p-3 border border-atari-border text-xs">
+            <div class="font-bold text-atari-gold mb-1.5 flex items-center gap-1.5">
+              <span>🌀</span>
+              <span>PORTALE I PRZEJŚCIA REGIONALNE:</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+              {Object.entries(reg.portal_entries).map(([targetReg, pentry]) => (
+                <div class="p-2 bg-atari-surface border border-atari-border flex justify-between items-center">
+                  <div>
+                    <span class="text-atari-parchmentMuted text-[10px]">CEL:</span>
+                    <strong class="text-atari-parchment ml-1">{targetReg}</strong>
+                  </div>
+                  <div class="text-[11px] text-atari-gold">
+                    Ekran: <code>{pentry.screen}</code> ({pentry.x}, {pentry.y})
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Screen Cards Grid -->
+        <div>
+          <div class="text-sm font-bold text-atari-parchment mb-3 flex items-center justify-between">
+            <span>EKRANY REGIONU ({reg.screens.length})</span>
+            <span class="text-xs text-atari-parchmentMuted">Siatka logiczna 40 kolumn × 12 wierszy</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {reg.screens.map((sc) => (
+              <div class="pixel-box p-4 space-y-3 bg-atari-dark border border-atari-border/70 hover:border-atari-gold transition-colors">
+                <!-- Screen Card Header -->
+                <div class="flex items-center justify-between border-b border-atari-border/50 pb-2">
+                  <div class="font-bold text-atari-gold text-sm truncate">
+                    {sc.id}
+                  </div>
+                  {sc.id === reg.start_screen && (
+                    <span class="px-1.5 py-0.5 bg-atari-gold text-atari-darkest text-[9px] font-bold">START</span>
+                  )}
+                </div>
+
+                <!-- Exits Compass -->
+                <div class="bg-atari-darkest p-2 border border-atari-border/40 text-[11px]">
+                  <div class="text-[9px] text-atari-parchmentMuted text-center mb-1">WYJŚCIA Z EKRANU:</div>
+                  <div class="grid grid-cols-3 gap-1 text-center font-mono">
+                    <div></div>
+                    <div class={`p-0.5 text-[10px] ${sc.exits.north ? 'text-atari-greenBright font-bold bg-atari-panel' : 'text-atari-border'}`}>
+                      N: {sc.exits.north || '—'}
+                    </div>
+                    <div></div>
+
+                    <div class={`p-0.5 text-[10px] ${sc.exits.west ? 'text-atari-greenBright font-bold bg-atari-panel' : 'text-atari-border'}`}>
+                      W: {sc.exits.west || '—'}
+                    </div>
+                    <div class="text-atari-gold text-[10px] flex items-center justify-center">●</div>
+                    <div class={`p-0.5 text-[10px] ${sc.exits.east ? 'text-atari-greenBright font-bold bg-atari-panel' : 'text-atari-border'}`}>
+                      E: {sc.exits.east || '—'}
+                    </div>
+
+                    <div></div>
+                    <div class={`p-0.5 text-[10px] ${sc.exits.south ? 'text-atari-greenBright font-bold bg-atari-panel' : 'text-atari-border'}`}>
+                      S: {sc.exits.south || '—'}
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+
+                <!-- Mini 40x12 Playfield Map Visualizer -->
+                <div class="space-y-1">
+                  <div class="flex justify-between text-[10px] text-atari-parchmentMuted">
+                    <span>UKŁAD PLANSZY (40×12):</span>
+                    <span>{sc.objects_count} ob. / {sc.enemies_count} wrogów</span>
+                  </div>
+                  <div class="relative w-full aspect-[40/12] bg-black border border-atari-border p-1 overflow-hidden">
+                    {/* Render Objects as colored blocks */}
+                    {sc.objects.map((obj) => {
+                      const widthPct = ((obj.size?.width || 1) / 40) * 100;
+                      const heightPct = ((obj.size?.height || 1) / 12) * 100;
+                      const leftPct = (obj.x / 40) * 100;
+                      const topPct = (obj.y / 12) * 100;
+                      const isBlocking = obj.blocking;
+                      const isInteractive = obj.interactive;
+                      const isSecret = obj.secret;
+                      const isPortal = obj.type === 'portal';
+
+                      let bgCol = '#475d4a';
+                      if (isPortal) bgCol = '#3a7d99';
+                      else if (isSecret) bgCol = '#d89b34';
+                      else if (isInteractive) bgCol = '#6cd37a';
+                      else if (isBlocking) bgCol = '#2c3e2f';
+
+                      return (
+                        <div
+                          class="absolute border-[0.5px] border-black/50"
+                          style={`left: ${leftPct}%; top: ${topPct}%; width: ${Math.max(widthPct, 2.5)}%; height: ${Math.max(heightPct, 8.3)}%; background-color: ${bgCol};`}
+                          title={`${obj.object} at (${obj.x}, ${obj.y})`}
+                        />
+                      );
+                    })}
+
+                    {/* Render Enemies */}
+                    {sc.enemies.map((en) => {
+                      const leftPct = (en.x / 40) * 100;
+                      const topPct = (en.y / 12) * 100;
+                      return (
+                        <div
+                          class="absolute w-2 h-2 rounded-full bg-atari-crimsonBright border border-white"
+                          style={`left: ${leftPct}%; top: ${topPct}%;`}
+                          title={`WRÓG: ${en.name} (${en.enemy})`}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <!-- Screen Contents Summary -->
+                <div class="text-[11px] space-y-1 pt-1 border-t border-atari-border/40">
+                  <div class="text-atari-parchmentMuted flex justify-between">
+                    <span>Obiekty:</span>
+                    <span class="text-atari-parchment font-bold">{sc.objects_count}</span>
+                  </div>
+                  {sc.enemies_count > 0 && (
+                    <div class="text-atari-crimsonBright flex justify-between">
+                      <span>Wrogowie:</span>
+                      <span class="font-bold">
+                        {sc.enemies.map((e) => e.name).join(', ')}
+                      </span>
+                    </div>
+                  )}
+                  {sc.objects.some((o) => o.type === 'portal') && (
+                    <div class="text-atari-blueCyan flex justify-between">
+                      <span>Portal:</span>
+                      <span class="font-bold">
+                        {sc.objects.find((o) => o.type === 'portal')?.target_region || 'Portal'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+  </div>
+</Layout>

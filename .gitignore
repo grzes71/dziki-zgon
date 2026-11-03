@@ -36,3 +36,9 @@ __pycache__/
 
 .gemini/
 *.old
+
+
+# Website & Node.js build artifacts
+website/node_modules/
+website/dist/
+website/.astro/

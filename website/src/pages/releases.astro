@@ -1,0 +1,175 @@
+---
+import Layout from '../layouts/Layout.astro';
+import releasesData from '../data/releases.json';
+import latestData from '../data/latest.json';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Wydania & Pobierz" activeTab="releases">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">WYDANIA, BINARKI & PLIKI DO POBRANIA</h1>
+      <p class="text-xs text-atari-parchmentMuted">Oficjalne pliki wykonywalne .XEX na komputery Atari 8-bit oraz historia wydań</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="pixel-badge text-xs">LICZBA WYDAŃ: {releasesData.releases_count}</span>
+      <span class="pixel-badge text-xs text-atari-gold">NAJNOWSZE: {latestData.tag}</span>
+    </div>
+  </div>
+
+  <!-- Primary Download Hero Box -->
+  <div class="pixel-box-gold p-6 sm:p-8 mb-8 bg-gradient-to-b from-atari-panel to-atari-surface">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-3">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-atari-dark border border-atari-gold/40 text-xs text-atari-gold">
+          <span class="w-2 h-2 rounded-full bg-atari-green animate-pulse"></span>
+          <span>AKTUALNE WYDANIE: {latestData.tag} ({latestData.release_date})</span>
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl font-bold text-atari-goldBright">
+          DZIKI_ZGON.XEX
+        </h2>
+
+        <p class="text-xs sm:text-sm text-atari-parchment leading-relaxed max-w-2xl">
+          Standardowy plik wykonywalny Atari DOS 2 (XEX) kompatybilny ze wszystkimi modelami Atari XL/XE (64 KB RAM) w systemie PAL i NTSC.
+        </p>
+
+        <!-- Technical Checksum Box -->
+        <div class="bg-atari-darkest p-3 border border-atari-border font-mono text-[11px] space-y-1">
+          <div class="flex justify-between text-atari-parchmentMuted">
+            <span>Rozmiar pliku:</span>
+            <strong class="text-atari-parchment">
+              {latestData.binary_size_bytes ? `${latestData.binary_size_bytes} bajtów (~${Math.round(latestData.binary_size_bytes / 1024)} KB)` : 'Dostępny z GitHub Releases'}
+            </strong>
+          </div>
+          {latestData.sha256 && (
+            <div class="text-atari-parchmentMuted">
+              <span>SHA256: </span>
+              <code class="text-atari-gold select-all break-all">{latestData.sha256}</code>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Download Button & CTA -->
+      <div class="flex flex-col items-center gap-2 w-full md:w-auto">
+        <a
+          href={`${baseUrl}/download/dziki_zgon.xex`}
+          download="dziki_zgon.xex"
+          class="pixel-button text-sm sm:text-base py-3 px-6 text-center w-full md:w-auto shadow-pixel-gold flex items-center justify-center gap-2"
+        >
+          <span>💾</span>
+          <span>POBIERZ DZIKI_ZGON.XEX</span>
+        </a>
+
+        <a
+          href={latestData.download_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-xs text-atari-parchmentMuted hover:text-atari-gold underline mt-1"
+        >
+          Mirror: GitHub Releases ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Run Guide -->
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+    <div class="pixel-box p-6 space-y-3">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2">
+        <h3 class="text-sm font-bold text-atari-gold flex items-center gap-2">
+          <span>💻</span>
+          <span>JAK URUCHOMIĆ W EMULATORZE (ALTIRRA / ATARI800)</span>
+        </h3>
+      </div>
+
+      <ol class="list-decimal list-inside space-y-2 text-xs text-atari-parchment leading-relaxed">
+        <li>
+          Pobierz darmowy emulator <strong>Altirra</strong> (zalecana wersja 4.x lub nowsza) lub <strong>Atari800</strong>.
+        </li>
+        <li>
+          Skonfiguruj system: model <strong>Atari 800XL lub 65XE</strong>, <strong>64 KB RAM</strong>, system telewizyjny <strong>PAL</strong>.
+        </li>
+        <li>
+          Przeciągnij pobrany plik <code>dziki_zgon.xex</code> do okna emulatora (Drag & Drop) lub wybierz <em>File → Boot Image</em>.
+        </li>
+        <li>
+          Upewnij się, że w opcjach sterowania klawiatura mapuje <strong>Joystick w Porcie 1</strong> (domyślnie strzałki lub numpad oraz klawisz Ctrl/Spacja jako FIRE).
+        </li>
+      </ol>
+    </div>
+
+    <div class="pixel-box p-6 space-y-3">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2">
+        <h3 class="text-sm font-bold text-atari-gold flex items-center gap-2">
+          <span>📼</span>
+          <span>JAK URUCHOMIĆ NA PRAWDZIWYM ATARI (REAL HARDWARE)</span>
+        </h3>
+      </div>
+
+      <ol class="list-decimal list-inside space-y-2 text-xs text-atari-parchment leading-relaxed">
+        <li>
+          Skopiuj plik <code>dziki_zgon.xex</code> na kartę SD do urządzenia <strong>SIO2SD</strong>, <strong>FujiNet</strong>, <strong>Side3</strong> lub <strong>SDrive-MAX</strong>.
+        </li>
+        <li>
+          Włóż kartę do stacji i włącz komputer Atari 800XL / 65XE / 130XE.
+        </li>
+        <li>
+          Wybierz plik w przeglądarce stacji dysków lub zamontuj go jako D1: i włącz komputer z wciśniętym klawiszem <strong>OPTION</strong> (wyłączenie wbudowanego BASIC-a).
+        </li>
+        <li>
+          Podłącz tradycyjny joystick do <strong>Portu 1</strong> i baw się dobrze!
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Releases History Table -->
+  <section class="space-y-4">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>📜</span>
+        <span>HISTORIA WYDAŃ (RELEASE LOG)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">{releasesData.releases.length} opublikowanych wersji</span>
+    </div>
+
+    <div class="space-y-4">
+      {releasesData.releases.map((rel) => (
+        <div class="pixel-box p-5 space-y-3 bg-atari-dark border border-atari-border hover:border-atari-gold transition-colors">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-atari-border/50 pb-2 gap-2">
+            <div class="flex items-center gap-3">
+              <span class="text-base font-bold text-atari-gold">{rel.tag}</span>
+              <span class="text-xs text-atari-parchmentMuted">{rel.date}</span>
+            </div>
+            <a
+              href={`https://github.com/grzes71/dziki-zgon/releases/tag/${rel.tag}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xs text-atari-parchment hover:text-atari-gold underline"
+            >
+              Zobacz na GitHub ↗
+            </a>
+          </div>
+
+          <div class="text-xs text-atari-parchment leading-relaxed">
+            <div class="text-[11px] text-atari-parchmentMuted font-bold mb-1">Główne zmiany i funkcje:</div>
+            {rel.notes.length > 0 ? (
+              <ul class="list-disc list-inside space-y-1">
+                {rel.notes.map((note) => (
+                  <li class="text-atari-parchment">{note}</li>
+                ))}
+              </ul>
+            ) : (
+              <p class="text-atari-parchmentMuted italic">Wydanie konserwacyjne i optymalizacje silnika 6502.</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
