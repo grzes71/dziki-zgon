@@ -2,6 +2,12 @@
 
 <!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
 
+## [2026-11-03] - Add Rapid Damage Flicker for Dual-Player Hero (P0 + P1)
+
+- Enhanced damage flash in [engine/render.asm](engine/render.asm) to rapidly flicker between `HERO_COLOR_DAMAGE` ($34) and standard hero colors (`HERO_COLOR_0` / `HERO_COLOR_1`) during active collisions.
+- Used `FrameCounter & #$02` to alternate colors every 2 frames (12.5 Hz on 50 Hz PAL), producing a distinct retro damage flicker across both `Player 0` and `Player 1`.
+
+
 ## [2026-11-02] - Switch Title Screen Music to Music DSL Format
 
 - Configured title screen audio to use [audio/dziki-zgon-title.dsl](audio/dziki-zgon-title.dsl) as the source of truth for the title theme ("Vaults of Nhyrmeth", 90 BPM, D minor, 16-bit bass).

@@ -83,7 +83,7 @@ Dostępne wolne obszary RAM (zgodne z tabelą powyżej):
 6.  **`$B715` – `$B80A` (246 B)**: Wolny obszar za modułami audio przed procedurami gry pod ROM-em BASIC.
 7.  **`$BB11` – `$BFFF` (1 263 B)**: Wolna pamięć pod ROM-em BASIC-a za sprite'ami postaci.
 
-Łącznie czysty  bezpośrednio dostępny wolny RAM w tej chwili to **1 846 B**.
+Łącznie czysty  bezpośrednio dostępny wolny RAM w tej chwili to **1 834 B**.
 
 
 ---

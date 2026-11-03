@@ -90,21 +90,26 @@
     lda ACTOR_Y
     sta ACTOR_Y_OLD
 
-    ; Ustawienie kolorów sprzętowych (z obsługą błysku obrażeń)
+    ; Ustawienie kolorów sprzętowych (z obsługą szybkiego migotania obrażeń dla P0 i P1)
     lda collision_active
     beq @hero_col_normal
+    lda FrameCounter
+    and #$02
+    bne @hero_col_normal
     lda #HERO_COLOR_DAMAGE
     sta $02C0
     sta PCOLR0
+    sta $02C1
+    sta PCOLR1
     jmp @hero_col_done
 @hero_col_normal
     lda #HERO_COLOR_0
     sta $02C0
     sta PCOLR0
-@hero_col_done
     lda #HERO_COLOR_1
     sta $02C1
     sta PCOLR1
+@hero_col_done
 
     ;=========================================================
     ; 2. PRZECIWNICY 1 i 2 (Aktorzy 1 i 2 -> Player 2 i 3)
