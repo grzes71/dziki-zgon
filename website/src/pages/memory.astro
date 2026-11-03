@@ -1,0 +1,274 @@
+---
+import Layout from '../layouts/Layout.astro';
+import memoryData from '../data/memory.json';
+---
+
+<Layout title="Mapa Pamięci 64 KB & Zero Page" activeTab="memory">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">MAPA PAMIĘCI 64 KB & STRONA ZEROWA (ZERO PAGE)</h1>
+      <p class="text-xs text-atari-parchmentMuted">Szczegółowy podział pamięci RAM Atari 800 XL / 65 XE, segmenty pliku XEX oraz alokacja buforów</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="pixel-badge text-xs">GRANICA: {memoryData.usable_ram_limit}</span>
+      <span class="pixel-badge text-xs text-atari-greenBright">BEZPIECZNY WOLNY: {memoryData.safe_free_headroom_bytes} B</span>
+      <span class="pixel-badge text-xs text-amber-400">WYRÓWNANIE: {memoryData.reserved_headroom_bytes} B</span>
+    </div>
+  </div>
+
+  <!-- Hardware Constraints Overview -->
+  <div class="pixel-box-gold p-6 mb-8 bg-atari-panel space-y-4">
+    <div class="flex items-center justify-between border-b border-atari-gold/40 pb-2">
+      <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+        <span>🧠</span>
+        <span>ŻELAZNE REGUŁY ARCHITEKTURY PAMIĘCI</span>
+      </h2>
+      <span class="px-2 py-0.5 bg-atari-dark border border-atari-gold text-xs text-atari-gold font-mono">
+        PORTB = $FF (BASIC OFF)
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+        <span class="text-atari-gold font-bold block">1. Granica OS ROM ($C000):</span>
+        <p class="text-atari-parchmentMuted text-[11px]">
+          Wszystkie kody, dane, kafle i duszki muszą kończyć się ściśle pod adresem <strong>$BFFF</strong>. Obszar $C000–$FFFF jest zarezerwowany dla OS Kernel i wektorów NMI.
+        </p>
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+        <span class="text-atari-gold font-bold block">2. Rejestry Sprzętowe ($D000):</span>
+        <p class="text-atari-parchmentMuted text-[11px]">
+          Przestrzeń $D000–$DFFF to rejestry układów ANTIC, GTIA, POKEY i PIA. Nigdy nie może być traktowana jako RAM.
+        </p>
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+        <span class="text-atari-gold font-bold block">3. Zasada 1 KB Display List:</span>
+        <p class="text-atari-parchmentMuted text-[11px]">
+          Display Listy gry skonsolidowane są w obszarze <strong>$3E80–$3FE7</strong>, nigdy nie przekraczając fizycznej granicy 1 KB ($0400).
+        </p>
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+        <span class="text-atari-greenBright font-bold block">4. Zapas Pamięci (Headroom):</span>
+        <p class="text-atari-parchmentMuted text-[11px]">
+          Aktualny bezpośredni wolny zapas pamięci RAM to <strong class="text-atari-greenBright">{memoryData.free_headroom_bytes} B</strong>, co pozwala na bezpieczną dalszą rozbudowę silnika.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visual 64 KB Memory Bar Diagram -->
+  <section class="pixel-box p-6 space-y-4 mb-8">
+    <div class="flex items-center justify-between border-b border-atari-border pb-2">
+      <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+        <span>📊</span>
+        <span>WIZUALNY ROZKŁAD PAMIĘCI 64 KB ($0000 – $FFFF)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">Kolorystyczny podział funkcjonalny</span>
+    </div>
+
+    <!-- Scaled Memory Bar -->
+    <div class="space-y-2">
+      <div class="w-full h-10 bg-black border-2 border-atari-border flex overflow-hidden shadow-pixel">
+        <div style="width: 3.1%;" class="bg-blue-800 border-r border-black" title="Zero Page + OS ($0000-$05FF)"></div>
+        <div style="width: 9.4%;" class="bg-amber-800 border-r border-black" title="Title Screen ROM Data ($0600-$1D35)"></div>
+        <div style="width: 12.5%;" class="bg-emerald-800 border-r border-black" title="Engine Code & RLE ($2000-$3FFF)"></div>
+        <div style="width: 12.5%;" class="bg-indigo-900 border-r border-black" title="VRAM Arena & HUD ($4000-$5FFF)"></div>
+        <div style="width: 6.2%;" class="bg-teal-700 border-r border-black" title="Fonts $6000 & $6400"></div>
+        <div style="width: 21.8%;" class="bg-purple-900 border-r border-black" title="World Builder & Secrets ($6800-$9FFF)"></div>
+        <div style="width: 6.2%;" class="bg-cyan-800 border-r border-black" title="PMG Memory ($A000-$A7FF)"></div>
+        <div style="width: 10.9%;" class="bg-rose-900 border-r border-black" title="Audio Player & Music ($A800-$BB24)"></div>
+        <div style="width: 2.3%;" class="bg-amber-600 border-r border-black" title="Sprites ($BB25-$BCA8)"></div>
+        <div style="width: 15.1%;" class="bg-zinc-800" title="OS ROM & Hardware Regs ($C000-$FFFF) - niedostępne"></div>
+      </div>
+
+      <!-- Legend -->
+      <div class="flex flex-wrap gap-3 text-[10px] text-atari-parchmentMuted pt-1">
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-blue-800 inline-block border border-black"></span> Strona Zerowa / OS</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-amber-800 inline-block border border-black"></span> Dane Tytułowe RLE</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-emerald-800 inline-block border border-black"></span> Kod Silnika / RLE</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-indigo-900 inline-block border border-black"></span> Arena VRAM ($4000)</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-teal-700 inline-block border border-black"></span> Czcionki ($6000/$6400)</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-purple-900 inline-block border border-black"></span> Dane Świata (World)</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-cyan-800 inline-block border border-black"></span> Grafika PMG ($A000)</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-rose-900 inline-block border border-black"></span> POKEY Player & Muzyka</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-amber-600 inline-block border border-black"></span> Sprity Postaci</div>
+        <div class="flex items-center gap-1.5"><span class="w-3 h-3 bg-zinc-800 inline-block border border-black"></span> OS ROM ($C000+)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zero Page Allocations -->
+  <section class="pixel-box p-6 space-y-4 mb-8">
+    <div class="flex items-center justify-between border-b border-atari-border pb-2">
+      <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+        <span>⚡</span>
+        <span>STRONA ZEROWA (ZERO PAGE: $80 – $FF)</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">Rejestry 1-bajtowe o natychmiastowym dostępie (3 cykle zegara)</span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border border-atari-border">
+        <thead class="bg-atari-panel text-atari-gold border-b border-atari-border">
+          <tr>
+            <th class="p-2 border-r border-atari-border">Adres (Hex)</th>
+            <th class="p-2 border-r border-atari-border">Rozmiar</th>
+            <th class="p-2 border-r border-atari-border">Symbol / Rejestr</th>
+            <th class="p-2">Przeznaczenie i Zastosowanie w Silniku</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-atari-border/40 font-mono text-[11px]">
+          {memoryData.zero_page.map((zp) => (
+            <tr class="hover:bg-atari-dark/80 transition-colors">
+              <td class="p-2 border-r border-atari-border text-atari-parchment font-bold">{zp.address_range}</td>
+              <td class="p-2 border-r border-atari-border text-atari-parchmentMuted">{zp.size_bytes} B</td>
+              <td class="p-2 border-r border-atari-border text-atari-gold font-bold">{zp.symbol}</td>
+              <td class="p-2 text-atari-parchment leading-tight font-sans text-xs">{zp.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Detailed Memory Allocation Table -->
+  <section class="pixel-box p-6 space-y-4 mb-8">
+    <div class="flex items-center justify-between border-b border-atari-border pb-2">
+      <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+        <span>📋</span>
+        <span>SZCZEGÓŁOWA TABELA SEGMENTÓW PAMIĘCI ({memoryData.segments.length})</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">SSOT: MEMORY_USAGE.md</span>
+    </div>
+
+    <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+      <table class="w-full text-left text-xs border border-atari-border">
+        <thead class="bg-atari-panel text-atari-gold border-b border-atari-border sticky top-0 z-10 shadow">
+          <tr>
+            <th class="p-2 border-r border-atari-border">Zakres adresów</th>
+            <th class="p-2 border-r border-atari-border">Rozmiar</th>
+            <th class="p-2 border-r border-atari-border">Symbol / Moduł</th>
+            <th class="p-2 border-r border-atari-border">Typ</th>
+            <th class="p-2">Opis i przeznaczenie w grze</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-atari-border/40 font-mono text-[11px]">
+          {memoryData.segments.map((seg) => {
+            const isFree = seg.area_type.includes('WOLNY RAM');
+            return (
+              <tr class={`hover:bg-atari-dark/80 transition-colors ${isFree ? 'bg-atari-green/10 text-atari-greenBright' : ''}`}>
+                <td class="p-2 border-r border-atari-border font-bold">{seg.address_range}</td>
+                <td class="p-2 border-r border-atari-border text-atari-parchmentMuted">{seg.size_bytes} B</td>
+                <td class="p-2 border-r border-atari-border font-bold text-atari-parchment">{seg.symbol}</td>
+                <td class="p-2 border-r border-atari-border">
+                  <span class={`px-1.5 py-0.5 text-[9px] border ${isFree ? 'border-atari-green text-atari-greenBright font-bold' : 'border-atari-border text-atari-parchmentMuted'}`}>
+                    {seg.area_type}
+                  </span>
+                </td>
+                <td class="p-2 text-atari-parchment leading-tight font-sans text-xs">{seg.description}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Free RAM Regions -->
+  <section class="pixel-box p-6 space-y-4 mb-8">
+    <div class="border-b border-atari-border pb-2 flex flex-wrap justify-between items-center gap-2">
+      <h2 class="text-base font-bold text-atari-greenBright flex items-center gap-2">
+        <span>🛡️</span>
+        <span>ANALIZA WOLNYCH OBSZARÓW RAM & BUFORÓW (SUMA: {memoryData.free_headroom_bytes} B)</span>
+      </h2>
+      <div class="flex gap-2 text-[10px]">
+        <span class="px-2 py-0.5 bg-atari-green/20 border border-atari-green text-atari-greenBright font-bold">
+          Czysty Wolny RAM: {memoryData.safe_free_headroom_bytes} B
+        </span>
+        <span class="px-2 py-0.5 bg-amber-900/20 border border-amber-600 text-amber-300 font-bold">
+          Bufory Wyrównania: {memoryData.reserved_headroom_bytes} B
+        </span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+      {memoryData.free_regions.map((fr) => (
+        <div class={`p-3 bg-atari-dark border space-y-1.5 ${fr.is_safe_for_allocation ? 'border-atari-green/50' : 'border-amber-700/50'}`}>
+          <div class="flex justify-between items-center text-atari-gold">
+            <span class="font-mono font-bold">{fr.address_range}</span>
+            <span class={`font-bold font-mono ${fr.is_safe_for_allocation ? 'text-atari-greenBright' : 'text-amber-400'}`}>{fr.size_bytes} B</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class={`px-1.5 py-0.2 text-[9px] border font-mono ${fr.is_safe_for_allocation ? 'border-atari-green text-atari-greenBright bg-atari-green/10' : 'border-amber-600 text-amber-400 bg-amber-900/10'}`}>
+              {fr.is_safe_for_allocation ? 'BEZPIECZNY WOLNY RAM' : 'ZAREZERWOWANE WYRÓWNANIE'}
+            </span>
+          </div>
+          <p class="text-[11px] text-atari-parchmentMuted leading-tight pt-1">
+            {fr.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Real XEX Binary Segments & Provenance -->
+  {memoryData.binary ? (
+    <section class="pixel-box p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2 flex-wrap gap-2">
+        <h2 class="text-base font-bold text-atari-gold flex items-center gap-2">
+          <span>📦</span>
+          <span>STRUKTURA SEGMENTÓW PLIKU BINARNEGO ({memoryData.binary.filename})</span>
+        </h2>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="px-2 py-0.5 bg-atari-panel border border-atari-gold text-atari-gold font-mono">
+            POCHODZENIE: {memoryData.binary_provenance.origin.toUpperCase()}
+          </span>
+          <span class="text-xs text-atari-parchmentMuted">{memoryData.binary.size_bytes} B • {memoryData.binary.segments_count} segmentów DOS 2</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+        <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+          <span class="text-atari-parchmentMuted block text-[10px]">PUNKT STARTOWY (RUNAD):</span>
+          <strong class="text-atari-gold text-base font-mono">{memoryData.binary.run_address || '$2000'}</strong>
+          <div class="text-[10px] text-atari-parchmentMuted">Wektor uruchomienia $02E0</div>
+        </div>
+
+        <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+          <span class="text-atari-parchmentMuted block text-[10px]">WEKTORY INICJALIZACYJNE:</span>
+          <strong class="text-atari-parchment text-sm font-mono">{memoryData.binary.init_addresses.join(', ') || 'Brak'}</strong>
+          <div class="text-[10px] text-atari-parchmentMuted">Wektor $02E2 (Disable BASIC)</div>
+        </div>
+
+        <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+          <span class="text-atari-parchmentMuted block text-[10px]">POCHODZENIE I COMMIT SHA:</span>
+          <div class="text-[10px] text-atari-greenBright font-mono break-all">
+            {memoryData.binary_provenance.built_from_current_source ? 'Kompilacja lokalna ze źródeł' : (memoryData.binary_provenance.release_tag || 'Wydanie')}
+          </div>
+          <div class="text-[10px] text-atari-parchmentMuted font-mono">
+            Commit: {memoryData.binary_provenance.source_commit_sha ? memoryData.binary_provenance.source_commit_sha.slice(0, 10) : 'Brak'}
+          </div>
+        </div>
+
+        <div class="bg-atari-darkest p-3 border border-atari-border space-y-1">
+          <span class="text-atari-parchmentMuted block text-[10px]">SUMA KONTROLNA SHA256:</span>
+          <div class="text-[10px] text-atari-gold font-mono break-all">{memoryData.binary.sha256}</div>
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section class="pixel-box p-6 space-y-2">
+      <h2 class="text-sm font-bold text-atari-gold flex items-center gap-2">
+        <span>📦</span>
+        <span>STRUKTURA SEGMENTÓW PLIKU BINARNEGO</span>
+      </h2>
+      <p class="text-xs text-atari-parchmentMuted">
+        Plik dziki_zgon.xex nie został jeszcze wygenerowany w lokalnym środowisku ani pobrany z wydań. Segmenty binarne zostaną odczytane natychmiast po uruchomieniu 'make all' lub pobraniu oficjalnego wydania.
+      </p>
+    </section>
+  )}
+</Layout>

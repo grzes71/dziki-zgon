@@ -1,0 +1,255 @@
+---
+import Layout from '../layouts/Layout.astro';
+import gameData from '../data/game.json';
+import worldData from '../data/world.json';
+import latestData from '../data/latest.json';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Strona Główna" activeTab="home">
+  <!-- Hero Section -->
+  <section class="pixel-box-gold p-6 sm:p-8 mb-8 relative overflow-hidden bg-gradient-to-b from-atari-panel to-atari-surface">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7 space-y-4">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-atari-dark border border-atari-gold/40 text-xs text-atari-gold">
+          <span class="w-2 h-2 rounded-full bg-atari-green animate-ping"></span>
+          <span>OFICJALNE WYDANIE ATARI 8-BIT • {latestData.tag}</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-black text-atari-goldBright tracking-wide drop-shadow-md">
+          DZIKI ZGON
+        </h1>
+
+        <p class="text-base sm:text-lg text-atari-parchment leading-relaxed border-l-2 border-atari-gold pl-4 py-1">
+          {gameData.tagline}. Gra działa na gołym komputerze <strong class="text-atari-gold">Atari 800 XL / 65 XE (64 KB RAM)</strong> — bez rozszerzeń pamięci, bez cartridge'y, w 50 klatkach na sekundę.
+        </p>
+
+        <!-- Stats Chips -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
+          <div class="pixel-box p-2.5 text-center">
+            <div class="text-atari-gold text-lg font-bold">{gameData.stats.regions_count}</div>
+            <div class="text-[10px] text-atari-parchmentMuted">REGIONÓW ŚWIATA</div>
+          </div>
+          <div class="pixel-box p-2.5 text-center">
+            <div class="text-atari-gold text-lg font-bold">{gameData.stats.screens_count}</div>
+            <div class="text-[10px] text-atari-parchmentMuted">EKRANÓW GRY</div>
+          </div>
+          <div class="pixel-box p-2.5 text-center">
+            <div class="text-atari-gold text-lg font-bold">{gameData.stats.objects_count}</div>
+            <div class="text-[10px] text-atari-parchmentMuted">OBIEKTÓW MAPY</div>
+          </div>
+          <div class="pixel-box p-2.5 text-center">
+            <div class="text-atari-greenBright text-lg font-bold">{gameData.stats.memory_headroom_bytes} B</div>
+            <div class="text-[10px] text-atari-parchmentMuted">WOLNEGO RAMU</div>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="flex flex-wrap gap-3 pt-3">
+          <a href={`${baseUrl}/download/dziki_zgon.xex`} download="dziki_zgon.xex" class="pixel-button flex items-center gap-2">
+            <span>💾 POBIERZ DZIKI_ZGON.XEX</span>
+            {latestData.binary_size_bytes && (
+              <span class="text-xs opacity-75">({Math.round(latestData.binary_size_bytes / 1024)} KB)</span>
+            )}
+          </a>
+          <a href={`${baseUrl}/world/`} class="pixel-button border-atari-border hover:border-atari-green text-atari-parchment hover:text-atari-greenBright">
+            🗺️ EKSPLORUJ ŚWIAT
+          </a>
+          <a href={`${baseUrl}/game/`} class="pixel-button border-atari-border hover:border-atari-gold text-atari-parchment hover:text-atari-gold">
+            📜 FABUŁA I STEROWANIE
+          </a>
+        </div>
+      </div>
+
+      <!-- Cover Art Column -->
+      <div class="lg:col-span-5 flex flex-col items-center">
+        <div class="relative group p-2 bg-atari-darkest border-2 border-atari-border shadow-pixel">
+          <img
+            src={`${baseUrl}/cover.png`}
+            alt="Okładka gry Dziki Zgon"
+            class="max-w-full h-auto object-cover border border-atari-border/50 transition-transform duration-300 group-hover:scale-[1.01]"
+          />
+          <div class="mt-2 text-center text-[10px] text-atari-parchmentMuted flex justify-between px-1">
+            <span>TRYB: ANTIC 4 / 5 / E</span>
+            <span>STEROWANIE: JOYSTICK PORT 1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Teaser & Narrative Card -->
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="md:col-span-2 pixel-box p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-atari-border pb-2">
+        <h2 class="text-lg font-bold text-atari-gold flex items-center gap-2">
+          <span>🐺</span>
+          <span>ZARYS FABULARNY</span>
+        </h2>
+        <span class="text-xs text-atari-parchmentMuted">POCZĄTEK PRZYGODY</span>
+      </div>
+
+      <div class="bg-atari-darkest p-4 border border-atari-border font-mono text-xs sm:text-sm leading-relaxed text-atari-parchment space-y-3">
+        <p class="text-atari-goldBright italic">
+          "Po wielodniowej imprezie w karczmie &lt;Pod Trzema Kuflami&gt; wiedźman Gerwant budzi się z potężnym kacem..."
+        </p>
+        <p>
+          Nie pamięta gdzie podziała się Plotka, gdzie przepadły oba miecze (ze stali i ze srebra), ani skąd wziął się w jego kieszeni rachunek opiewający na zawrotną kwotę <strong>18 000 orenów</strong>.
+        </p>
+        <p>
+          Gerwant wyrusza w podróż przez 5 regionów królestwa, by odzyskać swój dobytek, zamglone wspomnienia i resztki osobistej godności.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between pt-1 text-xs">
+        <span class="text-atari-parchmentMuted">5 Regionów: Białe Pole, Las Pijanego Zająca, Stara Wyzima, Samotnia Mistrza, Jar Wiecznej Zgagi</span>
+        <a href={`${baseUrl}/game/`} class="text-atari-gold hover:underline">Czytaj całość →</a>
+      </div>
+    </div>
+
+    <!-- Latest Release Card -->
+    <div class="pixel-box p-6 space-y-3 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between border-b border-atari-border pb-2 mb-3">
+          <h3 class="text-sm font-bold text-atari-gold">AKTUALNE WYDANIE</h3>
+          <span class="px-2 py-0.5 bg-atari-green text-atari-darkest text-[10px] font-bold">STABILNE</span>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-atari-parchmentMuted">Wersja:</span>
+            <span class="font-bold text-atari-parchment">{latestData.tag}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-atari-parchmentMuted">Data wydania:</span>
+            <span>{latestData.release_date}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-atari-parchmentMuted">Rozmiar binarki:</span>
+            <span>{latestData.binary_size_bytes} B</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-atari-parchmentMuted">Target RAM:</span>
+            <span class="text-atari-greenBright">Poniżej $BFFF</span>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-atari-border/50 text-[11px] text-atari-parchmentMuted">
+          <div class="font-bold text-atari-parchment mb-1">Główne nowości wydania:</div>
+          <ul class="list-disc list-inside space-y-1">
+            {latestData.highlights.slice(0, 2).map((h) => (
+              <li class="truncate">{h}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-3">
+        <a href={`${baseUrl}/download/dziki_zgon.xex`} download="dziki_zgon.xex" class="pixel-button w-full text-center text-xs py-2">
+          POBIERZ .XEX
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Innovations Grid -->
+  <section class="space-y-4 mb-8">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>⚙️</span>
+        <span>KLUCZOWE ROZWIĄZANIA TECHNICZNE SILNIKA</span>
+      </h2>
+      <a href={`${baseUrl}/technical/`} class="text-xs text-atari-parchment hover:text-atari-gold">Pełna architektura →</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="pixel-box p-4 space-y-2">
+        <div class="text-xs font-bold text-atari-gold flex items-center gap-1.5">
+          <span>🎮</span>
+          <span>4-KOLOROWY DUAL-HERO (P0+P1)</span>
+        </div>
+        <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+          Gerwant renderowany jest jednocześnie na dwóch graczach sprzętowych PMG (Player 0 i Player 1) z włączonym bitem kolorów GTIA OR-mix, co daje 4 kolory na duszku bez migotania. Wrogowie operują na P2, P3 oraz 4 pociskach w roli 5. gracza.
+        </p>
+      </div>
+
+      <div class="pixel-box p-4 space-y-2">
+        <div class="text-xs font-bold text-atari-gold flex items-center gap-1.5">
+          <span>⏱️</span>
+          <span>DETERMINISTYCZNY POTOK 50 FPS</span>
+        </div>
+        <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+          Sztywna kolejność faz w klatce VBLANK: Input Poll → Player Move → NPC AI → Collision Check → Interactive Inspection → Render Buffer. Brak pływającego deltatime — pełny determinizm 50 Hz PAL.
+        </p>
+      </div>
+
+      <div class="pixel-box p-4 space-y-2">
+        <div class="text-xs font-bold text-atari-gold flex items-center gap-1.5">
+          <span>🧠</span>
+          <span>ARCHITEKTURA PAMIĘCI 64 KB</span>
+        </div>
+        <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+          Wyłączenie BASIC ROM przez PORTB zwalnia blok $A000–$BFFF. Wszystkie segmenty kodu, danych świata, VRAM i PMG mieszczą się ściśle poniżej OS ROM ($BFFF), zachowując wektory NMI i DLI.
+        </p>
+      </div>
+
+      <div class="pixel-box p-4 space-y-2">
+        <div class="text-xs font-bold text-atari-gold flex items-center gap-1.5">
+          <span>🎨</span>
+          <span>DYNAMICZNE DLI I ZESTAWY ZNAKÓW</span>
+        </div>
+        <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+          Przerwania linii obrazu (DLI) przełączają rejestr CHBASE w trakcie rysowania klatki, oddzielając czcionkę planszy gry ($6400) od czcionki interfejsu HUD ($6000), a VBLANK animuje dynamiczne kafelki rzeki i pochodni.
+        </p>
+      </div>
+
+      <div class="pixel-box p-4 space-y-2">
+        <div class="text-xs font-bold text-atari-gold flex items-center gap-1.5">
+          <span>🗺️</span>
+          <span>STRUCTURE-OF-ARRAYS (SoA)</span>
+        </div>
+        <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+          Zamiast tablic struktur (AoS), cały świat gry kompilowany jest z YAML-a przez dedykowany World Builder w tablice równoległe (SoA), umożliwiając natychmiastowe adresowanie 6502 `LDA table,X`.
+        </p>
+      </div>
+
+      <div class="pixel-box p-4 space-y-2">
+        <div class="text-xs font-bold text-atari-gold flex items-center gap-1.5">
+          <span>🎵</span>
+          <span>4-KANAŁOWA POLIFONIA POKEY</span>
+        </div>
+        <p class="text-xs text-atari-parchmentMuted leading-relaxed">
+          Kompilowane z DSL i JSON utwory muzyczne odtwarzane przez 880-bajtowy relokowalny player asynchronicznie w przerwaniu VBLANK z dynamicznym mikserem kroków i uderzeń SFX.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- World Explorer Preview Strip -->
+  <section class="pixel-box p-6 space-y-4">
+    <div class="flex items-center justify-between border-b border-atari-border pb-2">
+      <h2 class="text-lg font-bold text-atari-gold flex items-center gap-2">
+        <span>🗺️</span>
+        <span>5 REGIONÓW OTWARTEGO ŚWIATA</span>
+      </h2>
+      <a href={`${baseUrl}/world/`} class="text-xs text-atari-gold hover:underline">Otwórz World Explorer →</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+      {worldData.regions.map((reg) => (
+        <a href={`${baseUrl}/world/#region-${reg.id}`} class="pixel-box p-3 hover:border-atari-gold transition-colors block group">
+          <div class="font-bold text-atari-goldBright group-hover:text-atari-gold truncate">{reg.name.toUpperCase()}</div>
+          <div class="text-[10px] text-atari-parchmentMuted mt-1">ID: {reg.id}</div>
+          <div class="mt-2 flex items-center justify-between text-[11px]">
+            <span class="text-atari-parchment">Ekrany:</span>
+            <strong class="text-atari-gold">{reg.screens_count}</strong>
+          </div>
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-atari-parchment">Muzyka:</span>
+            <span class="text-atari-parchmentMuted truncate max-w-[90px]">{reg.music}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

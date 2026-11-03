@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import releasesData from '../data/releases.json';
+---
+
+<Layout title="Oś Czasu & Historia Projektu" activeTab="history">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">OŚ CZASU ROZWOJU (DEVELOPMENT TIMELINE)</h1>
+      <p class="text-xs text-atari-parchmentMuted">Kronika inżynieryjna, kamienie milowe oraz techniczne zmiany w architekturze silnika gry (SSOT: HISTORY.md)</p>
+    </div>
+    <div class="pixel-badge text-xs">
+      WPISÓW: {releasesData.timeline.length}
+    </div>
+  </div>
+
+  <!-- Timeline Intro -->
+  <div class="pixel-box-gold p-6 mb-8 bg-atari-panel space-y-3">
+    <div class="flex items-center gap-2 text-atari-gold text-base font-bold">
+      <span>⌛</span>
+      <span>INŻYNIERIA OPROGRAMOWANIA NA 8-BITOWYM KRZEMIE</span>
+    </div>
+    <p class="text-xs sm:text-sm text-atari-parchment leading-relaxed">
+      Projekt "Dziki Zgon" rozwija się w reżimie rygorystycznej dyscypliny inżynieryjnej: każdy moduł 6502 testowany jest w symulacji <strong>py65</strong>, zużycie pamięci weryfikowane jest przed i po asemblacji, a konwencjonalne commity (Conventional Commits) automatycznie determinują wersjonowanie SemVer.
+    </p>
+  </div>
+
+  <!-- Timeline Flow -->
+  <div class="relative border-l-2 border-atari-border ml-4 sm:ml-8 pl-6 sm:pl-8 space-y-8">
+    {releasesData.timeline.map((entry, idx) => (
+      <div class="relative group">
+        <!-- Timeline Marker Node -->
+        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-atari-surface border-2 border-atari-gold group-hover:bg-atari-gold transition-colors flex items-center justify-center">
+          <div class="w-1.5 h-1.5 bg-atari-greenBright rounded-full"></div>
+        </div>
+
+        <!-- Timeline Entry Card -->
+        <div class="pixel-box p-5 space-y-3 bg-atari-dark border border-atari-border group-hover:border-atari-gold transition-colors">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-atari-border/50 pb-2 gap-2">
+            <div>
+              <div class="text-base sm:text-lg font-bold text-atari-goldBright">
+                {entry.title}
+              </div>
+              <div class="text-[11px] text-atari-parchmentMuted font-mono">
+                DATA: <span class="text-atari-parchment">{entry.date}</span>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 bg-atari-panel border border-atari-border text-[10px] text-atari-parchment font-mono self-start sm:self-auto">
+              KAMIENIE MILOWE #{releasesData.timeline.length - idx}
+            </span>
+          </div>
+
+          <!-- Bullets list -->
+          <ul class="space-y-2 text-xs text-atari-parchment leading-relaxed">
+            {entry.bullets.map((bullet) => (
+              <li class="flex items-start gap-2">
+                <span class="text-atari-gold font-bold flex-shrink-0">›</span>
+                <span class="text-atari-parchment">{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+</Layout>

@@ -1,0 +1,860 @@
+{
+  "basic_disabled": true,
+  "binary": {
+    "filename": "dziki_zgon.xex",
+    "init_addresses": [
+      "$2000"
+    ],
+    "run_address": "$3DAD",
+    "segments": [
+      {
+        "end_hex": "$2007",
+        "size_bytes": 8,
+        "start_hex": "$2000"
+      },
+      {
+        "end_hex": "$1FB8",
+        "size_bytes": 6585,
+        "start_hex": "$0600"
+      },
+      {
+        "end_hex": "$21D0",
+        "size_bytes": 465,
+        "start_hex": "$2000"
+      },
+      {
+        "end_hex": "$2221",
+        "size_bytes": 1,
+        "start_hex": "$2221"
+      },
+      {
+        "end_hex": "$307B",
+        "size_bytes": 3614,
+        "start_hex": "$225E"
+      },
+      {
+        "end_hex": "$324B",
+        "size_bytes": 428,
+        "start_hex": "$30A0"
+      },
+      {
+        "end_hex": "$3482",
+        "size_bytes": 529,
+        "start_hex": "$3272"
+      },
+      {
+        "end_hex": "$397D",
+        "size_bytes": 1237,
+        "start_hex": "$34A9"
+      },
+      {
+        "end_hex": "$3E29",
+        "size_bytes": 1187,
+        "start_hex": "$3987"
+      },
+      {
+        "end_hex": "$3F87",
+        "size_bytes": 264,
+        "start_hex": "$3E80"
+      },
+      {
+        "end_hex": "$9B2C",
+        "size_bytes": 15149,
+        "start_hex": "$6000"
+      },
+      {
+        "end_hex": "$9F15",
+        "size_bytes": 502,
+        "start_hex": "$9D20"
+      },
+      {
+        "end_hex": "$BD85",
+        "size_bytes": 5510,
+        "start_hex": "$A800"
+      }
+    ],
+    "segments_count": 13,
+    "sha256": "05f5510a177ebfd21b7cea319013ab8f3a0c8e488de885731442b84fdfdfdfa0",
+    "size_bytes": 35545
+  },
+  "binary_provenance": {
+    "binary_sha256": "05f5510a177ebfd21b7cea319013ab8f3a0c8e488de885731442b84fdfdfdfa0",
+    "built_from_current_source": true,
+    "origin": "local_build",
+    "release_tag": null,
+    "source_commit_sha": "843186e1260dafe235d631a834314f26a91fadc9"
+  },
+  "free_headroom_bytes": 1598,
+  "free_regions": [
+    {
+      "address_range": "$1E2D",
+      "description": "Bufor wyrównania bajtowego w niskiej pamięci RAM (zarezerwowany)",
+      "end_hex": "$1E2D",
+      "is_safe_for_allocation": false,
+      "size_bytes": 1,
+      "start_hex": "$1E2D",
+      "status": "reserved_alignment"
+    },
+    {
+      "address_range": "$1F8C–$1FFF",
+      "description": "Bufor niskiej pamięci RAM przed wejściem kodu programu ($2000, zarezerwowany dla procedur startowych)",
+      "end_hex": "$1FFF",
+      "is_safe_for_allocation": false,
+      "size_bytes": 116,
+      "start_hex": "$1F8C",
+      "status": "reserved_alignment"
+    },
+    {
+      "address_range": "$3FE8–$3FFF",
+      "description": "Bufor wyrównania strony przed areną VRAM ($4000) chroniący Display Listy (zarezerwowany)",
+      "end_hex": "$3FFF",
+      "is_safe_for_allocation": false,
+      "size_bytes": 24,
+      "start_hex": "$3FE8",
+      "status": "reserved_alignment"
+    },
+    {
+      "address_range": "$5FEC–$5FFF",
+      "description": "Bufor wyrównania strony przed zestawem znaków ($6000, zarezerwowany)",
+      "end_hex": "$5FFF",
+      "is_safe_for_allocation": false,
+      "size_bytes": 20,
+      "start_hex": "$5FEC",
+      "status": "reserved_alignment"
+    },
+    {
+      "address_range": "$9DC5–$9FFF",
+      "description": "Czysty wolny bufor RAM w bloku danych i logiki gry przed pamięcią PMG ($A000) — bezpieczny dla danych świata/tekstów",
+      "end_hex": "$9FFF",
+      "is_safe_for_allocation": true,
+      "size_bytes": 571,
+      "start_hex": "$9DC5",
+      "status": "safe_usable"
+    },
+    {
+      "address_range": "$B992–$B99C",
+      "description": "Wewnętrzny bufor wyrównania kodu pomiędzy sterownikiem audio a procedurami GameOver (zarezerwowany)",
+      "end_hex": "$B99C",
+      "is_safe_for_allocation": false,
+      "size_bytes": 11,
+      "start_hex": "$B992",
+      "status": "reserved_alignment"
+    },
+    {
+      "address_range": "$BCA9–$BFFF",
+      "description": "Czysty wolny bufor RAM pod wyłączonym ROM-em BASIC za duszkami postaci do granicy OS ROM ($C000) — bezpieczny dla kodu/audio/grafiki",
+      "end_hex": "$BFFF",
+      "is_safe_for_allocation": true,
+      "size_bytes": 855,
+      "start_hex": "$BCA9",
+      "status": "safe_usable"
+    }
+  ],
+  "hardware_regs_boundary": "$D000 - $DFFF",
+  "os_rom_boundary": "$C000",
+  "os_rom_enabled": true,
+  "reserved_headroom_bytes": 172,
+  "safe_free_headroom_bytes": 1426,
+  "segments": [
+    {
+      "address_range": "$0200–$0201",
+      "area_type": "OS RAM",
+      "description": "Wektor przerwania DLI (Display List Interrupt) w pamięci cieni OS.",
+      "end_dec": 513,
+      "end_hex": "$0201",
+      "size_bytes": 2,
+      "start_dec": 512,
+      "start_hex": "$0200",
+      "symbol": "VDSLST"
+    },
+    {
+      "address_range": "$0600–$1D35",
+      "area_type": "Dane (ROM)",
+      "description": "Skompresowany obrazek tytułowy (`title.rle`).",
+      "end_dec": 7477,
+      "end_hex": "$1D35",
+      "size_bytes": 5942,
+      "start_dec": 1536,
+      "start_hex": "$0600",
+      "symbol": "TitleScreen_Data"
+    },
+    {
+      "address_range": "$1D36–$1DCA",
+      "area_type": "Dane (Sprites)",
+      "description": "Skompresowane RLE dane graficzne logo \"Dziki Zgon\".",
+      "end_dec": 7626,
+      "end_hex": "$1DCA",
+      "size_bytes": 149,
+      "start_dec": 7478,
+      "start_hex": "$1D36",
+      "symbol": "DzikizgonData"
+    },
+    {
+      "address_range": "$1DCB–$1E2C",
+      "area_type": "Dane (Sprites)",
+      "description": "Skompresowane RLE dane graficzne księżyca.",
+      "end_dec": 7724,
+      "end_hex": "$1E2C",
+      "size_bytes": 98,
+      "start_dec": 7627,
+      "start_hex": "$1DCB",
+      "symbol": "MoonData"
+    },
+    {
+      "address_range": "$1E2D–$1E2D",
+      "area_type": "**WOLNY RAM**",
+      "description": "Bufor wolnego RAM-u w niskiej pamięci.",
+      "end_dec": 7725,
+      "end_hex": "$1E2D",
+      "size_bytes": 1,
+      "start_dec": 7725,
+      "start_hex": "$1E2D",
+      "symbol": "—"
+    },
+    {
+      "address_range": "$2000–$2007",
+      "area_type": "INI Loader",
+      "description": "Wyłączenie BASICa (obsługa INI na starcie xex).",
+      "end_dec": 8199,
+      "end_hex": "$2007",
+      "size_bytes": 8,
+      "start_dec": 8192,
+      "start_hex": "$2000",
+      "symbol": "disable_basic_loader"
+    },
+    {
+      "address_range": "$2000–$202A",
+      "area_type": "Kod programu",
+      "description": "Wspólne procedury PMG (`pmg_clear_all`, `pmg_clear_range`).",
+      "end_dec": 8234,
+      "end_hex": "$202A",
+      "size_bytes": 43,
+      "start_dec": 8192,
+      "start_hex": "$2000",
+      "symbol": "pmg.asm"
+    },
+    {
+      "address_range": "$202B–$363C",
+      "area_type": "Kod programu",
+      "description": "Wspólna procedura dekompresji RLE (`RLE_Depack`).",
+      "end_dec": 13884,
+      "end_hex": "$363C",
+      "size_bytes": 5650,
+      "start_dec": 8235,
+      "start_hex": "$202B",
+      "symbol": "rle.asm"
+    },
+    {
+      "address_range": "$363D–$3B76",
+      "area_type": "Kod programu",
+      "description": "Inicjalizacja, pętla ekranu tytułowego, kolory, DLI.",
+      "end_dec": 15222,
+      "end_hex": "$3B76",
+      "size_bytes": 1338,
+      "start_dec": 13885,
+      "start_hex": "$363D",
+      "symbol": "title.asm"
+    },
+    {
+      "address_range": "$9D21–$9DC4",
+      "area_type": "Kod programu",
+      "description": "Logika i inicjalizacja ekranu opisu fabularnego (*Story*).",
+      "end_dec": 40388,
+      "end_hex": "$9DC4",
+      "size_bytes": 164,
+      "start_dec": 40225,
+      "start_hex": "$9D21",
+      "symbol": "story.asm"
+    },
+    {
+      "address_range": "$3B77–$3D4D",
+      "area_type": "Kod programu",
+      "description": "Logika gry właściwej (inicjalizacja, ruch gracza, mapa).",
+      "end_dec": 15693,
+      "end_hex": "$3D4D",
+      "size_bytes": 471,
+      "start_dec": 15223,
+      "start_hex": "$3B77",
+      "symbol": "game.asm"
+    },
+    {
+      "address_range": "$3D4E–$3E7F",
+      "area_type": "Kod programu",
+      "description": "Maszyna stanów, pętla główna, `system_init`, `advance_stage`.",
+      "end_dec": 15999,
+      "end_hex": "$3E7F",
+      "size_bytes": 306,
+      "start_dec": 15694,
+      "start_hex": "$3D4E",
+      "symbol": "main.asm"
+    },
+    {
+      "address_range": "$3E80–$3FE7",
+      "area_type": "Display Lists",
+      "description": "Skonsolidowane Display Listy gry ($3E80-$3FE7, dopasowane do strony 1 KB).",
+      "end_dec": 16359,
+      "end_hex": "$3FE7",
+      "size_bytes": 360,
+      "start_dec": 16000,
+      "start_hex": "$3E80",
+      "symbol": "Display Lists"
+    },
+    {
+      "address_range": "$3FE8–$3FFF",
+      "area_type": "**WOLNY RAM**",
+      "description": "Mały bufor wolnej pamięci przed buforem ekranu.",
+      "end_dec": 16383,
+      "end_hex": "$3FFF",
+      "size_bytes": 24,
+      "start_dec": 16360,
+      "start_hex": "$3FE8",
+      "symbol": "—"
+    },
+    {
+      "address_range": "$4000–$5E0F",
+      "area_type": "VRAM / Bufor",
+      "description": "Współdzielona arena wideo (title, game, gameover).",
+      "end_dec": 24079,
+      "end_hex": "$5E0F",
+      "size_bytes": 7696,
+      "start_dec": 16384,
+      "start_hex": "$4000",
+      "symbol": "VRAM_ARENA"
+    },
+    {
+      "address_range": "$5E10–$5F4F",
+      "area_type": "VRAM / Bufor",
+      "description": "Tekst stopki tytułowej / tekst Story / tekst GameOver.",
+      "end_dec": 24399,
+      "end_hex": "$5F4F",
+      "size_bytes": 320,
+      "start_dec": 24080,
+      "start_hex": "$5E10",
+      "symbol": "FOOTER_ADDR"
+    },
+    {
+      "address_range": "$5F50–$5F73",
+      "area_type": "RAM (Bufor)",
+      "description": "Bufor roboczy na sklejony komunikat podniesienia secretu.",
+      "end_dec": 24435,
+      "end_hex": "$5F73",
+      "size_bytes": 36,
+      "start_dec": 24400,
+      "start_hex": "$5F50",
+      "symbol": "secret_msg_buf"
+    },
+    {
+      "address_range": "$5F74–$5FEB",
+      "area_type": "RAM (Bufor)",
+      "description": "Bufor nagłówka z ikonami dla ekranów tekstowych.",
+      "end_dec": 24555,
+      "end_hex": "$5FEB",
+      "size_bytes": 120,
+      "start_dec": 24436,
+      "start_hex": "$5F74",
+      "symbol": "ICON_ADDR"
+    },
+    {
+      "address_range": "$5FEC–$5FFF",
+      "area_type": "**WOLNY RAM**",
+      "description": "Pozostały wolny RAM przed własną czcionką.",
+      "end_dec": 24575,
+      "end_hex": "$5FFF",
+      "size_bytes": 20,
+      "start_dec": 24556,
+      "start_hex": "$5FEC",
+      "symbol": "—"
+    },
+    {
+      "address_range": "$6000–$63FF",
+      "area_type": "Dane (Charset)",
+      "description": "Główna czcionka gry (interfejs). Wskazywana przez `CHBASE = $60`.",
+      "end_dec": 25599,
+      "end_hex": "$63FF",
+      "size_bytes": 1024,
+      "start_dec": 24576,
+      "start_hex": "$6000",
+      "symbol": "font.asm"
+    },
+    {
+      "address_range": "$6400–$67FF",
+      "area_type": "Dane (Charset)",
+      "description": "Czcionka graficzna do rysowania planszy w ANTIC 5.",
+      "end_dec": 26623,
+      "end_hex": "$67FF",
+      "size_bytes": 1024,
+      "start_dec": 25600,
+      "start_hex": "$6400",
+      "symbol": "game_font.asm"
+    },
+    {
+      "address_range": "$6800–$89A7",
+      "area_type": "Dane (World)",
+      "description": "Tabele świata (obiekty, ekrany, wyjścia).",
+      "end_dec": 35239,
+      "end_hex": "$89A7",
+      "size_bytes": 8616,
+      "start_dec": 26624,
+      "start_hex": "$6800",
+      "symbol": "World Builder Data"
+    },
+    {
+      "address_range": "$9389–$9D20",
+      "area_type": "Dane (Teksty)",
+      "description": "Teksty komunikatów wygranej i przegranej.",
+      "end_dec": 40224,
+      "end_hex": "$9D20",
+      "size_bytes": 2456,
+      "start_dec": 37769,
+      "start_hex": "$9389",
+      "symbol": "all_gameover_texts"
+    },
+    {
+      "address_range": "$1E2E–$1F8B",
+      "area_type": "Dane (Teksty)",
+      "description": "Skompresowane tekstualne zasoby gry (title, story).",
+      "end_dec": 8075,
+      "end_hex": "$1F8B",
+      "size_bytes": 350,
+      "start_dec": 7726,
+      "start_hex": "$1E2E",
+      "symbol": "all_texts"
+    },
+    {
+      "address_range": "$917F–$9388",
+      "area_type": "Dane (World)",
+      "description": "Obiekty sekretów na planszach.",
+      "end_dec": 37768,
+      "end_hex": "$9388",
+      "size_bytes": 522,
+      "start_dec": 37247,
+      "start_hex": "$917F",
+      "symbol": "secret_objects.asm"
+    },
+    {
+      "address_range": "$A000–$A7FF",
+      "area_type": "Pamięć PMG",
+      "description": "Pamięć Player/Missile Graphics (M0-M3, P0-P3).",
+      "end_dec": 43007,
+      "end_hex": "$A7FF",
+      "size_bytes": 2048,
+      "start_dec": 40960,
+      "start_hex": "$A000",
+      "symbol": "PMG"
+    },
+    {
+      "address_range": "$A800–$AB6F",
+      "area_type": "Kod (Odtwarzacz)",
+      "description": "4-kanałowy relokowalny odtwarzacz muzyki POKEY.",
+      "end_dec": 43887,
+      "end_hex": "$AB6F",
+      "size_bytes": 880,
+      "start_dec": 43008,
+      "start_hex": "$A800",
+      "symbol": "audio_player.asm"
+    },
+    {
+      "address_range": "$AB70–$B14D",
+      "area_type": "Dane (Muzyka)",
+      "description": "Moduł muzyczny ekranu tytułowego (Tajemnica Starego Zamku).",
+      "end_dec": 45389,
+      "end_hex": "$B14D",
+      "size_bytes": 1502,
+      "start_dec": 43888,
+      "start_hex": "$AB70",
+      "symbol": "music_title.asm"
+    },
+    {
+      "address_range": "$B14E–$B2EC",
+      "area_type": "Dane (Muzyka)",
+      "description": "Moduł muzyczny ekranu fabularnego (Karczma pod Kwiczącym Dzikiem).",
+      "end_dec": 45804,
+      "end_hex": "$B2EC",
+      "size_bytes": 415,
+      "start_dec": 45390,
+      "start_hex": "$B14E",
+      "symbol": "music_intro.asm"
+    },
+    {
+      "address_range": "$B2ED–$B4D2",
+      "area_type": "Dane (Muzyka)",
+      "description": "Moduł muzyczny ekranu Game Over Porażka.",
+      "end_dec": 46290,
+      "end_hex": "$B4D2",
+      "size_bytes": 486,
+      "start_dec": 45805,
+      "start_hex": "$B2ED",
+      "symbol": "music_gameover_failure.asm"
+    },
+    {
+      "address_range": "$B4D3–$B668",
+      "area_type": "Dane (Muzyka)",
+      "description": "Moduł muzyczny ekranu Game Over Sukces.",
+      "end_dec": 46696,
+      "end_hex": "$B668",
+      "size_bytes": 406,
+      "start_dec": 46291,
+      "start_hex": "$B4D3",
+      "symbol": "music_gameover_success.asm"
+    },
+    {
+      "address_range": "$B669–$B8E5",
+      "area_type": "Dane (Muzyka)",
+      "description": "Moduł muzyczny ekranu podróży.",
+      "end_dec": 47333,
+      "end_hex": "$B8E5",
+      "size_bytes": 637,
+      "start_dec": 46697,
+      "start_hex": "$B669",
+      "symbol": "music_travel.asm"
+    },
+    {
+      "address_range": "$B8E6–$B991",
+      "area_type": "Kod programu",
+      "description": "Sterownik odtwarzacza muzyki dla scen.",
+      "end_dec": 47505,
+      "end_hex": "$B991",
+      "size_bytes": 172,
+      "start_dec": 47334,
+      "start_hex": "$B8E6",
+      "symbol": "audio.asm"
+    },
+    {
+      "address_range": "$B99D–$BA72",
+      "area_type": "Kod programu",
+      "description": "Logika i sterowanie ekranu końca gry (GameOver).",
+      "end_dec": 47730,
+      "end_hex": "$BA72",
+      "size_bytes": 214,
+      "start_dec": 47517,
+      "start_hex": "$B99D",
+      "symbol": "gameover.asm"
+    },
+    {
+      "address_range": "$BA73–$BB24",
+      "area_type": "Kod programu",
+      "description": "Logika i renderowanie ekranu podróży.",
+      "end_dec": 47908,
+      "end_hex": "$BB24",
+      "size_bytes": 178,
+      "start_dec": 47731,
+      "start_hex": "$BA73",
+      "symbol": "travel_screen.asm"
+    },
+    {
+      "address_range": "$BB25–$BCA8",
+      "area_type": "Dane (Sprites)",
+      "description": "Klatki sprite'ów postaci (Gerwalt + przeciwnicy).",
+      "end_dec": 48296,
+      "end_hex": "$BCA8",
+      "size_bytes": 388,
+      "start_dec": 47909,
+      "start_hex": "$BB25",
+      "symbol": "sprites"
+    },
+    {
+      "address_range": "$89A8–$917E",
+      "area_type": "Dane (World)",
+      "description": "Obiekty interaktywne na planszach.",
+      "end_dec": 37246,
+      "end_hex": "$917E",
+      "size_bytes": 2007,
+      "start_dec": 35240,
+      "start_hex": "$89A8",
+      "symbol": "interactive_objects.asm"
+    }
+  ],
+  "total_mapped_bytes": 47554,
+  "total_ram_bytes": 65536,
+  "usable_ram_limit": "$BFFF (49,152 B)",
+  "zero_page": [
+    {
+      "address_range": "$0080–$0081",
+      "description": "wskaźnik tymczasowy (2 bajty, $80-$81)",
+      "end_hex": "$0081",
+      "size_bytes": 2,
+      "start_hex": "$0080",
+      "symbol": "SRC_TMP"
+    },
+    {
+      "address_range": "$0082–$0083",
+      "description": "wskaźnik źródłowy dla depackera RLE (2 bajty)",
+      "end_hex": "$0083",
+      "size_bytes": 2,
+      "start_hex": "$0082",
+      "symbol": "SRC_PTR"
+    },
+    {
+      "address_range": "$0084–$0085",
+      "description": "wskaźnik docelowy dla depackera RLE (2 bajty)",
+      "end_hex": "$0085",
+      "size_bytes": 2,
+      "start_hex": "$0084",
+      "symbol": "DST_PTR"
+    },
+    {
+      "address_range": "$0086–$0087",
+      "description": "wskaźnik na dane obiektów ekranu (2 bajty)",
+      "end_hex": "$0087",
+      "size_bytes": 2,
+      "start_hex": "$0086",
+      "symbol": "SCREEN_PTR"
+    },
+    {
+      "address_range": "$0088–$0089",
+      "description": "wskaźnik na dane kafelków obiektu (2 bajty)",
+      "end_hex": "$0089",
+      "size_bytes": 2,
+      "start_hex": "$0088",
+      "symbol": "TILE_PTR"
+    },
+    {
+      "address_range": "$008A–$008A",
+      "description": "globalny ID aktualnego ekranu (1 bajt)",
+      "end_hex": "$008A",
+      "size_bytes": 1,
+      "start_hex": "$008A",
+      "symbol": "GAME_SCREEN_ID"
+    },
+    {
+      "address_range": "$008B–$008B",
+      "description": "pozycja x obiektu",
+      "end_hex": "$008B",
+      "size_bytes": 1,
+      "start_hex": "$008B",
+      "symbol": "OBJ_X"
+    },
+    {
+      "address_range": "$008C–$008C",
+      "description": "pozycja y obiektu",
+      "end_hex": "$008C",
+      "size_bytes": 1,
+      "start_hex": "$008C",
+      "symbol": "OBJ_Y"
+    },
+    {
+      "address_range": "$008D–$008D",
+      "description": "szerokość obiektu (w kafelkach)",
+      "end_hex": "$008D",
+      "size_bytes": 1,
+      "start_hex": "$008D",
+      "symbol": "OBJ_W"
+    },
+    {
+      "address_range": "$008E–$008E",
+      "description": "wysokość obiektu (w kafelkach)",
+      "end_hex": "$008E",
+      "size_bytes": 1,
+      "start_hex": "$008E",
+      "symbol": "OBJ_H"
+    },
+    {
+      "address_range": "$008F–$008F",
+      "description": "kod obiektu",
+      "end_hex": "$008F",
+      "size_bytes": 1,
+      "start_hex": "$008F",
+      "symbol": "OBJ_CODE"
+    },
+    {
+      "address_range": "$0090–$0090",
+      "description": "wewnętrzny iterator x pętli rysującej",
+      "end_hex": "$0090",
+      "size_bytes": 1,
+      "start_hex": "$0090",
+      "symbol": "TMP_X"
+    },
+    {
+      "address_range": "$0091–$0091",
+      "description": "wewnętrzny iterator y pętli rysującej",
+      "end_hex": "$0091",
+      "size_bytes": 1,
+      "start_hex": "$0091",
+      "symbol": "TMP_Y"
+    },
+    {
+      "address_range": "$0092–$0092",
+      "description": "Zwiększany co klatkę przez VBLANK",
+      "end_hex": "$0092",
+      "size_bytes": 1,
+      "start_hex": "$0092",
+      "symbol": "FrameCounter"
+    },
+    {
+      "address_range": "$0093–$0093",
+      "description": "Zbuforowany stan PORTA (po eor #$FF)",
+      "end_hex": "$0093",
+      "size_bytes": 1,
+      "start_hex": "$0093",
+      "symbol": "InputState_Joy"
+    },
+    {
+      "address_range": "$0094–$0094",
+      "description": "Zbuforowany stan TRIG0",
+      "end_hex": "$0094",
+      "size_bytes": 1,
+      "start_hex": "$0094",
+      "symbol": "InputState_Trig"
+    },
+    {
+      "address_range": "$0095–$0095",
+      "description": "Flaga prośby o zmianę sceny (1 = proszę o zmianę)",
+      "end_hex": "$0095",
+      "size_bytes": 1,
+      "start_hex": "$0095",
+      "symbol": "Engine_RequestStageAdvance"
+    },
+    {
+      "address_range": "$0096–$0097",
+      "description": "(2 bajty) Wskaźnik do pamięci PMG aktualnie renderowanego aktora",
+      "end_hex": "$0097",
+      "size_bytes": 2,
+      "start_hex": "$0096",
+      "symbol": "PMG_PTR"
+    },
+    {
+      "address_range": "$0098–$0098",
+      "description": "Tymczasowa intencja X aktora (do kolizji)",
+      "end_hex": "$0098",
+      "size_bytes": 1,
+      "start_hex": "$0098",
+      "symbol": "ACTOR_TMP_X"
+    },
+    {
+      "address_range": "$0099–$0099",
+      "description": "Tymczasowa intencja Y aktora (do kolizji)",
+      "end_hex": "$0099",
+      "size_bytes": 1,
+      "start_hex": "$0099",
+      "symbol": "ACTOR_TMP_Y"
+    },
+    {
+      "address_range": "$009A–$009A",
+      "description": "Tymczasowa wysokość aktora (do kolizji)",
+      "end_hex": "$009A",
+      "size_bytes": 1,
+      "start_hex": "$009A",
+      "symbol": "ACTOR_TMP_HEIGHT"
+    },
+    {
+      "address_range": "$009B–$009B",
+      "description": "bieżący stan gry: 0=title, 1=story, 2=game, 3=gameover",
+      "end_hex": "$009B",
+      "size_bytes": 1,
+      "start_hex": "$009B",
+      "symbol": "GAME_STATE"
+    },
+    {
+      "address_range": "$009C–$009C",
+      "description": "Flaga żądania zmiany ekranu (1 = tak)",
+      "end_hex": "$009C",
+      "size_bytes": 1,
+      "start_hex": "$009C",
+      "symbol": "REQ_SCREEN_TRANSITION"
+    },
+    {
+      "address_range": "$009D–$009D",
+      "description": "ID nowego ekranu do wczytania",
+      "end_hex": "$009D",
+      "size_bytes": 1,
+      "start_hex": "$009D",
+      "symbol": "NEW_SCREEN_ID"
+    },
+    {
+      "address_range": "$009E–$009E",
+      "description": "Nowa pozycja gracza na nowym ekranie",
+      "end_hex": "$009E",
+      "size_bytes": 1,
+      "start_hex": "$009E",
+      "symbol": "NEW_ACTOR_X"
+    },
+    {
+      "address_range": "$009F–$009F",
+      "description": "Nowa pozycja gracza na nowym ekranie",
+      "end_hex": "$009F",
+      "size_bytes": 1,
+      "start_hex": "$009F",
+      "symbol": "NEW_ACTOR_Y"
+    },
+    {
+      "address_range": "$00A0–$00A0",
+      "description": "Tymczasowa liczba przeciwników na ekranie",
+      "end_hex": "$00A0",
+      "size_bytes": 1,
+      "start_hex": "$00A0",
+      "symbol": "ENEMY_COUNT_TMP"
+    },
+    {
+      "address_range": "$00A1–$00A1",
+      "description": "Indeks aktualnie ładowanego aktora (1..3)",
+      "end_hex": "$00A1",
+      "size_bytes": 1,
+      "start_hex": "$00A1",
+      "symbol": "CURRENT_ACTOR"
+    },
+    {
+      "address_range": "$00A2–$00A2",
+      "description": "Stan linii komunikatów (0=brak, 1=wyświetlanie, 2=1s do końca)",
+      "end_hex": "$00A2",
+      "size_bytes": 1,
+      "start_hex": "$00A2",
+      "symbol": "MSG_STATE"
+    },
+    {
+      "address_range": "$00A3–$00A3",
+      "description": "Status zakończenia gry: 0=w trakcie, 1=sukces (rachunek), 2=upływ czasu",
+      "end_hex": "$00A3",
+      "size_bytes": 1,
+      "start_hex": "$00A3",
+      "symbol": "GAME_RESULT_STATUS"
+    },
+    {
+      "address_range": "$00A4–$00A5",
+      "description": "Wskaźnik na tablicę kolorów tęczy Game Over (2 bajty, $A4-$A5)",
+      "end_hex": "$00A5",
+      "size_bytes": 2,
+      "start_hex": "$00A4",
+      "symbol": "GO_RAINBOW_PTR"
+    },
+    {
+      "address_range": "$00A6–$00A6",
+      "description": "Flaga: 1 = przejście przez portal (ekran podróży)",
+      "end_hex": "$00A6",
+      "size_bytes": 1,
+      "start_hex": "$00A6",
+      "symbol": "IS_PORTAL_TRANSITION"
+    },
+    {
+      "address_range": "$00A7–$00A7",
+      "description": "Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku kroku",
+      "end_hex": "$00A7",
+      "size_bytes": 1,
+      "start_hex": "$00A7",
+      "symbol": "Request_SFX_Step"
+    },
+    {
+      "address_range": "$00A8–$00A8",
+      "description": "Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku podniesienia przedmiotu",
+      "end_hex": "$00A8",
+      "size_bytes": 1,
+      "start_hex": "$00A8",
+      "symbol": "Request_SFX_Item"
+    },
+    {
+      "address_range": "$00A9–$00A9",
+      "description": "Flaga skrzynki pocztowej: 1 = żądanie odegrania dźwięku interakcji z obiektem",
+      "end_hex": "$00A9",
+      "size_bytes": 1,
+      "start_hex": "$00A9",
+      "symbol": "Request_SFX_Interact"
+    },
+    {
+      "address_range": "$00CB–$00D4",
+      "description": "Audio Player Zero Page ($CB - $D4: 10 bajtów)",
+      "end_hex": "$00D4",
+      "size_bytes": 10,
+      "start_hex": "$00CB",
+      "symbol": "PLAYER_ZP_BASE"
+    }
+  ]
+}

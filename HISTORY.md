@@ -2,6 +2,18 @@
 
 <!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
 
+## [2026-11-03] - Implement Static Official Game Portal & Memory Provenance Pipeline
+
+- Created build-time Python data exporter in [scripts/export_portal_data.py](scripts/export_portal_data.py) extracting verified data from single-source-of-truth files into [reports/portal/](reports/portal/) (`game.json`, `world.json`, `objects.json`, `sprites.json`, `assets.json`, `music.json`, `memory.json`, `releases.json`, `latest.json`).
+- Added rigorous memory integrity validation in [scripts/verify_memory_integrity.py](scripts/verify_memory_integrity.py) and [tests/test_memory_integrity.py](tests/test_memory_integrity.py): asserts non-overlapping runtime segments, disjoint free gaps, exact 48 KB user RAM arithmetic ($0000–$BFFF = 49,152 B), Zero Page SSOT match against [zeropage.asm](zeropage.asm), and binary SHA256 provenance tracking.
+- Clearly partitioned free headroom into Safe Usable Free Space (1,426 B) and Reserved Alignment Buffers (172 B), classifying sub-32B gaps and hardware page padding as unverified/reserved.
+- Added `portal_data` phony target to [Makefile](Makefile) to regenerate and validate all reports and memory integrity without altering existing build steps.
+- Created static Astro & Tailwind CSS portal in [website/](website/) with base URL `/dziki-zgon/`, crisp pixel art rendering (`image-rendering: pixelated`), and toggleable CRT scanlines.
+- Implemented 10 content pages: Homepage (`/`), Game Story & Controls (`/game/`), World Explorer with 40x12 screen maps and exits (`/world/`), Objects Catalogue (`/objects/`), Graphics & Sprites Gallery (`/gallery/`), POKEY Music Catalogue (`/music/`), 64 KB Memory Map & Zero Page (`/memory/`), Engine Architecture (`/technical/`), Releases & Downloads (`/releases/`), and Development Timeline (`/history/`).
+- Configured independent GitHub Actions deployment workflow in [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml): builds `dziki_zgon.xex` from current source on `push`, `workflow_dispatch`, and PR validation via MADS Linux x86_64, uses published release assets on `release`, and preserves [.github/workflows/release.yml](.github/workflows/release.yml).
+- All 191 unit and integration tests pass cleanly with exit code 0.
+
+
 ## [2026-11-03] - Add Rapid Damage Flicker for Dual-Player Hero (P0 + P1)
 
 - Enhanced damage flash in [engine/render.asm](engine/render.asm) to rapidly flicker between `HERO_COLOR_DAMAGE` ($34) and standard hero colors (`HERO_COLOR_0` / `HERO_COLOR_1`) during active collisions.

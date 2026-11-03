@@ -1,0 +1,18 @@
+{
+  "binary_name": "dziki_zgon.xex",
+  "binary_size_bytes": 35545,
+  "download_url": "https://github.com/grzes71/dziki-zgon/releases/download/v0.5.0/dziki_zgon.xex",
+  "highlights": [
+    "Created build-time Python data exporter in [scripts/export_portal_data.py](scripts/export_portal_data.py) extracting verified data from single-source-of-truth files into [reports/portal/](reports/portal/) (`game.json`, `world.json`, `objects.json`, `sprites.json`, `assets.json`, `music.json`, `memory.json`, `releases.json`, `latest.json`).",
+    "Added rigorous memory integrity validation in [scripts/verify_memory_integrity.py](scripts/verify_memory_integrity.py) and [tests/test_memory_integrity.py](tests/test_memory_integrity.py): asserts non-overlapping runtime segments, disjoint free gaps, exact 48 KB user RAM arithmetic ($0000–$BFFF = 49,152 B), Zero Page SSOT match against [zeropage.asm](zeropage.asm), and binary SHA256 provenance tracking.",
+    "Clearly partitioned free headroom into Safe Usable Free Space (1,426 B) and Reserved Alignment Buffers (172 B), classifying sub-32B gaps and hardware page padding as unverified/reserved.",
+    "Added `portal_data` phony target to [Makefile](Makefile) to regenerate and validate all reports and memory integrity without altering existing build steps.",
+    "Created static Astro & Tailwind CSS portal in [website/](website/) with base URL `/dziki-zgon/`, crisp pixel art rendering (`image-rendering: pixelated`), and toggleable CRT scanlines."
+  ],
+  "release_date": "2026-11-03",
+  "repository": "https://github.com/grzes71/dziki-zgon",
+  "requirements": "Atari 800 XL / 65 XE, 64 KB RAM, Joystick w porcie 1, telewizor / monitor PAL lub NTSC",
+  "sha256": "05f5510a177ebfd21b7cea319013ab8f3a0c8e488de885731442b84fdfdfdfa0",
+  "tag": "v0.5.0",
+  "version": "0.5.0"
+}

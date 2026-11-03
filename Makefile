@@ -2,12 +2,22 @@
 # Budowanie projektu na Atari 800 XL / 65 XE
 
 # ---- Narzędzia ----
-MADS      ?= c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
-ifeq ($(wildcard $(CURDIR)/.venv/Scripts/python.exe),)
-    PYTHON ?= python
+ifeq ($(OS),Windows_NT)
+    MADS      ?= c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
+    ifeq ($(wildcard $(CURDIR)/.venv/Scripts/python.exe),)
+        PYTHON ?= python
+    else
+        PYTHON ?= $(CURDIR)/.venv/Scripts/python.exe
+    endif
 else
-    PYTHON ?= $(CURDIR)/.venv/Scripts/python.exe
+    MADS      ?= /usr/local/bin/mads
+    ifeq ($(wildcard $(CURDIR)/.venv/bin/python),)
+        PYTHON ?= python3
+    else
+        PYTHON ?= $(CURDIR)/.venv/bin/python
+    endif
 endif
+export MADS
 ASAPCONV  ?= C:/Apps/ASAP/asapconv.exe
 RMT2ATASM ?= C:/Apps/rmt2atasm.exe
 
@@ -82,7 +92,7 @@ WORLD_YAMLS := $(wildcard $(WORLD_DIR)/*.yaml) $(wildcard $(WORLD_DIR)/*/*.yaml)
 WORLD_SCRIPTS := $(wildcard world_builder/*.py)
 
 # ---- Cele ----
-.PHONY: all xex bg sprites texts fonts music world clean run smoke-test test check_memory memory_map map
+.PHONY: all xex bg sprites texts fonts music world clean run smoke-test test check_memory memory_map map portal_data
 
 all: texts sprites bg fonts music world $(XEX_OUT) test check_memory
 
@@ -104,6 +114,13 @@ memory_map: $(XEX_OUT)
 	$(PYTHON) scripts/generate_memory_map.py $(XEX_OUT) --pdf memory_map.pdf
 
 map: memory_map
+
+# Cel generowania danych portalu WWW
+portal_data:
+	@echo === Generowanie i walidacja danych portalu ===
+	$(PYTHON) scripts/export_portal_data.py --root-dir . --out-dir reports/portal
+	@echo === Weryfikacja integralnosci pamieci ===
+	$(PYTHON) scripts/verify_memory_integrity.py
 
 # Kompilator świata gry
 world: $(WORLD_INC)

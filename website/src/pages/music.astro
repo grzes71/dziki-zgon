@@ -1,0 +1,167 @@
+---
+import Layout from '../layouts/Layout.astro';
+import musicData from '../data/music.json';
+---
+
+<Layout title="Katalog Muzyki POKEY" activeTab="music">
+  <!-- Header -->
+  <div class="mb-6 border-b-2 border-atari-border pb-3 flex flex-wrap items-center justify-between gap-2">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-atari-gold">KATALOG MUZYKI POKEY & STEROWNIK AUDIO</h1>
+      <p class="text-xs text-atari-parchmentMuted">4-kanałowa polifonia syntezatora Atari POKEY, kompozycje w formacie DSL i JSON oraz relokowalny odtwarzacz ASM</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="pixel-badge text-xs">UTWORÓW: {musicData.tracks_count}</span>
+      <span class="pixel-badge text-xs">ROZMIAR PLAYERA: {musicData.driver.size_bytes} B</span>
+    </div>
+  </div>
+
+  <!-- Audio Driver Architecture Banner -->
+  <div class="pixel-box-gold p-6 mb-8 bg-atari-panel space-y-4">
+    <div class="flex items-center justify-between border-b border-atari-gold/40 pb-2">
+      <div class="flex items-center gap-2 text-atari-gold text-base font-bold">
+        <span>🔊</span>
+        <span>STEROWNIK AUDIO: {musicData.driver.name}</span>
+      </div>
+      <span class="px-2 py-0.5 bg-atari-dark border border-atari-gold text-atari-gold text-xs font-mono">
+        {musicData.driver.memory_base}
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">PLIK STEROWNIKA:</span>
+        <strong class="text-atari-parchment font-mono">{musicData.driver.source_file}</strong>
+        <div class="text-[11px] text-atari-parchmentMuted mt-0.5">Czysty MADS 6502</div>
+      </div>
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">CZĘSTOTLIWOŚĆ TYKÓW:</span>
+        <strong class="text-atari-greenBright text-sm">{musicData.driver.update_rate_hz} Hz (PAL VBLANK)</strong>
+        <div class="text-[11px] text-atari-parchmentMuted mt-0.5">Determinizm co ramkę</div>
+      </div>
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">LICZBA KANAŁÓW:</span>
+        <strong class="text-atari-gold text-sm">{musicData.driver.channels} kanały sprzętowe</strong>
+        <div class="text-[11px] text-atari-parchmentMuted mt-0.5">POKEY AUDC1..4 / AUDF1..4</div>
+      </div>
+      <div>
+        <span class="text-atari-parchmentMuted block text-[10px]">MIKSER EFEKTÓW SFX:</span>
+        <strong class="text-atari-gold text-sm">Zintegrowany</strong>
+        <div class="text-[11px] text-atari-parchmentMuted mt-0.5">Kroki (6 ram.), ciosy, sekret</div>
+      </div>
+    </div>
+
+    <p class="text-xs text-atari-parchment leading-relaxed pt-2 border-t border-atari-border/50">
+      {musicData.driver.description}. Player zajmuje jedynie 880 bajtów w pamięci RAM ($A800–$AB6F), rezydując w bezpiecznym obszarze zwalnianym przez wyłączenie ROM-u BASIC. Aktualizacja odtwarzacza wywoływana jest w przerwaniu VBLANK, co gwarantuje płynne odtwarzanie bez względu na obciążenie silnika gry.
+    </p>
+  </div>
+
+  <!-- Music Tracks Grid -->
+  <section class="space-y-6 mb-12">
+    <div class="flex items-center justify-between border-b-2 border-atari-border pb-2">
+      <h2 class="text-xl font-bold text-atari-gold flex items-center gap-2">
+        <span>🎼</span>
+        <span>KOMPOZYCJE MUZYCZNE W GRZE ({musicData.tracks_count})</span>
+      </h2>
+      <span class="text-xs text-atari-parchmentMuted">Atari Music Composer & DSL</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {musicData.tracks.map((track) => (
+        <div class="pixel-box p-5 space-y-4 bg-atari-dark border border-atari-border hover:border-atari-gold transition-colors">
+          <div class="flex items-start justify-between border-b border-atari-border/50 pb-2">
+            <div>
+              <div class="font-bold text-atari-goldBright text-base flex items-center gap-2">
+                <span>🎵</span>
+                <span>{track.title}</span>
+              </div>
+              <div class="text-[11px] text-atari-parchmentMuted mt-0.5">
+                Kompozytor: <span class="text-atari-parchment">{track.author}</span> • Plik: <code class="text-atari-gold">{track.source_file}</code>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 bg-atari-panel border border-atari-border text-[10px] text-atari-parchment font-mono">
+              {track.format}
+            </span>
+          </div>
+
+          <!-- Musical Attributes Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-atari-darkest p-3 border border-atari-border">
+            <div>
+              <span class="text-atari-parchmentMuted block text-[9px]">TONACJA / TRYB:</span>
+              <strong class="text-atari-parchment">{track.key || '—'} {track.mode || ''}</strong>
+            </div>
+            <div>
+              <span class="text-atari-parchmentMuted block text-[9px]">TEMPO (BPM):</span>
+              <strong class="text-atari-gold">{track.bpm || '—'} BPM</strong>
+            </div>
+            <div>
+              <span class="text-atari-parchmentMuted block text-[9px]">CZAS TRWANIA:</span>
+              <strong class="text-atari-parchment">{track.duration_seconds ? `${track.duration_seconds} s` : 'Pętla'}</strong>
+            </div>
+            <div>
+              <span class="text-atari-parchmentMuted block text-[9px]">KANAŁY:</span>
+              <strong class="text-atari-greenBright">{track.channels_count} ch</strong>
+            </div>
+          </div>
+
+          {track.description && (
+            <p class="text-xs text-atari-parchment italic bg-atari-surface p-2.5 border-l-2 border-atari-gold">
+              "{track.description}"
+            </p>
+          )}
+
+          <!-- Memory Mapping Details -->
+          <div class="text-[11px] space-y-1.5 pt-1 border-t border-atari-border/40 text-atari-parchmentMuted">
+            <div class="flex justify-between">
+              <span>Etykieta ASM:</span>
+              <code class="text-atari-gold">{track.memory_label}</code>
+            </div>
+            <div class="flex justify-between">
+              <span>Obszar w pamięci RAM:</span>
+              <span class="text-atari-parchment font-mono">{track.memory_address}</span>
+            </div>
+            {track.patterns_count && (
+              <div class="flex justify-between">
+                <span>Liczba wzorców (Patterns):</span>
+                <span class="text-atari-parchment">{track.patterns_count} wzorców</span>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- POKEY Hardware Synthesis Info -->
+  <section class="pixel-box p-6 space-y-4">
+    <div class="border-b border-atari-border pb-2">
+      <h3 class="text-base font-bold text-atari-gold flex items-center gap-2">
+        <span>🎛️</span>
+        <span>SPECYFIKACJA SYNTEZY UKŁADU ATARI POKEY (C012294)</span>
+      </h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed text-atari-parchmentMuted">
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1.5">
+        <strong class="text-atari-gold block">Polifonia i Zniekształcenia:</strong>
+        <p>
+          Układ POKEY oferuje 4 niezależne generatory dźwięku z 8 różnymi rejestrami zniekształceń (distortion 0–14 parzyste), od czystej fali prostokątnej (dist 10/12) przez miękkie szumy (dist 8) po ostre uderzenia perkusyjne (dist 0/2).
+        </p>
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1.5">
+        <strong class="text-atari-gold block">16-Bitowy Bas i Zegar 1.77 MHz:</strong>
+        <p>
+          Dla motywu tytułowego zastosowano tryb 16-bitowego basu łączącego kanały 1 i 2, co pozwala na eliminację detuningu w niskich oktawach i uzyskanie głębokiego, soczystego brzmienia rodem z gier Mirage Software.
+        </p>
+      </div>
+
+      <div class="bg-atari-darkest p-3 border border-atari-border space-y-1.5">
+        <strong class="text-atari-gold block">Integracja SFX bez Zakłóceń:</strong>
+        <p>
+          Efekty dźwiękowe (tupnięcie kroku Gerwanta co 6 ramek, podniesienie przedmiotu, uderzenie) tymczasowo przejmują kanał 4, po czym automatycznie zwracają kontrolę sekwenserowi muzycznemu bez zgrzytów w rejestrach.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
