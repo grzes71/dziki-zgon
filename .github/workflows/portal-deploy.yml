@@ -18,6 +18,7 @@ permissions:
   id-token: write
 
 env:
+  MADS: "/usr/local/bin/mads"
   QT_QPA_PLATFORM: "offscreen"
   PYTHONUTF8: "1"
   PYTHONIOENCODING: "utf-8"
@@ -57,6 +58,10 @@ jobs:
         run: |
           sudo curl -sSL -f "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/linux_x86_64/mads" -o /usr/local/bin/mads
           sudo chmod +x /usr/local/bin/mads
+          sudo mkdir -p /c/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64
+          sudo ln -sf /usr/local/bin/mads /c/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
+          mkdir -p c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64
+          ln -sf /usr/local/bin/mads c:/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
 
       # For push, workflow_dispatch, pull_request: build binary directly from current checked-out source
       - name: Build Game Binary from Current Source

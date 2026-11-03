@@ -17,6 +17,7 @@ else
         PYTHON ?= $(CURDIR)/.venv/bin/python
     endif
 endif
+export MADS
 ASAPCONV  ?= C:/Apps/ASAP/asapconv.exe
 RMT2ATASM ?= C:/Apps/rmt2atasm.exe
 
