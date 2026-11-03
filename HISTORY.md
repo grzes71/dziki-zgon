@@ -2,6 +2,15 @@
 
 <!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
 
+## [2026-11-03] - Decouple Memory Integrity Unit Test from Volatile Binary Hash in Release Pipeline
+
+- Resolved failure in [.github/workflows/release.yml](.github/workflows/release.yml) during automated version bump: `release_helper.py --update-title` modified `texts/title.txt`, altering the SHA256 of newly built `dziki_zgon.xex`.
+- Decoupled [tests/test_memory_integrity.py](tests/test_memory_integrity.py) from volatile on-disk binary hash during generic test runs (`pytest tests/`), focusing the unit test on architectural invariants, non-overlapping segments, Zero Page SSOT adherence, and internal JSON provenance consistency.
+- Updated [scripts/verify_memory_integrity.py](scripts/verify_memory_integrity.py) with `require_binary_match` parameter and internal provenance validation (`binary.sha256 == binary_provenance.binary_sha256`).
+- Preserved strict binary hash verification in [scripts/verify_memory_integrity.py](scripts/verify_memory_integrity.py) CLI when called as part of `make portal_data` and [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml).
+- Verified `make all` (191 tests, MADS assembly, memory validation), `make portal_data`, and `npm run build` all pass with exit code 0.
+
+
 ## [2026-11-03] - Implement Static Official Game Portal & Memory Provenance Pipeline
 
 - Created build-time Python data exporter in [scripts/export_portal_data.py](scripts/export_portal_data.py) extracting verified data from single-source-of-truth files into [reports/portal/](reports/portal/) (`game.json`, `world.json`, `objects.json`, `sprites.json`, `assets.json`, `music.json`, `memory.json`, `releases.json`, `latest.json`).

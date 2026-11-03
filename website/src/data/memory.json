@@ -82,7 +82,7 @@
     "built_from_current_source": true,
     "origin": "local_build",
     "release_tag": null,
-    "source_commit_sha": "843186e1260dafe235d631a834314f26a91fadc9"
+    "source_commit_sha": "e8ce04d88d39b747da1925bd4743424705dd67de"
   },
   "free_headroom_bytes": 1598,
   "free_regions": [
