@@ -2,6 +2,11 @@
 
 <!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
 
+## [2026-11-08] - Remove Unused ASAP and rmt2atasm Step from Release Workflow
+
+- Removed obsolete `Install ASAP and rmt2atasm` step from [.github/workflows/release.yml](.github/workflows/release.yml) that failed on `HTTP 504` when downloading `rmt2atasm.exe` from GitHub Releases.
+- Removed unused `ASAPCONV` and `RMT2ATASM` variables from [Makefile](Makefile).
+
 ## [2026-11-08] - Ignore Generated Portal Data in Git & Harden CI Dependency Downloads
 
 - Added generated portal directories (`website/src/data/`, `website/public/download/`, `reports/portal/`) to [.gitignore](.gitignore) and untracked generated JSON files from Git.

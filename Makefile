@@ -18,8 +18,6 @@ else
     endif
 endif
 export MADS
-ASAPCONV  ?= C:/Apps/ASAP/asapconv.exe
-RMT2ATASM ?= C:/Apps/rmt2atasm.exe
 
 # ---- Cross-platform: wykrywanie OS (Windows vs Linux/macOS) ----
 ifeq ($(OS),Windows_NT)
