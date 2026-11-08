@@ -980,9 +980,12 @@ class PortalDataPipeline:
         target_path.write_text(json_str, encoding="utf-8")
         print(f"  -> Generated {filename} ({target_path.stat().st_size} bytes)")
 
-        # Also mirror to website/src/data if website directory exists
-        website_data_dir = self.root_dir / "website" / "src" / "data"
-        if website_data_dir.exists():
+        # Also mirror to website/src/data when exporting to canonical reports/portal directory
+        default_reports_dir = (self.root_dir / "reports" / "portal").resolve()
+        website_dir = self.root_dir / "website"
+        if self.output_dir == default_reports_dir and website_dir.exists():
+            website_data_dir = website_dir / "src" / "data"
+            website_data_dir.mkdir(parents=True, exist_ok=True)
             (website_data_dir / filename).write_text(json_str, encoding="utf-8")
 
     def generate_game_data(self) -> GamePortalData:
