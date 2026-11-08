@@ -2,11 +2,13 @@
 
 <!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
 
-## [2026-11-08] - Ignore Generated Portal Data in Git
+## [2026-11-08] - Ignore Generated Portal Data in Git & Harden CI Dependency Downloads
 
 - Added generated portal directories (`website/src/data/`, `website/public/download/`, `reports/portal/`) to [.gitignore](.gitignore) and untracked generated JSON files from Git.
 - Updated `PortalDataPipeline._save_json` in [scripts/export_portal_data.py](scripts/export_portal_data.py) to mirror JSON files into `website/src/data/` (creating the directory if needed) only when exporting to the canonical `reports/portal/` directory rather than temporary test directories (`tmp_path`).
 - Updated [tests/test_memory_integrity.py](tests/test_memory_integrity.py) to generate `memory.json` into `tmp_path` so unit tests pass on a clean clone without pre-existing untracked files in `reports/portal/`.
+- Switched `atari-image-converter` (updated to `v0.7.0`) and `atari-music` (`v0.8.0`) in [requirements.txt](requirements.txt) to install via `git+https://` tag refs instead of GitHub Release binary URLs, avoiding `HTTP 504 Gateway Time-out` errors on `github.com/.../releases/download`.
+- Added retry loops (`pip install --retries 5 --timeout 30`) and `curl --retry 5 --retry-all-errors --retry-delay 3` across [.github/workflows/release.yml](.github/workflows/release.yml) and [.github/workflows/portal-deploy.yml](.github/workflows/portal-deploy.yml).
 
 ## [2026-11-08] - Update README to Reflect Current Project State
 

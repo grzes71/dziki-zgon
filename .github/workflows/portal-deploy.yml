@@ -52,11 +52,20 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          for i in 1 2 3; do
+            if pip install --retries 5 --timeout 30 -r requirements.txt; then
+              break
+            fi
+            if [ "$i" -eq 3 ]; then
+              exit 1
+            fi
+            echo "pip install failed (attempt $i/3), retrying in 5s..."
+            sleep 5
+          done
 
       - name: Install Mad-Assembler (MADS)
         run: |
-          sudo curl -sSL -f "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/linux_x86_64/mads" -o /usr/local/bin/mads
+          sudo curl -sSL -f --retry 5 --retry-all-errors --retry-delay 3 "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/linux_x86_64/mads" -o /usr/local/bin/mads
           sudo chmod +x /usr/local/bin/mads
           sudo mkdir -p /c/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64
           sudo ln -sf /usr/local/bin/mads /c/Apps/Mad-Assembler-2.1.6/bin/windows_x86_64/mads.exe
@@ -73,7 +82,7 @@ jobs:
       - name: Resolve Release Binary
         if: github.event_name == 'release'
         run: |
-          curl -sSL -f "https://github.com/grzes71/dziki-zgon/releases/download/${{ github.event.release.tag_name }}/dziki_zgon.xex" -o "dziki_zgon.xex" || {
+          curl -sSL -f --retry 3 --retry-all-errors --retry-delay 3 "https://github.com/grzes71/dziki-zgon/releases/download/${{ github.event.release.tag_name }}/dziki_zgon.xex" -o "dziki_zgon.xex" || {
             echo "Release asset not available yet via direct download, building from tag source..."
             make all
           }
