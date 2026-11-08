@@ -36,7 +36,19 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          $installed = $false
+          for ($i = 1; $i -le 3; $i++) {
+            pip install --retries 5 --timeout 30 -r requirements.txt
+            if ($LASTEXITCODE -eq 0) {
+              $installed = $true
+              break
+            }
+            Write-Warning "pip install failed (attempt $i/3), retrying in 5s..."
+            Start-Sleep -Seconds 5
+          }
+          if (-not $installed) {
+            throw "Failed to install Python dependencies after 3 attempts"
+          }
 
       - name: Analyze Conventional Commits & Determine Version
         id: semver
@@ -68,7 +80,7 @@ jobs:
         run: |
           $madsDir = "C:\Apps\Mad-Assembler-2.1.6\bin\windows_x86_64"
           New-Item -ItemType Directory -Force -Path $madsDir | Out-Null
-          curl.exe -L -f -s -S "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/windows_x86_64/mads.exe" -o "$madsDir\mads.exe"
+          curl.exe -L -f -s -S --retry 5 --retry-all-errors --retry-delay 3 "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/windows_x86_64/mads.exe" -o "$madsDir\mads.exe"
           if (!(Test-Path "$madsDir\mads.exe")) { throw "MADS download failed" }
 
       - name: Install ASAP and rmt2atasm
@@ -78,13 +90,13 @@ jobs:
 
           $asapDir = "C:\Apps\ASAP"
           New-Item -ItemType Directory -Force -Path $asapDir | Out-Null
-          curl.exe -L -f -s -S "https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download" -o "asap.zip"
+          curl.exe -L -f -s -S --retry 5 --retry-all-errors --retry-delay 3 "https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download" -o "asap.zip"
           Expand-Archive -Path "asap.zip" -DestinationPath "asap_extracted" -Force
           $asapconv = Get-ChildItem -Path "asap_extracted" -Recurse -Filter "asapconv.exe" | Select-Object -First 1
           if (-not $asapconv) { throw "asapconv.exe not found in ASAP archive" }
           Copy-Item $asapconv.FullName -Destination "$asapDir\asapconv.exe" -Force
 
-          curl.exe -L -f -s -S "https://github.com/CycoPH/rmt2atasm/releases/download/Version1/rmt2atasm.exe" -o "C:\Apps\rmt2atasm.exe"
+          curl.exe -L -f -s -S --retry 5 --retry-all-errors --retry-delay 3 "https://github.com/CycoPH/rmt2atasm/releases/download/Version1/rmt2atasm.exe" -o "C:\Apps\rmt2atasm.exe"
           if (!(Test-Path "C:\Apps\rmt2atasm.exe")) { throw "rmt2atasm.exe download failed" }
 
       - name: Run Tests & Build Atari XEX
