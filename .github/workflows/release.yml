@@ -83,22 +83,6 @@ jobs:
           curl.exe -L -f -s -S --retry 5 --retry-all-errors --retry-delay 3 "https://raw.githubusercontent.com/tebe6502/Mad-Assembler/2.1.6/bin/windows_x86_64/mads.exe" -o "$madsDir\mads.exe"
           if (!(Test-Path "$madsDir\mads.exe")) { throw "MADS download failed" }
 
-      - name: Install ASAP and rmt2atasm
-        if: steps.semver.outputs.should_release == 'true'
-        run: |
-          New-Item -ItemType Directory -Force -Path "C:\Apps" | Out-Null
-
-          $asapDir = "C:\Apps\ASAP"
-          New-Item -ItemType Directory -Force -Path $asapDir | Out-Null
-          curl.exe -L -f -s -S --retry 5 --retry-all-errors --retry-delay 3 "https://sourceforge.net/projects/asap/files/asap/8.0.0/asap-8.0.0-win64.zip/download" -o "asap.zip"
-          Expand-Archive -Path "asap.zip" -DestinationPath "asap_extracted" -Force
-          $asapconv = Get-ChildItem -Path "asap_extracted" -Recurse -Filter "asapconv.exe" | Select-Object -First 1
-          if (-not $asapconv) { throw "asapconv.exe not found in ASAP archive" }
-          Copy-Item $asapconv.FullName -Destination "$asapDir\asapconv.exe" -Force
-
-          curl.exe -L -f -s -S --retry 5 --retry-all-errors --retry-delay 3 "https://github.com/CycoPH/rmt2atasm/releases/download/Version1/rmt2atasm.exe" -o "C:\Apps\rmt2atasm.exe"
-          if (!(Test-Path "C:\Apps\rmt2atasm.exe")) { throw "rmt2atasm.exe download failed" }
-
       - name: Run Tests & Build Atari XEX
         if: steps.semver.outputs.should_release == 'true'
         run: |
