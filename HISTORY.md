@@ -2,6 +2,13 @@
 
 <!-- AGENT INSTRUCTIONS: Prepend new entries directly below this comment using format '## [YYYY-MM-DD] - [Brief Title]'. Never replace existing entries. Use relative paths. -->
 
+## [2026-11-08] - Update README to Reflect Current Project State
+
+- Updated [README.md](README.md): ANTIC modes (E title, 2 text/status, 5 gameplay map), PMG hero/enemy layout, Zero Page range `$80–$D4`, memory validation note.
+- Refreshed project tree: all `engine/` and `lib/` modules, `audio/` (title DSL, travel theme), `chars/`, `fonts/*.fnt`, `texts/`, `scripts/`, `website/`, `reports/`, `docs/`, `.github/workflows/`.
+- Updated requirements table (Python 3.12+, Make, NumPy, pytest, `atari-music`, `atari-image-converter`, Node.js 22 for portal) and Windows setup (removed unused rmt2atasm / asapconv steps).
+- Documented all Makefile targets (`texts`, `fonts`, `xex`, `test`, `check_memory`, `memory_map`, `smoke-test`, `portal_data`), portal build steps, and CI workflows.
+
 ## [2026-11-03] - Decouple Memory Integrity Unit Test from Volatile Binary Hash in Release Pipeline
 
 - Resolved failure in [.github/workflows/release.yml](.github/workflows/release.yml) during automated version bump: `release_helper.py --update-title` modified `texts/title.txt`, altering the SHA256 of newly built `dziki_zgon.xex`.
